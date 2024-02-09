@@ -1,0 +1,20 @@
+{
+    "welcome": "Welcome",
+    "success-logged": "Congratulations, you have successfully completed the registration!",
+    "something-went-wrong": "Something went wrong :(",
+    "user-blocked": "User blocked",
+    "user-not-found": "User not found",
+    "unauthorized": "Unauthorized",
+    "email_verified": "Please confirm your email address to activate",
+    "status-active": "User successfully activated",
+    "email-unique": "This email is already registered",
+    "email-send": "Email sent successfully",
+    "user-email-or-password-not-found": "Incorrect login or password",
+    "password-changed": "Password successfully changed",
+    "user-edit": "Data successfully saved",
+    "wrong-password": "Incorrect password",
+    "user-email-not-found": "User with this email address not found",
+    "password-reset-link-sent": "If you filled your email right, please check it",
+    "password-changed-successfully": "Password successfully changed",
+    "activated-email": "To complete the registration, you need to activate your email."
+}
