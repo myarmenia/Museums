@@ -17,7 +17,7 @@ class CreateRolesSeeder extends Seeder
         $roles = [
             [
                 'name' => 'super_admin',
-                'g_name' => 'admin',
+                'g_name' => 'super_admin',
                 'interface' => 'admin'
             ],
             [
