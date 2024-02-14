@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 
 trait UserCrudTrait
 {
-    abstract function model();  
+    abstract function model();
     // abstract function validationRules();
 
     // public function new_model(){
@@ -60,15 +60,13 @@ trait UserCrudTrait
     public function store(UserCreateOrUpdateRequest $request)
     {
 
-        // Validator::make($request->all(), $this->validationRules())->validate();
-
         $input = $request->all();
-        $input['status'] = isset($request->status) ? true : 0;   
+        $input['status'] = isset($request->status) ? true : 0;
         $input['password'] = Hash::make($input['password']);
-       
+
         $user = $this->model()::create($input);
         $user->assignRole($request->input('roles'));
-    
+
         if ($user) {
             $token = sha1(Str::random(80));
             $email = $user->email;
@@ -88,9 +86,9 @@ trait UserCrudTrait
     // ========================= edit =========================
     public function edit($id)
     {
-       
+
         $user = $this->model()::findOrFail($id);
-        
+
         if (Auth::user()->hasRole('super_admin')) {
             $roles = Role::where('g_name', 'admin')->pluck('name', 'name')->all();
 
@@ -122,7 +120,7 @@ trait UserCrudTrait
 
         $input = $request->all();
         $input['status'] = isset($request->status) ? true : 0;
-      
+
 
         if (!empty($input['password'])) {
             $input['password'] = Hash::make($input['password']);

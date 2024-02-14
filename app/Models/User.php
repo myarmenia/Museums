@@ -37,12 +37,7 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function user_course_menegments(){
-
-      return  $this->hasMany(UserCourseMenegment::class);
-
-    }
-
+    
     public function isAdmin() {
 
       foreach ($this->roles()->get() as $role)

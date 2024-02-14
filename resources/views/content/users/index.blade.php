@@ -41,7 +41,6 @@
                             <th>Հեռախոս</th>
                             <th>Կարգավիճակ</th>
                             <th>Դերեր</th>
-                            <th>Կարգավիճակ</th>
                             <th>Գործողություն</th>
                         </tr>
                     </thead>
@@ -61,7 +60,7 @@
                                         <span class="badge bg-label-danger me-1">Ապաակտիվ</span>
                                     @endif
                                 </td>
-                                
+
                                 <td>
                                     @if (!empty($user->getRoleNames()))
                                         @foreach ($user->getRoleNames() as $v)
@@ -69,7 +68,6 @@
                                         @endforeach
                                     @endif
                                 </td>
-                                <td class="lesson_quantity">{{ $user->lesson_quantity }}</td>
 
                                 <td>
                                     <div class="dropdown action" data-id="{{ $user->id }}" data-tb-name="users">
@@ -78,8 +76,6 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                                                                 
-                                            
                                             <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input change_status" type="checkbox"
@@ -92,7 +88,7 @@
                                             <button type="button" class="dropdown-item click_delete_item"
                                                 data-bs-toggle="modal" data-bs-target="#smallModal"><i
                                                     class="bx bx-trash me-1"></i>
-                                                Ջնջել</button>                                            
+                                                Ջնջել</button>
                                         </div>
                                     </div>
                                 </td>
