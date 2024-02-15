@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // function customUserResource($data)
 // {
@@ -42,4 +42,14 @@ function getProjectDescriptionForAdmin($translation, $lang)
     $descriptoin = $translation->where('lang', $lang)->first()->description;
 
     return $descriptoin;
+}
+
+if(!function_exists('languages')){
+  function languages(){
+    
+      return [
+        'am','ru','en'
+      ];
+
+  }
 }

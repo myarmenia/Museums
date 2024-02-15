@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
-            $table->boolean('confirmed')->default(true);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
