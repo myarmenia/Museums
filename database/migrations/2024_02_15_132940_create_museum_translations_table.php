@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('museum_translations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('imageable_id')->index();
-            $table->string('imageable_type');
-            $table->string('path');
+            $table->foreignId('museum_id')->on('museums')->onDelete('cascade');
             $table->string('name');
-            $table->boolean('main')->default(0);
+            $table->longText('description')->nullable();
+            $table->string('working_days');
+            $table->string('director_name');
+            $table->string('address');
             $table->timestamps();
-
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('museum_translations');
     }
 };
