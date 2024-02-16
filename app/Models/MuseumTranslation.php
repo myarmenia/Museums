@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class NewsTranslations extends Model
+class MuseumTranslation extends Model
 {
     use HasFactory;
 
-    protected $table = 'news_translations';
+    protected $table = 'museum_translations';
 
     protected $fillable = [
-        'news_id',
-        'title',
+        'museum_id',
+        'name',
         'description',
-        'lang',
-        // 'created_at',
-        // 'updated_at',
+        'working_days',
+        'director_name',
+        'addres'
     ];
 }
