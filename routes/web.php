@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\Users\StudentAttendancesController;
 use App\Http\Controllers\Admin\News\NewsController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\News\NewsCategoryController;
+use App\Http\Controllers\museum\MuseumController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -134,6 +135,13 @@ Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class,'index'])-
 // Route::get('student-attendances/{id}', [StudentAttendancesController::class,'index']);
 // Route::post('open-next-lesson', [OpenNextLessonController::class,'index'])->name('open_next_lesson');
 
+Route::group(['prefix' => 'museum'], function () {
+  Route::get('/', [MuseumController::class, 'index'])->name('museum');
+  Route::get('/create', [MuseumController::class, 'create'])->name('create-museum');
+  Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
+
+
+});
 
 
 //Project
