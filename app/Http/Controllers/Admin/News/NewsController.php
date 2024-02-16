@@ -68,7 +68,7 @@ class NewsController extends Controller
         $data = $data->paginate(5)->withQueryString();
 
 
-
+// ==========
 
         // $data = $this->newsService->customNewsResource($data);
 
