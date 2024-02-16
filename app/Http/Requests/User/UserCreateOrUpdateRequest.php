@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Models\User;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,16 +25,25 @@ class UserCreateOrUpdateRequest extends FormRequest
     {
 
         $data = [
-              'email' => 'required|regex:/^([a-z,0-9,․]+)@([a-z,․]+)\.(.+)/i|email|unique:users,email',
-              'password' => 'required|same:confirm-password|min:8',
               'roles' => 'required'
-          ];
+        ];
 
-        if(Auth::getDefaultDriver() == 'web'){
-              $data['name'] = 'required';
-              $data['surname'] = 'required';
+        if(request()->getMethod() == 'POST'){
+            $data['email'] = 'required|regex:/^([a-z,0-9,․]+)@([a-z,․]+)\.(.+)/i|email|unique:users,email';
+            $data['password'] = 'required|same:confirm-password|min:8';
+        }
+        else{
 
-            }
+          $id = request()->segment(2);
+          $user = User::find($id);
+          if(request()->email != $user->email){
+            $data['email'] = 'required|regex:/^([a-z,0-9,․]+)@([a-z,․]+)\.(.+)/i|email|unique:users,email';
+            $data['password'] = 'required|same:confirm-password|min:8';
+
+          }
+        }
+
+        
         return $data;
     }
 }

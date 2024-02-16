@@ -16,10 +16,12 @@ class SendPassToEmployee extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($data)
+    public function __construct($email, $data)
     {
         $this->data = $data;
-    }
+        $this->email = $email;
+
+  }
 
     /**
      * Get the message envelope.
@@ -27,7 +29,7 @@ class SendPassToEmployee extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send Pass To Employee',
+            subject: 'Թանգարանի ղեկավարման համակարգի մուտքի թույլտվություն',
         );
     }
 
@@ -53,9 +55,9 @@ class SendPassToEmployee extends Mailable
 
   public function build()
   {
-    return $this->with([
-      'data' => $this->data,
-    ])
-      ->to(config('project.webex_email'));
+      return $this->with([
+        'data' => $this->data
+      ])
+        ->to($this->email);
   }
 }
