@@ -11,44 +11,47 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable, HasRoles, SoftDeletes;
+  use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
-    protected $fillable = [
-        'name',
-        'surname',
-        'email',
-        'status',
-        'phone',
-        'password'
+  protected $fillable = [
+    'name',
+    'surname',
+    'email',
+    'status',
+    'phone',
+    'password'
 
-    ];
+  ];
 
-    protected $hidden = ['password'];
+  protected $hidden = ['password'];
 
 
 
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
+  public function getJWTIdentifier()
+  {
+    return $this->getKey();
+  }
 
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
+  public function getJWTCustomClaims()
+  {
+    return [];
+  }
 
-    
-    public function isAdmin() {
+  public function roleNames(): array
+  {
 
-      foreach ($this->roles()->get() as $role)
-      {
-          if ($role->name == "admin" || $role->name == "mentor")
-          {
-              return true;
-          }
+    return $this->roles->pluck('name')->toArray();
+  }
+  public function isAdmin()
+  {
+
+    foreach ($this->roles()->get() as $role) {
+      if ($role->name == "admin" || $role->name == "mentor") {
+        return true;
       }
+    }
 
-      return false;
+    return false;
   }
 
 }
