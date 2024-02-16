@@ -52,6 +52,12 @@
       "url": "users"
     },
     {
+      "name": "Museum",
+      "icon": "menu-icon tf-icons bx bx-museum",
+      "slug": "museum",
+      "url": "museum"
+    },
+    {
       "name": "News",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "general-news",
