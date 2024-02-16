@@ -16,5 +16,7 @@ class NewsTranslations extends Model
         'title',
         'description',
         'lang',
+        // 'created_at',
+        // 'updated_at',
     ];
 }

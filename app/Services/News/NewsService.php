@@ -2,52 +2,43 @@
 namespace App\Services\News;
 
 use App\Models\Image;
+use App\Models\NewsTranslations;
 use App\Repositories\News\NewsRepository;
 use App\Services\FileUploadService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class NewsService
 {
-    protected $newsCategoryService;
 
     protected $newsRepository;
 
-    public function __construct(NewsCategoryService $newsCategoryService, NewsRepository $newsRepository)
+    public function __construct(NewsRepository $newsRepository)
     {
-        $this->newsCategoryService = $newsCategoryService;
+
         $this->newsRepository = $newsRepository;
     }
 
-    public function getCategoryList()
+
+
+    public function createNews($request)
     {
-        $categoryList = $this->newsCategoryService->getCategoryListAdmin();
-        $readyList = $this->newsCategoryService->customCategoryResAdmin($categoryList);
 
-        return $readyList;
-    }
 
-    public function createNews($data)
-    {
-        $news = $this->newsRepository->createNews($data['category']);
+      $request['user_id']=Auth::id();
 
-        $title = $data['title'];
-        $description = $data['description'];
-        $dataNews = [];
+        $news = $this->newsRepository->createNews($request['user_id']);
 
-        $lang = languages();
+        foreach($request['translate'] as $key => $lang){
 
-        foreach ($lang as $val) {
-           $dataNews[] = [
-               'news_id' => $news->id,
-               'title' => $title[$val],
-               'description' => $description[$val],
-               'lang' => $val
-           ];
+          $lang['news_id'] = $news->id;
+          $lang['lang'] = $key;
+         
+          $newstranslate = NewsTranslations::create($lang);
+
         }
 
-        $newsData = $this->newsRepository->createNewsData($dataNews);
-
-        if($photo = $data['photo'] ?? null){
+        if($photo = $request['photo'] ?? null){
             $path = FileUploadService::upload($photo, 'news/'.$news->id);
 
             $photoData = [
@@ -58,33 +49,23 @@ class NewsService
             $news->images()->create($photoData);
         }
 
-        if($newsData){
-
-            session(['success' => 'Операция выполнена успешно']);
-            return true;
-        }
-
-        session(['errorMessage' => 'Что то пошло не так. Попробуйте еще раз.']);
-
-        return false;
+        return true;
     }
 
     public function customNewsResource($data)
     {
+
         $readyResource = [];
-        foreach ($data as $key => $val) {
-
-            $readyResource[] = [
-                'id' => $val->id,
-                'images' => isset($val->images) && count($val->images) > 0? route('get-file', ['path' => $val->images[0]->path]) : null,
-                'title' => $val->translations[0]->title,
-                'category' => $val->category->type,
-                'created_at'=> $val->created_at,
-            ];
-        }
-
+        // foreach ($data as $key => $val) {
+        //   dd($val);
+        //     $readyResource[] = [
+        //         'id' => $val->id,
+        //         'images' => isset($val->images) && count($val->images) > 0? route('get-file', ['path' => $val->images[0]->path]) : null,
+        //         'title' => $val->translations[0]->title,
+        //         'created_at'=> $val->created_at,
+        //     ];
+        // }
         return $readyResource;
-
     }
     public function editNews($id){
 
@@ -97,13 +78,10 @@ class NewsService
 
       if($news){
 
-        $news->news_category_id = $data['category'];
-        $news->save();
         $news->translation;
 
-        $count = 0;
         foreach(languages() as $lang){
-          $count++;
+
           $news_translation= $news->newstranslation($lang);
           $news_translation->title = $data['title'][$lang];
           $news_translation->description = $data['description'][$lang];
@@ -111,16 +89,12 @@ class NewsService
 
         }
           if(isset($data['photo'])){
-
             $image = Image::where('imageable_id',$id)->first();
-
             if(Storage::exists($image->path)){
-              // dd($image->path);
               Storage::delete($image->path);
               $image->delete();
             }
             $path = FileUploadService::upload($data['photo'], 'news/'.$news->id);
-
             $photoData = [
                 'path' => $path,
                 'name' => $data['photo']->getClientOriginalName()
@@ -129,7 +103,7 @@ class NewsService
             $news->images()->create($photoData);
 
           }
-
+          session(['success' => 'Գործողությունը հաջողությամբ իրականացվեց']);
           return true;
 
 

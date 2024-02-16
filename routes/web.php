@@ -147,20 +147,20 @@ Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class,'index'])-
 
 // });
 
-//News
-// Route::group(['prefix' => 'news'], function () {
-//   Route::get('/news', [NewsController::class, 'index'])->name('news');
-//   Route::get('/news-create', [NewsController::class, 'createNewsPage'])->name('news-create-page');
-//   Route::post('/news-create', [NewsController::class,'createNews'])->name('news-create');
+// News
+Route::group(['prefix' => 'news'], function () {
+  Route::get('/news', [NewsController::class, 'index'])->name('news');
+  Route::get('/news-create', [NewsController::class, 'createNewsPage'])->name('news-create-page');
+  Route::post('/news-create', [NewsController::class,'createNews'])->name('news-create');
 
 //   Route::get('/news-category', [NewsCategoryController::class, 'index'])->name('news-category');
 //   Route::get('/news-category-create', [NewsCategoryController::class, 'createCategoryPage'])->name('news-category-create-page');
 //   Route::post('/news-category-create', [NewsCategoryController::class,'createCategory'])->name('news-category-create');
 
-//   Route::get('/news-edit/{id}', [NewsController::class,'editNews'])->name('news-edit');
-//   Route::put('/news-update/{id}', [NewsController::class,'updateNews'])->name('news-update');
+  Route::get('/news-edit/{id}', [NewsController::class,'editNews'])->name('news-edit');
+  Route::put('/news-update/{id}', [NewsController::class,'updateNews'])->name('news-update');
 
-// });
+});
 
 
 // Route::post('video-upload', [FileUploadService::class, 'videoUpload'])->name('video-upload');
