@@ -39,19 +39,17 @@
                             {{ $lang }}</label>
 
                         <div class="col-md-10">
-                            <input class="form-control" placeholder="Վերնագիր" value="{{ old("title.$lang") }}"
-                                {{-- id="title-{{ $lang }}" name="title[{{ $lang }}]" /> --}}
+                            <input class="form-control" placeholder="Վերնագիր" value="{{ old("translate.$lang.title") }}"
+
                                 id="title-{{ $lang }}" name="translate[{{ $lang }}][title]" />
                         </div>
                     </div>
-                    @error("title.$lang")
+                    @error("translate.$lang.title")
                         <div class="mb-3 row justify-content-end">
                             <div class="col-sm-10 text-danger fts-14">{{ $message }}
                             </div>
                         </div>
                     @enderror
-
-
 
                     <div class="mb-3 row">
                         <label for="description-{{ $lang }}" class="col-md-2 col-form-label">Տեքստ
@@ -59,15 +57,16 @@
 
                         <div class="col-md-10">
                             <textarea id="description-{{ $lang }}" class="form-control" placeholder="Տեքստ"
-                                name="translate[{{ $lang }}][description]">{{ old("description.$lang") }}</textarea>
+                                name="translate[{{ $lang }}][description]">{{ old("translate.$lang.description") }}</textarea>
                         </div>
                     </div>
-                    @error("description.$lang")
+                    @error("translate.$lang.description")
                         <div class="mb-3 row justify-content-end">
                             <div class="col-sm-10 text-danger fts-14">{{ $message }}
                             </div>
                         </div>
                     @enderror
+
                 @endforeach
 
 
