@@ -13,15 +13,12 @@ class AuthService
 {
     public function signup($data)
     {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'status' => 0,
-            'password' => bcrypt($data['password']),
-        ]);
+        $data['password'] = bcrypt($data['password']);
+        $data['status'] = 0;
 
-        $user->assignRole('student');
+        $user = User::create($data);
+
+        $user->assignRole('visitor');
 
         if ($user) {
             $token = sha1(Str::random(80));
@@ -65,6 +62,10 @@ class AuthService
                 throw new \Exception(translateMessageApi('user-email-or-password-not-found'), 401);
             }
 
+            if(!auth()->user()->roles()->get()->where('name', 'visitor')->count()) {
+                throw new \Exception(translateMessageApi('wrong-role-for-login'), 401);
+            }
+
             if (auth()->user()->status === 0) {
                 throw new \Exception(translateMessageApi('user-blocked'), 401);
             }
@@ -75,7 +76,6 @@ class AuthService
             ]);
             
             $authUser = auth()->user()->toArray();
-            $authUser['avatar'] = $authUser['avatar']?route('get-file', ['path' => $authUser['avatar']]): "";
 
             return [
                 'authUser' => $authUser,

@@ -36,5 +36,18 @@ class CreateUserSeeder extends Seeder
 
             $user->assignRole([$role->id]);
         }
+
+        $userVisitor = User::updateOrCreate([
+            'name' => 'Visitor',
+            'surname' => 'Visitoryan',
+            'status' => 1,
+            'phone' => '+37455555555',
+            'email' => 'visit@mail.ru',
+            'password' => bcrypt('123456')
+        ]);
+
+        $roleVisitor = Role::updateOrCreate(['name' => 'visitor', 'g_name' => 'web', 'interface' => 'web' ]);
+
+        $userVisitor->assignRole([$roleVisitor->id]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Permission\Models\Role;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -19,8 +20,10 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'status',
         'phone',
-        'password'
-
+        'password',
+        'gender',
+        'birth_date',
+        'country_id',
     ];
 
     protected $hidden = ['password'];

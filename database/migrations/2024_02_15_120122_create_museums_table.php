@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('museums', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('imageable_id')->index();
-            $table->string('imageable_type');
-            $table->string('path');
-            $table->string('name');
-            $table->boolean('main')->default(0);
+            $table->foreignId('user_id')->on('users')->onDelete('cascade')->default(auth()->id());
+            $table->integer('museum_geographical_location_id');
+            $table->string('email');
+            $table->string('account_number');
+            $table->string('working_hours');
             $table->timestamps();
-
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('museums');
     }
 };
