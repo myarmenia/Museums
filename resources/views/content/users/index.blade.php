@@ -24,12 +24,40 @@
             <div>
                 <h5 class="card-header">Օգտագործողներ ցուցակ</h5>
             </div>
-            <div>
+            @if (request()->route()->getName() !== 'users_visitors')
+              <div>
                 <a href="{{ route('users.create') }}" class="btn btn-primary mx-4">Ստեղծել նոր օգտատեր </a>
-            </div>
+              </div>
+            @endif
+
         </div>
         <div class="card-body">
+            @if (request()->route()->getName() == 'users_visitors')
+                <div>
+                    <form action="{{route('users.index')}}" method="get" class="row g-3 mt-2" style="display: flex">
+                        <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
+                            <div class="col-2">
+                                <input type="text" class="form-control" id="name" placeholder="Անուն" name="name" value="{{ request()->input('name') }}">
+                            </div>
 
+                            <div class="col-2">
+                                <input type="text" class="form-control" id="surname" placeholder="Ազգանուն" name="surname" value="{{ request()->input('surname') }}">
+                            </div>
+
+                            <div class="col-2">
+                                <input type="text" class="form-control" id="inputEmail" placeholder="Э. почта" name="email" value="{{ request()->input('email') }}">
+                            </div>
+
+                            <div class="col-2">
+                                <input type="text" class="form-control" id="inputPhone" placeholder="Телефон" name="phone" value="{{ request()->input('phone') }}">
+                            </div>
+
+                            <button class="btn btn-primary col-2">Поиск</button>
+
+                        </div>
+                    </form>
+                </div>
+            @endif
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">
                     <thead>
@@ -83,8 +111,13 @@
                                                         {{ $user->status ? 'checked' : null }}>
                                                 </div>Կարգավիճակ
                                             </a>
-                                            <a class="dropdown-item" href="{{route('users.edit', $user->id)}}"><i
+                                            {{-- @if (request()->route()->getName() == 'users_visitors') --}}
+                                                <a class="dropdown-item" href="{{route('users.show', $user->id)}}"><i
+                                                    class="bx bx-edit-alt me-1"></i>Դիտել</a>
+                                            {{-- @else --}}
+                                                <a class="dropdown-item" href="{{route('users.edit', $user->id)}}"><i
                                                     class="bx bx-edit-alt me-1"></i>Փոփոխել</a>
+                                            {{-- @endif --}}
                                             <button type="button" class="dropdown-item click_delete_item"
                                                 data-bs-toggle="modal" data-bs-target="#smallModal"><i
                                                     class="bx bx-trash me-1"></i>

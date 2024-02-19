@@ -29,9 +29,9 @@ $container = ($container ?? 'container-xxl');
     <!-- Layout page -->
     <div class="layout-page">
       <!-- BEGIN: Navbar-->
-      {{-- @if ($isNavbar)
+      @if ($isNavbar)
       @include('layouts/sections/navbar/navbar')
-      @endif --}}
+      @endif
       <!-- END: Navbar-->
 
 

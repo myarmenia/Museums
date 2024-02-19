@@ -44,13 +44,13 @@
                               {{ $lang }}</label>
 
                           <div class="col-md-10">
-                              <input class="form-control" placeholder="Заголовок" value="{{ $news->newstranslation($lang)->title }}"
+                              <input class="form-control" placeholder="Заголовок" value="{{ $news->translation($lang)->title }}"
                                   id="title-{{ $lang }}"
-                                  name="title[{{ $lang }}]"
+                                  name="translate[{{ $lang }}][title]"
                                   />
                           </div>
                       </div>
-                      @error("title.$lang")
+                      @error("translate.$lang.title")
                           <div class="mb-3 row justify-content-end">
                               <div class="col-sm-10 text-danger fts-14">{{ $message }}
                               </div>
@@ -62,11 +62,11 @@
 
                           <div class="col-md-10">
                               <textarea id="description-{{ $lang }}" class="form-control" placeholder="Տեքստ"
-                                  name="description[{{ $lang }}]"
-                                  >{{ $news->newstranslation($lang)->description }}</textarea>
+                                  name="translate[{{ $lang }}][description]"
+                                  >{{ $news->translation($lang)->description }}</textarea>
                           </div>
                       </div>
-                      @error("description.$lang")
+                      @error("translate.$lang.description")
                           <div class="mb-3 row justify-content-end">
                               <div class="col-sm-10 text-danger fts-14">{{ $message }}
                               </div>

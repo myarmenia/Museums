@@ -33,7 +33,7 @@ class NewsService
 
           $lang['news_id'] = $news->id;
           $lang['lang'] = $key;
-         
+
           $newstranslate = NewsTranslations::create($lang);
 
         }
@@ -72,41 +72,36 @@ class NewsService
       $news = $this->newsRepository->editNews($id);
       return $news;
     }
-    public function updateNews($data,$id){
+    public function updateNews($request,$id){
 
       $news = $this->newsRepository->editNews($id);
 
       if($news){
-
-        $news->translation;
-
-        foreach(languages() as $lang){
-
-          $news_translation= $news->newstranslation($lang);
-          $news_translation->title = $data['title'][$lang];
-          $news_translation->description = $data['description'][$lang];
-          $news_translation->save();
-
-        }
-          if(isset($data['photo'])){
+          if(isset($request['photo'])){
             $image = Image::where('imageable_id',$id)->first();
             if(Storage::exists($image->path)){
               Storage::delete($image->path);
               $image->delete();
             }
-            $path = FileUploadService::upload($data['photo'], 'news/'.$news->id);
+            $path = FileUploadService::upload($request['photo'], 'news/'.$news->id);
             $photoData = [
                 'path' => $path,
-                'name' => $data['photo']->getClientOriginalName()
+                'name' => $request['photo']->getClientOriginalName()
             ];
 
             $news->images()->create($photoData);
-
           }
+
+        foreach($request['translate'] as $key=>$lang){
+          $lang['news_id'] = $news->id;
+          $lang['lang'] = $key;
+
+          $newstranslate = NewsTranslations::where(['news_id'=>$news->id,'lang'=>$key])->first();
+          $newstranslate->update($lang);
+
+        }
           session(['success' => 'Գործողությունը հաջողությամբ իրականացվեց']);
           return true;
-
-
       }
 
     }

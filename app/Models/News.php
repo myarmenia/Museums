@@ -23,9 +23,9 @@ class News extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
-    public function translations()
+    public function news_translations()
     {
-        return $this->hasMany(NewsTranslations::class, 'news_id', 'id');
+        return $this->hasMany(NewsTranslations::class);
     }
 
     public function translation($lang){

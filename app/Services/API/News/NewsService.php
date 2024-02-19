@@ -12,8 +12,9 @@ class NewsService
     }
     public function getNewsByCategories()
     {
+      
         return $this->newsRepository->getNewsByCategories();
-       
+
     }
 
     public function getNewsByCategoryType($id)

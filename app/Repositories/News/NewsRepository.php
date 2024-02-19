@@ -26,11 +26,11 @@ class NewsRepository implements NewsInterface
     }
 
 
-    public function getNewsByCategories()
+    public function getNews()
     {
         return News::with(['images',  'translations' ])
-            ->paginate(10)
-            ->groupBy('news_category_id');
+            ->paginate(10);
+            // ->groupBy('news_category_id');
     }
 
     public function getNewsByCategoryType($id)
@@ -67,7 +67,7 @@ class NewsRepository implements NewsInterface
 
 
     public function editNews($id){
-      $news = News::where('id',$id)->with('translations')->first();
+      $news = News::where('id',$id)->with('news_translations')->first();
 
 
       return $news;

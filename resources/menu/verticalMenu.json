@@ -5,6 +5,7 @@
       "name": "Dashboards",
       "icon": "menu-icon tf-icons bx bx-home-circle",
       "slug": "dashboard",
+      "roles": ["all"],
       "badge": [
         "danger",
         "5"
@@ -17,39 +18,39 @@
         }
       ]
     },
-    {
-      "name": "Courses",
-      "icon": "menu-icon tf-icons bx bx-detail",
-      "slug": "form-layouts",
-      "submenu": [
-        {
-          "url": "/course/course-language",
-          "name": "Course Languages list",
-          "slug": "course-language"
-        },
-        {
-          "url": "/lesson/lesson-list",
-          "name": "Lessons",
-          "slug": "lesson-list"
-        },
-        {
-          "url": "/task/task-list",
-          "name": "Tasks",
-          "slug": "task-list"
-        }
-      ]
-    },
+
     {
       "name": "Project",
       "icon": "menu-icon tf-icons bx bx-collection",
       "slug": "project",
+      "roles": ["all"],
       "url": "project"
     },
     {
-      "name": "Users",
+      "url": "/users",
+      "name": "Օգտագործողներ",
       "icon": "menu-icon tf-icons bx bx-user",
-      "slug": "users",
-      "url": "users"
+      "slug": ["users.index", "users.create", "users.edit", "users_visitors"],
+      "roles": ["super_admin"],
+
+      "submenu": [
+        {
+          "url": "users",
+          "name": "Աշխատակիցներ",
+          "m_name": "index",
+          "slug": [
+            "users.index",
+            "users.create",
+            "users.edit"
+          ]
+        },
+        {
+          "url": "users-visitors",
+          "name": "Այցելուներ",
+          "slug": "users_visitors"
+        }
+
+      ]
     },
     {
       "name": "Museum",
@@ -61,6 +62,7 @@
       "name": "News",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "general-news",
+      "roles": ["general_manager"],
       "submenu": [
         {
           "url": "/news/news",
@@ -74,14 +76,15 @@
         }
       ]
     },
-    
-    {
-      "menuHeader": "Apps & Pages"
-    },
+
+
     {
       "name": "Account Settings",
       "icon": "menu-icon tf-icons bx bx bx-dock-top",
       "slug": "pages-account-settings",
+      "roles": [
+        "all"
+      ],
       "submenu": [
         {
           "url": "pages/account-settings-account",
@@ -104,6 +107,9 @@
       "name": "Authentications",
       "icon": "menu-icon tf-icons bx bx-lock-open-alt",
       "slug": "auth",
+      "roles": [
+        "all"
+      ],
       "submenu": [
         {
           "url": "auth/login-basic",
@@ -132,12 +138,18 @@
       "name": "Cards",
       "icon": "menu-icon tf-icons bx bx-collection",
       "slug": "cards-basic",
+      "roles": [
+        "all"
+      ],
       "url": "cards/basic"
     },
     {
       "name": "User interface",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "ui",
+      "roles": [
+        "all"
+      ],
       "submenu": [
         {
           "url": "ui/accordion",
@@ -202,37 +214,58 @@
         {
           "url": "ui/pagination-breadcrumbs",
           "name": "Pagination & Breadcrumbs",
-          "slug": "ui-pagination-breadcrumbs"
+          "slug": "ui-pagination-breadcrumbs",
+          "roles": [
+            "all"
+          ]
         },
         {
           "url": "ui/progress",
           "name": "Progress",
-          "slug": "ui-progress"
+          "slug": "ui-progress",
+          "roles": [
+            "all"
+          ]
         },
         {
           "url": "ui/spinners",
           "name": "Spinners",
-          "slug": "ui-spinners"
+          "slug": "ui-spinners",
+          "roles": [
+            "all"
+          ]
         },
         {
           "url": "ui/tabs-pills",
           "name": "Tabs & Pills",
-          "slug": "ui-tabs-pills"
+          "slug": "ui-tabs-pills",
+          "roles": [
+            "all"
+          ]
         },
         {
           "url": "ui/toasts",
           "name": "Toasts",
-          "slug": "ui-toasts"
+          "slug": "ui-toasts",
+          "roles": [
+            "all"
+          ]
         },
         {
           "url": "ui/tooltips-popovers",
           "name": "Tooltips & Popovers",
-          "slug": "ui-tooltips-popovers"
+          "slug": "ui-tooltips-popovers",
+          "roles": [
+            "all"
+          ]
         },
         {
           "url": "ui/typography",
           "name": "Typography",
-          "slug": "ui-typography"
+          "slug": "ui-typography",
+          "roles": [
+            "all"
+          ]
         }
       ]
     },
@@ -240,6 +273,9 @@
       "name": "Extended UI",
       "icon": "menu-icon tf-icons bx bx-copy",
       "slug": "extended",
+      "roles": [
+        "all"
+      ],
       "submenu": [
         {
           "url": "extended/ui-perfect-scrollbar",
@@ -257,7 +293,10 @@
       "url": "icons/boxicons",
       "icon": "menu-icon tf-icons bx bx-crown",
       "name": "Boxicons",
-      "slug": "icons-boxicons"
+      "slug": "icons-boxicons",
+      "roles": [
+        "all"
+      ]
     },
     {
       "menuHeader": "Forms & Tables"
@@ -266,6 +305,9 @@
       "name": "Form Elements",
       "icon": "menu-icon tf-icons bx bx-detail",
       "slug": "forms",
+      "roles": [
+        "all"
+      ],
       "submenu": [
         {
           "url": "forms/basic-inputs",
@@ -283,6 +325,9 @@
       "name": "Form Layouts",
       "icon": "menu-icon tf-icons bx bx-detail",
       "slug": "form-layouts",
+      "roles": [
+        "all"
+      ],
       "submenu": [
         {
           "url": "form/layouts-vertical",
@@ -300,7 +345,10 @@
       "url": "tables/basic",
       "icon": "menu-icon tf-icons bx bx-table",
       "name": "Tables",
-      "slug": "tables-basic"
+      "slug": "tables-basic",
+      "roles": [
+        "all"
+      ]
     },
     {
       "menuHeader": "Misc"

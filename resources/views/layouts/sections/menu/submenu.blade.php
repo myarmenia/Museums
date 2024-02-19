@@ -4,26 +4,37 @@
 
     {{-- active menu method --}}
     @php
+
       $activeClass = null;
       $active = 'active open';
       $currentRouteName = Route::currentRouteName();
 
-      if ($currentRouteName === $submenu->slug) {
-          $activeClass = 'active';
+      if (gettype($submenu->slug) === 'array') {
+
+          if (in_array($currentRouteName, $submenu->slug) ) {
+              $activeClass = 'active';
+          }
+
       }
-      elseif (isset($submenu->submenu)) {
-        if (gettype($submenu->slug) === 'array') {
-          foreach($submenu->slug as $slug){
-            if (str_contains($currentRouteName,$slug) and strpos($currentRouteName,$slug) === 0) {
+      else{
+          if ($currentRouteName === $submenu->slug) {
+              $activeClass = 'active';
+          }
+          elseif (isset($submenu->submenu)) {
+            if (gettype($submenu->slug) === 'array') {
+              foreach($submenu->slug as $slug){
+                if (str_contains($currentRouteName,$slug) and strpos($currentRouteName,$slug) === 0) {
+                    $activeClass = $active;
+                }
+              }
+            }
+            else{
+              if (str_contains($currentRouteName,$submenu->slug) and strpos($currentRouteName,$submenu->slug) === 0) {
                 $activeClass = $active;
+              }
             }
           }
-        }
-        else{
-          if (str_contains($currentRouteName,$submenu->slug) and strpos($currentRouteName,$submenu->slug) === 0) {
-            $activeClass = $active;
-          }
-        }
+
       }
     @endphp
 

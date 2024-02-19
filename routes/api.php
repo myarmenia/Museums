@@ -39,7 +39,7 @@ Route::group(['middleware' => ['api', 'setlang']], function ($router) {
             Route::post('editPassword', [UserController::class, 'editPassword']);
         });
     });
-    
+
     Route::group(['prefix' => 'project'], function ($router) {
         Route::get('getProject', [ProjectController::class, 'getProject']);
     });
@@ -55,15 +55,15 @@ Route::group(['middleware' => ['api', 'setlang']], function ($router) {
     Route::post('send-new-password', [ForgotPasswordController::class, 'sendNewPassword']);
     Route::post('trial-course', [TrialCourseController::class, 'trialCourse']);
     Route::post('send-order', SendOrderController::class);
-    
 
 
-    Route::get('dashboard',[DashboardController::class,'index']);
-    Route::get('home',[HomeController::class,'home']);
-    Route::get('visit-history',[VisitHistoryController::class,'index']);
+
+    // Route::get('dashboard',[DashboardController::class,'index']);
+    // Route::get('home',[HomeController::class,'home']);
+    // Route::get('visit-history',[VisitHistoryController::class,'index']);
 
     Route::group(['prefix' => 'news'], function ($router) {
-        Route::get('getNewsByCategories', [NewsController::class, 'getNewsByCategories']);
+        Route::get('getNews', [NewsController::class, 'getNewslist']);
         Route::get('getNewsByCategoryType/{id}', [NewsController::class, 'getNewsByCategoryType']);
         Route::get('getNews/{id}', [NewsController::class, 'getNews']);
     });

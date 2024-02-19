@@ -11,7 +11,7 @@
 
     <p>Yor pass: {{$data['password']}}</p>
     <p>Yor email: {{$data['email']}}</p>
-    <p> <a href="{{env('BASE_CLIENT_URL').session('languages').'/login/'}}">Link to login</a></p>
+    <p> <a href="{{ request()->getSchemeAndHttpHost().'/auth/login-basic'}}">Link to login</a></p>
    <p> Welcome to the Team!</p>
    <p> Webex </p>
 </body>
