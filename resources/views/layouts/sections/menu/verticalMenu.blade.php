@@ -40,7 +40,6 @@
                 @php
                     $activeClass = null;
                     $currentRouteName = Route::currentRouteName();
-// dd($menu->roles);
 
                     $roles_intersect = roles_intersect($menu->roles);
 
