@@ -42,8 +42,8 @@
                     $currentRouteName = Route::currentRouteName();
 
 
-                    $roles_intersect = roles_intersect($menu->roles);
-                 
+                    // $roles_intersect = roles_intersect($menu->roles);
+                    $roles_intersect=["all"];
 
                     if ($currentRouteName === $menu->slug) {
                         $activeClass = 'active';
