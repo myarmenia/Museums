@@ -4216,6 +4216,9 @@
 .bx-user:before {
   content: "\ec63";
 }
+.bx-museum:before {
+  content: "\ef59";
+}
 
 .bx-user-check:before {
   content: "\ec64";

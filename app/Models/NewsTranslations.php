@@ -16,5 +16,10 @@ class NewsTranslations extends Model
         'title',
         'description',
         'lang',
+        // 'created_at',
+        // 'updated_at',
     ];
+    public function news(){
+      return $this->belongsTo(News::class,'news_id');
+    }
 }

@@ -9,9 +9,14 @@ use App\Http\Resources\News\NewsByIdResource;
 use App\Http\Resources\News\NewsResource;
 use App\Http\Resources\News\NewsResourceByCategory;
 use App\Services\API\News\NewsService;
+use App\Traits\News\GetNewsTrait;
+use Illuminate\Http\Request;
+
+// use Illuminate\Support\Facades\Request;
 
 class NewsController extends Controller
 {
+  use GetNewsTrait;
     protected $newsService;
 
     public function __construct(NewsService $newsService)
@@ -19,11 +24,16 @@ class NewsController extends Controller
         $this->newsService = $newsService;
     }
 
-    public function getNewsByCategories()
-    {
-        $news = $this->newsService->getNewsByCategories();
+    public function getNewslist(Request $request)
+        {
 
-        return NewsResourceByCategory::collection($news);
+
+        // $news = $this->newsService->getNewsByCategories();
+        $news=$this->getNews($request->all());
+        // dd($news);
+        return NewsResource::collection($news);
+        // return NewsResourceByCategory::collection($news);
+        // return NewsResourceByCategory::collection($news);
     }
 
     public function getNewsByCategoryType(int $id)
@@ -39,11 +49,11 @@ class NewsController extends Controller
         return new NewsByCategoryResource($data);
     }
 
-    public function getNews(int $id)
+    public function getNewss(int $id)
     {
         $news = $this->newsService->getNewsById($id);
 
         return new NewsByIdResource($news);
     }
-   
+
 }
