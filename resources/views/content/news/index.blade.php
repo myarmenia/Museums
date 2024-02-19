@@ -45,7 +45,7 @@
                 </div>
 
 
-                <button class="btn btn-primary col-2">Поиск</button>
+                <button class="btn btn-primary col-2">Փնտրել</button>
 
             </div>
         </form>

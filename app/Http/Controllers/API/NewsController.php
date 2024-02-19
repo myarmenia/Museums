@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Category\NewsResourceByCategoryType;
-use App\Http\Resources\News\NewsByCategoryResource;
 use App\Http\Resources\News\NewsByIdResource;
 use App\Http\Resources\News\NewsResource;
-use App\Http\Resources\News\NewsResourceByCategory;
 use App\Services\API\News\NewsService;
 use App\Traits\News\GetNewsTrait;
 use Illuminate\Http\Request;
@@ -27,29 +24,15 @@ class NewsController extends Controller
     public function getNewslist(Request $request)
         {
 
+        $addressRequest='api';
+        $news=$this->getAllNews($request->all(), $addressRequest);
 
-        // $news = $this->newsService->getNewsByCategories();
-        $news=$this->getNews($request->all());
-        // dd($news);
         return NewsResource::collection($news);
-        // return NewsResourceByCategory::collection($news);
-        // return NewsResourceByCategory::collection($news);
+
     }
 
-    public function getNewsByCategoryType(int $id)
-    {
-        $news = $this->newsService->getNewsByCategoryType($id);
-        $getCategoryNameById = $this->newsService->getCategoryNameById($id);
 
-        $data = [
-            'news' => $news,
-            'categoryName' => $getCategoryNameById
-        ];
-
-        return new NewsByCategoryResource($data);
-    }
-
-    public function getNewss(int $id)
+    public function getNews(int $id)
     {
         $news = $this->newsService->getNewsById($id);
 

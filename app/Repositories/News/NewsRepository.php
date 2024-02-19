@@ -30,39 +30,24 @@ class NewsRepository implements NewsInterface
     {
         return News::with(['images',  'translations' ])
             ->paginate(10);
-            // ->groupBy('news_category_id');
+
     }
 
-    public function getNewsByCategoryType($id)
-    {
-        return News::where('news_category_id', $id)->with([
-            'images',
-            'category',
-            'translations' => function ($q) {
-                $q->where('lang', session('languages'));
-            }
-        ])
-            ->paginate(12);
-    }
 
-    public function getCategoryNameById($id)
-    {
-        return  NewsCategoryTranslations::where('lang', session('languages'))
-            ->where('news_category_id', $id)->first()->name;
-    }
+
+
 
     public function getNewsById($id)
     {
-        return News::where('id', $id)
-            ->with([
-                'images',
-                'category.translations' => function ($q) {
-                    $q->where('lang', session('languages'));
-                },
-                'translations' => function ($q) {
-                    $q->where('lang', session('languages'));
-                }
+
+          $news= News::where('id', $id)->with([
+            'images',
+            'news_translations'=>function ($q) {
+              $q->where('lang', session('languages'));
+            }
             ])->first();
+
+            return $news;
     }
 
 

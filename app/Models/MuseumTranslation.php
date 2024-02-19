@@ -13,6 +13,7 @@ class MuseumTranslation extends Model
 
     protected $fillable = [
         'museum_id',
+        'lang',
         'name',
         'description',
         'working_days',
