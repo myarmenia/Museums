@@ -58,7 +58,7 @@ if(!function_exists('languagesName')){
             'ru' => 'ռուսերեն',
             'en' => 'անգլերեն',
         ];
-        
+
         return $arr[$key];
 
     }
