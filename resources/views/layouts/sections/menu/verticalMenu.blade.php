@@ -41,7 +41,16 @@
                     $activeClass = null;
                     $currentRouteName = Route::currentRouteName();
 
+
                     $roles_intersect = roles_intersect($menu->roles);
+
+                    if (gettype($menu->slug) === 'array') {
+                        foreach ($menu->slug as $slug) {
+                            if (str_contains($currentRouteName, $slug) and strpos($currentRouteName, $slug) === 0) {
+                                $activeClass = 'active open';
+                            }
+                        }
+                    }
 
                     if ($currentRouteName === $menu->slug) {
                         $activeClass = 'active';
