@@ -41,6 +41,7 @@
                     $activeClass = null;
                     $currentRouteName = Route::currentRouteName();
 
+
                     $roles_intersect = roles_intersect($menu->roles);
 
                     if (gettype($menu->slug) === 'array') {

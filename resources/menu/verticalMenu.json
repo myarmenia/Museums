@@ -52,12 +52,12 @@
 
       ]
     },
-    
+
     {
       "name": "News",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "general-news",
-      "roles": ["general_manager"],
+      "roles": ["general_manager","super_admin"],
       "submenu": [
         {
           "url": "/news/news",
