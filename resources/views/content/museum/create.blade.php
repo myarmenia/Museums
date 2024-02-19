@@ -1,9 +1,9 @@
 @extends('layouts/contentNavbarLayout')
 
 @section('title', 'Թանգարանի - Ստեղծում')
-{{-- @section('page-script')
-    <script src="{{ asset('assets/js/admin\project\project-upload-photo.js') }}"></script>
-@endsection --}}
+@section('page-script')
+    <script src="{{ asset('assets/js/admin\museum\museum-upload-photo.js') }}"></script>
+@endsection
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/css/admin/project/project.css') }}">
@@ -32,11 +32,11 @@
 
                         <div class="col-md-10">
                             <input class="form-control" placeholder="Անվանում {{ languagesName($lang) }}ով"
-                                value="{{ old("translate.$lang.name") }}" id="name-{{ $lang }}"
-                                name="translate[{{ $lang }}]" />
+                                value="{{ old("name.$lang") }}" id="name-{{ $lang }}"
+                                name="name[{{ $lang }}]" />
                         </div>
                     </div>
-                    @error("translate.$lang")
+                    @error("name.$lang")
                         <div class="mb-3 row justify-content-end">
                             <div class="col-sm-10 text-danger fts-14">{{ $message }}
                             </div>
@@ -50,67 +50,18 @@
                         </label>
 
                         <div class="col-md-10">
-                            {{-- <input class="form-control" placeholder="Նկարագրություն {{ languagesName($lang) }}ով"
-                                value="{{ old("translate.$lang.description") }}" id="description-{{ $lang }}"
-                                name="translate[{{ $lang }}]" /> --}}
                             <textarea class="form-control" id="description-{{ $lang }}" rows="3"
-                                placeholder="Նկարագրություն {{ languagesName($lang) }}ով" name="translate[{{ $lang }}]">
+                                placeholder="Նկարագրություն {{ languagesName($lang) }}ով" name="description[{{ $lang }}]">
                             </textarea>
                         </div>
                     </div>
-                    @error("translate.$lang")
+                    @error("description.$lang")
                         <div class="mb-3 row justify-content-end">
                             <div class="col-sm-10 text-danger fts-14">{{ $message }}
                             </div>
                         </div>
                     @enderror
                 @endforeach
-
-                <div class="mb-3 row">
-                    <label for="project_photos" class="col-md-2 col-form-label">Գլխավոր նկար</label>
-                    <div class="col-md-10">
-                        <div class="d-flex flex-wrap align-items-start align-items-sm-center">
-                            <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                                <span class="d-none d-sm-block">Upload new photos</span>
-                                <i class="bx bx-upload d-block d-sm-none"></i>
-                                <input type="file" id="upload" name="project_photos[]" class="account-file-input"
-                                    multiple hidden accept="image/png, image/jpeg" />
-                            </label>
-                            <div class="uploaded-images-container uploaded-photo-project" id="uploadedImagesContainer">
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                @error('project_photos')
-                    <div class="mb-3 row justify-content-end">
-                        <div class="col-sm-10 text-danger fts-14" id="photos_div">{{ $message }}
-                        </div>
-                    </div>
-                @enderror
-
-                <div class="mb-3 row">
-                    <label for="project_photos" class="col-md-2 col-form-label">Գլխավոր նկար</label>
-                    <div class="col-md-10">
-                        <div class="d-flex flex-wrap align-items-start align-items-sm-center">
-                            <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                                <span class="d-none d-sm-block">Upload new photos</span>
-                                <i class="bx bx-upload d-block d-sm-none"></i>
-                                <input type="file" id="upload" name="project_photos[]" class="account-file-input"
-                                    multiple hidden accept="image/png, image/jpeg" />
-                            </label>
-                            <div class="uploaded-images-container uploaded-photo-project" id="uploadedImagesContainer">
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                @error('project_photos')
-                    <div class="mb-3 row justify-content-end">
-                        <div class="col-sm-10 text-danger fts-14" id="photos_div">{{ $message }}
-                        </div>
-                    </div>
-                @enderror
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
@@ -151,37 +102,18 @@
                 @endforeach
 
                 <div class="mb-3 row">
-                    <label for="work_hours" class="col-md-2 col-form-label">Աշխատանքային ժամեր*</label>
+                    <label for="working_hours" class="col-md-2 col-form-label">Աշխատանքային ժամեր*</label>
                     <div class="col-md-10">
-                        <input class="form-control" placeholder="Աշխատանքային ժամերը" value="{{ old('work_hours') }}"
-                            id="work_hours" name="work_hours" />
+                        <input class="form-control" placeholder="Աշխատանքային ժամերը" value="{{ old('working_hours') }}"
+                            id="working_hours" name="working_hours" />
                     </div>
                 </div>
-                @error('work_hours')
+                @error('working_hours')
                     <div class="mb-3 row justify-content-end">
                         <div class="col-sm-10 text-danger fts-14">{{ $message }}
                         </div>
                     </div>
                 @enderror
-
-                @foreach (languages() as $lang)
-                    <div class="mb-3 row">
-                        <label for="work_days-{{ $lang }}" class="col-md-2 col-form-label">Աշխատանքային օրեր*
-                        </label>
-
-                        <div class="col-md-10">
-                            <input class="form-control" placeholder="Աշխատանքային օրերը {{ languagesName($lang) }}ով"
-                                value="{{ old("work_days.$lang") }}" id="work_days-{{ $lang }}"
-                                name="work_days[{{ $lang }}]" />
-                        </div>
-                    </div>
-                    @error("work_days.$lang")
-                        <div class="mb-3 row justify-content-end">
-                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                            </div>
-                        </div>
-                    @enderror
-                @endforeach
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
@@ -216,46 +148,26 @@
                     </div>
                 @enderror
 
-                @foreach (languages() as $lang)
-                    <div class="mb-3 row">
-                        <label for="branch-{{ $lang }}" class="col-md-2 col-form-label">Թանգարանի մասնաճյուղ
-                        </label>
-
-                        <div class="col-md-10">
-                            <input class="form-control" placeholder="Թանգարանի մասնաճյուղ {{ languagesName($lang) }}ով"
-                                value="{{ old("branch.$lang") }}" id="branch-{{ $lang }}"
-                                name="branch[{{ $lang }}]" />
-                        </div>
-                    </div>
-                    @error("branch.$lang")
-                        <div class="mb-3 row justify-content-end">
-                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                            </div>
-                        </div>
-                    @enderror
-                @endforeach
-
                 <div class="mb-3 row">
-                    <label for="region" class="col-md-2 col-form-label">Մարզ</label>
+                    <label for="region" class="col-md-2 col-form-label">Մարզ*</label>
                     <div class="col-md-10">
-                        <select id="defaultSelect" name="type" class="form-select">
-                            <option>Выберите тип проекта</option>
-                            <option value="web">Web</option>
-                            <option value="mobile">Mobile</option>
-                            <option value="3d">3d</option>
+                        <select id="defaultSelect" name="region" class="form-select">
+                            <option value="">Ընտրեք մարզը</option>
+                            @foreach ($regions as $region)
+                                <option value="{{ $region->name }}">{{ __('regions.' . $region->name) }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="lang" class="col-md-2 col-form-label">Языки програм.</label>
+                    <label for="museum-link" class="col-md-2 col-form-label">Թանգարանի հղում</label>
                     <div class="col-md-10">
-                        <input class="form-control" type="text" placeholder="Языки программирования" id="lang"
-                            name="lang" value="{{ old('lang') }}">
-
+                        <input class="form-control" placeholder="Թանգարանի հղում" value="{{ old('museum-link') }}"
+                            id="museum-link" name="museum-link" />
                     </div>
                 </div>
-                @error('lang')
+                @error('museum-link')
                     <div class="mb-3 row justify-content-end">
                         <div class="col-sm-10 text-danger fts-14">{{ $message }}
                         </div>
@@ -263,14 +175,13 @@
                 @enderror
 
                 <div class="mb-3 row">
-                    <label for="process_time" class="col-md-2 col-form-label">Время процесса</label>
+                    <label for="account_number" class="col-md-2 col-form-label">Հաշվեհամար*</label>
                     <div class="col-md-10">
-                        <input class="form-control" type="number"
-                            placeholder="Время процесса изготовления программы (месяц)" id="process_time"
-                            name="process_time" value="{{ old('process_time') }}">
+                        <input class="form-control" placeholder="Հաշվեհամար" value="{{ old('account_number') }}"
+                            id="account_number" name="account_number" />
                     </div>
                 </div>
-                @error('process_time')
+                @error('account_number')
                     <div class="mb-3 row justify-content-end">
                         <div class="col-sm-10 text-danger fts-14">{{ $message }}
                         </div>
@@ -278,13 +189,13 @@
                 @enderror
 
                 <div class="mb-3 row">
-                    <label for="creation_date_at" class="col-md-2 col-form-label">Начало процесса</label>
+                    <label for="email" class="col-md-2 col-form-label">Էլեկտրոնային հասցե</label>
                     <div class="col-md-10">
-                        <input class="form-control" type="number" placeholder="Начало процесса (год)"
-                            id="creation_date_at" name="creation_date_at" value="{{ old('creation_date_at') }}">
+                        <input class="form-control" placeholder="Էլեկտրոնային հասցե" value="{{ old('email') }}"
+                            id="email" name="email" />
                     </div>
                 </div>
-                @error('creation_date_at')
+                @error('email')
                     <div class="mb-3 row justify-content-end">
                         <div class="col-sm-10 text-danger fts-14">{{ $message }}
                         </div>
@@ -292,13 +203,13 @@
                 @enderror
 
                 <div class="mb-3 row">
-                    <label for="link_project" class="col-md-2 col-form-label">Ссилка проекта</label>
+                    <label for="virtual_tour" class="col-md-2 col-form-label">Վիրտուալ Էքսկուրսիա</label>
                     <div class="col-md-10">
-                        <input class="form-control" type="text" placeholder="Ссилка проекта" id="link_project"
-                            name="link_project" value="{{ old('link_project') }}">
+                        <input class="form-control" placeholder="Վիրտուալ Էքսկուրսիա" value="{{ old('virtual_tour') }}"
+                            id="virtual_tour" name="virtual_tour" />
                     </div>
                 </div>
-                @error('link_project')
+                @error('virtual_tour')
                     <div class="mb-3 row justify-content-end">
                         <div class="col-sm-10 text-danger fts-14">{{ $message }}
                         </div>
@@ -306,65 +217,17 @@
                 @enderror
 
                 <div class="mb-3 row">
-                    <label for="link_app_store" class="col-md-2 col-form-label">Ссилка проекта в App Store</label>
-                    <div class="col-md-10">
-                        <input class="form-control" type="text" placeholder="Ссилка проекта в App Store"
-                            id="link_app_store" name="link_app_store" value="{{ old('link_app_store') }}">
-                    </div>
-                </div>
-                @error('link_app_store')
-                    <div class="mb-3 row justify-content-end">
-                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                        </div>
-                    </div>
-                @enderror
-
-                <div class="mb-3 row">
-                    <label for="link_play_market" class="col-md-2 col-form-label">Ссилка проекта в Play Market</label>
-                    <div class="col-md-10">
-                        <input class="form-control" type="text" placeholder="Ссилка проекта в Play Market"
-                            id="link_play_market" name="link_play_market" value="{{ old('link_play_market') }}">
-                    </div>
-                </div>
-                @error('link_play_market')
-                    <div class="mb-3 row justify-content-end">
-                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                        </div>
-                    </div>
-                @enderror
-
-                <div class="mb-3 row">
-                    <label for="link_play_market" class="col-md-2 col-form-label">Тип проекта</label>
-                    <div class="col-md-10">
-                        <select id="defaultSelect" name="type" class="form-select">
-                            <option>Выберите тип проекта</option>
-                            <option value="web">Web</option>
-                            <option value="mobile">Mobile</option>
-                            <option value="3d">3d</option>
-                        </select>
-                    </div>
-                </div>
-                @error('type')
-                    <div class="mb-3 row justify-content-end">
-                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                        </div>
-                    </div>
-                @enderror
-
-
-                <div class="mb-3 row">
-                    <label for="project_photos" class="col-md-2 col-form-label">Проект фото</label>
+                    <label for="photos" class="col-md-2 col-form-label">Նկար</label>
                     <div class="col-md-10">
                         <div class="d-flex flex-wrap align-items-start align-items-sm-center">
                             <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                                <span class="d-none d-sm-block">Upload new photos</span>
+                                <span class="d-none d-sm-block">Ավելացնել նոր նկար</span>
                                 <i class="bx bx-upload d-block d-sm-none"></i>
-                                <input type="file" id="upload" name="project_photos[]" class="account-file-input"
+                                <input type="file" id="upload" name="photos[]" class="account-file-input"
                                     multiple hidden accept="image/png, image/jpeg" />
                             </label>
                             <div class="uploaded-images-container uploaded-photo-project" id="uploadedImagesContainer">
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -377,11 +240,10 @@
 
                 <div class="mt-5 row justify-content-end">
                     <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <button type="submit" class="btn btn-primary">Պահպանել</button>
                     </div>
                 </div>
         </div>
-
         </form>
     </div>
 

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('museum_translations', function (Blueprint $table) {
             $table->id();
+            $table->string('lang')->index();
             $table->foreignId('museum_id')->on('museums')->onDelete('cascade');
             $table->string('name');
             $table->longText('description')->nullable();

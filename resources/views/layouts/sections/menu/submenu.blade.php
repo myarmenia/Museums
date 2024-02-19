@@ -33,7 +33,7 @@
                 $activeClass = $active;
               }
             }
-          }
+          }else{}
 
       }
     @endphp
