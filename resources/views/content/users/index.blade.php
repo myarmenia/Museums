@@ -111,13 +111,13 @@
                                                         {{ $user->status ? 'checked' : null }}>
                                                 </div>Կարգավիճակ
                                             </a>
-                                            {{-- @if (request()->route()->getName() == 'users_visitors') --}}
+                                            @if (request()->route()->getName() == 'users_visitors')
                                                 <a class="dropdown-item" href="{{route('users.show', $user->id)}}"><i
                                                     class="bx bx-edit-alt me-1"></i>Դիտել</a>
-                                            {{-- @else --}}
+                                            @else
                                                 <a class="dropdown-item" href="{{route('users.edit', $user->id)}}"><i
                                                     class="bx bx-edit-alt me-1"></i>Փոփոխել</a>
-                                            {{-- @endif --}}
+                                            @endif
                                             <button type="button" class="dropdown-item click_delete_item"
                                                 data-bs-toggle="modal" data-bs-target="#smallModal"><i
                                                     class="bx bx-trash me-1"></i>
