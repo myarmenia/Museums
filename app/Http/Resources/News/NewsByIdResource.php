@@ -19,10 +19,10 @@ class NewsByIdResource extends JsonResource
             'id' => $this->id,
             'created_at' => $this->created_at,
             'image' => isset($this->images[0])?route('get-file',['path'=>$this->images[0]->path]):null,
-            'description' => $this->translations->first()->description,
-            'title' => $this->translations->first()->title,
-            'categoryName' => $this->category->translations->first()->name,
-            'categoryId' => $this->category->id
+            'description' => $this->news_translations->first()->description,
+            'title' => $this->news_translations->first()->title,
+
+
         ];
     }
 }

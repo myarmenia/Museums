@@ -3,18 +3,25 @@
 namespace App\Traits\News;
 use App\Models\News;
 use App\Models\NewsTranslations;
+use Illuminate\Http\Request;
 
 trait GetNewsTrait
 {
-    public function getNews($request)
+    public function getAllNews($request, $addressRequest)
     {
 
       $data = News::where('id','>',0);
-      // $lang = session('languages') ? session('languages'): "am";
-      $lang = "am";
+
+      if($addressRequest=='web'){
+        $lang = "am";
+
+      }else{
+
+        $lang = session('languages');
+      }
 
       $news_translation = NewsTranslations::where('lang',$lang);
-     
+
             if(isset($request['title'])){
               $news_translation = $news_translation->where('title', 'like', '%' . $request['title'] . '%');
             }
@@ -33,4 +40,5 @@ trait GetNewsTrait
       return $data;
 
     }
+
 }
