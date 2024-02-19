@@ -30,13 +30,14 @@
     },
 
     {
-      "url": "users",
-      "name": "Աշխատակիցներ",
+      "url": "/users",
+      "name": "Օգտագործողներ",
       "icon": "menu-icon tf-icons bx bx-user",
-      "slug": "users",
-      "roles": ["museum_admin"]
+      "slug": ["users.index", "users.create", "users.edit"],
+      "roles": [
+        "museum_admin"
+      ]
 
     }
-
   ]
 }
