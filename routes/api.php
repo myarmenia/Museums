@@ -63,9 +63,8 @@ Route::group(['middleware' => ['api', 'setlang']], function ($router) {
     // Route::get('visit-history',[VisitHistoryController::class,'index']);
 
     Route::group(['prefix' => 'news'], function ($router) {
-        Route::get('getNews', [NewsController::class, 'getNewslist']);
-        Route::get('getNewsByCategoryType/{id}', [NewsController::class, 'getNewsByCategoryType']);
-        Route::get('getNews/{id}', [NewsController::class, 'getNews']);
+        Route::get('get-news', [NewsController::class, 'getNewslist']);
+        Route::get('get-news/{id}', [NewsController::class, 'getNews']);
     });
 
 
