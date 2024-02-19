@@ -1,18 +1,5 @@
 <?php
 
-// function customUserResource($data)
-// {
-//     return [
-//         'id' => $data->id,
-//         'name' => $data->name,
-//         'avatar' => $data->avatar,
-//         'passport' => $data->passport,
-//         'phone' => $data->phone,
-//         'created_at' => $data->created_at,
-//         'updated_at' => $data->updated_at,
-//     ];
-// }
-
 function translateMessageApi($message, $lang=null)
 {
     $lang = $lang ? $lang : session('languages', 'am');
@@ -44,12 +31,35 @@ function getProjectDescriptionForAdmin($translation, $lang)
     return $descriptoin;
 }
 
+
+function roles_intersect($data){
+
+  $auth_roles = Auth::user()->roleNames();
+  array_push($auth_roles, 'all');
+
+  return array_intersect($auth_roles, $data);
+}
+
 if(!function_exists('languages')){
   function languages(){
-    
+
       return [
         'am','ru','en'
       ];
 
   }
+
+}
+
+if(!function_exists('languagesName')){
+    function languagesName($key){
+        $arr = [
+            'am' => 'հայերեն',
+            'ru' => 'ռուսերեն',
+            'en' => 'անգլերեն',
+        ];
+        
+        return $arr[$key];
+
+    }
 }
