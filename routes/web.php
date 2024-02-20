@@ -76,7 +76,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
   // Route::resource('roles', RoleController::class);
   Route::resource('users', UserController::class);
-  Route::get('users-visitors', [UserController::class, 'index'])->name('users_visitors');
+  Route::get('users-visitors', [UserController::class, 'users_visitors'])->name('users_visitors');
 
 
   // pages

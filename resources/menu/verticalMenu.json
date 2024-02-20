@@ -30,7 +30,7 @@
       "url": "/users",
       "name": "Օգտագործողներ",
       "icon": "menu-icon tf-icons bx bx-user",
-      "slug": ["users.index", "users.create", "users.edit", "users_visitors"],
+      "slug": ["users.index", "users.create", "users.edit", "users_visitors", "users.show"],
       "roles": ["super_admin"],
 
       "submenu": [
@@ -47,7 +47,7 @@
         {
           "url": "users-visitors",
           "name": "Այցելուներ",
-          "slug": "users_visitors"
+          "slug": ["users_visitors","users.show"]
         }
 
       ]

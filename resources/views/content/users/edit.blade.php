@@ -69,7 +69,7 @@
             <div class="mb-3 row">
                 <label for="phone" class="col-md-2 col-form-label">Հեռախոս</label>
                 <div class="col-md-10">
-                    <input class="form-control" type="text" placeholder="Телефон" id="phone" name="Հեռախոս" value="{{$user->phone}}">
+                    <input class="form-control" type="text" placeholder="Телефон" id="phone" name="phone" value="{{$user->phone}}">
 
                 </div>
             </div>
@@ -103,7 +103,7 @@
                 </div>
             </div>
 
-            
+
             <div class="mb-3 row">
 
                 <label for="role" class="col-md-2 col-form-label">Դերեր</label>
@@ -135,7 +135,7 @@
                         <input class="form-check-input" type="checkbox" id="status" {{$user->status ? 'checked' : ''}} name="status">
                         <label class="form-check-label" for="status">Կարգավիճակ</label>
                     </div>
-                    
+
                 </div>
             </div>
             <div class="row justify-content-end">

@@ -28,13 +28,13 @@ $(function () {
           let message = ''
           let type = ''
           if (data.result) {
-            message = 'Действия подтвержден'
+            message = 'Գործողությունը հաստատված է։'
             type = 'success'
             row.remove()
             image_div.remove()
           }
           else {
-            message = 'Ошибка'
+            message = 'Սխալ է տեղի ունեցել։'
             type = 'danger'
           }
 

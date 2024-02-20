@@ -13,7 +13,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="javascript:void(0);">Օգտագործողներ</a>
+                    <a href="javascript:void(0);">Այցելուներ</a>
                 </li>
                 <li class="breadcrumb-item active">Ցուցակ</li>
             </ol>
@@ -22,15 +22,36 @@
     <div class="card">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Օգտագործողների ցուցակ</h5>
+                <h5 class="card-header">Այցելուների ցուցակ</h5>
             </div>
-
-              <div>
-                <a href="{{ route('users.create') }}" class="btn btn-primary mx-4">Ստեղծել նոր օգտատեր </a>
-              </div>
 
         </div>
         <div class="card-body">
+
+                <div>
+                    <form action="{{route('users_visitors')}}" method="get" class="row g-3 mt-2" style="display: flex">
+                        <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
+                            <div class="col-2">
+                                <input type="text" class="form-control" id="name" placeholder="Անուն" name="name" value="{{ request()->input('name') }}">
+                            </div>
+
+                            <div class="col-2">
+                                <input type="text" class="form-control" id="surname" placeholder="Ազգանուն" name="surname" value="{{ request()->input('surname') }}">
+                            </div>
+
+                            <div class="col-2">
+                                <input type="text" class="form-control" id="inputEmail" placeholder="Էլ․ հասցե" name="email" value="{{ request()->input('email') }}">
+                            </div>
+
+                            <div class="col-2">
+                                <input type="text" class="form-control" id="inputPhone" placeholder="Հեռախոս" name="phone" value="{{ request()->input('phone') }}">
+                            </div>
+
+                            <button class="btn btn-primary col-2">Որոնել</button>
+
+                        </div>
+                    </form>
+                </div>
 
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">
@@ -85,14 +106,9 @@
                                                         {{ $user->status ? 'checked' : null }}>
                                                 </div>Կարգավիճակ
                                             </a>
-                                            <a class="dropdown-item" href="{{route('users.edit', $user->id)}}"><i
-                                                class="bx bx-edit-alt me-1"></i>Փոփոխել
-                                            </a>
-                                            <button type="button" class="dropdown-item click_delete_item"
-                                                data-bs-toggle="modal" data-bs-target="#smallModal"><i
-                                                    class="bx bx-trash me-1"></i>
-                                                Ջնջել
-                                            </button>
+
+                                                <a class="dropdown-item" href="{{route('users.show', $user->id)}}"><i
+                                                    class="bx bx-edit-alt me-1"></i>Դիտել</a>
 
                                         </div>
                                     </div>

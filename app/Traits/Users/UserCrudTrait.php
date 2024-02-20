@@ -46,6 +46,34 @@ trait UserCrudTrait
       }
     );
 
+    $data = $data->orderBy('id', 'DESC')->paginate(10)->withQueryString();
+
+
+    return view("content.users.index", compact('data'))
+      ->with('i', ($request->input('page', 1) - 1) * 10);
+
+  }
+
+  // ========================= users_visitors =========================
+
+  public function users_visitors(Request $request){
+
+    if (Auth::user()->hasRole('super_admin')) {
+      $roles = $request->route()->getName() == 'users_visitors' ? ['web'] : ['admin', 'super_admin'];
+
+    }
+
+    if (Auth::user()->hasRole('museum_admin')) {
+      $roles = ['museum'];
+    }
+
+    $data = $data = $this->model()::whereHas(
+      'roles',
+      function ($query) use ($roles) {
+        $query->whereIn('g_name', $roles);
+      }
+    );
+
     if ($request->name != null) {
 
       $data = $data->where('name', 'LIKE', "%{$request->name}%");
@@ -68,8 +96,7 @@ trait UserCrudTrait
     $data = $data->orderBy('id', 'DESC')->paginate(10)->withQueryString();
 
 
-
-    return view("content.users.index", compact('data'))
+    return view("content.users.visitors", compact('data'))
       ->with('i', ($request->input('page', 1) - 1) * 10);
 
   }
