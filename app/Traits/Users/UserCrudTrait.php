@@ -96,6 +96,7 @@ trait UserCrudTrait
   {
 
     $input = $request->all();
+
     $input['status'] = isset($request->status) ? true : 0;
     $input['password'] = Hash::make($input['password']);
 
