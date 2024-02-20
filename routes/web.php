@@ -66,8 +66,8 @@ use App\Http\Controllers\tables\Basic as TablesBasic;
 // authentication
 Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 // Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
-// Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])->name('auth-reset-password-basic');
-Auth::routes(['register' => false, 'verify' => false]);
+Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])->name('auth-reset-password-basic');
+Auth::routes(['register' => false]);
 
 // Route::post('/web/login-check', [AuthController::class, 'login'])->name('web-login-check');
 
