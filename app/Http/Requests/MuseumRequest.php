@@ -22,7 +22,16 @@ class MuseumRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name.*' => 'required|string',
+            'description.*' => 'required|string',
+            'address.*' => 'required|string',
+            'work_days.*' => 'required|string',
+            'owner' => 'required',
+            'phone' => 'required',
+            'region' => 'required',
+            'account_number' => 'required',
+            'photos.*' => 'required',
+            'mainPhoto' => 'required|string',
         ];
     }
 }

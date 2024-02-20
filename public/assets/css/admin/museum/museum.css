@@ -1,0 +1,10 @@
+.required-field {
+    color: red;
+    font-weight: bold;
+}
+
+.uploaded-photo-project {
+    display: flex;
+    width: 100px;
+    height: 100px;
+}
