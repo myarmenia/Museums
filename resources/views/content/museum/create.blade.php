@@ -6,7 +6,7 @@
 @endsection
 
 @section('page-style')
-    <link rel="stylesheet" href="{{ asset('assets/css/admin/project/project.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/museum/museum.css') }}">
 @endsection
 
 @section('content')
@@ -27,7 +27,8 @@
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
-                        <label for="name-{{ $lang }}" class="col-md-2 col-form-label">Անվանում*
+                        <label for="name-{{ $lang }}" class="col-md-2 col-form-label">Անվանում
+                            ({{ $lang }})<span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
@@ -46,12 +47,15 @@
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
-                        <label for="description-{{ $lang }}" class="col-md-2 col-form-label">Նկարագրություն*
+                        <label for="description-{{ $lang }}" class="col-md-2 col-form-label">Նկարագրություն
+                            ({{ $lang }})<span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
                             <textarea class="form-control" id="description-{{ $lang }}" rows="3"
                                 placeholder="Նկարագրություն {{ languagesName($lang) }}ով" name="description[{{ $lang }}]">
+                              {{ old("translate.$lang.description") }}
+
                             </textarea>
                         </div>
                     </div>
@@ -65,7 +69,8 @@
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
-                        <label for="address-{{ $lang }}" class="col-md-2 col-form-label">Հասցե*
+                        <label for="address-{{ $lang }}" class="col-md-2 col-form-label">Հասցե
+                            ({{ $lang }})<span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
@@ -84,12 +89,13 @@
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
-                        <label for="work_days-{{ $lang }}" class="col-md-2 col-form-label">Աշխատանքային օրեր*
+                        <label for="work_days-{{ $lang }}" class="col-md-2 col-form-label">Աշխատանքային օրեր
+                            ({{ $lang }})<span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
                             <input class="form-control" placeholder="Աշխատանքային օրերը {{ languagesName($lang) }}ով"
-                                value="{{ old("work_days.$lang") }}" id="work_days-{{ $lang }}"
+                                value="{{ trans('museum.day-hours', [], $lang) }}" id="work_days-{{ $lang }}"
                                 name="work_days[{{ $lang }}]" />
                         </div>
                     </div>
@@ -101,23 +107,10 @@
                     @enderror
                 @endforeach
 
-                <div class="mb-3 row">
-                    <label for="working_hours" class="col-md-2 col-form-label">Աշխատանքային ժամեր*</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="Աշխատանքային ժամերը" value="{{ old('working_hours') }}"
-                            id="working_hours" name="working_hours" />
-                    </div>
-                </div>
-                @error('working_hours')
-                    <div class="mb-3 row justify-content-end">
-                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                        </div>
-                    </div>
-                @enderror
-
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
-                        <label for="owner-{{ $lang }}" class="col-md-2 col-form-label">Տնօրենի անուն ազգանուն*
+                        <label for="owner-{{ $lang }}" class="col-md-2 col-form-label">Տնօրենի անուն
+                            ազգանուն({{ $lang }})<span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
@@ -135,7 +128,8 @@
                 @endforeach
 
                 <div class="mb-3 row">
-                    <label for="phone" class="col-md-2 col-form-label">Թանգարանի հեռախոսահամար*</label>
+                    <label for="phone" class="col-md-2 col-form-label">Թանգարանի հեռախոսահամար <span
+                            class="required-field">*</span></label>
                     <div class="col-md-10">
                         <input class="form-control" placeholder="Թանգարանի հեռախոսահամար" value="{{ old('phone') }}"
                             id="phone" name="phone" />
@@ -149,7 +143,7 @@
                 @enderror
 
                 <div class="mb-3 row">
-                    <label for="region" class="col-md-2 col-form-label">Մարզ*</label>
+                    <label for="region" class="col-md-2 col-form-label">Մարզ <span class="required-field">*</span></label>
                     <div class="col-md-10">
                         <select id="defaultSelect" name="region" class="form-select">
                             <option value="">Ընտրեք մարզը</option>
@@ -175,7 +169,8 @@
                 @enderror
 
                 <div class="mb-3 row">
-                    <label for="account_number" class="col-md-2 col-form-label">Հաշվեհամար*</label>
+                    <label for="account_number" class="col-md-2 col-form-label">Հաշվեհամար <span
+                            class="required-field">*</span></label>
                     <div class="col-md-10">
                         <input class="form-control" placeholder="Հաշվեհամար" value="{{ old('account_number') }}"
                             id="account_number" name="account_number" />
@@ -202,19 +197,24 @@
                     </div>
                 @enderror
 
-                <div class="mb-3 row">
-                    <label for="virtual_tour" class="col-md-2 col-form-label">Վիրտուալ Էքսկուրսիա</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="Վիրտուալ Էքսկուրսիա" value="{{ old('virtual_tour') }}"
-                            id="virtual_tour" name="virtual_tour" />
-                    </div>
-                </div>
-                @error('virtual_tour')
-                    <div class="mb-3 row justify-content-end">
-                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                @foreach (getLinkType() as $link)
+                    <div class="mb-3 row">
+                        <label for="link-{{ $link }}" class="col-md-2 col-form-label">{{ getLinkNames($link) }}
+                        </label>
+
+                        <div class="col-md-10">
+                            <input class="form-control" placeholder="{{ getLinkNames($link) }}-ի հղումը"
+                                value="{{ old("link.$link") }}" id="link-{{ $link }}"
+                                name="link[{{ $link }}]" />
                         </div>
                     </div>
-                @enderror
+                    @error("link.$link")
+                        <div class="mb-3 row justify-content-end">
+                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                            </div>
+                        </div>
+                    @enderror
+                @endforeach
 
                 <div class="mb-3 row">
                     <label for="photos" class="col-md-2 col-form-label">Նկար</label>
@@ -223,8 +223,8 @@
                             <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                                 <span class="d-none d-sm-block">Ավելացնել նոր նկար</span>
                                 <i class="bx bx-upload d-block d-sm-none"></i>
-                                <input type="file" id="upload" name="photos[]" class="account-file-input"
-                                    multiple hidden accept="image/png, image/jpeg" />
+                                <input type="file" id="upload" name="photos[]" class="account-file-input" multiple
+                                    hidden accept="image/png, image/jpeg" />
                             </label>
                             <div class="uploaded-images-container uploaded-photo-project" id="uploadedImagesContainer">
                             </div>
@@ -243,8 +243,8 @@
                         <button type="submit" class="btn btn-primary">Պահպանել</button>
                     </div>
                 </div>
+            </form>
         </div>
-        </form>
     </div>
 
 

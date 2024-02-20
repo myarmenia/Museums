@@ -84,7 +84,7 @@
                             @isset($menu->icon)
                                 <i class="{{ $menu->icon }}"></i>
                             @endisset
-                            <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
+                            <div>{{ isset($menu->name) ? $menu->name : '' }}</div>
                             @isset($menu->badge)
                                 <div class="badge bg-{{ $menu->badge[0] }} rounded-pill ms-auto">{{ $menu->badge[1] }}</div>
                             @endisset

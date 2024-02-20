@@ -28,42 +28,34 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Названия</th>
-                            <th>Время изготов.</th>
-                            <th>Дата создания</th>
-                            <th>Ссылка проект</th>
-                            <th>Ссылка app store</th>
-                            <th>Ссылка play market</th>
-                            <th>Тип</th>
-                            <th>Действия</th>
-
+                            <th>Թանգ․ անուն</th>
+                            <th>Տնօրեն</th>
+                            <th>Էլ․ հասցե</th>
+                            <th>Ստեղծված է</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $key => $museum)
                             <tr>
                                 <td>{{ ++$i }}</td>
-                                <td>{{ $museum->name }}</td>
-                                <td>{{ $museum->process_time }}<span>месяца</span></td>
-                                <td>{{ $museum->creation_date_at }}</td>
-                                <td>{{ $museum->link_museum }}</td>
-                                <td>{{ $museum->link_app_store }}</td>
-                                <td>{{ $museum->link_play_market }}</td>
-                                <td>{{ $museum->type }}</td>
+                                <td>{{ $museum->translationsAdmin->first()->name}}</td>
+                                <td>{{ $museum->user->name}}</td>
+                                <td>{{ $museum->email}}</td>
+                                <td>{{ $museum->created_at }}</td>
                                 <td>
                                     <div class="dropdown action" data-id="{{ $museum->id }}" data-tb-name="museums">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown">
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
-                                        <div class="dropdown-menu">
+                                        {{-- <div class="dropdown-menu">
                                             <a class="dropdown-item" href="{{route('museum.edit', $museum->id)}}"><i
                                                     class="bx bx-edit-alt me-1"></i>Редактировать</a>
                                             <button type="button" class="dropdown-item click_delete_item"
                                                 data-bs-toggle="modal" data-bs-target="#smallModal"><i
                                                     class="bx bx-trash me-1"></i>
                                                 Удалить</button>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </td>
                             </tr>

@@ -63,3 +63,28 @@ if(!function_exists('languagesName')){
 
     }
 }
+
+if(!function_exists('getLinkType')){
+    function getLinkType(){
+
+        return [
+            'facebook', 'instagram', 'web_site', 'virtual_tour',
+        ];
+
+    }
+}
+
+if(!function_exists('getLinkNames')){
+    function getLinkNames($key){
+
+        $arr = [
+            'facebook' => 'Ֆեյսբուք',
+            'instagram' => 'Ինստագրամ',
+            'virtual_tour' => 'Վեբ-սայթ',
+            'web_site' => 'Վիրտուալ էքսկուրսիա',
+        ];
+
+        return $arr[$key];
+
+    }
+}
