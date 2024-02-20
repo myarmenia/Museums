@@ -41,7 +41,11 @@ class User extends Authenticatable implements JWTSubject
   {
     return [];
   }
-
+  
+  public function country()
+  {
+    return $this->belongsTo(Country::class, 'country_id');
+  }
   public function roleNames(): array
   {
 
