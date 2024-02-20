@@ -20,7 +20,12 @@ class MuseumController extends Controller
     }
     public function index(Request $request)
     {
-        $data = Museum::orderBy('id', 'DESC')->paginate(5);
+        if($this->haveMuseumAdmin() && $data = $this->haveMuseum()) {
+            $regions = Region::all();
+            return view('content.museum.edit', compact(['data', 'regions']));
+        };
+        
+        $data = Museum::with(['user','translationsAdmin', 'phones', 'images', 'links'])->orderBy('id', 'DESC')->paginate(5);
 
         return view('content.museum.index', compact('data'))
                ->with('i', ($request->input('page', 1) - 1) * 5);
@@ -28,6 +33,10 @@ class MuseumController extends Controller
 
     public function create()
     {
+        if($this->haveMuseumAdmin() && $data = $this->haveMuseum()) {
+            $regions = Region::all();
+            return view('content.museum.edit', compact(['data', 'regions']));
+        };
         $regions = Region::all();
 
         return view('content.museum.create', compact('regions'));
@@ -36,16 +45,29 @@ class MuseumController extends Controller
     public function addMuseum(MuseumRequest $request)
     {
 
-        $createMuseum = $this->museumService->createMuseum($request->all());
-
-        $data = Museum::with(['translations'])->orderBy('id', 'DESC')->paginate(5);
+        $this->museumService->createMuseum($request->all());
 
         return redirect()->route('museum');
 
-        return view('content.museum.index', compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
-        
     }
 
+    //if have museum get museum or false
+    public function haveMuseum()
+    {
+        if($museum = Museum::where('user_id', auth()->id())->first()) {
+            return $museum;
+        };
+
+        return false;
+    }
+
+    public function haveMuseumAdmin()
+    {
+        if(auth()->user()->roles()->get()->where('name', 'museum_admin')->count()) {
+            return true;
+        };
+
+        return false;
+    }
     
 }

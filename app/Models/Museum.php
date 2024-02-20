@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Museum extends Model
 {
@@ -18,7 +19,6 @@ class Museum extends Model
         'museum_geographical_location_id',
         'email',
         'account_number',
-        // 'working_hours'
     ];
 
     public function phones(): HasMany
@@ -39,6 +39,16 @@ class Museum extends Model
     public function translations(): HasMany
     {
         return $this->hasMany(MuseumTranslation::class, 'museum_id', 'id');
+    }
+
+    public function translationsAdmin(): HasMany
+    {
+        return $this->hasMany(MuseumTranslation::class, 'museum_id', 'id')->where('lang', 'am');;
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
 }
