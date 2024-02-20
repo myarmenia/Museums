@@ -14,9 +14,7 @@ class MuseumRepository implements MuseumRepositoryInterface{
 
     public function createMuseum($data)
     {
-        $museum =  Museum::create($data);
-
-        return $museum->id;
+        return Museum::create($data);
     }
 
     public function createMuseumTranslations($data)

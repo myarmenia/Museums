@@ -6,7 +6,7 @@
 @endsection
 
 @section('page-style')
-    <link rel="stylesheet" href="{{ asset('assets/css/admin/project/project.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/museum/museum.css') }}">
 @endsection
 
 @section('content')
@@ -27,7 +27,7 @@
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
-                        <label for="name-{{ $lang }}" class="col-md-2 col-form-label">Անվանում*
+                        <label for="name-{{ $lang }}" class="col-md-2 col-form-label">Անվանում ({{ $lang }})<span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
@@ -46,7 +46,7 @@
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
-                        <label for="description-{{ $lang }}" class="col-md-2 col-form-label">Նկարագրություն*
+                        <label for="description-{{ $lang }}" class="col-md-2 col-form-label">Նկարագրություն ({{ $lang }})<span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
@@ -65,7 +65,7 @@
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
-                        <label for="address-{{ $lang }}" class="col-md-2 col-form-label">Հասցե*
+                        <label for="address-{{ $lang }}" class="col-md-2 col-form-label">Հասցե ({{ $lang }})<span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
@@ -84,12 +84,12 @@
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
-                        <label for="work_days-{{ $lang }}" class="col-md-2 col-form-label">Աշխատանքային օրեր*
+                        <label for="work_days-{{ $lang }}" class="col-md-2 col-form-label">Աշխատանքային օրեր ({{ $lang }})<span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
                             <input class="form-control" placeholder="Աշխատանքային օրերը {{ languagesName($lang) }}ով"
-                                value="{{ old("work_days.$lang") }}" id="work_days-{{ $lang }}"
+                                value="{{trans('museum.day-hours', [], $lang)}}" id="work_days-{{ $lang }}"
                                 name="work_days[{{ $lang }}]" />
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                     @enderror
                 @endforeach
 
-                <div class="mb-3 row">
+                {{-- <div class="mb-3 row">
                     <label for="working_hours" class="col-md-2 col-form-label">Աշխատանքային ժամեր*</label>
                     <div class="col-md-10">
                         <input class="form-control" placeholder="Աշխատանքային ժամերը" value="{{ old('working_hours') }}"
@@ -113,11 +113,11 @@
                         <div class="col-sm-10 text-danger fts-14">{{ $message }}
                         </div>
                     </div>
-                @enderror
+                @enderror --}}
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
-                        <label for="owner-{{ $lang }}" class="col-md-2 col-form-label">Տնօրենի անուն ազգանուն*
+                        <label for="owner-{{ $lang }}" class="col-md-2 col-form-label">Տնօրենի անուն ազգանուն({{ $lang }})<span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
@@ -135,7 +135,7 @@
                 @endforeach
 
                 <div class="mb-3 row">
-                    <label for="phone" class="col-md-2 col-form-label">Թանգարանի հեռախոսահամար*</label>
+                    <label for="phone" class="col-md-2 col-form-label">Թանգարանի հեռախոսահամար <span class="required-field">*</span></label>
                     <div class="col-md-10">
                         <input class="form-control" placeholder="Թանգարանի հեռախոսահամար" value="{{ old('phone') }}"
                             id="phone" name="phone" />
@@ -149,7 +149,7 @@
                 @enderror
 
                 <div class="mb-3 row">
-                    <label for="region" class="col-md-2 col-form-label">Մարզ*</label>
+                    <label for="region" class="col-md-2 col-form-label">Մարզ <span class="required-field">*</span></label>
                     <div class="col-md-10">
                         <select id="defaultSelect" name="region" class="form-select">
                             <option value="">Ընտրեք մարզը</option>
@@ -175,7 +175,7 @@
                 @enderror
 
                 <div class="mb-3 row">
-                    <label for="account_number" class="col-md-2 col-form-label">Հաշվեհամար*</label>
+                    <label for="account_number" class="col-md-2 col-form-label">Հաշվեհամար <span class="required-field">*</span></label>
                     <div class="col-md-10">
                         <input class="form-control" placeholder="Հաշվեհամար" value="{{ old('account_number') }}"
                             id="account_number" name="account_number" />
@@ -201,6 +201,25 @@
                         </div>
                     </div>
                 @enderror
+
+                @foreach (getLinkType() as $link)
+                    <div class="mb-3 row">
+                        <label for="link-{{ $link }}" class="col-md-2 col-form-label">{{ getLinkNames($link) }}
+                        </label>
+
+                        <div class="col-md-10">
+                            <input class="form-control" placeholder="{{ getLinkNames($link) }}-ի հղումը"
+                                value="{{ old("link.$link") }}" id="link-{{ $link }}"
+                                name="link[{{ $link }}]" />
+                        </div>
+                    </div>
+                    @error("link.$link")
+                        <div class="mb-3 row justify-content-end">
+                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                            </div>
+                        </div>
+                    @enderror
+                @endforeach
 
                 <div class="mb-3 row">
                     <label for="virtual_tour" class="col-md-2 col-form-label">Վիրտուալ Էքսկուրսիա</label>

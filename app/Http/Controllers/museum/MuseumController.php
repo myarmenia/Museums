@@ -37,13 +37,14 @@ class MuseumController extends Controller
     {
 
         $createMuseum = $this->museumService->createMuseum($request->all());
-        dd($request->all());
-        // if($createProj){
-        //     $data = Project::orderBy('id', 'DESC')->paginate(5);
 
-        //     return redirect()->route('project')
-        //           ->with('i', ($request->input('page', 1) - 1) * 5);
-        // }
+        $data = Museum::with(['translations'])->orderBy('id', 'DESC')->paginate(5);
+
+        return redirect()->route('museum');
+
+        return view('content.museum.index', compact('data'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+        
     }
 
     

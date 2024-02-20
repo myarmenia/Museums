@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('museum_geographical_location_id');
             $table->string('email');
             $table->string('account_number');
-            $table->string('working_hours');
+            // $table->string('working_hours');
             $table->timestamps();
         });
     }
