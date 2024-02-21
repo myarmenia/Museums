@@ -16,17 +16,17 @@
         <div class="card-body">
           <!-- Logo -->
           <div class="app-brand justify-content-center">
-            <a href="{{url('/')}}" class="app-brand-link gap-2">
+            {{-- <a href="{{url('/')}}" class="app-brand-link gap-2">
               <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span>
               <span class="app-brand-text demo text-body fw-bold">{{config('variables.templateName')}}</span>
-            </a>
+            </a> --}}
           </div>
           <!-- /Logo -->
 
           <form id="formAuthentication" class="mb-3" action="{{route('login')}}" method="post">
             <div class="mb-3">
-              <label for="email" class="form-label">Էլ․ փոստ</label>
-              <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email or username" autofocus>
+              <label for="email" class="form-label">Էլ․հասցե</label>
+              <input type="text" class="form-control" id="email" name="email" placeholder="Մուտքագրեք Ձեր Էլ․հասցեն" autofocus>
 
             </div>
             @error('email')
@@ -39,9 +39,12 @@
             <div class="mb-3 form-password-toggle">
               <div class="d-flex justify-content-between">
                 <label class="form-label" for="password">Գաղտնաբառ</label>
-                <a href="{{url('auth/forgot-password-basic')}}">
-                  <small>Մոռացել եք գաղտնաբառը?</small>
+               
+                @if (Route::has('password.request'))
+                <a class="btn btn-link" href="{{ route('password.request') }}">
+                    {{ __('Մոռացել եք գաղտնաբառը?') }}
                 </a>
+            @endif
               </div>
 
               <div class="input-group input-group-merge">
