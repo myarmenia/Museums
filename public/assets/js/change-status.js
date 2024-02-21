@@ -9,7 +9,7 @@ $(function () {
 
     $.ajax({
       type: "post",
-      url: "change-status",
+      url: "/change-status",
       data: { id, tb_name, status, field_name },
       cache: false,
       success: function (data) {
