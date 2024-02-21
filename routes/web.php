@@ -141,6 +141,8 @@ Route::group(['prefix' => 'museum'], function () {
   Route::get('/', [MuseumController::class, 'index'])->name('museum');
   Route::get('/create', [MuseumController::class, 'create'])->name('create-museum');
   Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
+  Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit');
+  Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
 
 
 });

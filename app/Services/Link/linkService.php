@@ -1,5 +1,7 @@
 <?php
 namespace App\Services\Link;
+use App\Models\Link;
+use App\Models\Museum;
 use App\Services\FileUploadService;
 
 
@@ -23,5 +25,27 @@ class LinkService
         return;
 
     }
+
+    public static function updateLink($data, $id)
+    {
+        $links = $data['link'];
+
+        $museum = Museum::find($id);
+        
+        foreach ($links as $key => $link) {
+
+            $readyLink = [
+                'link' => $link ?? '',
+            ];
+              
+            $museum->links()->where('name', $key)->update($readyLink);
+
+        }
+        return;
+
+    }
+
+
+    
 
 }
