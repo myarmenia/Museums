@@ -10,5 +10,6 @@ interface MuseumRepositoryInterface
 
   public function createMuseumTranslations($data);
 
+  public function getMuseumByUd($id);
   
 }
