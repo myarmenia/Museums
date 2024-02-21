@@ -2,10 +2,12 @@
 namespace App\Services\Museum;
 
 use App\Models\Museum;
+use App\Models\MuseumTranslation;
 use App\Models\Region;
 use App\Repositories\Museum\MuseumRepository;
 use App\Services\Image\ImageService;
 use App\Services\Link\LinkService;
+use App\Services\Phone\PhoneService;
 use Illuminate\Support\Facades\DB;
 
 class MuseumService
@@ -73,6 +75,13 @@ class MuseumService
             ];
 
             LinkService::createLink($createLinkData);
+
+            $phoneData = [
+                'museum_id' => $getCreatedMuseumId,
+                'phones' => $data['phones']
+            ];
+
+            PhoneService::createPhone($phoneData);
             DB::commit();
 
             return true;
@@ -88,47 +97,79 @@ class MuseumService
 
     }
 
-    // public function getProject()
-    // {
-    //    return $this->projectRepository->getProject();  
+    public function getMuseumByUd($id)
+    {
+       return $this->museumRepository->getMuseumByUd($id);  
 
-    // }
+    }
 
-    // public function updateProject($data, $id){
+    public function updateMuseum($data, $id)
+    {
 
-    //     $project = Project::find($id);
+        // try {
+        //     DB::beginTransaction();
+            $languages = languages();
 
-    //     $project->update([
-    //         "name" => $data['name'],        
-    //         "project_language" => $data['lang'],
-    //         "process_time" => $data['process_time'],
-    //         "creation_date_at" => $data['creation_date_at'],            
-    //         "type" => $data['type']]);
+            $regionId = Region::where('name', $data['region'])->first()->id;
 
+            $museum = [
+                'museum_geographical_location_id' => $regionId,
+                'email' => $data['email'],
+                'account_number' => $data['account_number'],
+            ];
 
-    //     foreach ( $project->translation as $key => $value) {
-    //        $value->where('lang', $value->lang)->update(['description' => $data["proj-$value->lang"]]);
-    //     }
+            $getCreatedMuseum = $this->museumRepository->updateMuseum($museum, $id);
 
-    //     if($data['project_photos']){
-    //         $projectPhotoInsert = [];
-    //         $photos = $data['project_photos'];
-    //         foreach($photos as $photo){
-    //             $path = FileUploadService::upload($photo, 'projects/'.$project->id);
-    //             $projectPhotoInsert[] = [
-    //                 'path' => $path,
-    //                 'name' => $photo->getClientOriginalName() 
-    //             ];
-    //         }
+            // $getCreatedMuseumId = $getCreatedMuseum->id;
 
-    //         $project->images()->createMany($projectPhotoInsert);
+            foreach ($languages as $key => $lang) {
+                $museumTranslations = [
+                    'name' => $data['name'][$lang],
+                    'description' => $data['description'][$lang],
+                    'working_days' => $data['work_days'][$lang],
+                    'director_name' => $data['owner'][$lang],
+                    'address' => $data['address'][$lang],
+                ];
 
-    //     }
+                $this->museumRepository->updateMuseumTranslations($museumTranslations, $lang, $id);
+            }
+           
+            $createLinkData = [
+                'link' => $data['link'],
+            ];
 
-    //     return $project;
+            LinkService::updateLink($createLinkData, $id);
 
+            $phoneData = [
+                'phones' => $data['phones']
+            ];
 
-    // }
+            PhoneService::updatePhone($phoneData, $id);
+
+             // $imagesData = [
+            //     'photos' => [
+            //         'image' => $data['photos'],
+            //         'mainPhoto' => $data['mainPhoto'],
+            //     ],
+            //     'museum' => $getCreatedMuseum
+            // ];
+
+            // ImageService::createImageble($imagesData);
+
+            // DB::commit();
+
+            return true;
+        // } catch (\Exception $e) {
+        //     session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
+        //     DB::rollBack();
+        //     return false;
+        // } catch (\Error $e) {
+        //     session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
+        //     DB::rollBack();
+        //     return false;
+        // }
+    }
+
 
 
 }

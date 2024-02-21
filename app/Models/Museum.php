@@ -21,6 +21,10 @@ class Museum extends Model
         'account_number',
     ];
 
+    public function museum_branches(): HasMany
+    {
+      return $this->hasMany(MuseumBranche::class, 'museum_id', 'id');
+    }
     public function phones(): HasMany
     {
         return $this->hasMany(PhoneNumber::class, 'museum_id', 'id');
@@ -50,5 +54,18 @@ class Museum extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
+  public function tickets(): HasMany
+  {
+      return $this->hasMany(Ticket::class);
+
+  }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class, 'museum_geographical_location_id', 'id');
+    }
+
 
 }
