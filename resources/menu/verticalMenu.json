@@ -54,7 +54,7 @@
     },
 
     {
-      "name": "News",
+      "name": "Նորություններ",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "general-news",
       "roles": ["general_manager","super_admin"],
@@ -63,12 +63,8 @@
           "url": "/news/news",
           "name": "News",
           "slug": "news"
-        },
-        {
-          "url": "/news/news-category",
-          "name": "News category",
-          "slug": "news-category"
         }
+
       ]
     },
 
