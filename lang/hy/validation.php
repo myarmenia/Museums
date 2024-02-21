@@ -199,7 +199,7 @@ return [
     'surname' => 'Ազգանուն',
     'email' => 'Էլ․ հասցե',
     'confirm-password' => 'Կրկնել գաղտնաբառ',
-    'password' => 'Գաղտնաբառ',
+    'password' => 'Գաղտնաբառի',
     'phone' => 'Հեռախոս',
     'roles' => 'Դերեր',
     'status' => 'Կարգավիճակ'

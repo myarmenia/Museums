@@ -21,19 +21,19 @@
                 <h5 class="card-header">Փոփոխել թանգարանը</h5>
             </div>
         </div>
+
         <div class="card-body">
-
-            <form action="{{ route('museum.add') }}" method="post" enctype="multipart/form-data">
-
+            <form action="{{ route('museum.update', $data->id) }}" method="post" enctype="multipart/form-data">
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
                         <label for="name-{{ $lang }}" class="col-md-2 col-form-label">Անվանում
-                            ({{ $lang }})<span class="required-field">*</span>
+                            ({{ $lang }})
+                            <span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
                             <input class="form-control" placeholder="Անվանում {{ languagesName($lang) }}ով"
-                                value="{{ old("name.$lang") }}" id="name-{{ $lang }}"
+                                value="{{ $data->translations->keyBy('lang')[$lang]->name }}" id="name-{{ $lang }}"
                                 name="name[{{ $lang }}]" />
                         </div>
                     </div>
@@ -48,15 +48,13 @@
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
                         <label for="description-{{ $lang }}" class="col-md-2 col-form-label">Նկարագրություն
-                            ({{ $lang }})<span class="required-field">*</span>
+                            ({{ $lang }})
+                            <span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
                             <textarea class="form-control" id="description-{{ $lang }}" rows="3"
-                                placeholder="Նկարագրություն {{ languagesName($lang) }}ով" name="description[{{ $lang }}]">
-                              {{ old("translate.$lang.description") }}
-
-                            </textarea>
+                                name="description[{{ $lang }}]">{{ $data->translations->keyBy('lang')[$lang]->description }}</textarea>
                         </div>
                     </div>
                     @error("description.$lang")
@@ -70,13 +68,14 @@
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
                         <label for="address-{{ $lang }}" class="col-md-2 col-form-label">Հասցե
-                            ({{ $lang }})<span class="required-field">*</span>
+                            ({{ $lang }})
+                            <span class="required-field">*</span>
                         </label>
 
                         <div class="col-md-10">
                             <input class="form-control" placeholder="Հասցեն {{ languagesName($lang) }}ով"
-                                value="{{ old("address.$lang") }}" id="address-{{ $lang }}"
-                                name="address[{{ $lang }}]" />
+                                value="{{ $data->translations->keyBy('lang')[$lang]->address }}"
+                                id="address-{{ $lang }}" name="address[{{ $lang }}]" />
                         </div>
                     </div>
                     @error("address.$lang")
@@ -90,13 +89,16 @@
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
                         <label for="work_days-{{ $lang }}" class="col-md-2 col-form-label">Աշխատանքային օրեր
-                            ({{ $lang }})<span class="required-field">*</span>
+                            <div>
+                                ({{ $lang }})
+                                <span class="required-field">*</span>
+                            </div>
                         </label>
 
                         <div class="col-md-10">
                             <input class="form-control" placeholder="Աշխատանքային օրերը {{ languagesName($lang) }}ով"
-                                value="{{ trans('museum.day-hours', [], $lang) }}" id="work_days-{{ $lang }}"
-                                name="work_days[{{ $lang }}]" />
+                                value="{{ $data->translations->keyBy('lang')[$lang]->working_days }}"
+                                id="work_days-{{ $lang }}" name="work_days[{{ $lang }}]" />
                         </div>
                     </div>
                     @error("work_days.$lang")
@@ -115,8 +117,8 @@
 
                         <div class="col-md-10">
                             <input class="form-control" placeholder="Տնօրենի անուն ազգանուն {{ languagesName($lang) }}ով"
-                                value="{{ old("owner.$lang") }}" id="owner-{{ $lang }}"
-                                name="owner[{{ $lang }}]" />
+                                value="{{ $data->translations->keyBy('lang')[$lang]->director_name }}"
+                                id="owner-{{ $lang }}" name="owner[{{ $lang }}]" />
                         </div>
                     </div>
                     @error("owner.$lang")
@@ -127,52 +129,52 @@
                     @enderror
                 @endforeach
 
-                <div class="mb-3 row">
-                    <label for="phone" class="col-md-2 col-form-label">Թանգարանի հեռախոսահամար <span
-                            class="required-field">*</span></label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="Թանգարանի հեռախոսահամար" value="{{ old('phone') }}"
-                            id="phone" name="phone" />
-                    </div>
-                </div>
-                @error('phone')
-                    <div class="mb-3 row justify-content-end">
-                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                @foreach (museumPhoneCount() as $idx => $phone)
+                    <div class="mb-3 row">
+                        <label for="phones-{{ $phone }}" class="col-md-2 col-form-label">Թանգարանի հեռախոսահամար
+                            {{ $idx + 1 }}
+                            @if ($idx == 0)
+                                <span class="required-field">*</span>
+                            @endif
+                        </label>
+
+                        <div class="col-md-10">
+                            <input class="form-control" placeholder="Թանգարանի հեռախոսահամար {{ $idx + 1 }}"
+                                value="{{ $data->phones->keyBy('phone_name')[$phone]->number ?? "" }}"
+                                id="phones-{{ $phone }}" name="phones[{{ $phone }}]" />
                         </div>
                     </div>
-                @enderror
+                    @error("phones.$phone")
+                        <div class="mb-3 row justify-content-end">
+                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                            </div>
+                        </div>
+                    @enderror
+                @endforeach
 
+                
                 <div class="mb-3 row">
                     <label for="region" class="col-md-2 col-form-label">Մարզ <span class="required-field">*</span></label>
                     <div class="col-md-10">
                         <select id="defaultSelect" name="region" class="form-select">
-                            <option value="">Ընտրեք մարզը</option>
+                            <option disabled>Ընտրեք մարզը</option>
                             @foreach ($regions as $region)
-                                <option value="{{ $region->name }}">{{ __('regions.' . $region->name) }}</option>
+                                @if ($data->region->id == $region->id)
+                                    <option value="{{ $region->name }}" selected>{{ __('regions.' . $region->name) }}
+                                    </option>
+                                @else
+                                    <option value="{{ $region->name }}">{{ __('regions.' . $region->name) }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="museum-link" class="col-md-2 col-form-label">Թանգարանի հղում</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="Թանգարանի հղում" value="{{ old('museum-link') }}"
-                            id="museum-link" name="museum-link" />
-                    </div>
-                </div>
-                @error('museum-link')
-                    <div class="mb-3 row justify-content-end">
-                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                        </div>
-                    </div>
-                @enderror
-
-                <div class="mb-3 row">
                     <label for="account_number" class="col-md-2 col-form-label">Հաշվեհամար <span
                             class="required-field">*</span></label>
                     <div class="col-md-10">
-                        <input class="form-control" placeholder="Հաշվեհամար" value="{{ old('account_number') }}"
+                        <input class="form-control" placeholder="Հաշվեհամար" value="{{ $data->account_number }}"
                             id="account_number" name="account_number" />
                     </div>
                 </div>
@@ -186,7 +188,7 @@
                 <div class="mb-3 row">
                     <label for="email" class="col-md-2 col-form-label">Էլեկտրոնային հասցե</label>
                     <div class="col-md-10">
-                        <input class="form-control" placeholder="Էլեկտրոնային հասցե" value="{{ old('email') }}"
+                        <input class="form-control" placeholder="Էլեկտրոնային հասցե" value="{{ $data->email }}"
                             id="email" name="email" />
                     </div>
                 </div>
@@ -204,7 +206,7 @@
 
                         <div class="col-md-10">
                             <input class="form-control" placeholder="{{ getLinkNames($link) }}-ի հղումը"
-                                value="{{ old("link.$link") }}" id="link-{{ $link }}"
+                                value="{{ $data->links->keyBy('name')[$link]->link ?? '' }}" id="link-{{ $link }}"
                                 name="link[{{ $link }}]" />
                         </div>
                     </div>

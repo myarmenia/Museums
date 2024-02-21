@@ -88,3 +88,12 @@ if(!function_exists('getLinkNames')){
 
     }
 }
+
+if(!function_exists('museumPhoneCount')){
+    function museumPhoneCount(){
+        return [
+            'phone1', 'phone2', 'phone3',
+        ];
+    }
+}
+
