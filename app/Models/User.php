@@ -42,10 +42,14 @@ class User extends Authenticatable implements MustVerifyEmail
   {
     return [];
   }
-  
+
   public function country()
   {
     return $this->belongsTo(Country::class, 'country_id');
+  }
+
+  public function carts(){
+    return $this->hasMany(Cart::class);
   }
   public function roleNames(): array
   {
