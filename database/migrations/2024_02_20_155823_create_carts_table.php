@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('token');
             $table->integer('quantity');
             $table->integer('total_price');
-            $table->string('type');
+            $table->string('type');       // product or ticket
             $table->softDeletes();
             $table->timestamps();
         });
