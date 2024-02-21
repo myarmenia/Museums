@@ -22,8 +22,8 @@ return new class extends Migration
             $table->unsignedBigInteger('ticket_type_id')->nullable();
             $table->foreign('ticket_type_id')->references('id')->on('ticket_types')->onUpdate('cascade');
 
-            $table->unsignedBigInteger('museum_branche_id')->nullable();
-            $table->foreign('museum_branche_id')->references('id')->on('museum_branches')->onUpdate('cascade');
+            // $table->unsignedBigInteger('museum_branche_id')->nullable();
+            // $table->foreign('museum_branche_id')->references('id')->on('museum_branches')->onUpdate('cascade');
 
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade');
@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('token');
             $table->integer('quantity');
             $table->integer('total_price');
+            $table->string('type');
             $table->softDeletes();
             $table->timestamps();
         });
