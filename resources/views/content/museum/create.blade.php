@@ -52,11 +52,7 @@
                         </label>
 
                         <div class="col-md-10">
-                            <textarea class="form-control" id="description-{{ $lang }}" rows="3"
-                                placeholder="Նկարագրություն {{ languagesName($lang) }}ով" name="description[{{ $lang }}]">
-                              {{ old("translate.$lang.description") }}
-
-                            </textarea>
+                            <textarea class="form-control" id="description-{{ $lang }}" rows="3" name="description[{{ $lang }}]" > {{ old("description.$lang") }}</textarea>
                         </div>
                     </div>
                     @error("description.$lang")
@@ -127,21 +123,28 @@
                     @enderror
                 @endforeach
 
-                <div class="mb-3 row">
-                    <label for="phone" class="col-md-2 col-form-label">Թանգարանի հեռախոսահամար <span
-                            class="required-field">*</span></label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="Թանգարանի հեռախոսահամար" value="{{ old('phone') }}"
-                            id="phone" name="phone" />
-                    </div>
-                </div>
-                @error('phone')
-                    <div class="mb-3 row justify-content-end">
-                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                @foreach (museumPhoneCount() as $idx => $phone)
+                    <div class="mb-3 row">
+                        <label for="phones-{{ $phone }}" class="col-md-2 col-form-label">Թանգարանի հեռախոսահամար {{$idx+1}}
+                            @if($idx == 0)
+                                <span class="required-field">*</span>
+                            @endif
+                        </label>
+
+                        <div class="col-md-10">
+                            <input class="form-control" placeholder="Թանգարանի հեռախոսահամար {{$idx+1}}"
+                                value="{{ old("phones.$phone") }}" id="phones-{{ $phone }}"
+                                name="phones[{{ $phone }}]" />
                         </div>
                     </div>
-                @enderror
-
+                    @error("phones.$phone")
+                        <div class="mb-3 row justify-content-end">
+                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                            </div>
+                        </div>
+                    @enderror
+                @endforeach
+                
                 <div class="mb-3 row">
                     <label for="region" class="col-md-2 col-form-label">Մարզ <span class="required-field">*</span></label>
                     <div class="col-md-10">
@@ -151,22 +154,14 @@
                                 <option value="{{ $region->name }}">{{ __('regions.' . $region->name) }}</option>
                             @endforeach
                         </select>
+                        @error('region')
+                            <div class="justify-content-end">
+                                <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                                </div>
+                            </div>
+                        @enderror
                     </div>
                 </div>
-
-                <div class="mb-3 row">
-                    <label for="museum-link" class="col-md-2 col-form-label">Թանգարանի հղում</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="Թանգարանի հղում" value="{{ old('museum-link') }}"
-                            id="museum-link" name="museum-link" />
-                    </div>
-                </div>
-                @error('museum-link')
-                    <div class="mb-3 row justify-content-end">
-                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                        </div>
-                    </div>
-                @enderror
 
                 <div class="mb-3 row">
                     <label for="account_number" class="col-md-2 col-form-label">Հաշվեհամար <span
@@ -231,7 +226,7 @@
                         </div>
                     </div>
                 </div>
-                @error('project_photos')
+                @error('photos')
                     <div class="mb-3 row justify-content-end">
                         <div class="col-sm-10 text-danger fts-14" id="photos_div">{{ $message }}
                         </div>

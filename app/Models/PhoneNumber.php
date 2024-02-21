@@ -13,7 +13,8 @@ class PhoneNumber extends Model
 
     protected $fillable = [
         'museum_id',
-        'number'
+        'number',
+        'phone_name'
     ];
 
     public $timestamps = false;

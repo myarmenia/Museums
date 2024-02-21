@@ -20,10 +20,9 @@ class MuseumController extends Controller
     }
     public function index(Request $request)
     {
-        if($this->haveMuseumAdmin() && $data = $this->haveMuseum()) {
-            $regions = Region::all();
-            return view('content.museum.edit', compact(['data', 'regions']));
-        };
+        // if($this->haveMuseumAdmin() && $id = $this->haveMuseum()) {
+        //     return redirect()->route('museum.edit', ['id' => (int) $id]);
+        // };
         
         $data = Museum::with(['user','translationsAdmin', 'phones', 'images', 'links'])->orderBy('id', 'DESC')->paginate(5);
 
@@ -33,10 +32,10 @@ class MuseumController extends Controller
 
     public function create()
     {
-        if($this->haveMuseumAdmin() && $data = $this->haveMuseum()) {
-            $regions = Region::all();
-            return view('content.museum.edit', compact(['data', 'regions']));
-        };
+        // if($this->haveMuseumAdmin() && $data = $this->haveMuseum()) {
+        //     $regions = Region::all();
+        //     return view('content.museum.edit', compact(['data', 'regions']));
+        // };
         $regions = Region::all();
 
         return view('content.museum.create', compact('regions'));
@@ -51,11 +50,20 @@ class MuseumController extends Controller
 
     }
 
+    public function edit($id)
+    {
+        $data = $this->museumService->getMuseumByUd($id);
+
+        $regions = Region::all();
+
+        return view('content.museum.edit', compact(['data', 'regions']));
+    }
+
     //if have museum get museum or false
     public function haveMuseum()
     {
         if($museum = Museum::where('user_id', auth()->id())->first()) {
-            return $museum;
+            return $museum->id;
         };
 
         return false;
@@ -68,6 +76,16 @@ class MuseumController extends Controller
         };
 
         return false;
+    }
+
+    public function update(MuseumRequest $request, $id)
+    {
+        $this->museumService->updateMuseum($request->all(), $id);
+
+        $data = $this->museumService->getMuseumByUd($id);
+        $regions = Region::all();
+
+        return view('content.museum.edit', compact(['data', 'regions']));
     }
     
 }

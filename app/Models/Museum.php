@@ -55,11 +55,17 @@ class Museum extends Model
         return $this->belongsTo(User::class);
     }
 
+
   public function tickets(): HasMany
   {
       return $this->hasMany(Ticket::class);
 
   }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class, 'museum_geographical_location_id', 'id');
+    }
 
 
 }

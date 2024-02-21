@@ -25,25 +25,26 @@
             </a>
           </div>
           <!-- /Logo -->
+          @if (session('status'))
+          <div class="alert alert-success" role="alert">
+              {{ session('status') }}
+          </div>
+      @endif
           <h6 class="mb-2">Գաղտնաբառի վերականգնում 🔒</h6>
-          <p class="mb-4">Մուտքագրեք Ձեր էլ․փոստը </p>
+          <p class="mb-4">Մուտքագրեք Ձեր էլ․հասցեն </p>
           <form id="formAuthentication" class="mb-3" action="{{ route('password.email') }}" method="post">
             @csrf
             <div class="mb-3">
-              @if (session('resent'))
-                        <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
-                        </div>
-              @endif
-              <label for="email" class="form-label">Էլ․փոստ</label>
-              <input type="text" class="form-control" id="email" name="email" placeholder="Մուտքագրեք Ձեր էլ․փոստը" autofocus>
+
+              <label for="email" class="form-label">Էլ․ հասցե</label>
+              <input type="text" class="form-control" id="email" name="email" placeholder="Մուտքագրեք Ձեր էլ․ հասցեն" autofocus>
               @error('email')
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
               </span>
           @enderror
             </div>
-            <button class="btn btn-primary d-grid w-100">Ուղարկեք Վերականգնման հղումը</button>
+            <button class="btn btn-primary d-grid w-100">Ուղարկեք վերականգնման հղումը</button>
 
           </form>
           <div class="text-center">

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('museum_id')->on('museums')->onDelete('cascade');
             $table->string('number');
+            $table->string('phone_name');
         });
     }
 
