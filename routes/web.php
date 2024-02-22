@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ChangeStatusController;
 use App\Http\Controllers\Admin\Courses\CourseLanguageController;
 use App\Http\Controllers\Admin\DeleteItemController;
 use App\Http\Controllers\Admin\Lessons\LessonController;
+use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\Admin\Tasks\TaskController;
 use App\Http\Controllers\Admin\UserController;
@@ -145,7 +146,9 @@ Route::group(['prefix' => 'museum'], function () {
   Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
 
 
+
 });
+
 
 
 //Project
@@ -167,6 +170,13 @@ Route::group(['prefix' => 'news'], function () {
 
   Route::get('/news-edit/{id}', [NewsController::class,'editNews'])->name('news-edit');
   Route::put('/news-update/{id}', [NewsController::class,'updateNews'])->name('news-update');
+
+});
+// Museum branches
+Route::group(['prefix'=>'musuem_branches'],function(){
+  Route::get('/list', [MuseumBranchController::class, 'index'])->name('branches-list');
+  Route::get('/create', [MuseumBranchController::class, 'create'])->name('branches-create');
+  Route::post('/store', [MuseumBranchController::class,'store'])->name('branches-store');
 
 });
 
