@@ -5,15 +5,21 @@ namespace App\Http\Controllers\Admin\News;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\News\CreateNewsRequest;
 use App\Http\Resources\Project\ProjectResource;
-use App\Models\News\News;
-use App\Models\News\NewsCategory;
+use App\Models\News;
+use App\Models\NewsTranslations;
 use App\Services\News\NewsService;
+use App\Traits\News\GetNewsTrait;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Input\Input;
 
 class NewsController extends Controller
 {
+  use GetNewsTrait;
     protected $newsService;
 
+    public $title;
+    public $from_created_at;
+    public $to_created_at;
     public function __construct(NewsService $newsService)
     {
         $this->newsService = $newsService;
@@ -21,29 +27,29 @@ class NewsController extends Controller
 
     public function index(Request $request)
     {
-        $data = News::orderBy('id', 'DESC')->with(['translations', 'category', 'images'])->paginate(5);
-        // $data = News::orderBy('id', 'DESC')->with(['translations'])->paginate(5);
 
-        $data = $this->newsService->customNewsResource($data);
 
-        return view('content.news.index', compact('data'))
-               ->with('i', ($request->input('page', 1) - 1) * 5);
+        $data=$this->getNews($request->all());
+
+            return view("content.news.index", compact('data'))
+            ->with('i', ($request->input('page', 1) - 1) * 3);
+
     }
 
     public function createNewsPage()
     {
-        $categoryList = $this->newsService->getCategoryList();
 
-        return view('content.news.create', compact('categoryList'));
+        return view('content.news.create');
     }
 
     public function createNews(CreateNewsRequest $request)
     {
+
         $createNews = $this->newsService->createNews($request->all());
 
-        $data = News::orderBy('id', 'DESC')->with(['translations', 'category', 'images'])->paginate(5);
+        $data = News::orderBy('id', 'DESC')->with(['news_translations','images'])->paginate(5);
 
-        $data = $this->newsService->customNewsResource($data);
+        // $data = $this->newsService->customNewsResource($data);
 
         return redirect()->route('news')
             ->with('i', ($request->input('page', 1) - 1) * 5)
@@ -53,18 +59,16 @@ class NewsController extends Controller
     public function editNews($id){
 
       $news = $this->newsService->editNews($id);
-      $categoryList = $this->newsService->getCategoryList();
 
 
-      return view('content.news.edit', compact('news','categoryList'));
+
+      return view('content.news.edit', compact('news'));
     }
     public function updateNews(CreateNewsRequest $request, $id){
 
       $news = $this->newsService->updateNews($request->all(),$id);
-
-
       return redirect()->back();
-     
+
     }
 
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('imageable_type');
             $table->string('path');
             $table->string('name');
+            $table->boolean('main')->default(0);
             $table->timestamps();
 
         });

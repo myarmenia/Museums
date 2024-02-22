@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\Users\StudentAttendancesController;
 use App\Http\Controllers\Admin\News\NewsController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\News\NewsCategoryController;
+use App\Http\Controllers\museum\MuseumController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -75,6 +76,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
   // Route::resource('roles', RoleController::class);
   Route::resource('users', UserController::class);
+  Route::get('users-visitors', [UserController::class, 'index'])->name('users_visitors');
+
 
   // pages
   Route::get('/pages/account-settings-account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account');
@@ -134,6 +137,13 @@ Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class,'index'])-
 // Route::get('student-attendances/{id}', [StudentAttendancesController::class,'index']);
 // Route::post('open-next-lesson', [OpenNextLessonController::class,'index'])->name('open_next_lesson');
 
+Route::group(['prefix' => 'museum'], function () {
+  Route::get('/', [MuseumController::class, 'index'])->name('museum');
+  Route::get('/create', [MuseumController::class, 'create'])->name('create-museum');
+  Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
+
+
+});
 
 
 //Project
@@ -147,20 +157,20 @@ Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class,'index'])-
 
 // });
 
-//News
-// Route::group(['prefix' => 'news'], function () {
-//   Route::get('/news', [NewsController::class, 'index'])->name('news');
-//   Route::get('/news-create', [NewsController::class, 'createNewsPage'])->name('news-create-page');
-//   Route::post('/news-create', [NewsController::class,'createNews'])->name('news-create');
+// News
+Route::group(['prefix' => 'news'], function () {
+  Route::get('/news', [NewsController::class, 'index'])->name('news');
+  Route::get('/news-create', [NewsController::class, 'createNewsPage'])->name('news-create-page');
+  Route::post('/news-create', [NewsController::class,'createNews'])->name('news-create');
 
 //   Route::get('/news-category', [NewsCategoryController::class, 'index'])->name('news-category');
 //   Route::get('/news-category-create', [NewsCategoryController::class, 'createCategoryPage'])->name('news-category-create-page');
 //   Route::post('/news-category-create', [NewsCategoryController::class,'createCategory'])->name('news-category-create');
 
-//   Route::get('/news-edit/{id}', [NewsController::class,'editNews'])->name('news-edit');
-//   Route::put('/news-update/{id}', [NewsController::class,'updateNews'])->name('news-update');
+  Route::get('/news-edit/{id}', [NewsController::class,'editNews'])->name('news-edit');
+  Route::put('/news-update/{id}', [NewsController::class,'updateNews'])->name('news-update');
 
-// });
+});
 
 
 // Route::post('video-upload', [FileUploadService::class, 'videoUpload'])->name('video-upload');

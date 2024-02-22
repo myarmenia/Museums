@@ -15,7 +15,7 @@ class News extends Model
     protected $table = 'news';
 
     protected $fillable = [
-        'news_category_id',
+        'user_id',
     ];
 
     public function images(): MorphMany
@@ -23,16 +23,12 @@ class News extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
-    public function translations()
+    public function news_translations()
     {
-        return $this->hasMany(NewsTranslations::class, 'news_id', 'id');
+        return $this->hasMany(NewsTranslations::class);
     }
 
-    public function category()
-    {
-        return $this->hasOne(NewsCategory::class, 'id', 'news_category_id');
-    }
-    public function newstranslation($lang){
+    public function translation($lang){
 
       return $this->hasOne(NewsTranslations::class)->where('lang', $lang)->first();
    }

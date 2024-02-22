@@ -3,6 +3,7 @@
 namespace App\Http\Requests\News;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Request;
 
 class CreateNewsRequest extends FormRequest
 {
@@ -21,22 +22,23 @@ class CreateNewsRequest extends FormRequest
      */
     public function rules(): array
     {
+     
+        $array= [
+            'translate.*.description' => 'required',
+            'translate.*.title' => 'required',
 
-        return [
-        
-            'category' => 'required',
-            'description.*' => 'required',
-            'title.*' => 'required',
-            'photo' => 'nullable|image',
         ];
+          if(Request::method()=="POST"){
+            $array['photo'] = 'required|image';
+        }
+        return $array;
     }
     public function messages(): array
     {
         return [
-          'title.*'=>'Поле заголовок обязательно для заполнения.',
-          'description.*'=>'Поле название обязательно для заполнения.',
-          'category' => 'Поле тип проекта обязательно для заполнения',
-          'photo'=>'Поле фото обязательно для заполнения.'
+          'translate.*.description'=>'Վերնագրի դաշտը պարտադիր է:',
+          'translate.*.title' => 'Տեքստի դաշտը պարտադիր է:',
+          'photo' => 'Լուսանկարի դաշտը պարտադիր է:'
         ];
     }
 
