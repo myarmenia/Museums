@@ -39,6 +39,7 @@
 
     },
     {
+      "url": "musuem_branches/list",
       "name": "Մասնաճյուղեր",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "general-news",
