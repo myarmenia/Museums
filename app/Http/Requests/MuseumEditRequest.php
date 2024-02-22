@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\PhotoRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class MuseumRequest extends FormRequest
+class MuseumEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,7 +31,7 @@ class MuseumRequest extends FormRequest
             'phones.phone1' => 'required',
             'region' => 'required',
             'account_number' => 'required',
-            'general_photo' => 'required|dimensions:min_width=1520,min_height=445,max_width=1550,max_height=500',
+            'general_photo' => 'dimensions:min_width=1520,min_height=445,max_width=1550,max_height=500',
             'photos.*' => 'dimensions:min_width=446,min_height=370,max_width=460,max_height=380',
         ];
     }
@@ -53,3 +53,4 @@ class MuseumRequest extends FormRequest
         ];
     }
 }
+
