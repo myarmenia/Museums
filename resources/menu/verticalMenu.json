@@ -52,6 +52,13 @@
 
       ]
     },
+    {
+      "name": "Թանգարաններ",
+      "icon": "menu-icon tf-icons bx bx-museum",
+      "slug": "museum",
+      "roles": ["all"],
+      "url": "museum"
+    },
 
     {
       "name": "Նորություններ",

@@ -35,7 +35,7 @@ class SendVerifyToken extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Webex verify token',
+            subject: 'Museum verify token',
         );
     }
 

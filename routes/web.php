@@ -140,9 +140,9 @@ Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class,'index'])-
 
 Route::group(['prefix' => 'museum'], function () {
   Route::get('/', [MuseumController::class, 'index'])->name('museum');
-  Route::get('/create', [MuseumController::class, 'create'])->name('create-museum');
+  Route::get('/create', [MuseumController::class, 'create'])->name('create-museum')->middleware('museum');
   Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
-  Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit');
+  Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit')->middleware('museum_edit_middleware');
   Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
 
 

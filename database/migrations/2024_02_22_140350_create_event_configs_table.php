@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('event_configs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('museum_id');
-            $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
+            $table->unsignedBigInteger('event_id');
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade')->onUpdate('cascade');
+            $table->date('day');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->integer('visitors_quantity_limitation');
+            $table->integer('visitors_quantity');
             $table->integer('price');
-            $table->integer('valid_time')->default(365);
             $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
@@ -28,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('event_configs');
     }
 };

@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_types', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('coefficient');
-            $table->integer('min_quantity');
-            $table->integer('max_quantity');
+            $table->unsignedBigInteger('museum_id');
+            $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
+            $table->integer('price');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_types');
+        Schema::dropIfExists('events');
     }
 };

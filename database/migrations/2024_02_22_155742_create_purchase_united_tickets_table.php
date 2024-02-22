@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('purchase_united_tickets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('museum_id');
             $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
+
+            $table->unsignedBigInteger('purchased_item_id');
+            $table->foreign('purchased_item_id')->references('id')->on('purchased_items')->onUpdate('cascade');
+
             $table->integer('price');
-            $table->integer('valid_time')->default(365);
-            $table->boolean('status')->default(1);
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('purchase_united_tickets');
     }
 };

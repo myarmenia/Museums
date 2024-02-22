@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('ticket_accesses', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('ticket_qr_id');
+            $table->foreign('ticket_qr_id')->references('id')->on('ticket_qrs')->onUpdate('cascade');
+
             $table->unsignedBigInteger('museum_id');
             $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
-            $table->integer('price');
-            $table->integer('valid_time')->default(365);
-            $table->boolean('status')->default(1);
-            $table->softDeletes();
+
+            $table->timestamp('visited_date')->nullable();  // 8 hour
+            $table->timestamp('access_period')->nullable();  //if ticket is event ticket
+            $table->string('status')->default('valid');   // valid, expired, visited
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('ticket_accesses');
     }
 };

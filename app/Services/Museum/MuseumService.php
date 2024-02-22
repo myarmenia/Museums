@@ -59,15 +59,25 @@ class MuseumService
 
             $museumTranslations = $this->museumRepository->createMuseumTranslations($museumTranslations);
 
+            if (array_key_exists('photos', $data)) {
+                $imagesData = [
+                    'photos' => [
+                        'image' => $data['photos'],
+                    ],
+                    'museum' => $getCreatedMuseum
+                ];
+
+                ImageService::createImageble($imagesData);
+            }
+
             $imagesData = [
                 'photos' => [
-                    'image' => $data['photos'],
-                    'mainPhoto' => $data['mainPhoto'],
+                    'image' => [$data['general_photo']],
                 ],
                 'museum' => $getCreatedMuseum
             ];
 
-            ImageService::createImageble($imagesData);
+            ImageService::createImageble($imagesData, true);
 
             $createLinkData = [
                 'link' => $data['link'],
@@ -99,7 +109,7 @@ class MuseumService
 
     public function getMuseumByUd($id)
     {
-       return $this->museumRepository->getMuseumByUd($id);  
+        return $this->museumRepository->getMuseumByUd($id);
 
     }
 
@@ -108,57 +118,67 @@ class MuseumService
 
         // try {
         //     DB::beginTransaction();
-            $languages = languages();
+        $languages = languages();
 
-            $regionId = Region::where('name', $data['region'])->first()->id;
+        $regionId = Region::where('name', $data['region'])->first()->id;
 
-            $museum = [
-                'museum_geographical_location_id' => $regionId,
-                'email' => $data['email'],
-                'account_number' => $data['account_number'],
+        $museum = [
+            'museum_geographical_location_id' => $regionId,
+            'email' => $data['email'],
+            'account_number' => $data['account_number'],
+        ];
+
+        $getCreatedMuseum = $this->museumRepository->updateMuseum($museum, $id);
+
+        // $getCreatedMuseumId = $getCreatedMuseum->id;
+
+        foreach ($languages as $key => $lang) {
+            $museumTranslations = [
+                'name' => $data['name'][$lang],
+                'description' => $data['description'][$lang],
+                'working_days' => $data['work_days'][$lang],
+                'director_name' => $data['owner'][$lang],
+                'address' => $data['address'][$lang],
             ];
 
-            $getCreatedMuseum = $this->museumRepository->updateMuseum($museum, $id);
+            $this->museumRepository->updateMuseumTranslations($museumTranslations, $lang, $id);
+        }
 
-            // $getCreatedMuseumId = $getCreatedMuseum->id;
+        $createLinkData = [
+            'link' => $data['link'],
+        ];
 
-            foreach ($languages as $key => $lang) {
-                $museumTranslations = [
-                    'name' => $data['name'][$lang],
-                    'description' => $data['description'][$lang],
-                    'working_days' => $data['work_days'][$lang],
-                    'director_name' => $data['owner'][$lang],
-                    'address' => $data['address'][$lang],
+        LinkService::updateLink($createLinkData, $id);
+
+        $phoneData = [
+            'phones' => $data['phones']
+        ];
+
+        PhoneService::updatePhone($phoneData, $id);
+
+        if (array_key_exists('photos', $data) || array_key_exists('general_photo', $data)) {
+            // dd($data);
+            $imagesData = [
+                'museum' => Museum::find($id)
+            ];
+        
+            if (array_key_exists('photos', $data)) {
+                $imagesData['photos'] = [
+                    'image' => $data['photos'],
                 ];
-
-                $this->museumRepository->updateMuseumTranslations($museumTranslations, $lang, $id);
+                ImageService::createImageble($imagesData);
             }
-           
-            $createLinkData = [
-                'link' => $data['link'],
-            ];
+        
+            if (array_key_exists('general_photo', $data)) {
+                $imagesData['photos'] = [
+                    'image' => [$data['general_photo']],
+                ];
+                ImageService::createImageble($imagesData, true);
+            }
+        }
+        // DB::commit();
 
-            LinkService::updateLink($createLinkData, $id);
-
-            $phoneData = [
-                'phones' => $data['phones']
-            ];
-
-            PhoneService::updatePhone($phoneData, $id);
-
-             // $imagesData = [
-            //     'photos' => [
-            //         'image' => $data['photos'],
-            //         'mainPhoto' => $data['mainPhoto'],
-            //     ],
-            //     'museum' => $getCreatedMuseum
-            // ];
-
-            // ImageService::createImageble($imagesData);
-
-            // DB::commit();
-
-            return true;
+        return true;
         // } catch (\Exception $e) {
         //     session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
         //     DB::rollBack();
@@ -168,6 +188,11 @@ class MuseumService
         //     DB::rollBack();
         //     return false;
         // }
+    }
+
+    public function getMuseumByAuthUser()
+    {
+        return Museum::where('user_id', auth()->id())->first()->id;
     }
 
 

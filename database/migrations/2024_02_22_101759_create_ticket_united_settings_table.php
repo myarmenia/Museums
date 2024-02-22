@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_grs', function (Blueprint $table) {
+        Schema::create('ticket_united_settings', function (Blueprint $table) {
             $table->id();
+            $table->integer('valid_time_days')->default(365);
+            $table->integer('min_museum_quantity');
+            $table->string('percent');
+            $table->string('coefficient');
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_grs');
+        Schema::dropIfExists('ticket_united_settings');
     }
 };
