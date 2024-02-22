@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('coefficient');
+            $table->integer('min_quantity');
+            $table->integer('max_quantity');
             $table->softDeletes();
             $table->timestamps();
         });

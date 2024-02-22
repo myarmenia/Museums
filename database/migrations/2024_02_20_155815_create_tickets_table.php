@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('museum_id');
             $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
             $table->integer('price');
-            $table->integer('valid_time');
+            $table->integer('valid_time')->default(365);
             $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();

@@ -1,4 +1,5 @@
 <?php
+use App\Models\Museum;
 
 function translateMessageApi($message, $lang=null)
 {
@@ -96,4 +97,30 @@ if(!function_exists('museumPhoneCount')){
         ];
     }
 }
+
+if(!function_exists('haveMuseumAdmin')){
+    function haveMuseumAdmin()
+    {
+        if(auth()->user()->roles()->get()->where('name', 'museum_admin')->count()) {
+            return true;
+        };
+
+        return false;
+    }
+}
+
+if(!function_exists('haveMuseum')){
+    function haveMuseum()
+    {
+        if($museum = Museum::where('user_id', auth()->id())->first()) {
+            return $museum->id;
+        };
+
+        return false;
+    }
+}
+
+    
+
+
 

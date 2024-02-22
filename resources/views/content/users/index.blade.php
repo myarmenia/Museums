@@ -32,6 +32,7 @@
         </div>
         <div class="card-body">
 
+
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">
                     <thead>
@@ -77,7 +78,9 @@
                                             data-bs-toggle="dropdown">
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
+
                                         <div class="dropdown-menu">
+
                                             <a class="dropdown-item d-flex" href="javascript:void(0);">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input change_status" type="checkbox"
