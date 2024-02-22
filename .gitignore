@@ -15,7 +15,7 @@ yarn-error.log
 /.vscode
 #/config/database.php
 
-
+/bootstrap/cache/
 # /.phpunit.cache
 # /node_modules
 
