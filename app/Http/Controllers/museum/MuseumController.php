@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\museum;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MuseumEditRequest;
 use App\Http\Requests\MuseumRequest;
 use App\Models\Museum;
 use App\Models\Region;
@@ -20,9 +21,11 @@ class MuseumController extends Controller
     }
     public function index(Request $request)
     {
-        // if($this->haveMuseumAdmin() && $id = $this->haveMuseum()) {
-        //     return redirect()->route('museum.edit', ['id' => (int) $id]);
-        // };
+        if(haveMuseumAdmin() && $id = haveMuseum()) {
+            return redirect()->route('museum.edit', ['id' => (int) $id]);
+        }elseif (haveMuseumAdmin() && !haveMuseum()) {
+            return redirect()->route('create-museum');
+        };
         
         $data = Museum::with(['user','translationsAdmin', 'phones', 'images', 'links'])->orderBy('id', 'DESC')->paginate(5);
 
@@ -32,10 +35,9 @@ class MuseumController extends Controller
 
     public function create()
     {
-        // if($this->haveMuseumAdmin() && $data = $this->haveMuseum()) {
-        //     $regions = Region::all();
-        //     return view('content.museum.edit', compact(['data', 'regions']));
-        // };
+        if( $id = haveMuseum()) {
+            return redirect()->route('museum.edit', ['id' => $id]);
+        };
         $regions = Region::all();
 
         return view('content.museum.create', compact('regions'));
@@ -43,7 +45,6 @@ class MuseumController extends Controller
 
     public function addMuseum(MuseumRequest $request)
     {
-
         $this->museumService->createMuseum($request->all());
 
         return redirect()->route('museum');
@@ -53,39 +54,19 @@ class MuseumController extends Controller
     public function edit($id)
     {
         $data = $this->museumService->getMuseumByUd($id);
-
         $regions = Region::all();
 
         return view('content.museum.edit', compact(['data', 'regions']));
     }
 
-    //if have museum get museum or false
-    public function haveMuseum()
-    {
-        if($museum = Museum::where('user_id', auth()->id())->first()) {
-            return $museum->id;
-        };
 
-        return false;
-    }
-
-    public function haveMuseumAdmin()
-    {
-        if(auth()->user()->roles()->get()->where('name', 'museum_admin')->count()) {
-            return true;
-        };
-
-        return false;
-    }
-
-    public function update(MuseumRequest $request, $id)
+    public function update(MuseumEditRequest $request, $id)
     {
         $this->museumService->updateMuseum($request->all(), $id);
 
         $data = $this->museumService->getMuseumByUd($id);
-        $regions = Region::all();
 
-        return view('content.museum.edit', compact(['data', 'regions']));
+        return redirect()->route('museum.edit', ['id' => $id]);
     }
     
 }
