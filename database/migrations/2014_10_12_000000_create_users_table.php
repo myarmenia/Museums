@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->bigInteger('country_id')->unsigned()->nullable();
             $table->foreign('country_id')->references('id')->on('countries')->onUpdate('cascade');
             $table->boolean('status')->default(1);
+            $table->unsignedBigInteger('google_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
