@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('purchases', function (Blueprint $table) {
+        Schema::create('ticket_subscription_settings', function (Blueprint $table) {
             $table->id();
+            $table->integer('valid_time_days')->default(365);
+            $table->string('max_quantity');
+            $table->integer('coefficient');      // coefficient * ticket standart price
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchases');
+        Schema::dropIfExists('ticket_subscription_settings');
     }
 };
