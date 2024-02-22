@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('news', function (Blueprint $table) {
+        Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
-            $table->boolean('status')->default(true);
+            $table->unsignedBigInteger('museum_id');
+            $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
+            $table->integer('price');
+            $table->integer('valid_time');
+            $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('news');
+        Schema::dropIfExists('tickets');
     }
 };

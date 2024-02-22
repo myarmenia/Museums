@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('news_translations', function (Blueprint $table) {
+        Schema::create('museum_branche_translations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('news_id');
-            $table->foreign('news_id')->references('id')->on('news')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('title')->nullable();
+            $table->unsignedBigInteger('museum_branche_id');
+            $table->foreign('museum_branche_id')->references('id')->on('museum_branches')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('name');
             $table->longText('description')->nullable();
-            $table->string('lang')->index();
+            $table->string('working_days');
+            $table->string('address');
+            $table->string('lang');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('news_translations');
+        Schema::dropIfExists('museum_branche_translations');
     }
 };

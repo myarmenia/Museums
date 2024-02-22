@@ -22,7 +22,7 @@ class CreateNewsRequest extends FormRequest
      */
     public function rules(): array
     {
-     
+
         $array= [
             'translate.*.description' => 'required',
             'translate.*.title' => 'required',
@@ -36,8 +36,8 @@ class CreateNewsRequest extends FormRequest
     public function messages(): array
     {
         return [
-          'translate.*.description'=>'Վերնագրի դաշտը պարտադիր է:',
-          'translate.*.title' => 'Տեքստի դաշտը պարտադիր է:',
+          'translate.*.description'=>'Տեքստի դաշտը պարտադիր է:',
+          'translate.*.title' => 'Վերնագրի դաշտը պարտադիր է:',
           'photo' => 'Լուսանկարի դաշտը պարտադիր է:'
         ];
     }
