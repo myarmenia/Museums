@@ -30,7 +30,7 @@
       "url": "/users",
       "name": "Օգտագործողներ",
       "icon": "menu-icon tf-icons bx bx-user",
-      "slug": ["users.index", "users.create", "users.edit", "users_visitors"],
+      "slug": ["users.index", "users.create", "users.edit", "users_visitors", "users.show"],
       "roles": ["super_admin"],
 
       "submenu": [
@@ -47,33 +47,31 @@
         {
           "url": "users-visitors",
           "name": "Այցելուներ",
-          "slug": "users_visitors"
+          "slug": ["users_visitors","users.show"]
         }
 
       ]
     },
     {
-      "name": "Museum",
+      "name": "Թանգարաններ",
       "icon": "menu-icon tf-icons bx bx-museum",
       "slug": "museum",
+      "roles": ["all"],
       "url": "museum"
     },
+
     {
-      "name": "News",
+      "name": "Նորություններ",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "general-news",
-      "roles": ["general_manager"],
+      "roles": ["general_manager","super_admin"],
       "submenu": [
         {
           "url": "/news/news",
           "name": "News",
           "slug": "news"
-        },
-        {
-          "url": "/news/news-category",
-          "name": "News category",
-          "slug": "news-category"
         }
+
       ]
     },
 
@@ -129,6 +127,7 @@
           "slug": "auth-forgot-password-basic",
           "target": "_blank"
         }
+
       ]
     },
     {

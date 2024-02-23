@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('linkable_id');
             $table->string('linkable_type');
-            $table->string('path');
+            $table->string('link');
             $table->string('name');
             $table->timestamps();
         });

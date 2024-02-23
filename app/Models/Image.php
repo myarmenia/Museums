@@ -14,7 +14,8 @@ class Image extends Model
         'imageable_id',
         'imageable_type',
         'path',
-        'name'
+        'name',
+        'main'
     ];
 
     protected $table = 'images';

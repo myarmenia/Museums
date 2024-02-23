@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('museums', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->on('users')->onDelete('cascade')->default(auth()->id());
+            $table->foreignId('user_id')->on('users')->onDelete('cascade');
             $table->integer('museum_geographical_location_id');
             $table->string('email');
             $table->string('account_number');
-            $table->string('working_hours');
+            // $table->string('working_hours');
             $table->timestamps();
         });
     }

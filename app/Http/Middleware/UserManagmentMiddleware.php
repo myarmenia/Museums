@@ -26,7 +26,7 @@ class UserManagmentMiddleware
         $user_g_name = $user->roles->pluck('g_name')[0];
 
           if ($administrator->hasRole('super_admin')) {
-            return $user_g_name == 'admin' || $user_g_name == 'super_admin' ?  $next($request) : redirect()->back();
+            return $user_g_name == 'admin' || $user_g_name == 'super_admin' || $user_g_name == 'web' ?  $next($request) : redirect()->back();
           }
 
           if ($administrator->hasRole('museum_admin')) {

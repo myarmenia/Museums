@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ChangeStatusController;
 use App\Http\Controllers\Admin\Courses\CourseLanguageController;
 use App\Http\Controllers\Admin\DeleteItemController;
 use App\Http\Controllers\Admin\Lessons\LessonController;
+use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\Admin\Tasks\TaskController;
 use App\Http\Controllers\Admin\UserController;
@@ -66,8 +67,8 @@ use App\Http\Controllers\tables\Basic as TablesBasic;
 // authentication
 Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 // Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
-// Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])->name('auth-reset-password-basic');
-Auth::routes(['register' => false, 'verify' => false]);
+Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])->name('auth-reset-password-basic');
+Auth::routes(['register' => false]);
 
 // Route::post('/web/login-check', [AuthController::class, 'login'])->name('web-login-check');
 
@@ -76,7 +77,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
   // Route::resource('roles', RoleController::class);
   Route::resource('users', UserController::class);
-  Route::get('users-visitors', [UserController::class, 'index'])->name('users_visitors');
+  Route::get('users-visitors', [UserController::class, 'users_visitors'])->name('users_visitors');
 
 
   // pages
@@ -139,11 +140,15 @@ Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class,'index'])-
 
 Route::group(['prefix' => 'museum'], function () {
   Route::get('/', [MuseumController::class, 'index'])->name('museum');
-  Route::get('/create', [MuseumController::class, 'create'])->name('create-museum');
+  Route::get('/create', [MuseumController::class, 'create'])->name('create-museum')->middleware('museum');
   Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
+  Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit')->middleware('museum_edit_middleware');
+  Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
+
 
 
 });
+
 
 
 //Project
@@ -163,12 +168,17 @@ Route::group(['prefix' => 'news'], function () {
   Route::get('/news-create', [NewsController::class, 'createNewsPage'])->name('news-create-page');
   Route::post('/news-create', [NewsController::class,'createNews'])->name('news-create');
 
-//   Route::get('/news-category', [NewsCategoryController::class, 'index'])->name('news-category');
-//   Route::get('/news-category-create', [NewsCategoryController::class, 'createCategoryPage'])->name('news-category-create-page');
-//   Route::post('/news-category-create', [NewsCategoryController::class,'createCategory'])->name('news-category-create');
-
   Route::get('/news-edit/{id}', [NewsController::class,'editNews'])->name('news-edit');
   Route::put('/news-update/{id}', [NewsController::class,'updateNews'])->name('news-update');
+
+});
+// Museum branches
+Route::group(['prefix'=>'musuem_branches'],function(){
+  Route::get('/list', [MuseumBranchController::class, 'index'])->name('branches-list');
+  Route::get('/create', [MuseumBranchController::class, 'create'])->name('branches-create');
+  Route::post('/store', [MuseumBranchController::class,'store'])->name('branches-store');
+  Route::get('/edit/{id}', [MuseumBranchController::class,'edit'])->name('branches-edit');
+  Route::put('/update/{id}', [MuseumBranchController::class,'update'])->name('branches-update');
 
 });
 

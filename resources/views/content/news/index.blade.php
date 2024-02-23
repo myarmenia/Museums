@@ -2,7 +2,7 @@
 
 @section('title', 'Account settings - Account')
 @section('page-script')
-    <script src="{{ asset('assets/js/change-status.js') }}"></script>
+<script src="{{ asset('assets/js/change-status.js') }}"></script>
     <script src="{{ asset('assets/js/111.js') }}"></script>
     <script src="{{ asset('assets/js/delete-item.js') }}"></script>
 @endsection
@@ -45,7 +45,7 @@
                 </div>
 
 
-                <button class="btn btn-primary col-2">Поиск</button>
+                <button class="btn btn-primary col-2">Փնտրել</button>
 
             </div>
         </form>
@@ -57,6 +57,7 @@
                             <th>No</th>
                             <th>Նկար</th>
                             <th>Վերնագիր</th>
+                            <th>Կարգավիճակ</th>
                             <th>Ստեղծման ամսաթիվը</th>
                             <th>Գործողություն</th>
                         </tr>
@@ -73,6 +74,14 @@
                                     @endif
                                 </td>
                                 <td>{{ $news->translation("am")->title}}</td>
+                                <td class="status">
+                                  @if ($news->status)
+                                      <span class="badge bg-label-success me-1">Ակտիվ</span>
+                                  @else
+                                      <span class="badge bg-label-danger me-1">Ապաակտիվ</span>
+                                  @endif
+                              </td>
+
 
                                 <td>{{ $news->created_at }}</td>
                                 <td>
@@ -82,6 +91,13 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
+                                          <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input change_status" type="checkbox"
+                                                    role="switch" data-field-name="status"
+                                                    {{ $news['status'] ? 'checked' : null }}>
+                                            </div>Կարգավիճակ
+                                        </a>
                                             <a class="dropdown-item" href="{{route('news-edit',$news['id'])}}"><i
                                                     class="bx bx-edit-alt me-1"></i>Խմբագրել</a>
                                             <button type="button" class="dropdown-item click_delete_item"

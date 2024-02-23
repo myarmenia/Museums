@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->longText('description')->nullable();
             $table->string('lang')->index();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

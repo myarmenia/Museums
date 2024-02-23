@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Models\Role;
@@ -10,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements MustVerifyEmail
 {
   use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
@@ -23,6 +24,7 @@ class User extends Authenticatable implements JWTSubject
         'phone',
         'password',
         'gender',
+        'google_id',
         'birth_date',
         'country_id',
     ];
@@ -42,6 +44,14 @@ class User extends Authenticatable implements JWTSubject
     return [];
   }
 
+  public function country()
+  {
+    return $this->belongsTo(Country::class, 'country_id');
+  }
+
+  public function carts(){
+    return $this->hasMany(Cart::class);
+  }
   public function roleNames(): array
   {
 
@@ -51,7 +61,7 @@ class User extends Authenticatable implements JWTSubject
   {
 
     foreach ($this->roles()->get() as $role) {
-      if ($role->name == "admin" || $role->name == "mentor") {
+      if ($role->interface == "admin" || $role->interface ==  "museum") {
         return true;
       }
     }

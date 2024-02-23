@@ -84,7 +84,9 @@ class Kernel extends HttpKernel
     'setlang' => \App\Http\Middleware\SetLanguageMiddleware::class,
     'apiAuthCheck' => \App\Http\Middleware\CheckAuthUserMiddleware::class,
     // 'authCheck' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
-    'user_managment_middleware' => \App\Http\Middleware\UserManagmentMiddleware::class
+    'user_managment_middleware' => \App\Http\Middleware\UserManagmentMiddleware::class,
+    'museum_edit_middleware' => \App\Http\Middleware\Museum\MuseumEditMiddleware::class,
+    'museum' => \App\Http\Middleware\Museum\MuseumMiddleware::class
 
 
   ];

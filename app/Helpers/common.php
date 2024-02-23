@@ -1,4 +1,5 @@
 <?php
+use App\Models\Museum;
 
 function translateMessageApi($message, $lang=null)
 {
@@ -58,8 +59,68 @@ if(!function_exists('languagesName')){
             'ru' => 'ռուսերեն',
             'en' => 'անգլերեն',
         ];
-        
+
         return $arr[$key];
 
     }
 }
+
+if(!function_exists('getLinkType')){
+    function getLinkType(){
+
+        return [
+            'facebook', 'instagram', 'web_site', 'virtual_tour',
+        ];
+
+    }
+}
+
+if(!function_exists('getLinkNames')){
+    function getLinkNames($key){
+
+        $arr = [
+            'facebook' => 'Ֆեյսբուք',
+            'instagram' => 'Ինստագրամ',
+            'virtual_tour' => 'Վեբ-սայթ',
+            'web_site' => 'Վիրտուալ էքսկուրսիա',
+        ];
+
+        return $arr[$key];
+
+    }
+}
+
+if(!function_exists('museumPhoneCount')){
+    function museumPhoneCount(){
+        return [
+            'phone1', 'phone2', 'phone3',
+        ];
+    }
+}
+
+if(!function_exists('haveMuseumAdmin')){
+    function haveMuseumAdmin()
+    {
+        if(auth()->user()->roles()->get()->where('name', 'museum_admin')->count()) {
+            return true;
+        };
+
+        return false;
+    }
+}
+
+if(!function_exists('haveMuseum')){
+    function haveMuseum()
+    {
+        if($museum = Museum::where('user_id', auth()->id())->first()) {
+            return $museum->id;
+        };
+
+        return false;
+    }
+}
+
+    
+
+
+

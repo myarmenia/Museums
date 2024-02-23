@@ -15,6 +15,7 @@
     </div>
 
     <div class="menu-inner-shadow"></div>
+   
     @php
     // dd(Auth::user()->roles()->pluck('interface'))
       $interfaces = Auth::user()->roles()->pluck('interface')->toArray();
@@ -36,32 +37,42 @@
                     <span class="menu-header-text">{{ __($menu->menuHeader) }}</span>
                 </li>
             @else
-                {{-- active menu method --}}
+
                 @php
                     $activeClass = null;
                     $currentRouteName = Route::currentRouteName();
 
 
                     $roles_intersect = roles_intersect($menu->roles);
-                 
+
+                    if (gettype($menu->slug) === 'array') {
+                        foreach ($menu->slug as $slug) {
+                            if (str_contains($currentRouteName, $slug) and strpos($currentRouteName, $slug) === 0) {
+                                $activeClass = 'active open';
+                            }
+                        }
+                    }
 
                     if ($currentRouteName === $menu->slug) {
                         $activeClass = 'active';
                     } elseif (isset($menu->submenu)) {
 
-
                         if (gettype($menu->slug) === 'array') {
+
                             foreach ($menu->slug as $slug) {
+
                                 if (str_contains($currentRouteName, $slug) and strpos($currentRouteName, $slug) === 0) {
                                     $activeClass = 'active open';
                                 }
                             }
                         } else {
+
                             if (str_contains($currentRouteName, $menu->slug) and strpos($currentRouteName, $menu->slug) === 0) {
+
                                 $activeClass = 'active open';
                             }
                         }
-                    }
+                    }else{ }
 
                 @endphp
 
@@ -74,7 +85,7 @@
                             @isset($menu->icon)
                                 <i class="{{ $menu->icon }}"></i>
                             @endisset
-                            <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
+                            <div>{{ isset($menu->name) ? $menu->name : '' }}</div>
                             @isset($menu->badge)
                                 <div class="badge bg-{{ $menu->badge[0] }} rounded-pill ms-auto">{{ $menu->badge[1] }}</div>
                             @endisset

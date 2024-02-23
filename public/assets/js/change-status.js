@@ -9,7 +9,7 @@ $(function () {
 
     $.ajax({
       type: "post",
-      url: "change-status",
+      url: "/change-status",
       data: { id, tb_name, status, field_name },
       cache: false,
       success: function (data) {
@@ -17,9 +17,9 @@ $(function () {
         let status_word = ''
         let status_class = ''
         if (data.result == 1) {
-          field_name == 'payment_status' ?
-            (status ? (status_word = 'Оплачено', status_class = 'success') : (status_word = 'Не оплачено', status_class = 'danger')) :
-            (status ? (status_word = 'Активный', status_class = 'success') : (status_word = 'Не активный', status_class = 'danger'));
+
+
+          status ? (status_word = 'Ակտից', status_class = 'success') : (status_word = 'Ապաակտիվ', status_class = 'danger')
 
           changeElemen.closest('tr').children('.' + field_name).html(`
             <span class="badge bg-label-${status_class} me-1">${status_word}</span>`)

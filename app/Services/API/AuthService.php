@@ -2,6 +2,7 @@
 namespace App\Services\API;
 
 use App\Models\API\VerifyUser;
+use App\Models\Country;
 use App\Models\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Arr;
@@ -15,13 +16,16 @@ class AuthService
     {
         $data['password'] = bcrypt($data['password']);
         $data['status'] = 0;
+        if(array_key_exists('country', $data)){
+            $data['country_id'] = Country::where('key', $data['country'])->first()->id;
+        }
 
         $user = User::create($data);
 
         $user->assignRole('visitor');
 
         if ($user) {
-            $token = sha1(Str::random(80));
+            $token = mt_rand(10000, 99999);
             $email = $user->email;
             $verify = VerifyUser::create([
                 'email' => $email,

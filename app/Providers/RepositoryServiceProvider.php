@@ -2,14 +2,13 @@
 
 namespace App\Providers;
 
-
-use App\Interfaces\Course\LanguagesInterface;
-use App\Interfaces\Lesson\LessonRepositoryInterface as LessonLessonRepositoryInterface;
+use App\Interfaces\MuseumBranches\MuseumBranchesRepositoryInterface;
 use App\Interfaces\User\UserInterface;
-use App\Interfaces\User\StudentInfoInterface;
+use App\Repositories\Branches\BranchRepository;
+use App\Repositories\MuseumBranches\MuseumBranchRepository;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\StudentInfoRepository;
-use App\Repositories\User\UserCourseLanguagesRepository;
+
 
 
 use Illuminate\Support\ServiceProvider;
@@ -23,8 +22,11 @@ class RepositoryServiceProvider extends ServiceProvider
   {
 
     $this->app->bind(UserInterface::class, UserRepository::class);
-    $this->app->bind(LanguagesInterface::class, UserCourseLanguagesRepository::class);
-    $this->app->bind(StudentInfoInterface::class, StudentInfoRepository::class);
+    // $this->app->bind(MuseumBranchesRepositoryInterface::class, MuseumBranchRepository::class);
+
+
+
+
 
   }
 

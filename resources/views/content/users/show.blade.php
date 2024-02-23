@@ -9,9 +9,9 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{route('users.index')}}">Օգտագործողներ</a>
+                <a href="{{route('users_visitors')}}">Այցելուներ</a>
             </li>
-            <li class="breadcrumb-item active">Դիտել օգտատիրոջը</li>
+            <li class="breadcrumb-item active">Դիտել</li>
         </ol>
     </nav>
 </h4>
@@ -19,20 +19,17 @@
 <div class="card">
     <div class="d-flex justify-content-between align-items-center">
         <div>
-            <h4 class="card-header">Դիտել օգտատիրոջը</h4>
+            <h4 class="card-header">Դիտել </h4>
         </div>
 
     </div>
     <div class="card-body">
-
-        {{-- <form action="{{route('users.update', $user->id)}}" method="post"> --}}
 
             <div class="mb-3 row">
                 <label for="name" class="col-md-2 col-form-label">Անուն  </label>
                 <div class="col-md-10">{{$user->name ?? ''}}
                 </div>
             </div>
-
 
             <div class="mb-3 row">
                 <label for="surname" class="col-md-2 col-form-label">Ազգանուն</label>
@@ -49,11 +46,10 @@
                 </div>
             </div>
 
-
             <div class="mb-3 row">
                 <label for="phone" class="col-md-2 col-form-label">Քաղաքացիություն</label>
                 <div class="col-md-10">
-                   {{$user->phone ?? ''}}
+                   {{$user->country != null ? $user->country->name : ''}}
 
                 </div>
             </div>
@@ -61,7 +57,7 @@
             <div class="mb-3 row">
                 <label for="phone" class="col-md-2 col-form-label">Սեռ</label>
                 <div class="col-md-10">
-                      {{$user->gender ?? ''}}
+                      {{$user->gender != null ? __("gender.$user->gender") : ''}}
 
                 </div>
             </div>
@@ -82,10 +78,6 @@
                 </div>
             </div>
 
-
-
-
-
             <div class="mb-3 row">
                 <label for="html5-text-input" class="col-md-2 col-form-label"></label>
                 <div class="d-flex col-md-10">
@@ -97,11 +89,8 @@
                 </div>
             </div>
 
-        {{-- </form> --}}
     </div>
 
-
 </div>
-
 
 @endsection

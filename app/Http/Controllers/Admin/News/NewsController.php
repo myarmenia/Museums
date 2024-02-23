@@ -28,8 +28,8 @@ class NewsController extends Controller
     public function index(Request $request)
     {
 
-
-        $data=$this->getNews($request->all());
+      $addressRequest='web';
+        $data=$this->getAllNews($request->all(),$addressRequest);
 
             return view("content.news.index", compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 3);

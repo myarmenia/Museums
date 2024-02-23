@@ -44,7 +44,13 @@ return [
   'different' => ':attribute -ը և :other -ը պետք է տարբեր լինեն։',
   'digits' => ':attribute պետք է լինի :digits թվանշան:',
   'digits-between' => ':attribute պետք է լինի :min և :max թվանշանների միջև:',
-  'dimensions' => ':հատկանիշն ունի պատկերի անվավեր չափեր:',
+  // 'dimensions' => ':հատկանիշն ունի պատկերի անվավեր չափեր:',
+  'dimensions' => [
+    'min_width' => ':min',
+    'max_width' => ':max',
+    'min_height' => ':min',
+    'max_height' => ':max',
+  ],
   'distinct' => ':attribute դաշտը կրկնօրինակված արժեք ունի:',
   'doesnt-end-with' => ':attribute չի կարող ավարտվել հետևյալներից որևէ մեկով. :values',
   'doesnt-start-with' => ':attribute չի կարող սկսվել հետևյալներից որևէ մեկով. :values',
@@ -199,7 +205,7 @@ return [
     'surname' => 'Ազգանուն',
     'email' => 'Էլ․ հասցե',
     'confirm-password' => 'Կրկնել գաղտնաբառ',
-    'password' => 'Գաղտնաբառ',
+    'password' => 'Գաղտնաբառի',
     'phone' => 'Հեռախոս',
     'roles' => 'Դերեր',
     'status' => 'Կարգավիճակ'
