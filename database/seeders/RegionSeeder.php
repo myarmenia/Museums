@@ -13,20 +13,25 @@ class RegionSeeder extends Seeder
      */
     public function run(): void
     {
+
         $regionInsert = [
-            ['name' => 'yerevan'],
-            ['name' => 'aragatsotn'],
-            ['name' => 'ararat'],
-            ['name' => 'armavir'],
-            ['name' => 'gegharkunik'],
-            ['name' => 'kotayk'],
-            ['name' => 'lori'],
-            ['name' => 'shirak'],
-            ['name' => 'syunik'],
-            ['name' => 'tavush'],
-            ['name' => 'vayots_dzor'],
+          'yerevan',
+          'aragatsotn',
+          'ararat',
+          'armavir',
+          'gegharkunik',
+          'kotayk',
+          'lori',
+          'shirak',
+          'syunik',
+          'tavush',
+          'vayots_dzor'
         ];
-        
-        Region::insert($regionInsert);
+
+
+        foreach ($regionInsert as $region) {
+            Region::updateOrInsert(['name' => $region]);
+        }
+
     }
 }

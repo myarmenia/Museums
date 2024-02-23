@@ -19,16 +19,17 @@ class CreateUserSeeder extends Seeder
         $user = User::where('email', 'info@webex.am')->first();
 
         if(!$user){
-            $user = User::updateOrCreate([
-            'name' => 'Admin',
-            'surname' => 'Adminyan',
-            'status' => 1,
-            'phone' => '+37494444444',
-            'email' => 'info@webex.am',
-            'password' => bcrypt('123456')
-            ]);
+            $user = User::updateOrCreate(
+              ['email' => 'info@webex.am'],
+              [
+                'name' => 'Admin',
+                'surname' => 'Adminyan',
+                'status' => 1,
+                'phone' => '+37494444444',
+                'password' => bcrypt('123456')
+              ]);
 
-            $role = Role::updateOrCreate(['name' => 'super_admin', 'g_name' => 'super_admin', 'interface' => 'admin' ]);
+            $role = Role::updateOrCreate(['name' => 'super_admin'], ['g_name' => 'super_admin', 'interface' => 'admin' ]);
 
             $permissions = Permission::pluck('id', 'id')->all();
 
@@ -37,16 +38,18 @@ class CreateUserSeeder extends Seeder
             $user->assignRole([$role->id]);
         }
 
-        $userVisitor = User::updateOrCreate([
+        $userVisitor = User::updateOrCreate(
+          ['email' => 'visit@mail.ru'],
+          [
             'name' => 'Visitor',
             'surname' => 'Visitoryan',
             'status' => 1,
             'phone' => '+37455555555',
-            'email' => 'visit@mail.ru',
-            'password' => bcrypt('123456')
-        ]);
 
-        $roleVisitor = Role::updateOrCreate(['name' => 'visitor', 'g_name' => 'web', 'interface' => 'web' ]);
+            'password' => bcrypt('123456')
+          ]);
+
+        $roleVisitor = Role::updateOrCreate(['name' => 'visitor'], ['g_name' => 'web', 'interface' => 'web' ]);
 
         $userVisitor->assignRole([$roleVisitor->id]);
     }

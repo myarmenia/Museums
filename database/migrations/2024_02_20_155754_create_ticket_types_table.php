@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('ticket_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('coefficient');
-            $table->integer('min_quantity');
-            $table->integer('max_quantity');
+            $table->string('name')->nullable();
+            $table->string('coefficient')->nullable();
+            $table->integer('min_quantity')->nullable();
+            $table->integer('max_quantity')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
