@@ -17,9 +17,6 @@
             <div>
                 <h5 class="card-header">Թանգարանների ցուցակ</h5>
             </div>
-            <div>
-                <a href="{{ route('create-museum') }}" class="btn btn-primary mx-4">Ավելացնել նոր թանգարան</a>
-            </div>
         </div>
         <div class="card-body">
 
@@ -32,6 +29,7 @@
                             <th>Տնօրեն</th>
                             <th>Էլ․ հասցե</th>
                             <th>Ստեղծված է</th>
+                            <th>Դիտել</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,20 +41,12 @@
                                 <td>{{ $museum->email}}</td>
                                 <td>{{ $museum->created_at }}</td>
                                 <td>
-                                    <div class="dropdown action" data-id="{{ $museum->id }}" data-tb-name="museums">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        {{-- <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{{route('museum.edit', $museum->id)}}"><i
-                                                    class="bx bx-edit-alt me-1"></i>Редактировать</a>
-                                            <button type="button" class="dropdown-item click_delete_item"
-                                                data-bs-toggle="modal" data-bs-target="#smallModal"><i
-                                                    class="bx bx-trash me-1"></i>
-                                                Удалить</button>
-                                        </div> --}}
-                                    </div>
+                                    <a class="dropdown-item d-flex justify-content-center" href="#">
+                                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16 7C6 7 2 16 2 16C2 16 6 25 16 25C26 25 30 16 30 16C30 16 26 7 16 7Z" stroke="#49536E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M16 21C18.7614 21 21 18.7614 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21Z" stroke="#49536E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

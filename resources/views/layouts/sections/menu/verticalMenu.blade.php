@@ -15,6 +15,7 @@
     </div>
 
     <div class="menu-inner-shadow"></div>
+   
     @php
     // dd(Auth::user()->roles()->pluck('interface'))
       $interfaces = Auth::user()->roles()->pluck('interface')->toArray();
