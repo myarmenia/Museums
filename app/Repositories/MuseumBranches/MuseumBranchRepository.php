@@ -53,7 +53,7 @@ $museum_branches = MuseumBranche::create([
         }
         if($link = $request['link'] ?? null){
           $link = [
-            'path' => $request['link'],
+            'link' => $request['link'],
             'name' => 'website'
           ];
           $museum_branches->links()->create($link);
