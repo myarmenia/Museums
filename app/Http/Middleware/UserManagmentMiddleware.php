@@ -30,7 +30,7 @@ class UserManagmentMiddleware
           }
 
           if ($administrator->hasRole('museum_admin')) {
-            return $user_g_name == 'museum' ? $next($request) : redirect()->back();
+            return $user_g_name == 'museum' && $administrator->hasInStaff($id) ? $next($request) : redirect()->back();
           }
       }
       else{

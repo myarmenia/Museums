@@ -19,7 +19,7 @@
       ]
     },
     {
-      "name": "Թանգարաններ",
+      "name": "Թանգարան",
       "icon": "menu-icon tf-icons bx bx-museum",
       "slug": "museum",
       "url": "museum",
@@ -36,6 +36,14 @@
       "roles": [
         "museum_admin"
       ]
+
+    },
+    {
+      "url": "musuem_branches/list",
+      "name": "Մասնաճյուղեր",
+      "icon": "menu-icon tf-icons bx bx-box",
+      "slug": "general-news",
+      "roles": ["museum_admin"]
 
     }
   ]

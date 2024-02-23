@@ -3,6 +3,7 @@
 @section('title', 'Թանգարանի - Փոփոխում')
 @section('page-script')
     <script src="{{ asset('assets/js/admin\museum\museum-upload-photo.js') }}"></script>
+    <script src="{{ asset('assets/js/delete-item.js') }}"></script>
 @endsection
 
 @section('page-style')
@@ -218,8 +219,50 @@
                     @enderror
                 @endforeach
 
+
                 <div class="mb-3 row">
-                    <label for="photos" class="col-md-2 col-form-label">Նկար</label>
+                    <label for="photos" class="col-md-2 col-form-label d-flex">
+                            Գլխավոր նկար<span
+                            class="required-field">*</span>
+                        <div class="mx-2" title="Նկարի լայնքը պետք է լինի 1520 մինչև 1550 և բարձրությունը 445 մինչև 500">
+                            <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+                        </div>
+                    </label>
+                        
+                    <div class="col-md-10">
+                        <div class="d-flex flex-wrap align-items-start align-items-sm-center">
+                            <label for="general_photo" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                <span class="d-none d-sm-block">Ավելացնել գլխավոր նկար</span>
+                                <i class="bx bx-upload d-block d-sm-none"></i>
+                                <input type="file" id="general_photo" name="general_photo" class="account-file-input-general"
+                                    hidden accept="image/png, image/jpeg" />
+                            </label>
+
+                            <div class="uploaded-images-container uploaded-photo-project" id="uploadedImagesContainerGeneral">
+                                @foreach($data->images as $key => $image)
+                                    @if($image->main == 1)
+                                        <div class="uploaded-image-div mx-2">
+                                            <img src="{{route('get-file', ['path' => $image->path])}}" class="d-block rounded uploaded-image uploaded-photo-project">
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @error('general_photo')
+                    <div class="mb-3 row justify-content-end">
+                        <div class="col-sm-10 text-danger fts-14" id="photos_div">{{ $message }}
+                        </div>
+                    </div>
+                @enderror
+
+                <div class="mb-3 row">
+                    <label for="photos" class="col-md-2 col-form-label d-flex">Նկար
+                        <div class="mx-2" title="Նկարների լայնքը պետք է լինի 446 մինչև 460 և բարձրությունը 370 մինչև 380">
+                            <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+                        </div>
+                    </label>
                     <div class="col-md-10">
                         <div class="d-flex flex-wrap align-items-start align-items-sm-center">
                             <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
@@ -229,11 +272,19 @@
                                     hidden accept="image/png, image/jpeg" />
                             </label>
                             <div class="uploaded-images-container uploaded-photo-project" id="uploadedImagesContainer">
+                                @foreach($data->images as $key => $image)
+                                    @if($image->main != 1)
+                                        <div class="uploaded-image-div mx-2">
+                                            <img src="{{route('get-file', ['path' => $image->path])}}" class="d-block rounded uploaded-image uploaded-photo-project">
+                                            <button type="button" class="btn btn-outline-danger btn-sm mt-2 delete_item" data-url="{{route('delete_item',['images',$image->id ])}}">Remove</button>
+                                        </div>
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
                     </div>
                 </div>
-                @error('project_photos')
+                @error('photos.*')
                     <div class="mb-3 row justify-content-end">
                         <div class="col-sm-10 text-danger fts-14" id="photos_div">{{ $message }}
                         </div>

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ChangeStatusController;
 use App\Http\Controllers\Admin\Courses\CourseLanguageController;
 use App\Http\Controllers\Admin\DeleteItemController;
 use App\Http\Controllers\Admin\Lessons\LessonController;
+use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\Admin\Tasks\TaskController;
 use App\Http\Controllers\Admin\UserController;
@@ -139,13 +140,15 @@ Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class,'index'])-
 
 Route::group(['prefix' => 'museum'], function () {
   Route::get('/', [MuseumController::class, 'index'])->name('museum');
-  Route::get('/create', [MuseumController::class, 'create'])->name('create-museum');
+  Route::get('/create', [MuseumController::class, 'create'])->name('create-museum')->middleware('museum');
   Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
-  Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit');
+  Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit')->middleware('museum_edit_middleware');
   Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
 
 
+
 });
+
 
 
 //Project
@@ -167,6 +170,15 @@ Route::group(['prefix' => 'news'], function () {
 
   Route::get('/news-edit/{id}', [NewsController::class,'editNews'])->name('news-edit');
   Route::put('/news-update/{id}', [NewsController::class,'updateNews'])->name('news-update');
+
+});
+// Museum branches
+Route::group(['prefix'=>'musuem_branches'],function(){
+  Route::get('/list', [MuseumBranchController::class, 'index'])->name('branches-list');
+  Route::get('/create', [MuseumBranchController::class, 'create'])->name('branches-create');
+  Route::post('/store', [MuseumBranchController::class,'store'])->name('branches-store');
+  Route::get('/edit/{id}', [MuseumBranchController::class,'edit'])->name('branches-edit');
+  Route::put('/update/{id}', [MuseumBranchController::class,'update'])->name('branches-update');
 
 });
 

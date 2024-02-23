@@ -26,14 +26,18 @@ class MuseumBranche extends Model
       return $this->morphMany(Link::class, 'linkable');
     }
 
-    public function translations(): HasMany
+    public function museum_branche_translations(): HasMany
     {
-      return $this->hasMany(MuseumBrancheTranslation::class, 'museum_branche_id', 'id');
+      return $this->hasMany(MuseumBrancheTranslation::class);
     }
 
     public function museum(): BelongsTo
     {
       return $this->belongsTo(Museum::class, 'museum_id');
     }
+    public function translation($lang){
+
+      return $this->hasOne(MuseumBrancheTranslation::class)->where('lang', $lang)->first();
+   }
 
 }
