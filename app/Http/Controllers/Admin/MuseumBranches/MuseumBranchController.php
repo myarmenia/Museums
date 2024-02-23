@@ -66,15 +66,20 @@ class MuseumBranchController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+      $data = $this->museumBranchRepository->find($id);
+
+      return view("content.museum-branches.edit", compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(MuseumBranchRequest $request, string $id)
     {
-        //
+
+        $data = $this->museumBranchRepository->update($request->all(),$id);
+        return redirect()->back();
     }
 
     /**
