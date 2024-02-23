@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Requests\Auth\ResendVerifyRequest;
 use App\Http\Requests\SingupRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -91,9 +92,21 @@ class AuthController extends BaseController
 
         if($haveOrNot){
             return response()->json(['success' => true, 'message' => translateMessageApi('status-active')]);
-         }
+        }
  
-         return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong')]);
+        return response()->json(['success' => false, 'message' => translateMessageApi('wrong-code')]);
 
+    }
+
+    public function resendVerify(ResendVerifyRequest $request)
+    {
+        $send = $this->authService->resendVerify($request->all());
+
+        if($send){
+            return response()->json(['success' => true, 'message' => translateMessageApi('email_verified')]);
+        }
+
+        return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong'), 500]);
+        
     }
 }

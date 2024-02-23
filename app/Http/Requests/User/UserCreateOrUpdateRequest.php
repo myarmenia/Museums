@@ -47,7 +47,7 @@ class UserCreateOrUpdateRequest extends FormRequest
           if (request()->password != $user->email) {
               $data['password'] = 'required|same:confirm-password|min:8';
           }
-          
+
         }
 
 

@@ -16,7 +16,8 @@ class AuthService
     {
         $data['password'] = bcrypt($data['password']);
         $data['status'] = 0;
-        if(array_key_exists('country', $data)){
+
+        if(array_key_exists('country', $data) &&  $data['country']){
             $data['country_id'] = Country::where('key', $data['country'])->first()->id;
         }
 
@@ -110,6 +111,25 @@ class AuthService
       }
   
       return false;
+    }
+
+    public function resendVerify($data)
+    {
+        $email = $data['email'];
+
+        if($verify = VerifyUser::where('email', $email)->first()){
+            $token = mt_rand(10000, 99999);
+            $verify->update([
+                'verify_token' => $token
+            ]);
+
+            Mail::send(new SendVerifyToken($email, $token));
+
+            return true;
+        }
+
+        return false;
+        
     }
 
 }

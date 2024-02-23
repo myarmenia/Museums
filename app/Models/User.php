@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
   use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
@@ -30,8 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
 
-  protected $hidden = ['password'];
-
+  protected $hidden = ['password', 'google_id'];
 
 
   public function getJWTIdentifier()
@@ -88,6 +87,11 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     return false;
+  }
+  public function user_staff()
+  {
+
+    return $this->hasMany(MuseumStaff::class);
   }
 
 }

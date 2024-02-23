@@ -125,7 +125,7 @@ trait UserCrudTrait
   public function store(UserCreateOrUpdateRequest $request)
   {
 
-    $input = $request->all();
+   $input = $request->all();
 
     $input['status'] = isset($request->status) ? true : 0;
     $input['password'] = Hash::make($input['password']);
@@ -149,6 +149,16 @@ trait UserCrudTrait
           }
 
           MuseumStaff::create($staff_user);
+      }
+
+      if (Auth::user()->hasRole('super_admin') && in_array('museum_admin', $request->input('roles') )) {
+
+        $staff_user = [
+          'admin_id' => $user->id,
+          'user_id' => $user->id
+        ];
+
+        MuseumStaff::create($staff_user);
       }
 
       $email = $user->email;

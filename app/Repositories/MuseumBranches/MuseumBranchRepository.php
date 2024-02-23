@@ -7,6 +7,7 @@ use App\Models\Link;
 use App\Models\Museum;
 use App\Models\MuseumBranche;
 use App\Models\MuseumBrancheTranslation;
+use App\Models\MuseumStaff;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,10 @@ class MuseumBranchRepository implements MuseumBranchesRepositoryInterface
 
   public function all(){
 
-    return MuseumBranche::where('id','>',0)->with(['museum_branche_translations','images'])->orderBy('id','desc')->get();
+  $museum_id = auth()->user()->user_staff->first()->museum->museum_branches->pluck('id');
+
+
+    return MuseumBranche::whereIn('id',$museum_id)->with(['museum_branche_translations','images'])->orderBy('id','desc')->get();
 
   }
 
@@ -53,7 +57,7 @@ $museum_branches = MuseumBranche::create([
         }
         if($link = $request['link'] ?? null){
           $link = [
-            'path' => $request['link'],
+            'link' => $request['link'],
             'name' => 'website'
           ];
           $museum_branches->links()->create($link);
