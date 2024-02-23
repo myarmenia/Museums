@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('museum_branches', function (Blueprint $table) {
+        Schema::create('museum_staff', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('museum_id');
+            $table->unsignedBigInteger('museum_id')->nullable();
             $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
-            $table->string('email');
-            $table->string('phone_number')->nullable();
-            $table->boolean('status')->default(1);
+
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->unsignedBigInteger('admin_id')->nullable();
+            $table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            
             $table->softDeletes();
             $table->timestamps();
         });
@@ -28,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('museum_branches');
+        Schema::dropIfExists('museum_staff');
     }
 };

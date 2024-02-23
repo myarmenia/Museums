@@ -52,11 +52,32 @@ class User extends Authenticatable implements MustVerifyEmail
   public function carts(){
     return $this->hasMany(Cart::class);
   }
+
+  public function museum(){
+    return $this->hasOne(Museum::class);
+  }
+
+  public function museum_staff(){
+    return $this->hasMany(MuseumStaff::class, 'admin_id');
+  }
+
   public function roleNames(): array
   {
 
     return $this->roles->pluck('name')->toArray();
   }
+
+  public function getStaff()
+  {
+    return $this->belongsToMany(User::class, 'museum_staff',  'admin_id','user_id');
+  }
+
+  public function hasInStaff($id)
+  {
+      $user = $this->museum_staff()->where('user_id', $id)->first();
+      return $user != null ? true : false;
+  }
+
   public function isAdmin()
   {
 

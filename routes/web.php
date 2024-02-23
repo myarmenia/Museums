@@ -177,6 +177,8 @@ Route::group(['prefix'=>'musuem_branches'],function(){
   Route::get('/list', [MuseumBranchController::class, 'index'])->name('branches-list');
   Route::get('/create', [MuseumBranchController::class, 'create'])->name('branches-create');
   Route::post('/store', [MuseumBranchController::class,'store'])->name('branches-store');
+  Route::get('/edit/{id}', [MuseumBranchController::class,'edit'])->name('branches-edit');
+  Route::put('/update/{id}', [MuseumBranchController::class,'update'])->name('branches-update');
 
 });
 
