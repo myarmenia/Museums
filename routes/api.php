@@ -27,6 +27,7 @@ Route::group(['middleware' => ['api', 'setlang']], function ($router) {
         Route::post('signup', [AuthController::class, 'signup']);
         Route::post('check-verify-token', [AuthController::class, 'checkVerifyToken']);
         Route::get('me', [AuthController::class, 'me']);
+        Route::post('resend-verify', [AuthController::class, 'resendVerify']);
     });
 
     Route::group(['middleware' => 'apiAuthCheck'], function ($router) {
