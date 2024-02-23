@@ -17,7 +17,7 @@ class AuthService
         $data['password'] = bcrypt($data['password']);
         $data['status'] = 0;
 
-        if($data['country']){
+        if(array_key_exists('country', $data) &&  $data['country']){
             $data['country_id'] = Country::where('key', $data['country'])->first()->id;
         }
 

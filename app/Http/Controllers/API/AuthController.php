@@ -91,9 +91,9 @@ class AuthController extends BaseController
 
         if($haveOrNot){
             return response()->json(['success' => true, 'message' => translateMessageApi('status-active')]);
-         }
+        }
  
-         return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong')]);
+        return response()->json(['success' => false, 'message' => translateMessageApi('wrong-code')]);
 
     }
 }
