@@ -16,6 +16,8 @@ yarn-error.log
 /config/database.php
 
 /bootstrap/cache/
+
+
 # /.phpunit.cache
 # /node_modules
 
