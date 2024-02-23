@@ -43,7 +43,7 @@
       "name": "Մասնաճյուղեր",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "general-news",
-      "roles": ["museum_admin"]
+      "roles": ["museum_admin","content_manager"]
 
     }
   ]
