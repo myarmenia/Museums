@@ -113,4 +113,23 @@ class AuthService
       return false;
     }
 
+    public function resendVerify($data)
+    {
+        $email = $data['email'];
+
+        if($verify = VerifyUser::where('email', $email)->first()){
+            $token = mt_rand(10000, 99999);
+            $verify->update([
+                'verify_token' => $token
+            ]);
+
+            Mail::send(new SendVerifyToken($email, $token));
+
+            return true;
+        }
+
+        return false;
+        
+    }
+
 }
