@@ -25,9 +25,9 @@ class NewsController extends Controller
         {
 
         $addressRequest='api';
-        $news=$this->getAllNews($request->all(), $addressRequest);
-
-        return NewsResource::collection($news);
+        $data=$this->getAllNews($request->all(), $addressRequest);
+        $data=$data->orderBy('id', 'DESC')->paginate(6)->withQueryString();
+        return NewsResource::collection($data);
 
     }
 
