@@ -72,6 +72,19 @@ class AuthController extends BaseController
         // return response()->json($readyData);
     }
 
+    public function signupGoogle(Request $request)
+    {
+        dd($request->all());
+        $data = $this->authService->signupGoogle($request->all());
+dd("finish");
+        // $readyData = [
+        //     'authUser' => $data['authUser'],
+        //     'access_token' => $data['token'],
+        // ];
+
+        // return response()->json($readyData);
+    }
+
     // public function refresh()
     // {
     //     return $this->respondWithToken(auth('api')->refresh());
