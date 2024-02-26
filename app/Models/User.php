@@ -88,5 +88,10 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 
     return false;
   }
+  public function user_staff()
+  {
+
+    return $this->hasMany(MuseumStaff::class);
+  }
 
 }

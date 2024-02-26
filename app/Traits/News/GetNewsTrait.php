@@ -44,7 +44,7 @@ trait GetNewsTrait
 
             $data = $data->whereIn('id', $news_translation);
 
-      $data=$data->orderBy('id', 'DESC')->paginate(3)->withQueryString();
+     
 
       return $data;
 
