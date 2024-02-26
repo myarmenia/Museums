@@ -8,6 +8,7 @@ use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\API\Lessons\LessonController;
 use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\SendOrderController;
+use App\Http\Controllers\API\TestController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
@@ -19,12 +20,14 @@ use App\Http\Controllers\Email\SendClientProjectDetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['api', 'setlang']], function ($router) {
+Route::group(['middleware' => ['api']], function ($router) {
+  Route::group(['middleware' => ['setlang']], function ($router) {
 
     Route::group(['prefix' => 'auth'], function ($router) {
         Route::post('login', [AuthController::class, 'login']);
         Route::get('logout', [AuthController::class, 'logout']);
         Route::post('signup', [AuthController::class, 'signup']);
+        Route::post('signup-google', [AuthController::class, 'signupGoogle']);
         Route::post('check-verify-token', [AuthController::class, 'checkVerifyToken']);
         Route::get('me', [AuthController::class, 'me']);
         Route::post('resend-verify', [AuthController::class, 'resendVerify']);
@@ -67,6 +70,9 @@ Route::group(['middleware' => ['api', 'setlang']], function ($router) {
         Route::get('get-news', [NewsController::class, 'getNewslist']);
         Route::get('get-news/{id}', [NewsController::class, 'getNews']);
     });
+
+  });
+  Route::get('test-museum',[TestController::class, 'test']);
 
 
 });

@@ -98,10 +98,12 @@ class MuseumService
         } catch (\Exception $e) {
             session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
             DB::rollBack();
+            dd($e->getMessage());
             return false;
         } catch (\Error $e) {
             session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
             DB::rollBack();
+            dd($e->getMessage());
             return false;
         }
 
