@@ -27,6 +27,7 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::post('login', [AuthController::class, 'login']);
         Route::get('logout', [AuthController::class, 'logout']);
         Route::post('signup', [AuthController::class, 'signup']);
+        Route::post('signup-google', [AuthController::class, 'signupGoogle']);
         Route::post('check-verify-token', [AuthController::class, 'checkVerifyToken']);
         Route::get('me', [AuthController::class, 'me']);
         Route::post('resend-verify', [AuthController::class, 'resendVerify']);
