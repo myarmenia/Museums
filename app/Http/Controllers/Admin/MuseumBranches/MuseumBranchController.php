@@ -24,8 +24,16 @@ class MuseumBranchController extends Controller
     public function index()
     {
 
+      $museum = Museum::where('user_id',Auth::id())->first();
+
+      if($museum==null){
+        return redirect()->back()->with(session(['errorMessage' => 'Ստեղծված թանգարան չկա']));
+      }
 
         $museum_branches = $this->museumBranchRepository->all();
+        if($museum_branches==false){
+          return redirect()->back()->with(session(['errorMessage' => 'Ստեղծված թանգարան չկա']));
+        }
 
 
         return view("content.museum-branches.index", compact('museum_branches'));

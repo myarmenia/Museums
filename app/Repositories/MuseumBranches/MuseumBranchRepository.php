@@ -17,7 +17,12 @@ class MuseumBranchRepository implements MuseumBranchesRepositoryInterface
 
   public function all(){
 
-  $museum_id = auth()->user()->user_staff->first()->museum->museum_branches->pluck('id');
+   
+if(auth()->user()->user_staff->first()->museum==null){
+
+  return false;
+}
+    $museum_id = auth()->user()->user_staff->first()->museum->museum_branches->pluck('id');
 
 
     return MuseumBranche::whereIn('id',$museum_id)->with(['museum_branche_translations','images'])->orderBy('id','desc')->get();
