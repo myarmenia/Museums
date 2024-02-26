@@ -6,6 +6,7 @@ use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\Courses\CourseLanguagesController;
 use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\API\Lessons\LessonController;
+use App\Http\Controllers\API\MuseumController;
 use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\SendOrderController;
 use App\Http\Controllers\API\TestController;
@@ -69,6 +70,11 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::group(['prefix' => 'news'], function ($router) {
         Route::get('get-news', [NewsController::class, 'getNewslist']);
         Route::get('get-news/{id}', [NewsController::class, 'getNews']);
+    });
+
+    Route::group(['prefix' => 'museum'], function ($router) {
+        Route::get('get-museum', [MuseumController::class, 'getMuseum']);
+        Route::get('get-museum/{id}', [MuseumController::class, 'getMuseumById']);
     });
 
   });

@@ -1,12 +1,14 @@
 <?php
 namespace App\Repositories\Museum;
+
 use App\Interfaces\Museum\MuseumRepositoryInterface;
 use App\Models\Museum;
 use App\Models\MuseumTranslation;
 
 
 
-class MuseumRepository implements MuseumRepositoryInterface{
+class MuseumRepository implements MuseumRepositoryInterface
+{
     public function getProject()
     {
         return Museum::get();
@@ -24,7 +26,7 @@ class MuseumRepository implements MuseumRepositoryInterface{
 
     public function getMuseumByUd($id)
     {
-        return Museum::with(['user','translations', 'phones', 'images', 'links', 'region'])->find($id);
+        return Museum::with(['user', 'translations', 'phones', 'images', 'links', 'region'])->find($id);
     }
 
     public function updateMuseum($data, $id)
@@ -36,5 +38,25 @@ class MuseumRepository implements MuseumRepositoryInterface{
     {
         return MuseumTranslation::where(['lang' => $lang, 'museum_id' => $id])->update($data);
     }
-    
+
+    public function getApiMuseum()
+    {
+        return Museum::with([
+            'images', 'region',
+            'translations' => function ($query) {
+                $query->where('lang', session('languages'))->get();
+            },
+        ])->get();
+    }
+
+    public function getMuseumByLangAndId($id)
+    {
+        return Museum::with([
+            'user', 'phones', 'images', 'links', 'region',
+            'translations' => function ($query) {
+                $query->where('lang', session('languages'))->get();
+            }
+        ])->find($id);
+    }
+
 }
