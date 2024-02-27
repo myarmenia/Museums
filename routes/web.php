@@ -132,7 +132,9 @@ Route::group(['middleware' => ['auth']], function () {
 Route::post('change-status', [ChangeStatusController::class,'change_status'])->name('change_status');
 // Route::get('student-is-present/{id}', [StudentIsPresentController::class,'index']);
 Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class,'index'])->name('delete_item');
-// Route::post('open-course/{user_id}', [OpenCourseLanguageForStudentController::class,'index'])->name('open_course');
+Route::get('logs', [DeleteItemController::class, 'index'])->name('delete_item');
+
+  // Route::post('open-course/{user_id}', [OpenCourseLanguageForStudentController::class,'index'])->name('open_course');
 // Route::get('srudent-info/{id}', [StudentInfoController::class,'index'])->name('users.info');
 
 // Route::get('student-attendances/{id}', [StudentAttendancesController::class,'index']);

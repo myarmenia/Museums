@@ -16,7 +16,7 @@
               <li class="breadcrumb-item">
                   <a href="{{route('branches-list')}}">Թանգարանի մասնաճյուղեր </a>
               </li>
-              <li class="breadcrumb-item active">Ցուցակ</li>
+              <li class="breadcrumb-item active">Ցանկ</li>
           </ol>
       </nav>
   </h4>
@@ -24,7 +24,7 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Թանգարանի մասնաճյուղերի ցուցակ</h5>
+                <h5 class="card-header">Թանգարանի մասնաճյուղերի ցանկ</h5>
             </div>
             <div>
                 <a href="{{ route('branches-create') }}" class="btn btn-primary mx-4">Ստեղծել Մասնաճյուղ </a>

@@ -5,6 +5,7 @@ use App\Http\Requests\User\UserCreateOrUpdateRequest;
 use App\Mail\SendPassToEmployee;
 use App\Models\API\VerifyUser;
 use App\Models\MuseumStaff;
+use App\Services\Log\LogService;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -125,7 +126,7 @@ trait UserCrudTrait
   public function store(UserCreateOrUpdateRequest $request)
   {
 
-   $input = $request->all();
+    $input = $request->all();
 
     $input['status'] = isset($request->status) ? true : 0;
     $input['password'] = Hash::make($input['password']);
@@ -168,7 +169,12 @@ trait UserCrudTrait
       ];
 
       // Mail::send(new SendPassToEmployee($email, $data));
+
+      $data = array_diff_key( $input, array_flip((array) ['password', 'confirm-password'] ));
+      LogService::store($data, $user->id, 'users', 'store');
+
     }
+
 
     return redirect()->route("users.index")
       ->with('success', 'User created successfully');
@@ -213,7 +219,6 @@ trait UserCrudTrait
     $input = $request->all();
     $input['status'] = isset($request->status) ? true : 0;
 
-
     if (!empty($input['password'])) {
       $input['password'] = Hash::make($input['password']);
 
@@ -236,6 +241,11 @@ trait UserCrudTrait
       ];
 
       Mail::send(new SendPassToEmployee($email, $data));
+
+      $data = array_diff_key($input, array_flip((array) ['password', 'confirm-password', '_method']));
+
+      LogService::store($data, $user->id, 'users', 'update');
+
     }
 
     return redirect()->route('users.index')
