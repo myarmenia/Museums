@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 
     if($item){
       foreach($request['translate'] as $key => $lang){
-
+        
         $lang[$item_id] =  $item;
         $lang['lang'] = $key;
 

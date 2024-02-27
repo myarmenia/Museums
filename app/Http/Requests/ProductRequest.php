@@ -23,6 +23,7 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
       $array= [
+        "product_category_id"=> 'required',
         'price'=> 'required',
         'quantity'=> 'required',
         'translate.*.name' => 'required',
@@ -32,5 +33,15 @@ class ProductRequest extends FormRequest
         $array['photo'] = 'required|image';
     }
     return $array;
+    }
+    public function messages(): array
+    {
+        return [
+          "product_category_id" =>"Ապրանքի կատեգորիա դաշտը պարտադիր է",
+            'translate.*.name' => 'Անվանում դաշտը պարտադիր է',
+            'price' => 'Գին դաշտը պարտադիր է',
+            'quantity' => 'Քանակ դաշտը պարտադիր է',
+            'photo' => 'Լուսանկարի դաշտը պարտադիր է:',
+        ];
     }
 }

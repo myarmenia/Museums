@@ -5,7 +5,7 @@ use App\Interfaces\MuseumBranches\MuseumBranchesRepositoryInterface;
 use App\Models\Image;
 use App\Models\Link;
 use App\Models\Museum;
-use App\Models\MuseumBranche;
+use App\Models\MuseumBranch;
 use App\Models\MuseumBrancheTranslation;
 use App\Models\MuseumStaff;
 use App\Services\FileUploadService;
@@ -17,15 +17,17 @@ class MuseumBranchRepository implements MuseumBranchesRepositoryInterface
 
   public function all(){
 
-   
-if(auth()->user()->user_staff->first()->museum==null){
 
-  return false;
-}
+    if(auth()->user()->user_staff->first()->museum==null){
+
+      return false;
+    }
+
     $museum_id = auth()->user()->user_staff->first()->museum->museum_branches->pluck('id');
 
 
-    return MuseumBranche::whereIn('id',$museum_id)->with(['museum_branche_translations','images'])->orderBy('id','desc')->get();
+    return MuseumBranch::whereIn('id',$museum_id)->with(['museum_branche_translations','images'])->orderBy('id','desc')->get();
+
 
   }
 
@@ -36,7 +38,7 @@ if(auth()->user()->user_staff->first()->museum==null){
   public function store($request){
 
 
-$museum_branches = MuseumBranche::create([
+$museum_branches = MuseumBranch::create([
         'museum_id'=>$request['museum_id'],
         'email'=> $request['email'],
         'phone_number'=>$request['phone_number']]);
@@ -45,7 +47,7 @@ $museum_branches = MuseumBranche::create([
 
           foreach($request['translate'] as $key => $lang){
 
-            $lang['museum_branche_id'] = $museum_branches->id;
+            $lang['museum_branch_id'] = $museum_branches->id;
             $lang['lang'] = $key;
 
             $newstranslate = MuseumBrancheTranslation::create($lang);
@@ -53,12 +55,14 @@ $museum_branches = MuseumBranche::create([
           }
         }
         if($photo = $request['photo'] ?? null){
+
           $path = FileUploadService::upload($request['photo'],'museum_branches/'.$museum_branches->id);
             $photoData = [
               'path' => $path,
               'name' => $photo->getClientOriginalName()
           ];
           $museum_branches->images()->create($photoData);
+
         }
         if($link = $request['link'] ?? null){
           $link = [
@@ -66,6 +70,7 @@ $museum_branches = MuseumBranche::create([
             'name' => 'website'
           ];
           $museum_branches->links()->create($link);
+
         }
           return true;
 
@@ -74,7 +79,7 @@ $museum_branches = MuseumBranche::create([
 
   }
   public function find($id){
-     return  MuseumBranche::find($id);
+     return  MuseumBranch::find($id);
 
   }
   public function update($request,$id){
@@ -125,11 +130,11 @@ $museum_branches = MuseumBranche::create([
 
       foreach($request['translate'] as $key=>$lang){
 
-        $lang['museum_branche_id'] = $id;
+        $lang['museum_branch_id'] = $id;
         $lang['lang'] = $key;
 
 
-        $museum_branche_translate = MuseumBrancheTranslation::where(['museum_branche_id'=>$id,'lang'=>$key])->first();
+        $museum_branche_translate = MuseumBrancheTranslation::where(['museum_branch_id'=>$id,'lang'=>$key])->first();
         $museum_branche_translate->update($lang);
 
       }

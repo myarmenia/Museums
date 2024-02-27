@@ -10,14 +10,15 @@
 @endsection
 
 @section('content')
+@include('includes.alert')
 
     <h4 class="py-3 mb-4">
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('branches-list')}}">Ապրանքների ցուցակ </a>
+                <a href="{{route('product-list')}}">Ապրանքների ցուցակ </a>
               </li>
-              <li class="breadcrumb-item active">Ստեղծել ապրանք</li>
+              <li class="breadcrumb-item active">Խմբագրել</li>
           </ol>
       </nav>
   </h4>
@@ -25,21 +26,30 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Ստեղծել ապրանք </h5>
+                <h5 class="card-header">Խմբագրել</h5>
             </div>
 
         </div>
         <div class="card-body">
+          {{-- {{dd($data)}} --}}
 
-            <form action="{{ route('product-store') }}" method="post" enctype="multipart/form-data">
-              <input type="hidden" value="{{ $museum_staff->museum_id}}" name="museum_id" >
+            <form action="{{ route('product-update',$data->id) }}" method="POST" enctype="multipart/form-data">
+              @method('put')
+              <input type = "hidden" name = "museum_id" value="{{ $data->museum_id }}">
               <div class="mb-3 row">
                 <label for="region" class="col-md-2 col-form-label"> Կատեգորիա <span class="required-field">*</span></label>
                 <div class="col-md-10">
                     <select id="defaultSelect" name="product_category_id" class="form-select">
                         <option value="">Ընտրեք Կատեգորիան</option>
-                        @foreach ($data as $dat)
-                            <option value="{{ $dat->id }}">{{ __('product-categories.' . $dat->key) }}</option>
+                        @foreach ($category as $item)
+                        @if ($data->product_category_id == $item->id)
+                              <option value="{{ $item->id}}" selected>{{ __('product-categories.' . $item->key) }}</option>
+
+                        @else
+                              <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}</option>
+
+                        @endif
+
                         @endforeach
                     </select>
                     @error('product_category_id')
@@ -58,7 +68,7 @@
                     <div class="col-md-10">
                         <input class="form-control"
                               placeholder="Անվանումը {{ $lang }}"
-                              value="{{ old("translate.$lang.name") }}"
+                              value="{{ $data->translation($lang)->name ?? old("translate.$lang.name") }}"
                               name="translate[{{ $lang }}][name]"
                               id="name-{{ $lang}}" name="name"
                               />
@@ -78,7 +88,7 @@
                 </label>
 
                 <div class="col-md-10">
-                    <input class="form-control" placeholder="Գինը" value="{{ old('price') }}"
+                    <input class="form-control" placeholder="Գինը" value="{{ $data->price ?? old('price') }}"
                         id="price" name="price" />
                 </div>
                 @error("price")
@@ -91,7 +101,7 @@
               <div class="mb-3 row">
                 <label for="phone_number" class="col-md-2 col-form-label">Քանակ</label>
                 <div class="col-md-10">
-                    <input class="form-control" placeholder="Քանակ" value="{{ old('quantity') }}"
+                    <input class="form-control" placeholder="Քանակ" value="{{ $data->quantity ?? old('quantity') }}"
                         id="quantity" name="quantity" />
                 </div>
                 @error("quantity")
@@ -101,8 +111,6 @@
                   </div>
                 @enderror
               </div>
-
-
 
 
 
@@ -120,13 +128,19 @@
                                     accept="image/png, image/jpeg" />
                             </label>
                             <div class="uploaded-images-container uploaded-photo-project" id="uploadedImagesContainer">
+                              @foreach($data->images as $key => $image)
+                              <div class="uploaded-image-div mx-2">
+                                  <img src="{{route('get-file', ['path' => $image->path])}}" class="d-block rounded uploaded-image uploaded-photo-project">
+
+                              </div>
+                            @endforeach
                             </div>
 
                         </div>
                     </div>
                 </div>
                 @error('photo')
-                    <div class="mb-3 row justify-content-end">
+                    <div class="mb-3 mt-5 row justify-content-end">
                         <div class="col-sm-10 text-danger fts-14">{{ $message }}
                         </div>
                     </div>

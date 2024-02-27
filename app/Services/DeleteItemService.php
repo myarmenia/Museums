@@ -39,7 +39,7 @@ class DeleteItemService
                 if(isset($item_db->logo)){
                     $file_path = $item_db->logo;
                 }
-                
+
                 if(isset($item_db->video)){
                   $file_path = $item_db->video;
                 }

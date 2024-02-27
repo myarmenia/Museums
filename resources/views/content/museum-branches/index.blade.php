@@ -69,6 +69,7 @@
 
                                 <td>{{ $item->created_at }}</td>
                                 <td>
+
                                     <div class="dropdown action" data-id="{{ $item['id'] }}" data-tb-name="museum_branches">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown">
@@ -97,6 +98,7 @@
                     </tbody>
                 </table>
             </div>
+          
 
 
         </div>
