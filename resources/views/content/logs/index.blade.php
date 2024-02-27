@@ -13,7 +13,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="javascript:void(0);">Օգտագործողներ</a>
+                    <a href="javascript:void(0);">Լոգավորում</a>
                 </li>
                 <li class="breadcrumb-item active">Ցանկ</li>
             </ol>
@@ -22,47 +22,60 @@
     <div class="card">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Օգտագործողների ցանկ</h5>
+                <h5 class="card-header">Գործողությունների ցանկ</h5>
             </div>
-
-              <div>
-                <a href="{{ route('users.create') }}" class="btn btn-primary mx-4">Ստեղծել նոր օգտատեր </a>
-              </div>
 
         </div>
         <div class="card-body">
 
+            <div>
+                <form action="{{route('users_visitors')}}" method="get" class="row g-3 mt-2" style="display: flex">
+                    <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
 
+
+                        <div class="col-2">
+                            <input type="text" class="form-control" id="role" placeholder="Դեր" name="role" value="{{ request()->input('role') }}">
+                        </div>
+
+                        <div class="col-2">
+                            <input type="text" class="form-control" id="date" placeholder="Ամսատիվ" name="date" value="{{ request()->input('phone') }}">
+                        </div>
+
+                        <button class="btn btn-primary col-2">Որոնել</button>
+
+                    </div>
+                </form>
+            </div>
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Անուն</th>
-                            <th>Ազգանուն</th>
-                            <th>Էլ․ հասցե</th>
-                            <th>Հեռախոս</th>
-                            <th>Կարգավիճակ</th>
-                            <th>Դերեր</th>
-                            <th>Գործողություն</th>
+                            <th>Օգտագործող</th>
+                            <th>Դեր</th>
+                            <th>Գործ․ տեսակ</th>
+                            <th>Գործ․ օբեկտ</th>
+                            <th>Տվյալներ</th>
+                            <th>Ամսատիվ</th>
+                            {{-- <th>Գործողություն</th> --}}
                         </tr>
                     </thead>
                     <tbody>
 
-                        @foreach ($data as $key => $user)
+                        @foreach ($data as $key => $log)
                             <tr>
                                 <td>{{ ++$i }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->surname }}</td>
+                                <td>{{ $log->user->name }} {{ $log->user->surname }}</td>
+                                <td>{{ implode(', ', $log->roles->pluck('name')->toArray()) }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone }}</td>
-                                <td class="status">
+                                {{-- <td class="status">
                                     @if ($user->status)
                                         <span class="badge bg-label-success me-1">Ակտիվ</span>
                                     @else
                                         <span class="badge bg-label-danger me-1">Ապաակտիվ</span>
                                     @endif
-                                </td>
+                                </td> --}}
 
                                 <td>
                                     @if (!empty($user->getRoleNames()))

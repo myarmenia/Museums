@@ -2,10 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\User;
-use App\Models\Project\Project;
 
-use Illuminate\Support\Facades\DB;
+use App\Services\Log\LogService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -39,7 +37,7 @@ class DeleteItemService
                 if(isset($item_db->logo)){
                     $file_path = $item_db->logo;
                 }
-                
+
                 if(isset($item_db->video)){
                   $file_path = $item_db->video;
                 }
@@ -53,7 +51,10 @@ class DeleteItemService
 
           $delete = $item ? $item->delete() : false;
 
-          return $delete;
+          $delete ? LogService::store(null, $id, $tb_name, 'delete') : '';
+
+
+      return $delete;
       }
 
   }
