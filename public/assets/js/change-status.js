@@ -19,7 +19,7 @@ $(function () {
         if (data.result == 1) {
 
 
-          status ? (status_word = 'Ակտից', status_class = 'success') : (status_word = 'Ապաակտիվ', status_class = 'danger')
+          status ? (status_word = 'Ակտիվ', status_class = 'success') : (status_word = 'Ապաակտիվ', status_class = 'danger')
 
           changeElemen.closest('tr').children('.' + field_name).html(`
             <span class="badge bg-label-${status_class} me-1">${status_word}</span>`)
