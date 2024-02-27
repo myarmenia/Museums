@@ -24,10 +24,9 @@ class ForgotPasswordService
 
       Mail::send(new SendForgotToken($email, $token));
 
-      return response()->json(['success' => true, 'message' => translateMessageApi('password-reset-link-sent')], 200);
+      return true;
     } else {
-      return response()->json(['error' => translateMessageApi('password-reset-link-sent')], 500);
-      // return response()->json(['error' => translateMessageApi('user-email-not-found')], 500);
+      return false;
     }
 
   }
