@@ -52,6 +52,47 @@ class AuthService
         // ];
     }
 
+    public function signupGoogle($data)
+    {
+        dd("sharunakel aystexic"); 
+        $data['password'] = bcrypt($data['password']);
+        $data['status'] = 1;
+
+        if(array_key_exists('country', $data) &&  $data['country']){
+            $data['country_id'] = Country::where('key', $data['country'])->first()->id;
+        }
+
+        $user = User::create($data);
+
+        $user->assignRole('visitor');
+
+        if ($user) {
+            $token = mt_rand(10000, 99999);
+            $email = $user->email;
+            $verify = VerifyUser::create([
+                'email' => $email,
+                'verify_token' => $token
+            ]);
+
+            Mail::send(new SendVerifyToken($email, $token));
+
+            return true;
+        }
+
+        return false;
+
+        // $credentials = Arr::only($data, ['email', 'password']);
+
+        // if (!$token = JWTAuth::attempt($credentials)) {
+        //     return response()->json(['error' => translateMessageApi('user-not-found')], 401);
+        // }
+
+        // return [
+        //     'authUser' => $user->toArray(),
+        //     'token' => $token
+        // ];
+    }
+
     public function login($request)
     {
         try {
@@ -111,6 +152,25 @@ class AuthService
       }
   
       return false;
+    }
+
+    public function resendVerify($data)
+    {
+        $email = $data['email'];
+
+        if($verify = VerifyUser::where('email', $email)->first()){
+            $token = mt_rand(10000, 99999);
+            $verify->update([
+                'verify_token' => $token
+            ]);
+
+            Mail::send(new SendVerifyToken($email, $token));
+
+            return true;
+        }
+
+        return false;
+        
     }
 
 }
