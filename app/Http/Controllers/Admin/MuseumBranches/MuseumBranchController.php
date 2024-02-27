@@ -16,11 +16,14 @@ class MuseumBranchController extends Controller
      */
     private $museumBranchRepository;
     public function __construct(MuseumBranchesRepositoryInterface $museumBranchRepository){
+      $this->middleware('role:museum_admin|content_manager');
+      $this->middleware('museum_branch_middleware')->only(['edit','update']);
       $this->museumBranchRepository = $museumBranchRepository;
 
     }
     public function index()
     {
+
 
         $museum_branches = $this->museumBranchRepository->all();
 
