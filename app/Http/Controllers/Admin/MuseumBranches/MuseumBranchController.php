@@ -47,14 +47,13 @@ class MuseumBranchController extends Controller
     public function create()
     {
       $data =$this->museumBranchRepository->creat();
-
       return view("content.museum-branches.create", compact('data'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    // ===
+
     public function store(MuseumBranchRequest $request)
     {
 

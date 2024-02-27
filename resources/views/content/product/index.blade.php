@@ -31,6 +31,25 @@
             </div>
         </div>
         <div class="card-body">
+          <form action="{{route('news')}}" method="get" class="row g-3 mt-2" style="display: flex">
+            <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
+              <div class="col-2">
+                <input type="text" class="form-control" id="" placeholder="Վերնագիր" name="title" value="{{ request()->input('title') }}">
+            </div>
+                <div class="col-2">
+                    <input type="date" class="form-control" id="inputEmail" placeholder="Ստեղծման ամսաթիվ" name="from_created_at" value="{{ request()->input('from_created_at') }}">
+                </div>
+
+                <div class="col-2">
+                    <input type="date" class="form-control" id="inputPhone" placeholder="Ստեղծման ամսաթիվ" name="to_created_at" value="{{ request()->input('to_created_at') }}">
+                </div>
+
+
+                <button class="btn btn-primary col-2">Փնտրել</button>
+
+            </div>
+          </form>
+
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">
                     <thead>
