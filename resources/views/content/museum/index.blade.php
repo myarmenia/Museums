@@ -9,13 +9,13 @@
 @section('content')
     @include('includes.alert')
     <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Թանգարաններ /</span> Ցուցակ
+        <span class="text-muted fw-light">Թանգարաններ /</span> Ցանկ
     </h4>
     <div class="card">
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Թանգարանների ցուցակ</h5>
+                <h5 class="card-header">Թանգարանների ցանկ</h5>
             </div>
         </div>
         <div class="card-body">

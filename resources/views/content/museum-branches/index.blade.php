@@ -16,7 +16,7 @@
               <li class="breadcrumb-item">
                   <a href="{{route('branches-list')}}">Թանգարանի մասնաճյուղեր </a>
               </li>
-              <li class="breadcrumb-item active">Ցուցակ</li>
+              <li class="breadcrumb-item active">Ցանկ</li>
           </ol>
       </nav>
   </h4>
@@ -24,7 +24,7 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Թանգարանի մասնաճյուղերի ցուցակ</h5>
+                <h5 class="card-header">Թանգարանի մասնաճյուղերի ցանկ</h5>
             </div>
             <div>
                 <a href="{{ route('branches-create') }}" class="btn btn-primary mx-4">Ստեղծել Մասնաճյուղ </a>
@@ -47,6 +47,7 @@
 @php
   $i=0;
 @endphp
+@if($museum_branches!=false)
                         @foreach ($museum_branches as $key => $item)
 
                             <tr>
@@ -68,6 +69,7 @@
 
                                 <td>{{ $item->created_at }}</td>
                                 <td>
+
                                     <div class="dropdown action" data-id="{{ $item['id'] }}" data-tb-name="museum_branches">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown">
@@ -92,9 +94,11 @@
                                 </td>
                             </tr>
                         @endforeach
+@endif
                     </tbody>
                 </table>
             </div>
+          
 
 
         </div>

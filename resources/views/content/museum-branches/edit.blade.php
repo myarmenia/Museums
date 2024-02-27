@@ -129,7 +129,6 @@
                                 id="working_days-{{ $lang }}"
                                 name="translate[{{ $lang }}][working_days]">{{ $data->translation($lang)->working_days ?? old("translate.$lang.working_days") }}
                             </textarea>
-
                         </div>
                     </div>
                     @error("translate.$lang.working_days")
@@ -189,7 +188,7 @@
                     </div>
                 </div>
                 @error('photo')
-                    <div class="mb-3 row justify-content-end">
+                    <div class="mb-3 mt-5 row justify-content-end">
                         <div class="col-sm-10 text-danger fts-14">{{ $message }}
                         </div>
                     </div>

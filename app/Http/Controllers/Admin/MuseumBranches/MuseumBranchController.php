@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MuseumBranchRequest;
 use App\Interfaces\MuseumBranches\MuseumBranchesRepositoryInterface;
 use App\Models\Museum;
+use App\Models\MuseumStaff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,8 +25,16 @@ class MuseumBranchController extends Controller
     public function index()
     {
 
+      $museum = MuseumStaff::where('user_id',Auth::id())->first();
+
+      if($museum==null){
+        return redirect()->back()->with(session(['errorMessage' => 'Ստեղծված թանգարան չկա']));
+      }
 
         $museum_branches = $this->museumBranchRepository->all();
+        if($museum_branches==false){
+          return redirect()->back()->with(session(['errorMessage' => 'Ստեղծված մասնաճյուղեր չկան']));
+        }
 
 
         return view("content.museum-branches.index", compact('museum_branches'));
@@ -50,8 +59,11 @@ class MuseumBranchController extends Controller
 
       $branches_created = $this->museumBranchRepository->store($request->all());
       if($branches_created){
+
         $museum_branches = $this->museumBranchRepository->all();
-        return view("content.museum-branches.index", compact('museum_branches'));
+
+
+        return redirect()->route('branches-list');
       }
 
     }

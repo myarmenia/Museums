@@ -16,6 +16,12 @@ use App\Http\Controllers\Admin\Users\StudentAttendancesController;
 use App\Http\Controllers\Admin\News\NewsController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\News\NewsCategoryController;
+use App\Http\Controllers\Admin\Product\CreateController;
+use App\Http\Controllers\Admin\Product\ProductCreateController;
+use App\Http\Controllers\Admin\Product\ProductEditController;
+use App\Http\Controllers\Admin\Product\ProductListController;
+use App\Http\Controllers\Admin\Product\ProductStoreController;
+use App\Http\Controllers\Admin\Product\ProductUpdateController;
 use App\Http\Controllers\museum\MuseumController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
@@ -132,7 +138,9 @@ Route::group(['middleware' => ['auth']], function () {
 Route::post('change-status', [ChangeStatusController::class,'change_status'])->name('change_status');
 // Route::get('student-is-present/{id}', [StudentIsPresentController::class,'index']);
 Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class,'index'])->name('delete_item');
-// Route::post('open-course/{user_id}', [OpenCourseLanguageForStudentController::class,'index'])->name('open_course');
+Route::get('logs', [DeleteItemController::class, 'index'])->name('delete_item');
+
+  // Route::post('open-course/{user_id}', [OpenCourseLanguageForStudentController::class,'index'])->name('open_course');
 // Route::get('srudent-info/{id}', [StudentInfoController::class,'index'])->name('users.info');
 
 // Route::get('student-attendances/{id}', [StudentAttendancesController::class,'index']);
@@ -179,6 +187,14 @@ Route::group(['prefix'=>'musuem_branches'],function(){
   Route::post('/store', [MuseumBranchController::class,'store'])->name('branches-store');
   Route::get('/edit/{id}', [MuseumBranchController::class,'edit'])->name('branches-edit');
   Route::put('/update/{id}', [MuseumBranchController::class,'update'])->name('branches-update');
+
+});
+Route::group(['prefix'=>'product'],function(){
+  Route::get('/list', [ProductListController::class, 'index'])->name('product-list');
+  Route::get('/create', [ProductCreateController::class, 'create'])->name('product-create');
+  Route::post('/store', [ProductStoreController::class,'store'])->name('product-store');
+  Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product-edit');
+  Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product-update');
 
 });
 

@@ -34,8 +34,7 @@ class NewsController extends Controller
 
             return view("content.news.index", compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 6);
-            // return view("content.news.index", compact('data'));
-
+        
 
     }
 

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('museum_branche_translations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('museum_branche_id');
-            $table->foreign('museum_branche_id')->references('id')->on('museum_branches')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('museum_branch_id');
+            $table->foreign('museum_branch_id')->references('id')->on('museum_branches')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name');
             $table->longText('description')->nullable();
             $table->string('working_days');

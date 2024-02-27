@@ -28,10 +28,10 @@ class UserCreateOrUpdateRequest extends FormRequest
               'roles' => 'required',
               'name' => 'required',
               'surname' => 'required'
-    ];
+        ];
 
         if(request()->getMethod() == 'POST'){
-            $data['email'] = 'required|regex:/^([a-z,0-9,․]+)@([a-z,․]+)\.(.+)/i|email|unique:users,email';
+            $data['email'] = 'required|email|unique:users,email';
             $data['password'] = 'required|same:confirm-password|min:8';
         }
         else{
@@ -39,12 +39,12 @@ class UserCreateOrUpdateRequest extends FormRequest
           $id = request()->segment(2);
           $user = User::find($id);
           if(request()->email != $user->email){
-            $data['email'] = 'required|regex:/^([a-z,0-9,․]+)@([a-z,․]+)\.(.+)/i|email|unique:users,email';
+            $data['email'] = 'required|email|unique:users,email';
             $data['password'] = 'required|same:confirm-password|min:8';
 
           }
 
-          if (request()->password != $user->email) {
+          if (request()->password) {
               $data['password'] = 'required|same:confirm-password|min:8';
           }
 

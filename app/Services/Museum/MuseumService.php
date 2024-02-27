@@ -2,6 +2,7 @@
 namespace App\Services\Museum;
 
 use App\Models\Museum;
+use App\Models\MuseumStaff;
 use App\Models\MuseumTranslation;
 use App\Models\Region;
 use App\Repositories\Museum\MuseumRepository;
@@ -92,6 +93,8 @@ class MuseumService
             ];
 
             PhoneService::createPhone($phoneData);
+
+            MuseumStaff::where('user_id', auth()->id())->update(['museum_id' => $getCreatedMuseumId]);
             DB::commit();
 
             return true;
@@ -163,14 +166,14 @@ class MuseumService
             $imagesData = [
                 'museum' => Museum::find($id)
             ];
-        
+
             if (array_key_exists('photos', $data)) {
                 $imagesData['photos'] = [
                     'image' => $data['photos'],
                 ];
                 ImageService::createImageble($imagesData);
             }
-        
+
             if (array_key_exists('general_photo', $data)) {
                 $imagesData['photos'] = [
                     'image' => [$data['general_photo']],

@@ -45,6 +45,15 @@
       "slug": "general-news",
       "roles": ["museum_admin","content_manager"]
 
+    },
+    {
+      "url": "product/list",
+      "name": "Ապրանքներ",
+      "icon": "menu-icon tf-icons bx bx-box",
+      "slug": "general-news",
+      "roles": ["museum_admin","content_manager"]
+
     }
+
   ]
 }

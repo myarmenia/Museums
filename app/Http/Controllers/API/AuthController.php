@@ -13,7 +13,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\FirebaseToken;
-
+use \Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 class AuthController extends BaseController
 {
     public $authService;
@@ -76,7 +77,15 @@ class AuthController extends BaseController
     public function signupGoogle(Request $request)
     {
         $token = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjU1YzE4OGE4MzU0NmZjMTg4ZTUxNTc2YmE3MjgzNmUwNjAwZThiNzMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxNjkwMjIzODg3LTlnc3FzMmlhNnVhNzFjMmZrdXAzdnZwM2wyNjdjbGdoLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMTY5MDIyMzg4Ny05Z3NxczJpYTZ1YTcxYzJma3VwM3Z2cDNsMjY3Y2xnaC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjExMTg5OTk2MTY4OTk5Njc2OTI2MCIsImVtYWlsIjoiYmFnaGRhc2FyeWFuLmdldm9yZy45N0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmJmIjoxNzA4OTI3NDI1LCJuYW1lIjoiR2V2b3JnIEJhZ2hkYXNhcnlhbiIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJdUJrczBzbDEwQldnaVdIcTd0QmE0MFVONkRxRFZKeVdCeG91SXl2cE1QQT1zOTYtYyIsImdpdmVuX25hbWUiOiJHZXZvcmciLCJmYW1pbHlfbmFtZSI6IkJhZ2hkYXNhcnlhbiIsImxvY2FsZSI6InJ1IiwiaWF0IjoxNzA4OTI3NzI1LCJleHAiOjE3MDg5MzEzMjUsImp0aSI6IjM2ZWViMDIxZWVhNDBjNDc1ODQxYjgzMmU4OWQ2NGJhMzNiY2M0MzgifQ.kND1phmAubqh__YoEjcXoBw-dupAWLlWkMOQzM7EyTHTcroHmZ1nSw_vr0MH84XbE4IjR1krkTo-7g8L8MvZW8L57CeXhWJsrkJpM5u-CRylspKd_A-Rs2w3Kvrd2dRZMUtJMZCEeLgtO5FEaOqKp6ciST8HKVLzkpn_8YyOAd8aznnJlmvoHGXBeiOvjS6kuBFWpgawYJZF61bq2fpJ9mslCw-4A6LGEJP1E8PnSFoZ6QCOShaDTywn-teTzmSZ24INm0E3O6lWaiptGjUQS13ZZdO4_Qxez7FdfK3sJL4it5G9PW_sPSNO3-2n7Z83-z5vBQxoFUTw98Q9zSdZ4g';
-        dd($token);
+        // dd($token);
+        $key = '1690223887-9gsqs2ia6ua71c2fkup3vvp3l267clgh.apps.googleusercontent.com';
+        $token1 = 'eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxNjkwMjIzODg3LTlnc3FzMmlhNnVhNzFjMmZrdXAzdnZwM2wyNjdjbGdoLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMTY5MDIyMzg4Ny05Z3NxczJpYTZ1YTcxYzJma3VwM3Z2cDNsMjY3Y2xnaC5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjExMTg5OTk2MTY4OTk5Njc2OTI2MCIsImVtYWlsIjoiYmFnaGRhc2FyeWFuLmdldm9yZy45N0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmJmIjoxNzA4OTI3NDI1LCJuYW1lIjoiR2V2b3JnIEJhZ2hkYXNhcnlhbiIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJdUJrczBzbDEwQldnaVdIcTd0QmE0MFVONkRxRFZKeVdCeG91SXl2cE1QQT1zOTYtYyIsImdpdmVuX25hbWUiOiJHZXZvcmciLCJmYW1pbHlfbmFtZSI6IkJhZ2hkYXNhcnlhbiIsImxvY2FsZSI6InJ1IiwiaWF0IjoxNzA4OTI3NzI1LCJleHAiOjE3MDg5MzEzMjUsImp0aSI6IjM2ZWViMDIxZWVhNDBjNDc1ODQxYjgzMmU4OWQ2NGJhMzNiY2M0MzgifQ';
+
+         $decoded = JWT::decode($token, new Key($key, 'RS256'));
+        dd($decoded);
+        $jwtToken = new Token($token1);
+        $decoded = JWTAuth::decode($jwtToken);
+        dd($decoded);
         // dd(JWTAuth::decode($token, env('JWT_SECRET'), array('HS256')));
         dd(FirebaseToken::decode($token));
         dd($request->all());
