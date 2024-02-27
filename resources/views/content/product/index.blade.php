@@ -14,9 +14,9 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('product-list')}}">Ապրանքների ցուցակ </a>
+                  <a href="{{route('product-list')}}">Ապրանքներ </a>
               </li>
-              <li class="breadcrumb-item active">Ցուցակ</li>
+              <li class="breadcrumb-item active">Ցանկ</li>
           </ol>
       </nav>
   </h4>
@@ -24,7 +24,7 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Ապրանքների ցուցակ</h5>
+                <h5 class="card-header">Ապրանքների ցանկ</h5>
             </div>
             <div>
                 <a href="{{ route('product-create') }}" class="btn btn-primary mx-4">Ստեղծել Ապրանք </a>
@@ -34,15 +34,20 @@
           <form action="{{route('news')}}" method="get" class="row g-3 mt-2" style="display: flex">
             <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
               <div class="col-2">
-                <input type="text" class="form-control" id="" placeholder="Վերնագիր" name="title" value="{{ request()->input('title') }}">
+                <input type="text" class="form-control" id="" placeholder="Անվանում" name="title" value="{{ request()->input('title') }}">
             </div>
-                <div class="col-2">
-                    <input type="date" class="form-control" id="inputEmail" placeholder="Ստեղծման ամսաթիվ" name="from_created_at" value="{{ request()->input('from_created_at') }}">
-                </div>
+            <div class="mb-3 row">
+             
+              <div class="col-md-10">
+                  <select id="defaultSelect" name="product_category_id" class="form-select">
+                      <option value="">ֆիլտրել ըստ կատեգորիաի</option>
+                      @foreach ($data as $dat)
+                          <option value="{{ $dat->id }}">{{ __('product-categories.' . $dat->key) }}</option>
+                      @endforeach
+                  </select>
+              </div>
+            </div>
 
-                <div class="col-2">
-                    <input type="date" class="form-control" id="inputPhone" placeholder="Ստեղծման ամսաթիվ" name="to_created_at" value="{{ request()->input('to_created_at') }}">
-                </div>
 
 
                 <button class="btn btn-primary col-2">Փնտրել</button>

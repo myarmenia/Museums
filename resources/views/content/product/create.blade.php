@@ -15,7 +15,7 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('product-list')}}">Ապրանքների ցուցակ </a>
+                  <a href="{{route('product-list')}}">Ապրանքներ </a>
               </li>
               <li class="breadcrumb-item active">Ստեղծել ապրանք</li>
           </ol>
