@@ -57,6 +57,7 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLink']);
     Route::post('check-forgot-token', [ForgotPasswordController::class, 'checkForgotToken']);
     Route::post('send-new-password', [ForgotPasswordController::class, 'sendNewPassword']);
+    Route::post('resend-forgot', [ForgotPasswordController::class, 'resendForgot']);
     Route::post('trial-course', [TrialCourseController::class, 'trialCourse']);
     Route::post('send-order', SendOrderController::class);
 

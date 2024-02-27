@@ -25,7 +25,7 @@ class ForgotPasswordController extends Controller
        if($message){
         return response()->json(['success' => true, 'message' => translateMessageApi('password-reset-link-sent')], 200);
        }
-       
+
       return response()->json(['error' => translateMessageApi('password-reset-link-sent')], 500);
     }
 
@@ -37,7 +37,7 @@ class ForgotPasswordController extends Controller
             return response()->json(['success' => true]);
         }
 
-        return response()->json(['success' => false]);
+        return response()->json(['success' => false, 'message' => translateMessageApi('wrong-code')]);
     }
 
     public function sendNewPassword(ChangeNewPasswordRequest $request)
@@ -49,5 +49,17 @@ class ForgotPasswordController extends Controller
         }
 
         return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong')], 500);
+    }
+
+    public function resendForgot(Request $request)
+    {
+        $send = $this->forgotPasswordService->resendForgot($request->all());
+
+        if($send){
+            return response()->json(['success' => true, 'message' => translateMessageApi('password-reset-link-sent'), 200]);
+        }
+
+        return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong'), 500]);
+        
     }
 }

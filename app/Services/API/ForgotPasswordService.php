@@ -55,4 +55,24 @@ class ForgotPasswordService
 
     return false;
   }
+
+  public function resendForgot($data)
+    {
+        $email = $data['email'];
+
+        if($forgot = PasswordReset::where('email', $email)->first()){
+            $token = mt_rand(10000, 99999);
+            $forgot->update([
+                'token' => $token
+            ]);
+
+            Mail::send(new SendForgotToken($email, $token));
+
+            return true;
+        }
+
+        return false;
+        
+    }
+  
 }
