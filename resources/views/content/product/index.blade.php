@@ -14,9 +14,9 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('branches-list')}}">Թանգարանի մասնաճյուղեր </a>
+                  <a href="{{route('product-list')}}">Ապրանքների ցուցակ </a>
               </li>
-              <li class="breadcrumb-item active">Ցանկ</li>
+              <li class="breadcrumb-item active">Ցուցակ</li>
           </ol>
       </nav>
   </h4>
@@ -24,10 +24,10 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Թանգարանի մասնաճյուղերի ցանկ</h5>
+                <h5 class="card-header">Ապրանքների ցուցակ</h5>
             </div>
             <div>
-                <a href="{{ route('branches-create') }}" class="btn btn-primary mx-4">Ստեղծել Մասնաճյուղ </a>
+                <a href="{{ route('product-create') }}" class="btn btn-primary mx-4">Ստեղծել Ապրանք </a>
             </div>
         </div>
         <div class="card-body">
@@ -47,8 +47,8 @@
 @php
   $i=0;
 @endphp
-@if($museum_branches!=false)
-                        @foreach ($museum_branches as $key => $item)
+@if($data!=false)
+                        @foreach ($data as $key => $item)
 
                             <tr>
                                 <td>{{ ++$i }}</td>
@@ -69,8 +69,7 @@
 
                                 <td>{{ $item->created_at }}</td>
                                 <td>
-
-                                    <div class="dropdown action" data-id="{{ $item['id'] }}" data-tb-name="museum_branches">
+                                    <div class="dropdown action" data-id="{{ $item['id'] }}" data-tb-name="products">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown">
                                             <i class="bx bx-dots-vertical-rounded"></i>
@@ -83,7 +82,7 @@
                                                     {{ $item['status'] ? 'checked' : null }}>
                                             </div>Կարգավիճակ
                                         </a>
-                                            <a class="dropdown-item" href="{{route('branches-edit',$item['id'])}}"><i
+                                            <a class="dropdown-item" href="{{route('product-edit',$item['id'])}}"><i
                                                     class="bx bx-edit-alt me-1"></i>Խմբագրել</a>
                                             <button type="button" class="dropdown-item click_delete_item"
                                                 data-bs-toggle="modal" data-bs-target="#smallModal"><i
@@ -98,8 +97,7 @@
                     </tbody>
                 </table>
             </div>
-          
-
+            {{$data->links() }}
 
         </div>
 

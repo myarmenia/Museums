@@ -23,7 +23,7 @@ class Museum extends Model
 
     public function museum_branches(): HasMany
     {
-      return $this->hasMany(MuseumBranche::class, 'museum_id', 'id');
+      return $this->hasMany(MuseumBranch::class, 'museum_id', 'id');
     }
     public function phones(): HasMany
     {

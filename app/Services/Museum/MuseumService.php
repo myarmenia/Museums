@@ -166,14 +166,14 @@ class MuseumService
             $imagesData = [
                 'museum' => Museum::find($id)
             ];
-        
+
             if (array_key_exists('photos', $data)) {
                 $imagesData['photos'] = [
                     'image' => $data['photos'],
                 ];
                 ImageService::createImageble($imagesData);
             }
-        
+
             if (array_key_exists('general_photo', $data)) {
                 $imagesData['photos'] = [
                     'image' => [$data['general_photo']],
