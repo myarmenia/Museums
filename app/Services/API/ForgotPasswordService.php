@@ -15,7 +15,7 @@ class ForgotPasswordService
   {
     $user = User::where('email', $email)->first();
     if ($user) {
-      $token = sha1(Str::random(80));
+      $token = mt_rand(10000, 99999);
       $email = $user->email;
       PasswordReset::updateOrCreate(
         ["email" => $email],
