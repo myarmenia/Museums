@@ -14,7 +14,7 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('product-list')}}">Ապրանքներ </a>
+                  <a href="{{route('product_list')}}">Ապրանքներ </a>
               </li>
               <li class="breadcrumb-item active">Ցանկ</li>
           </ol>
@@ -27,11 +27,11 @@
                 <h5 class="card-header">Ապրանքների ցանկ</h5>
             </div>
             <div>
-                <a href="{{ route('product-create') }}" class="btn btn-primary mx-4">Ստեղծել Ապրանք </a>
+                <a href="{{ route('product_create') }}" class="btn btn-primary mx-4">Ստեղծել Ապրանք </a>
             </div>
         </div>
         <div class="card-body">
-          <form action="{{route('product-list')}}" method="get" class="row g-3 mt-2" style="display: flex">
+          <form action="{{route('product_list')}}" method="get" class="row g-3 mt-2" style="display: flex">
             <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
               <div class="col-2">
                 <input type="text" class="form-control" id="" placeholder="Անվանում" name="name" value="{{ request()->input('name') }}">
@@ -105,7 +105,7 @@
                                                     {{ $item['status'] ? 'checked' : null }}>
                                             </div>Կարգավիճակ
                                         </a>
-                                            <a class="dropdown-item" href="{{route('product-edit',$item['id'])}}"><i
+                                            <a class="dropdown-item" href="{{route('product_edit',$item['id'])}}"><i
                                                     class="bx bx-edit-alt me-1"></i>Խմբագրել</a>
                                             <button type="button" class="dropdown-item click_delete_item"
                                                 data-bs-toggle="modal" data-bs-target="#smallModal"><i
