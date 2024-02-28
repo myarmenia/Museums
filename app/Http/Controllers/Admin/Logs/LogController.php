@@ -14,9 +14,10 @@ class LogController extends Controller
       $this->model = $model;
     }
     public function index(Request $request){
-        $logs = $this->model
-          ->filter($request->all())
-          ->get();
+        // $logs = $this->model
+        //   ->filter($request->all())
+        //   ->get();
+        $logs = [];
 
         return view('content.logs.index', [
           'logs' => $logs

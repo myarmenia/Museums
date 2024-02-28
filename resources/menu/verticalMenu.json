@@ -20,13 +20,6 @@
     },
 
     {
-      "name": "Project",
-      "icon": "menu-icon tf-icons bx bx-collection",
-      "slug": "project",
-      "roles": ["all"],
-      "url": "project"
-    },
-    {
       "url": "/users",
       "name": "Օգտագործողներ",
       "icon": "menu-icon tf-icons bx bx-user",
@@ -74,7 +67,13 @@
 
       ]
     },
-
+    {
+      "name": "Լոգավորում",
+      "icon": "menu-icon tf-icons bx bx-data",
+      "slug": "logs",
+      "roles": ["super_admin"],
+      "url": "logs"
+    },
 
     {
       "name": "Account Settings",
