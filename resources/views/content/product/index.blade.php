@@ -31,15 +31,15 @@
             </div>
         </div>
         <div class="card-body">
-          <form action="{{route('news')}}" method="get" class="row g-3 mt-2" style="display: flex">
+          <form action="{{route('product-list')}}" method="get" class="row g-3 mt-2" style="display: flex">
             <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
               <div class="col-2">
-                <input type="text" class="form-control" id="" placeholder="Անվանում" name="title" value="{{ request()->input('title') }}">
+                <input type="text" class="form-control" id="" placeholder="Անվանում" name="name" value="{{ request()->input('name') }}">
             </div>
             <div class="mb-3 row">
-             
+
               <div class="col-md-10">
-                  <select id="defaultSelect" name="product_category_id" class="form-select">
+                  <select id="defaultSelect" name="product_category_id" class="form-select" value="{{ request()->input('product_category_id') }}" >
                       <option value="">ֆիլտրել ըստ կատեգորիաի</option>
                       @foreach ($data as $dat)
                           <option value="{{ $dat->id }}">{{ __('product-categories.' . $dat->key) }}</option>
@@ -71,6 +71,7 @@
 @php
   $i=0;
 @endphp
+
 @if($data!=false)
                         @foreach ($data as $key => $item)
 
@@ -121,7 +122,7 @@
                     </tbody>
                 </table>
             </div>
-            {{$data->links() }}
+            {{-- {{$data->links() }} --}}
 
         </div>
 

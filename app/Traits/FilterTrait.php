@@ -11,7 +11,7 @@ trait FilterTrait {
   $defaultFillableFields = $this->filterFields;
   // dd($filters, $defaultFillableFields);
   foreach ($filters as $field => $value) {
-    dd($field, $value);
+
       // if(in_array($field, $this->boolFilterFields) && $value != null) {
       //     $builder->where($field, (bool)$value);
       //     continue;
@@ -27,6 +27,7 @@ trait FilterTrait {
           $builder->where($field, $value);
       }
   }
+  // dd($builder);
   return $builder;
 
   }

@@ -17,6 +17,7 @@ class Product extends Model
 // =========================
 protected $filterFields = ['product_category_id', 'museum_id'];
 protected $filterFieldTranslation = ['name'];
+protected $likeFilterFields = [];
   public function category(): BelongsTo
   {
     return $this->belongsTo(ProductCategory::class, 'museum_id');

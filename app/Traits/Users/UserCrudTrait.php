@@ -48,7 +48,7 @@ trait UserCrudTrait
 
       $user_ids = Auth::user()->museum_staff->pluck('user_id')->toArray();
       $data = $this->model()::whereIn('id', $user_ids);
-
+ 
     }
 
     $data = $data->orderBy('id', 'DESC')->paginate(10)->withQueryString();

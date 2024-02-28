@@ -27,13 +27,16 @@ class ProductListController extends Controller
       // $data=$data->orderBy('id', 'DESC')->paginate(3)->withQueryString();
       //   return view("content.product.index", compact('data'))
       //   ->with('i', ($request->input('page', 1) - 1) * 3);
-      $filterArray=['product_category_id'=>1];
+
+      $filterArray=['product_category_id'=>$request['product_category_id'] ?? null ];
       $data = $this->model
                   ->filter($filterArray)
                   ->get();
-// dd($data);
-		return view('content.product.index', [
-				'data' => $data
-			]);
+        // dd($data);
+        // $data=$data->orderBy('id', 'DESC')->paginate(3)->withQueryString();
+        return view('content.product.index', [
+            'data' => $data
+        ]);
+            //  ->with('i', ($request->input('page', 1) - 1) * 3);
     }
 }
