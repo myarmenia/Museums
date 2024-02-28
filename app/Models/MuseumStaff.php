@@ -11,8 +11,13 @@ class MuseumStaff extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
+
     public function museum(){
       return $this->belongsTo(Museum::class,"museum_id");
+    }
+
+    public function user(){
+      return $this->belongsTo(User::class,"user_id");
     }
 
 }
