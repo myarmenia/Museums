@@ -32,7 +32,22 @@
                 <form action="{{route('users_visitors')}}" method="get" class="row g-3 mt-2" style="display: flex">
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
 
+                      <div class="new-select rounded" id="">
+                                <div class="new-select-title-box">
+                                    <input type="text" value="{{ request()->input('role') ?? ''}}" hidden name="role" />
+                                    <span role="select-title">{{__('selects.roles')}}</span>
+                                    <img class="new-select-icon" src="{{asset('assets/images/select-chev.svg')}}" />
+                                </div>
+                                <div class="new-select-options-box">
+                                    <ul>
+                                        <li data-value="">{{__('selects.all')}}</li>
 
+                                        @foreach($roles as $key => $role)
+                                            <li data-value="{{$role}}">{{$role}}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
                         <div class="col-2">
                             <input type="text" class="form-control" id="role" placeholder="Դեր" name="role" value="{{ request()->input('role') }}">
                         </div>
@@ -62,20 +77,14 @@
                     </thead>
                     <tbody>
 
-                        @foreach ($data as $key => $log)
+                        {{-- @foreach ($data as $key => $log)
                             <tr>
                                 <td>{{ ++$i }}</td>
                                 <td>{{ $log->user->name }} {{ $log->user->surname }}</td>
                                 <td>{{ implode(', ', $log->roles->pluck('name')->toArray()) }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone }}</td>
-                                {{-- <td class="status">
-                                    @if ($user->status)
-                                        <span class="badge bg-label-success me-1">Ակտիվ</span>
-                                    @else
-                                        <span class="badge bg-label-danger me-1">Ապաակտիվ</span>
-                                    @endif
-                                </td> --}}
+
 
                                 <td>
                                     @if (!empty($user->getRoleNames()))
@@ -114,7 +123,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>

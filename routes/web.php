@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ChangeStatusController;
 use App\Http\Controllers\Admin\Courses\CourseLanguageController;
 use App\Http\Controllers\Admin\DeleteItemController;
 use App\Http\Controllers\Admin\Lessons\LessonController;
+use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\Admin\Tasks\TaskController;
@@ -138,7 +139,7 @@ Route::group(['middleware' => ['auth']], function () {
 Route::post('change-status', [ChangeStatusController::class,'change_status'])->name('change_status');
 // Route::get('student-is-present/{id}', [StudentIsPresentController::class,'index']);
 Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class,'index'])->name('delete_item');
-Route::get('logs', [DeleteItemController::class, 'index'])->name('delete_item');
+Route::get('logs', [LogController::class, 'index'])->name('logs');
 
   // Route::post('open-course/{user_id}', [OpenCourseLanguageForStudentController::class,'index'])->name('open_course');
 // Route::get('srudent-info/{id}', [StudentInfoController::class,'index'])->name('users.info');
