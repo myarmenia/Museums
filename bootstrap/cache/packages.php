@@ -24,6 +24,17 @@
       0 => 'Laravel\\Sanctum\\SanctumServiceProvider',
     ),
   ),
+  'laravel/socialite' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Socialite' => 'Laravel\\Socialite\\Facades\\Socialite',
+    ),
+  ),
   'laravel/tinker' => 
   array (
     'providers' => 
@@ -36,6 +47,16 @@
     'providers' => 
     array (
       0 => 'Laravel\\Ui\\UiServiceProvider',
+    ),
+  ),
+  'macsidigital/laravel-oauth2-client' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'MacsiDigital\\OAuth2\\Providers\\OAuth2ServiceProvider',
+    ),
+    'aliases' => 
+    array (
     ),
   ),
   'nesbot/carbon' => 
