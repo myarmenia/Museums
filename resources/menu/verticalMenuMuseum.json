@@ -53,6 +53,17 @@
       "slug": "general-news",
       "roles": ["museum_admin","content_manager"]
 
+    },
+
+    {
+      "url": "educational-programs/list",
+      "name": "Կրթական ծրագրեր",
+      "icon": "menu-icon tf-icons bx bx-list-ul",
+      "slug": "educational-programs",
+      "roles": [
+        "museum_admin",
+        "content_manager"
+      ]
     }
 
   ]

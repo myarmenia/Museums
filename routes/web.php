@@ -1,22 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\ChangeStatusController;
-use App\Http\Controllers\Admin\Courses\CourseLanguageController;
 use App\Http\Controllers\Admin\DeleteItemController;
-use App\Http\Controllers\Admin\Lessons\LessonController;
+use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCreateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
-use App\Http\Controllers\Admin\Project\ProjectController;
-use App\Http\Controllers\Admin\Tasks\TaskController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\Users\OpenCourseLanguageForStudentController;
-use App\Http\Controllers\Admin\Users\OpenNextLessonController;
-use App\Http\Controllers\Admin\Users\StudentInfoController;
-use App\Http\Controllers\Admin\Users\StudentIsPresentController;
-use App\Http\Controllers\Admin\Users\StudentAttendancesController;
 use App\Http\Controllers\Admin\News\NewsController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Admin\News\NewsCategoryController;
 use App\Http\Controllers\Admin\Product\CreateController;
 use App\Http\Controllers\Admin\Product\ProductCreateController;
 use App\Http\Controllers\Admin\Product\ProductEditController;
@@ -28,16 +18,9 @@ use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dashboard\Analytics;
-use App\Http\Controllers\layouts\WithoutMenu;
-use App\Http\Controllers\layouts\WithoutNavbar;
-use App\Http\Controllers\layouts\Fluid;
-use App\Http\Controllers\layouts\Container;
-use App\Http\Controllers\layouts\Blank;
 use App\Http\Controllers\pages\AccountSettingsAccount;
 use App\Http\Controllers\pages\AccountSettingsNotifications;
 use App\Http\Controllers\pages\AccountSettingsConnections;
-use App\Http\Controllers\pages\MiscError;
-use App\Http\Controllers\pages\MiscUnderMaintenance;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
@@ -198,6 +181,12 @@ Route::group(['prefix'=>'product'],function(){
   Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product-update');
 
 });
+
+  Route::group(['prefix' => 'educational-programs'], function () {
+    Route::get('/create', EducationalProgramCreateController::class)->name('educational_programs_create');
+
+
+  });
 
 
 // Route::post('video-upload', [FileUploadService::class, 'videoUpload'])->name('video-upload');
