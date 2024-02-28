@@ -51,7 +51,7 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     Route::group(['prefix' => 'email'], function ($router) {
         Route::post('feedback', SendFeedbackController::class);
-        Route::post('clientProject', SendClientProjectDetController::class);
+        Route::post('clientProject', SendClientProjectDetController::class);    
         Route::post('clientQuestion', SendYourQuestionController::class);
     });
 
