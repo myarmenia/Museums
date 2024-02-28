@@ -16,7 +16,7 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                <a href="{{route('product-list')}}">Ապրանքներ </a>
+                <a href="{{route('product_list')}}">Ապրանքներ </a>
               </li>
               <li class="breadcrumb-item active">Խմբագրել</li>
           </ol>
@@ -33,7 +33,7 @@
         <div class="card-body">
           {{-- {{dd($data)}} --}}
 
-            <form action="{{ route('product-update',$data->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('product_update',$data->id) }}" method="POST" enctype="multipart/form-data">
               @method('put')
               <input type = "hidden" name = "museum_id" value="{{ $data->museum_id }}">
               <div class="mb-3 row">

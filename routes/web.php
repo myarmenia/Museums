@@ -174,11 +174,11 @@ Route::group(['prefix'=>'musuem_branches'],function(){
 
 });
 Route::group(['prefix'=>'product'],function(){
-  Route::get('/list', [ProductListController::class, 'index'])->name('product-list');
-  Route::get('/create', [ProductCreateController::class, 'create'])->name('product-create');
-  Route::post('/store', [ProductStoreController::class,'store'])->name('product-store');
-  Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product-edit');
-  Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product-update');
+  Route::get('/list', [ProductListController::class, 'index'])->name('product_list');
+  Route::get('/create', [ProductCreateController::class, 'create'])->name('product_create');
+  Route::post('/store', [ProductStoreController::class,'store'])->name('product_store');
+  Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product_edit');
+  Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product_update');
 
 });
 
