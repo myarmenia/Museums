@@ -24,8 +24,8 @@ class ProductRequest extends FormRequest
     {
       $array= [
         "product_category_id"=> 'required',
-        'price'=> 'required||integer',
-        'quantity'=> 'required|integer',
+        'price'=> 'required|integer|gt:0',
+        'quantity'=> 'required|integer|gt:0',
         'translate.*.name' => 'required',
     ];
 
@@ -39,8 +39,10 @@ class ProductRequest extends FormRequest
         return [
           "product_category_id" =>"Ապրանքի կատեգորիա դաշտը պարտադիր է",
             'translate.*.name' => 'Անվանում դաշտը պարտադիր է',
-            'price' => 'Գին դաշտը պարտադիր է',
-            'quantity' => 'Քանակ դաշտը պարտադիր է',
+            'price.required' => 'Գին դաշտը պարտադիր է',
+            'price.integer'=> 'Գին դաշտը պետք է լինի վավեր',
+            'quantity.required' => 'Քանակ դաշտը պարտադիր է',
+            'quantity.integer'=> 'Քանակ դաշտը պետք է լինի վավեր',
             'photo' => 'Լուսանկարի դաշտը պարտադիր է:',
         ];
     }
