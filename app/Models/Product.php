@@ -16,8 +16,13 @@ class Product extends Model
     protected $guarded = [];
 // =========================
 protected $filterFields = ['product_category_id', 'museum_id'];
+
 protected $filterFieldTranslation = ['name'];
+
 protected $likeFilterFields = [];
+
+protected $hasRelationFields = ['product_translations'];
+
   public function category(): BelongsTo
   {
     return $this->belongsTo(ProductCategory::class, 'museum_id');
@@ -27,7 +32,7 @@ protected $likeFilterFields = [];
     return $this->belongsTo(Museum::class, 'museum_id');
   }
 
-  public function translations()
+  public function product_translations()
   {
     return $this->hasMany(ProductTranslation::class);
   }

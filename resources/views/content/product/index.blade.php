@@ -41,8 +41,8 @@
               <div class="col-md-10">
                   <select id="defaultSelect" name="product_category_id" class="form-select" value="{{ request()->input('product_category_id') }}" >
                       <option value="">ֆիլտրել ըստ կատեգորիաի</option>
-                      @foreach ($data as $dat)
-                          <option value="{{ $dat->id }}">{{ __('product-categories.' . $dat->key) }}</option>
+                      @foreach ($product_category as $item)
+                          <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}</option>
                       @endforeach
                   </select>
               </div>
@@ -68,9 +68,7 @@
                         </tr>
                     </thead>
                     <tbody>
-@php
-  $i=0;
-@endphp
+
 
 @if($data!=false)
                         @foreach ($data as $key => $item)
@@ -122,7 +120,7 @@
                     </tbody>
                 </table>
             </div>
-            {{-- {{$data->links() }} --}}
+            {{$data->links() }}
 
         </div>
 
