@@ -24,8 +24,8 @@ class ProductRequest extends FormRequest
     {
       $array= [
         "product_category_id"=> 'required',
-        'price'=> 'required',
-        'quantity'=> 'required',
+        'price'=> 'required||integer',
+        'quantity'=> 'required|integer',
         'translate.*.name' => 'required',
     ];
 

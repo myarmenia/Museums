@@ -18,12 +18,12 @@ class ProductListController extends Controller
 	}
 
     public function index(Request $request){
-
+      // dd($request->route()->middleware());
       $addressRequest = "web";
       $product_category = ProductCategory::all();
-      $filterArray = ['product_category_id'=>$request['product_category_id'] ?? null,'name'=>$request['name'] ?? null ];
+      // $filterArray = ['product_category_id'=>$request['product_category_id'] ?? null,'name'=>$request['name'] ?? null ];
       $data = $this->model
-                  ->filter($filterArray);
+                  ->filter($request->all());
                   // ->get();
         // dd($data);
         $data=$data->orderBy('id', 'DESC')->paginate(3)->withQueryString();

@@ -1,5 +1,5 @@
 <?php
- namespace App\Traits\ListTrait;
+ namespace App\Traits;
 
 use App\Models\Image;
 use App\Models\Product;
@@ -11,21 +11,20 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
  trait UpdateTrait{
-  // abstract function model();
-  // abstract function validationRules($resource_id = 0);
-  public function getUpdate(Request $request, $mainTable, $translationTable, $item_id,$id){
+  abstract function model();
+
+  public function itemUpdate(Request $request, $table, $has_relation_foreign_key,$id){
 
     $data = $request->except(['translate','photo','_method']);
-// dd($data);
-    $item = Product::where('id',$id)->first();
+
+    $item = $this->model()::where('id',$id)->first();
 
     $item->update($data);
     if($item){
 
       foreach($request['translate'] as $key => $lang){
-// dd($id);
-        $product=ProductTranslation::where(['product_id'=>$id,'lang'=>$key])->first();
-        $product->update($lang);
+
+        $item->item_translations()->where([$has_relation_foreign_key=>$id,'lang'=>$key])->update($lang);
       }
 
       if(isset($request['photo'])){
@@ -36,7 +35,7 @@ use Illuminate\Support\Str;
           Storage::delete($image->path);
           $image->delete();
         }
-        $path = FileUploadService::upload($request['photo'], $mainTable.'/'.$id);
+        $path = FileUploadService::upload($request['photo'], $table.'/'.$id);
         $photoData = [
             'path' => $path,
             'name' => $request['photo']->getClientOriginalName()
