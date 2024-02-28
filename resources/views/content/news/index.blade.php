@@ -48,7 +48,7 @@
                 <button class="btn btn-primary col-2">Փնտրել</button>
 
             </div>
-        </form>
+          </form>
 
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">

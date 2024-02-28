@@ -14,9 +14,9 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('product-list')}}">Ապրանքների ցուցակ </a>
+                  <a href="{{route('product-list')}}">Ապրանքներ </a>
               </li>
-              <li class="breadcrumb-item active">Ցուցակ</li>
+              <li class="breadcrumb-item active">Ցանկ</li>
           </ol>
       </nav>
   </h4>
@@ -24,13 +24,37 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Ապրանքների ցուցակ</h5>
+                <h5 class="card-header">Ապրանքների ցանկ</h5>
             </div>
             <div>
                 <a href="{{ route('product-create') }}" class="btn btn-primary mx-4">Ստեղծել Ապրանք </a>
             </div>
         </div>
         <div class="card-body">
+          <form action="{{route('product-list')}}" method="get" class="row g-3 mt-2" style="display: flex">
+            <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
+              <div class="col-2">
+                <input type="text" class="form-control" id="" placeholder="Անվանում" name="name" value="{{ request()->input('name') }}">
+            </div>
+            <div class="mb-3 row">
+
+              <div class="col-md-10">
+                  <select id="defaultSelect" name="product_category_id" class="form-select" value="{{ request()->input('product_category_id') }}" >
+                      <option value="">ֆիլտրել ըստ կատեգորիաի</option>
+                      @foreach ($product_category as $item)
+                          <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}</option>
+                      @endforeach
+                  </select>
+              </div>
+            </div>
+
+
+
+                <button class="btn btn-primary col-2">Փնտրել</button>
+
+            </div>
+          </form>
+
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">
                     <thead>
@@ -44,9 +68,8 @@
                         </tr>
                     </thead>
                     <tbody>
-@php
-  $i=0;
-@endphp
+
+
 @if($data!=false)
                         @foreach ($data as $key => $item)
 
