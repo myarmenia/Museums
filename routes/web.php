@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\Product\ProductEditController;
 use App\Http\Controllers\Admin\Product\ProductListController;
 use App\Http\Controllers\Admin\Product\ProductStoreController;
 use App\Http\Controllers\Admin\Product\ProductUpdateController;
+use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\museum\MuseumController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
@@ -197,6 +198,14 @@ Route::group(['prefix'=>'product'],function(){
   Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product-edit');
   Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product-update');
 
+});
+
+Route::group(['prefix' => 'chats'], function () {
+  Route::get('/', [ChatController::class, 'index'])->name('chats');
+  // Route::get('/create', [MuseumController::class, 'create'])->name('create-museum')->middleware('museum');
+  // Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
+  // Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit')->middleware('museum_edit_middleware');
+  // Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
 });
 
 
