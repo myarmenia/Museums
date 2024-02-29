@@ -32,59 +32,27 @@
                 <form action="{{route('users_visitors')}}" method="get" class="row g-3 mt-2" style="display: flex">
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
 
-                      <div class="new-select rounded" id="">
-                                <div class="new-select-title-box">
-                                    <input type="text" value="{{ request()->input('role') ?? ''}}" hidden name="role" />
-                                    <span role="select-title">{{__('selects.roles')}}</span>
-                                    <img class="new-select-icon" src="{{asset('assets/images/select-chev.svg')}}" />
-                                </div>
-                                <div class="new-select-options-box">
-                                    <ul>
-                                        <li data-value="">{{__('selects.all')}}</li>
 
-                                        {{-- @foreach($roles as $key => $role)
-                                            <li data-value="{{$role}}">{{$role}}</li>
-                                        @endforeach --}}
-                                    </ul>
-                                </div>
+                        <div class="col-2">
+                            <select id="defaultSelect" name="type" class="form-select" value="{{ request()->input('type') }}" >
+                                    <option value="" disabled selected>Գործ․ տեսակ</option>
+                                    <option value="all">{{__('logs.all')}}</option>
+                                    <option value="store">{{__('logs.store')}}</option>
+                                    <option value="update">{{__('logs.update')}}</option>
+                                    <option value="change_status">{{__('logs.change_status')}}</option>
+                                    <option value="delete">{{__('logs.delete')}}</option>
+
+                            </select>
                         </div>
-                        <div class="col-md-10">
-                        <select id="defaultSelect" name="type" class="form-select" value="{{ request()->input('type') }}" >
-                                <option value="">Գործ․ տեսակ</option>
-                                    <option value="{{ $item->id }}">{{__('logs.all')}}</option>
-                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
-                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
-                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
-                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
-
-                                @foreach ($product_category as $item)
-                                    <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}</option>
+                        <div class="col-2">
+                            <select id="defaultSelect" name="type" class="form-select" value="{{ request()->input('role') ?? ''}}" >
+                                <option value="" disabled selected>Դեր</option>
+                                <option value="all">{{__('logs.all')}}</option>
+                                @foreach (allRoleNames() as $role)
+                                    <option value="{{ $role }}">{{ __('roles.' . $role) }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="new-select rounded" id="">
-                                <div class="new-select-title-box">
-                                    <input type="text" value="{{ request()->input('role') ?? ''}}" hidden name="role" />
-                                    <span role="select-title">{{__('selects.roles')}}</span>
-                                    <img class="new-select-icon" src="{{asset('assets/images/select-chev.svg')}}" />
-                                </div>
-                                <div class="new-select-options-box">
-                                    <ul>
-                                        <li data-value="">{{__('selects.all')}}</li>
-                                        <li data-value="store">{{__('selects.store')}}</li>
-                                        <li data-value="update">{{__('selects.update')}}</li>
-                                        <li data-value="change_status">{{__('selects.change_status')}}</li>
-                                        <li data-value="delete">{{__('selects.delete')}}</li>
-
-
-                                    </ul>
-                                </div>
-                        </div>
-                        <div class="col-2">
-                            <input type="text" class="form-control" id="role" placeholder="Դեր" name="role" value="{{ request()->input('role') }}">
-                        </div>
-
-
 
                         <div class="col-2">
                             <input type="date" class="form-control" id="datefrom" placeholder="Ստեղծման ամսաթիվ" name="from_created_at" value="{{ request()->input('from_created_at') }}">
@@ -107,15 +75,14 @@
                             <th>Օգտագործող</th>
                             <th>Դեր</th>
                             <th>Գործ․ տեսակ</th>
-                            <th>Գործ․ օբեկտ</th>
+                            <th>Գործ․ օբյեկտ</th>
                             <th>Տվյալներ</th>
-                            <th>Ամսատիվ</th>
-                            {{-- <th>Գործողություն</th> --}}
+                            <th>Ամսաթիվ</th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        {{-- @foreach ($data as $key => $log)
+                        @foreach ($data as $key => $log)
                             <tr>
                                 <td>{{ ++$i }}</td>
                                 <td>{{ $log->user->name }} {{ $log->user->surname }}</td>
@@ -161,12 +128,12 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>
             <div class="demo-inline-spacing">
-                {{ $data->links() }}
+                {{-- {{ $data->links() }} --}}
             </div>
         </div>
     </div>

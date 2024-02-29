@@ -17,7 +17,7 @@ class LogController extends Controller
         // $logs = $this->model
         //   ->filter($request->all())
         //   ->get();
-        $logs = [];
+        $data = LodSer;
 
         return view('content.logs.index', [
           'logs' => $logs
