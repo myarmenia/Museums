@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
   use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
@@ -30,8 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
 
-  protected $hidden = ['password'];
-
+  protected $hidden = ['password', 'google_id'];
 
 
   public function getJWTIdentifier()
@@ -52,11 +51,36 @@ class User extends Authenticatable implements MustVerifyEmail
   public function carts(){
     return $this->hasMany(Cart::class);
   }
+
+  public function museum(){
+    return $this->hasOne(Museum::class);
+  }
+
+  public function museum_staff_admin(){
+    return $this->hasMany(MuseumStaff::class, 'admin_id');
+  }
+
+  public function museum_staff_user(){
+    return $this->hasOne(MuseumStaff::class, 'user_id');
+  }
+
   public function roleNames(): array
   {
 
     return $this->roles->pluck('name')->toArray();
   }
+
+  public function getStaff()
+  {
+    return $this->belongsToMany(User::class, 'museum_staff',  'admin_id','user_id');
+  }
+
+  public function hasInStaff($id)
+  {
+      $user = $this->museum_staff_admin()->where('user_id', $id)->first();
+      return $user != null ? true : false;
+  }
+
   public function isAdmin()
   {
 
@@ -68,5 +92,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
     return false;
   }
+
+  public function user_staff()
+  {
+
+    return $this->hasMany(MuseumStaff::class);
+  }
+
+
 
 }

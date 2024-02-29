@@ -14,9 +14,9 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('news')}}">Թանգարանի մասնաճյուղեր </a>
+                  <a href="{{route('branches-list')}}">Թանգարանի մասնաճյուղեր </a>
               </li>
-              <li class="breadcrumb-item active">Ցուցակ</li>
+              <li class="breadcrumb-item active">Ցանկ</li>
           </ol>
       </nav>
   </h4>
@@ -24,7 +24,7 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Թանգարանի մասնաճյուղերի ցուցակ</h5>
+                <h5 class="card-header">Թանգարանի մասնաճյուղերի ցանկ</h5>
             </div>
             <div>
                 <a href="{{ route('branches-create') }}" class="btn btn-primary mx-4">Ստեղծել Մասնաճյուղ </a>
@@ -37,7 +37,7 @@
                         <tr>
                             <th>No</th>
                             <th>Նկար</th>
-                            <th>Վերնագիր</th>
+                            <th>Անվանում</th>
                             <th>Կարգավիճակ</th>
                             <th>Ստեղծման ամսաթիվը</th>
                             <th>Գործողություն</th>
@@ -47,18 +47,19 @@
 @php
   $i=0;
 @endphp
-                        @foreach ($museum_branches as $key => $news)
+@if($museum_branches!=false)
+                        @foreach ($museum_branches as $key => $item)
 
                             <tr>
                                 <td>{{ ++$i }}</td>
                                 <td>
-                                    @if($news['images'])
-                                        <img width="50" height="50" src="{{route('get-file',['path'=>$news->images[0]->path]) }}" >
+                                    @if($item['images'])
+                                        <img width="50" height="50" src="{{route('get-file',['path'=>$item->images[0]->path]) }}" >
                                     @endif
                                 </td>
-                                <td>{{ $news->translation("am")->title}}</td>
+                                <td>{{ $item->translation("am")->name}}</td>
                                 <td class="status">
-                                  @if ($news->status)
+                                  @if ($item->status)
                                       <span class="badge bg-label-success me-1">Ակտիվ</span>
                                   @else
                                       <span class="badge bg-label-danger me-1">Ապաակտիվ</span>
@@ -66,9 +67,10 @@
                               </td>
 
 
-                                <td>{{ $news->created_at }}</td>
+                                <td>{{ $item->created_at }}</td>
                                 <td>
-                                    <div class="dropdown action" data-id="{{ $news['id'] }}" data-tb-name="news">
+
+                                    <div class="dropdown action" data-id="{{ $item['id'] }}" data-tb-name="museum_branches">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown">
                                             <i class="bx bx-dots-vertical-rounded"></i>
@@ -78,10 +80,10 @@
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input change_status" type="checkbox"
                                                     role="switch" data-field-name="status"
-                                                    {{ $news['status'] ? 'checked' : null }}>
+                                                    {{ $item['status'] ? 'checked' : null }}>
                                             </div>Կարգավիճակ
                                         </a>
-                                            <a class="dropdown-item" href="{{route('news-edit',$news['id'])}}"><i
+                                            <a class="dropdown-item" href="{{route('branches-edit',$item['id'])}}"><i
                                                     class="bx bx-edit-alt me-1"></i>Խմբագրել</a>
                                             <button type="button" class="dropdown-item click_delete_item"
                                                 data-bs-toggle="modal" data-bs-target="#smallModal"><i
@@ -92,9 +94,11 @@
                                 </td>
                             </tr>
                         @endforeach
+@endif
                     </tbody>
                 </table>
             </div>
+          
 
 
         </div>

@@ -5,7 +5,8 @@ interface MuseumBranchesRepositoryInterface {
   public function all();
   public function creat();
   public function store($request);
-  public function find();
+  public function find($id);
+  public function update($request,$id);
 
 
 }

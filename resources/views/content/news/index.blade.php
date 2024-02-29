@@ -16,7 +16,7 @@
               <li class="breadcrumb-item">
                   <a href="{{route('news')}}">Նորություններ </a>
               </li>
-              <li class="breadcrumb-item active">Ցուցակ</li>
+              <li class="breadcrumb-item active">Ցանկ</li>
           </ol>
       </nav>
   </h4>
@@ -24,7 +24,7 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Նորությունների ցուցակ</h5>
+                <h5 class="card-header">Նորությունների ցանկ</h5>
             </div>
             <div>
                 <a href="{{ route('news-create-page') }}" class="btn btn-primary mx-4">Ստեղծել նորություն </a>
@@ -48,7 +48,7 @@
                 <button class="btn btn-primary col-2">Փնտրել</button>
 
             </div>
-        </form>
+          </form>
 
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">

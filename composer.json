@@ -9,9 +9,11 @@
   "license": "MIT",
   "require": {
     "php": "^8.1",
+    "firebase/php-jwt": "^6.10",
     "guzzlehttp/guzzle": "^7.2",
     "laravel/framework": "^10.23",
     "laravel/sanctum": "^3.2",
+    "laravel/socialite": "^5.12",
     "laravel/tinker": "^2.8",
     "laravel/ui": "^4.3",
     "spatie/laravel-permission": "^6.3",
