@@ -208,7 +208,7 @@ Route::group(['prefix'=>'product'],function(){
 
   // });
   Route::get('/banner', [BannerCreateController::class,'create']);
-  Route::post('/store', BannerStoreController::class,'store')->name('banner_store');
+  Route::post('/store', [BannerStoreController::class,'store'])->name('banner_store');
 
 
 
