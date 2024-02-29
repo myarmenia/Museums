@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 trait FilterTrait {
     public function scopeFilter( $builder, $filters = []){
-
+// dd($filters);
       $lang = request()->is('api/*') ? session('languages') : "am";
 
         if(!$filters) {

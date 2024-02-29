@@ -38,5 +38,7 @@ class ProductListController extends Controller
             'product_category' => $product_category
         ])
              ->with('i', ($request->input('page', 1) - 1) * 3);
+
+            
     }
 }

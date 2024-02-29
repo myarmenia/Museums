@@ -1,6 +1,5 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Account settings - Account')
 @section('page-script')
     <script src="{{ asset('assets/js/admin\project\project-upload-photo.js') }}"></script>
 @endsection
@@ -89,7 +88,9 @@
                 @enderror
               </div>
               <div class="mb-3 row">
-                <label for="phone_number" class="col-md-2 col-form-label">Քանակ</label>
+                <label for="phone_number" class="col-md-2 col-form-label">Քանակ
+                  <span class="required-field text-danger">*</span>
+                </label>
                 <div class="col-md-10">
                     <input class="form-control" placeholder="Քանակ" value="{{ old('quantity') }}"
                         id="quantity" name="quantity" />
