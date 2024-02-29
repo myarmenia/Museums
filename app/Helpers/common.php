@@ -111,6 +111,17 @@ if(!function_exists('haveMuseumAdmin')){
     }
 }
 
+if(!function_exists('isSuperAdmin')){
+    function isSuperAdmin()
+    {
+        if(auth()->user()->roles()->get()->where('name', 'super_admin')->count()) {
+            return true;
+        };
+
+        return false;
+    }
+}
+
 if(!function_exists('haveMuseum')){
     function haveMuseum()
     {

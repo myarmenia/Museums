@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('visitor_id')->nullable();
-            $table->unsignedBigInteger('museum_id');
+            $table->unsignedInteger('museum_id')->nullable();
             $table->string('email')->nullable();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->boolean('read')->default(0);
             $table->timestamps();
         });
