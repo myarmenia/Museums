@@ -206,19 +206,10 @@ Route::group(['prefix' => 'chats'], function () {
     });
 
   });
-  // Route::group(['prefix'=>'product'],function(){
-  //   Route::get('/list', [ProductListController::class, 'index'])->name('product_list');
-  //   Route::get('/create', [ProductCreateController::class, 'create'])->name('product_create');
-  //   Route::post('/store', [ProductStoreController::class,'store'])->name('product_store');
-  //   Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product_edit');
-  //   Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product_update');
 
-  // });
   Route::get('/banner', [BannerCreateController::class,'create']);
-  Route::post('/store', BannerStoreController::class,'store')->name('banner_store');
 
-
-
+  Route::post('/store', [BannerStoreController::class,'store'])->name('banner_store');
 
 // Route::post('video-upload', [FileUploadService::class, 'videoUpload'])->name('video-upload');
 
