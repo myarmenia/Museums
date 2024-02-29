@@ -11,6 +11,12 @@ use Illuminate\Http\Request;
 class ProductUpdateController extends Controller
 {
   use UpdateTrait;
+  public function __construct()
+	{
+    $this->middleware('role:museum_admin|content_manager');
+    $this->middleware('product_viewer_list');
+
+	}
     public function model()
     {
       return Product::class;
@@ -22,7 +28,7 @@ class ProductUpdateController extends Controller
       if($product){
 
         return redirect()->back();
-        
+
       }
     }
 }

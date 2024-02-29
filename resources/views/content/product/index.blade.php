@@ -64,7 +64,10 @@
                             <th>Անվանում</th>
                             <th>Կարգավիճակ</th>
                             <th>Ստեղծման ամսաթիվը</th>
-                            <th>Գործողություն</th>
+                            @if (museumAccessId()!=null)
+                              <th>Գործողություն</th>
+                            @endif
+
                         </tr>
                     </thead>
                     <tbody>
@@ -91,29 +94,33 @@
 
 
                                 <td>{{ $item->created_at }}</td>
+                                @if (museumAccessId()!=null)
                                 <td>
-                                    <div class="dropdown action" data-id="{{ $item['id'] }}" data-tb-name="products">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                          <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input change_status" type="checkbox"
-                                                    role="switch" data-field-name="status"
-                                                    {{ $item['status'] ? 'checked' : null }}>
-                                            </div>Կարգավիճակ
-                                        </a>
-                                            <a class="dropdown-item" href="{{route('product_edit',$item['id'])}}"><i
-                                                    class="bx bx-edit-alt me-1"></i>Խմբագրել</a>
-                                            <button type="button" class="dropdown-item click_delete_item"
-                                                data-bs-toggle="modal" data-bs-target="#smallModal"><i
-                                                    class="bx bx-trash me-1"></i>
-                                                Ջնջել</button>
-                                        </div>
-                                    </div>
-                                </td>
+                                  <div class="dropdown action" data-id="{{ $item['id'] }}" data-tb-name="products">
+                                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                          data-bs-toggle="dropdown">
+                                          <i class="bx bx-dots-vertical-rounded"></i>
+                                      </button>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                          <div class="form-check form-switch">
+                                              <input class="form-check-input change_status" type="checkbox"
+                                                  role="switch" data-field-name="status"
+                                                  {{ $item['status'] ? 'checked' : null }}>
+                                          </div>Կարգավիճակ
+                                      </a>
+                                          <a class="dropdown-item" href="{{route('product_edit',$item['id'])}}"><i
+                                                  class="bx bx-edit-alt me-1"></i>Խմբագրել</a>
+                                          <button type="button" class="dropdown-item click_delete_item"
+                                              data-bs-toggle="modal" data-bs-target="#smallModal"><i
+                                                  class="bx bx-trash me-1"></i>
+                                              Ջնջել</button>
+                                      </div>
+                                  </div>
+                              </td>
+
+                                @endif
+
                             </tr>
                         @endforeach
 @endif
