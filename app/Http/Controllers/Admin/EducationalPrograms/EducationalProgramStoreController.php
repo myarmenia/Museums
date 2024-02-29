@@ -23,7 +23,7 @@ class EducationalProgramStoreController extends Controller
 
       if($educational_program){
 
-        return redirect()->route('educational-program-list');
+        return redirect()->route('educational_programs_list');
       }
     }
 

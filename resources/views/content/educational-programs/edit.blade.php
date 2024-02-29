@@ -8,8 +8,7 @@
             <li class="breadcrumb-item">
                 <a href="{{route('educational_programs_list')}}">Կրթական ծրագրեր</a>
             </li>
-            <li class="breadcrumb-item active">Ստեղծել նոր ծրագիր</li>
-
+            <li class="breadcrumb-item active">Փոփոխել ծրագիրը</li>
         </ol>
     </nav>
 </h4>
@@ -18,20 +17,20 @@
 
     <div class="d-flex justify-content-between align-items-center">
         <div>
-            <h4 class="card-header">Ստեղծել նոր ծրագիր</h4>
+            <h4 class="card-header">Փոփոխել ծրագիրը</h4>
         </div>
-
     </div>
     <div class="card-body">
 
-        <form action="{{route('educational_programs_store')}}" method="post">
+        <form action="{{route('educational_programs_update', $program->id)}}" method="post">
+            @method('put')
 
            @foreach (languages() as $lang)
                   <div class="mb-3 row">
                       <label for="name-{{ $lang }}" class="col-md-2 col-form-label">Վերնագիր {{ $lang }}</label>
 
                       <div class="col-md-10">
-                          <input class="form-control" placeholder="Վերնագիր" value="{{ old("translate.$lang.name") }}"
+                          <input class="form-control" placeholder="Վերնագիր" value="{{ $program->translation($lang)->name }}"
                               id="name-{{ $lang }}" name="translate[{{ $lang }}][name]" />
                       </div>
                   </div>
@@ -47,7 +46,7 @@
 
                         <div class="col-md-10">
                             <textarea id="description-{{ $lang }}" class="form-control" placeholder="Նկարագրություն"
-                                name="translate[{{ $lang }}][description]">{{ old("translate.$lang.description") }}</textarea>
+                                name="translate[{{ $lang }}][description]">{{ $program->translation($lang)->description }}</textarea>
                         </div>
                   </div>
                   @error("translate.$lang.description")
@@ -63,7 +62,7 @@
                 <label for="price" class="col-md-2 col-form-label">Գին</label>
 
                 <div class="col-md-10">
-                    <input class="form-control" placeholder="Գին" value="{{ old("price") }}" id="price" name="price" />
+                    <input class="form-control" placeholder="Գին" value="{{ $program->price }}" id="price" name="price" />
                 </div>
             </div>
             @error("price")
@@ -76,7 +75,7 @@
                 <label for="min_quantity" class="col-md-2 col-form-label">Այցելուների նվազագույն քանակ</label>
 
                 <div class="col-md-10">
-                    <input class="form-control" placeholder="Այցելուների նվազագույն քանակ" value="{{ old("min_quantity") }}" id="min_quantity" name="min_quantity" />
+                    <input class="form-control" placeholder="Այցելուների նվազագույն քանակ" value="{{ $program->min_quantity }}" id="min_quantity" name="min_quantity" />
                 </div>
             </div>
             @error("min_quantity")
@@ -89,7 +88,7 @@
                 <label for="max_quantity" class="col-md-2 col-form-label">Այցելուների առավելագույն քանակ</label>
 
                 <div class="col-md-10">
-                    <input class="form-control" placeholder="Այցելուների առավելագույն քանակ" value="{{ old("max_quantity") }}" id="max_quantity" name="max_quantity" />
+                    <input class="form-control" placeholder="Այցելուների առավելագույն քանակ" value="{{ $program->max_quantity }}" id="max_quantity" name="max_quantity" />
                 </div>
             </div>
             @error("max_quantity")
