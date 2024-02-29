@@ -52,22 +52,42 @@
       "roles": ["all"],
       "url": "museum"
     },
+    {
+      "name": "Հաղորդագրություններ",
+      "icon": "menu-icon tf-icons bx bx-message",
+      "slug": "chat",
+      "roles": ["all"],
+      "url": "chats"
+    },
+    {
+      "url": "product/list",
+      "name": "Ապրանքներ",
+      "icon": "menu-icon tf-icons bx bx-museum",
+      "slug": "general-news",
+      "roles": [
+        "super_admin"
+
+        ]
+
+    },
+
 
     {
       "name": "Նորություններ",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "general-news",
       "roles": ["general_manager","super_admin"],
-      "submenu": [
-        {
-          "url": "/news/news",
-          "name": "News",
-          "slug": "news"
-        }
-        
+      "url": "/news/news"
 
-      ]
     },
+    {
+      "name": "Բաններ",
+      "icon": "menu-icon tf-icons bx bx-box",
+      "slug": "general-news",
+      "roles": ["super_admin"],
+      "url": "/banner"
+    },
+
     {
       "name": "Լոգավորում",
       "icon": "menu-icon tf-icons bx bx-data",

@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 trait FilterTrait {
     public function scopeFilter( $builder, $filters = []){
-
+// dd($filters);
       $lang = request()->is('api/*') ? session('languages') : "am";
 
         if(!$filters) {
@@ -52,7 +52,7 @@ $like_or_equal = null;
 
         }
 
-        if (isset($hasRelationTranslation) && in_array($field,$filterFieldsInRelation)) {
+        if(isset($hasRelationTranslation) && in_array($field,$filterFieldsInRelation)) {
 
           $name="item_translations";
           $search_name = "name";
@@ -73,7 +73,6 @@ $like_or_equal = null;
           $data = '%'.$value.'%';
           $builder->whereHas($name, function ($query) use ($action, $data,  $search_name) {
               $query->where($search_name, $action, $data);
-
 
           });
 

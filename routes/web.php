@@ -1,43 +1,34 @@
 <?php
 
+use App\Http\Controllers\Admin\Banner\BannerCreateController;
+use App\Http\Controllers\Admin\Banner\BannerStoreController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ChangeStatusController;
-use App\Http\Controllers\Admin\Courses\CourseLanguageController;
 use App\Http\Controllers\Admin\DeleteItemController;
-use App\Http\Controllers\Admin\Lessons\LessonController;
+use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCreateController;
+use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramEditController;
+use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramListController;
+use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramStoreController;
+use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
-use App\Http\Controllers\Admin\Project\ProjectController;
-use App\Http\Controllers\Admin\Tasks\TaskController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\Users\OpenCourseLanguageForStudentController;
-use App\Http\Controllers\Admin\Users\OpenNextLessonController;
-use App\Http\Controllers\Admin\Users\StudentInfoController;
-use App\Http\Controllers\Admin\Users\StudentIsPresentController;
-use App\Http\Controllers\Admin\Users\StudentAttendancesController;
 use App\Http\Controllers\Admin\News\NewsController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Admin\News\NewsCategoryController;
 use App\Http\Controllers\Admin\Product\CreateController;
 use App\Http\Controllers\Admin\Product\ProductCreateController;
 use App\Http\Controllers\Admin\Product\ProductEditController;
 use App\Http\Controllers\Admin\Product\ProductListController;
 use App\Http\Controllers\Admin\Product\ProductStoreController;
 use App\Http\Controllers\Admin\Product\ProductUpdateController;
+use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\museum\MuseumController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dashboard\Analytics;
-use App\Http\Controllers\layouts\WithoutMenu;
-use App\Http\Controllers\layouts\WithoutNavbar;
-use App\Http\Controllers\layouts\Fluid;
-use App\Http\Controllers\layouts\Container;
-use App\Http\Controllers\layouts\Blank;
 use App\Http\Controllers\pages\AccountSettingsAccount;
 use App\Http\Controllers\pages\AccountSettingsNotifications;
 use App\Http\Controllers\pages\AccountSettingsConnections;
-use App\Http\Controllers\pages\MiscError;
-use App\Http\Controllers\pages\MiscUnderMaintenance;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
@@ -191,13 +182,48 @@ Route::group(['prefix'=>'musuem_branches'],function(){
 
 });
 Route::group(['prefix'=>'product'],function(){
-  Route::get('/list', [ProductListController::class, 'index'])->name('product-list');
-  Route::get('/create', [ProductCreateController::class, 'create'])->name('product-create');
-  Route::post('/store', [ProductStoreController::class,'store'])->name('product-store');
-  Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product-edit');
-  Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product-update');
+  Route::get('/list', [ProductListController::class, 'index'])->name('product_list');
+  Route::get('/create', [ProductCreateController::class, 'create'])->name('product_create');
+  Route::post('/store', [ProductStoreController::class,'store'])->name('product_store');
+  Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product_edit');
+  Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product_update');
 
 });
+
+<<<<<<< HEAD
+Route::group(['prefix' => 'chats'], function () {
+  Route::get('/', [ChatController::class, 'index'])->name('chats');
+  Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
+  Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
+  // Route::get('/create', [MuseumController::class, 'create'])->name('create-museum')->middleware('museum');
+  // Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
+  // Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit')->middleware('museum_edit_middleware');
+  // Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
+});
+=======
+  Route::group(['prefix' => 'educational-programs', 'middleware' => ['role:museum_admin|content_manager']], function () {
+    Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
+    Route::group(['middleware' => ['model_access']], function () {
+        Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
+        Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
+        Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
+        Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
+    });
+
+  });
+  // Route::group(['prefix'=>'product'],function(){
+  //   Route::get('/list', [ProductListController::class, 'index'])->name('product_list');
+  //   Route::get('/create', [ProductCreateController::class, 'create'])->name('product_create');
+  //   Route::post('/store', [ProductStoreController::class,'store'])->name('product_store');
+  //   Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product_edit');
+  //   Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product_update');
+
+  // });
+  Route::get('/banner', [BannerCreateController::class,'create']);
+  Route::post('/store', BannerStoreController::class,'store')->name('banner_store');
+
+
+>>>>>>> 00ae86c26188e33be0796233cdc45753de6bcb42
 
 
 // Route::post('video-upload', [FileUploadService::class, 'videoUpload'])->name('video-upload');

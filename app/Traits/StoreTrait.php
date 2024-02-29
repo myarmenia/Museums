@@ -5,6 +5,7 @@ use App\Models\Product;
 use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
  trait StoreTrait{
   abstract function model();
@@ -20,13 +21,18 @@ use Illuminate\Support\Facades\DB;
       $relation_foreign_key = $model->getForeignKey();
       $table_name = $model->getTable();
 
+      if(in_array('museum_id', Schema::getColumnListing($table_name))){
+        $data['museum_id'] = museumAccessId();
+      }
+
+
         $item = $model::create($data);
 
         if($item){
           if($request['translate']!=null){
             foreach($request['translate'] as $key => $lang){
 
-              $lang[$relation_foreign_key] =  $item->id;
+              $lang[$relation_foreign_key] = $item->id;
               $lang['lang'] = $key;
 
               $item->item_translations()->create($lang);
@@ -49,5 +55,6 @@ use Illuminate\Support\Facades\DB;
 
       }
     }
+
 
  }

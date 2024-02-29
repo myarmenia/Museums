@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductCreateController extends Controller
 {
+  public function __construct()
+	{
+    $this->middleware('role:museum_admin|content_manager');
+    $this->middleware('product_viewer_list');
+
+	}
   public function create(Request $request){
     $data = ProductCategory::all();
     $museum_staff = MuseumStaff::where('user_id', Auth::id())->first();

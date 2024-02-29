@@ -1,6 +1,5 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Account settings - Account')
 @section('page-script')
 <script src="{{ asset('assets/js/change-status.js') }}"></script>
     <script src="{{ asset('assets/js/111.js') }}"></script>
@@ -9,6 +8,13 @@
 
 @section('content')
     @include('includes.alert')
+  
+    @if (museumAccessId()==null)
+    <div class="alert alert-danger">
+      Նախ ստեղծեք թանգարան
+    </div>
+
+@endif
 
     <h4 class="py-3 mb-4">
       <nav aria-label="breadcrumb">
@@ -26,9 +32,11 @@
             <div>
                 <h5 class="card-header">Թանգարանի մասնաճյուղերի ցանկ</h5>
             </div>
-            <div>
-                <a href="{{ route('branches-create') }}" class="btn btn-primary mx-4">Ստեղծել Մասնաճյուղ </a>
-            </div>
+            @if (museumAccessId()!==null)
+              <div>
+                  <a href="{{ route('branches-create') }}" class="btn btn-primary mx-4">Ստեղծել Մասնաճյուղ </a>
+              </div>
+              @endif
         </div>
         <div class="card-body">
             <div class="table-responsive text-nowrap">
@@ -98,7 +106,7 @@
                     </tbody>
                 </table>
             </div>
-          
+
 
 
         </div>

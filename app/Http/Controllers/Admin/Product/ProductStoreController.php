@@ -11,6 +11,13 @@ use Illuminate\Http\Request;
 class ProductStoreController extends Controller
 {
   use StoreTrait;
+
+  public function __construct()
+	{
+    $this->middleware('role:museum_admin|content_manager');
+    $this->middleware('product_viewer_list');
+
+	}
     public function model()
     {
       return Product::class;
@@ -21,7 +28,7 @@ class ProductStoreController extends Controller
 
       if($product){
 
-        return redirect()->route('product-list');
+        return redirect()->route('product_list');
       }
     }
 }
