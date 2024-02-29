@@ -52,6 +52,18 @@
       "roles": ["all"],
       "url": "museum"
     },
+    {
+      "url": "product/list",
+      "name": "Ապրանքներ",
+      "icon": "menu-icon tf-icons bx bx-museum",
+      "slug": "general-news",
+      "roles": [
+        "super_admin"
+
+        ]
+
+    },
+
 
     {
       "name": "Նորություններ",
@@ -64,7 +76,7 @@
           "name": "News",
           "slug": "news"
         }
-        
+
 
       ]
     },
