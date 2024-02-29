@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Schema;
       if(in_array('museum_id', Schema::getColumnListing($table_name))){
         $data['museum_id'] = museumAccessId();
       }
-      
+
 
         $item = $model::create($data);
 
@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Schema;
           if($request['translate']!=null){
             foreach($request['translate'] as $key => $lang){
 
-              $lang[$relation_foreign_key] =  $item->id;
+              $lang[$relation_foreign_key] = $item->id;
               $lang['lang'] = $key;
 
               $item->item_translations()->create($lang);
@@ -55,5 +55,6 @@ use Illuminate\Support\Facades\Schema;
 
       }
     }
+
 
  }

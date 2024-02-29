@@ -3,12 +3,28 @@
 namespace App\Http\Controllers\Admin\EducationalPrograms;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EducationalPrograms\Request as EducationalProgramsRequest;
+use App\Models\EducationalProgram;
+use App\Traits\UpdateTrait;
 use Illuminate\Http\Request;
 
 class EducationalProgramUpdateController extends Controller
 {
-  public function __invoke(){
+  use UpdateTrait;
 
-    return view("content.educational-programs.create");
-}
+  public function model()
+  {
+    return EducationalProgram::class;
+  }
+  public function __invoke(EducationalProgramsRequest $request, string $id)
+  {
+
+    $educational_program = $this->itemUpdate($request, $id);
+
+    if ($educational_program) {
+
+      return redirect()->back();
+    }
+
+  }
 }

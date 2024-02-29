@@ -10,46 +10,55 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
- trait UpdateTrait{
+trait UpdateTrait{
   abstract function model();
 
-  public function itemUpdate(Request $request, $table, $has_relation_foreign_key,$id){
+  public function itemUpdate(Request $request, $id){
 
     $data = $request->except(['translate','photo','_method']);
 
-    $item = $this->model()::where('id',$id)->first();
+    $className = $this->model();
 
-    $item->update($data);
-    if($item){
+    if(class_exists($className)) {
 
-      foreach($request['translate'] as $key => $lang){
+      $model = new $className;
+      $relation_foreign_key = $model->getForeignKey();
+      $table_name = $model->getTable();
 
-        $item->item_translations()->where([$has_relation_foreign_key=>$id,'lang'=>$key])->update($lang);
-      }
+      $item = $model::where('id', $id)->first();
+      $item->update($data);
+      if($item){
 
-      if(isset($request['photo'])){
+        foreach($request['translate'] as $key => $lang){
 
-        $image = Image::where('imageable_id',$id)->first();
-
-        if(Storage::exists($image->path)){
-          Storage::delete($image->path);
-          $image->delete();
+          $item->item_translations()->where([$relation_foreign_key => $id,'lang' => $key])->update($lang);
         }
-        $path = FileUploadService::upload($request['photo'], $table.'/'.$id);
-        $photoData = [
-            'path' => $path,
-            'name' => $request['photo']->getClientOriginalName()
-        ];
 
+        if(isset($request['photo'])){
 
+          $image = Image::where('imageable_id',$id)->first();
 
+          if(Storage::exists($image->path)){
+            Storage::delete($image->path);
+            $image->delete();
+          }
+          $path = FileUploadService::upload($request['photo'], $table_name.'/'.$id);
+          $photoData = [
+              'path' => $path,
+              'name' => $request['photo']->getClientOriginalName()
+          ];
 
-        $item->images()->create($photoData);
+          $item->images()->create($photoData);
+        }
+
+        return true;
       }
+    }
+    else{
+      return false;
 
-      return true;
     }
 
   }
 
- }
+}

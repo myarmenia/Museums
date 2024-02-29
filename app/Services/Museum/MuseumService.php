@@ -94,7 +94,7 @@ class MuseumService
 
             PhoneService::createPhone($phoneData);
 
-            MuseumStaff::where('user_id', auth()->id())->update(['museum_id' => $getCreatedMuseumId]);
+            MuseumStaff::where('admin_id', auth()->id())->update(['museum_id' => $getCreatedMuseumId]);
             DB::commit();
 
             return true;

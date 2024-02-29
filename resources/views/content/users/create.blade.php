@@ -1,7 +1,4 @@
 @extends('layouts/contentNavbarLayout')
-
-@section('title', 'Account settings - Account')
-
 @section('content')
 
 <h4 class="py-3 mb-4">
