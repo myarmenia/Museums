@@ -62,7 +62,7 @@ class ChatService
         if(Chat::find($id)->visitor_id){
             return true;
         };
-
+ 
         return false;
     }
 

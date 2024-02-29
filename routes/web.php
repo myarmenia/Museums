@@ -190,17 +190,12 @@ Route::group(['prefix'=>'product'],function(){
 
 });
 
-<<<<<<< HEAD
 Route::group(['prefix' => 'chats'], function () {
   Route::get('/', [ChatController::class, 'index'])->name('chats');
   Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
   Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
-  // Route::get('/create', [MuseumController::class, 'create'])->name('create-museum')->middleware('museum');
-  // Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
-  // Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit')->middleware('museum_edit_middleware');
-  // Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
 });
-=======
+
   Route::group(['prefix' => 'educational-programs', 'middleware' => ['role:museum_admin|content_manager']], function () {
     Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
     Route::group(['middleware' => ['model_access']], function () {
@@ -211,20 +206,10 @@ Route::group(['prefix' => 'chats'], function () {
     });
 
   });
-  // Route::group(['prefix'=>'product'],function(){
-  //   Route::get('/list', [ProductListController::class, 'index'])->name('product_list');
-  //   Route::get('/create', [ProductCreateController::class, 'create'])->name('product_create');
-  //   Route::post('/store', [ProductStoreController::class,'store'])->name('product_store');
-  //   Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product_edit');
-  //   Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product_update');
 
-  // });
   Route::get('/banner', [BannerCreateController::class,'create']);
-  Route::post('/store', BannerStoreController::class,'store')->name('banner_store');
 
-
->>>>>>> 00ae86c26188e33be0796233cdc45753de6bcb42
-
+  Route::post('/store', [BannerStoreController::class,'store'])->name('banner_store');
 
 // Route::post('video-upload', [FileUploadService::class, 'videoUpload'])->name('video-upload');
 
