@@ -1,6 +1,5 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Account settings - Account')
 @section('page-script')
     <script src="{{ asset('assets/js/admin\project\project-upload-photo.js') }}"></script>
     <script src="{{ asset('assets/js/delete-item.js') }}"></script>

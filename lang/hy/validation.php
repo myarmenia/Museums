@@ -208,7 +208,13 @@ return [
     'password' => 'Գաղտնաբառի',
     'phone' => 'Հեռախոս',
     'roles' => 'Դերեր',
-    'status' => 'Կարգավիճակ'
+    'status' => 'Կարգավիճակ',
+    'quantity'=> "Քանակ",
+    'price'=> "Գին",
+    'translate.*.description' => 'Նկարագրություն',
+    'translate.*.name' => 'Վերնագիր',
+    'max_quantity' => 'Առավելագույն քանակ',
+    'min_quantity' => 'Նվազագույն քանակ'
   ],
 
 ];

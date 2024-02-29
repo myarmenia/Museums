@@ -6,22 +6,23 @@ use App\Traits\FilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes,FilterTrait;
+    use HasFactory, SoftDeletes, FilterTrait;
     protected $table = 'products';
     protected $guarded = [];
 // =========================
 protected $filterFields = ['product_category_id', 'museum_id'];
 
-protected $filterFieldTranslation = ['name'];
+protected $filterFieldsInRelation = ['name'];
 
-protected $likeFilterFields = [];
 
-protected $hasRelationFields = ['product_translations'];
+// fields for model translation
+protected $hasRelationTranslation = ['item_translations'];
 
   public function category(): BelongsTo
   {
@@ -32,7 +33,7 @@ protected $hasRelationFields = ['product_translations'];
     return $this->belongsTo(Museum::class, 'museum_id');
   }
 
-  public function product_translations()
+  public function item_translations():HasMany
   {
     return $this->hasMany(ProductTranslation::class);
   }

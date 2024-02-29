@@ -9,7 +9,7 @@ trait GetNewsTrait
 {
     public function getAllNews($request, $addressRequest)
     {
-
+ 
       $data = News::where('id','>',0);
 
       if($addressRequest=='web'){
@@ -44,7 +44,7 @@ trait GetNewsTrait
 
             $data = $data->whereIn('id', $news_translation);
 
-     
+
 
       return $data;
 

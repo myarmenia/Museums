@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\Input;
 class NewsController extends Controller
 {
   use GetNewsTrait;
+
     protected $newsService;
 
     public $title;
@@ -34,7 +35,7 @@ class NewsController extends Controller
 
             return view("content.news.index", compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 6);
-        
+
 
     }
 

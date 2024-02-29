@@ -1,6 +1,5 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Account settings - Account')
 @section('page-script')
     <script src="{{ asset('assets/js/admin\project\project-upload-photo.js') }}"></script>
 @endsection
@@ -15,7 +14,7 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('product-list')}}">Ապրանքներ </a>
+                  <a href="{{route('product_list')}}">Ապրանքներ </a>
               </li>
               <li class="breadcrumb-item active">Ստեղծել ապրանք</li>
           </ol>
@@ -31,7 +30,7 @@
         </div>
         <div class="card-body">
 
-            <form action="{{ route('product-store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('product_store') }}" method="post" enctype="multipart/form-data">
               <input type="hidden" value="{{ $museum_staff->museum_id}}" name="museum_id" >
               <div class="mb-3 row">
                 <label for="region" class="col-md-2 col-form-label"> Կատեգորիա <span class="required-field">*</span></label>
@@ -89,7 +88,9 @@
                 @enderror
               </div>
               <div class="mb-3 row">
-                <label for="phone_number" class="col-md-2 col-form-label">Քանակ</label>
+                <label for="phone_number" class="col-md-2 col-form-label">Քանակ
+                  <span class="required-field text-danger">*</span>
+                </label>
                 <div class="col-md-10">
                     <input class="form-control" placeholder="Քանակ" value="{{ old('quantity') }}"
                         id="quantity" name="quantity" />

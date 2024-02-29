@@ -14,23 +14,31 @@ class ProductListController extends Controller
 
 	public function __construct(Product $model)
 	{
+    $this->middleware('role:super_admin|museum_admin|content_manager');
+
 		$this->model = $model;
 	}
 
     public function index(Request $request){
 
-      $addressRequest = "web";
       $product_category = ProductCategory::all();
-      $filterArray = ['product_category_id'=>$request['product_category_id'] ?? null,'name'=>$request['name'] ?? null ];
+
       $data = $this->model
-                  ->filter($filterArray);
-                  // ->get();
-        // dd($data);
-        $data=$data->orderBy('id', 'DESC')->paginate(3)->withQueryString();
+                  ->filter($request->all());
+
+      if(request()->user()->roles[0]->name=="museum_admin" || request()->user()->roles[0]->name=='content_manager'){
+
+        $data=$data->where('museum_id',museumAccessId());
+
+      }
+        $data=$data
+        ->orderBy('id', 'DESC')->paginate(3)->withQueryString();
         return view('content.product.index', [
             'data' => $data,
-            'product_category'=>$product_category
+            'product_category' => $product_category
         ])
              ->with('i', ($request->input('page', 1) - 1) * 3);
+
+            
     }
 }
