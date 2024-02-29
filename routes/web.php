@@ -190,15 +190,10 @@ Route::group(['prefix'=>'product'],function(){
 
 });
 
-
 Route::group(['prefix' => 'chats'], function () {
   Route::get('/', [ChatController::class, 'index'])->name('chats');
   Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
   Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
-  // Route::get('/create', [MuseumController::class, 'create'])->name('create-museum')->middleware('museum');
-  // Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
-  // Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit')->middleware('museum_edit_middleware');
-  // Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
 });
 
   Route::group(['prefix' => 'educational-programs', 'middleware' => ['role:museum_admin|content_manager']], function () {
@@ -213,8 +208,8 @@ Route::group(['prefix' => 'chats'], function () {
   });
 
   Route::get('/banner', [BannerCreateController::class,'create']);
-  Route::post('/store', [BannerStoreController::class,'store'])->name('banner_store');
 
+  Route::post('/store', [BannerStoreController::class,'store'])->name('banner_store');
 
 // Route::post('video-upload', [FileUploadService::class, 'videoUpload'])->name('video-upload');
 
