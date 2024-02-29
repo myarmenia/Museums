@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\Banner\BannerCreateController;
+use App\Http\Controllers\Admin\Banner\BannerStoreController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ChangeStatusController;
 use App\Http\Controllers\Admin\DeleteItemController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCreateController;
@@ -196,6 +199,18 @@ Route::group(['prefix'=>'product'],function(){
     });
 
   });
+  // Route::group(['prefix'=>'product'],function(){
+  //   Route::get('/list', [ProductListController::class, 'index'])->name('product_list');
+  //   Route::get('/create', [ProductCreateController::class, 'create'])->name('product_create');
+  //   Route::post('/store', [ProductStoreController::class,'store'])->name('product_store');
+  //   Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product_edit');
+  //   Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product_update');
+
+  // });
+  Route::get('/banner', [BannerCreateController::class,'create']);
+  Route::post('/store', BannerStoreController::class,'store')->name('banner_store');
+
+
 
 
 // Route::post('video-upload', [FileUploadService::class, 'videoUpload'])->name('video-upload');

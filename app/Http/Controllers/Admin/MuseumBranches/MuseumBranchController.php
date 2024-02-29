@@ -17,6 +17,7 @@ class MuseumBranchController extends Controller
      */
     private $museumBranchRepository;
     public function __construct(MuseumBranchesRepositoryInterface $museumBranchRepository){
+
       $this->middleware('role:museum_admin|content_manager');
       $this->middleware('museum_branch_middleware')->only(['edit','update']);
       $this->museumBranchRepository = $museumBranchRepository;
@@ -27,13 +28,11 @@ class MuseumBranchController extends Controller
 
       $museum = MuseumStaff::where('user_id',Auth::id())->first();
 
-      if($museum==null){
-        return redirect()->back()->with(session(['errorMessage' => 'Ստեղծված թանգարան չկա']));
-      }
 
         $museum_branches = $this->museumBranchRepository->all();
         if($museum_branches==false){
-          return redirect()->back()->with(session(['errorMessage' => 'Ստեղծված մասնաճյուղեր չկան']));
+          return view("content.museum-branches.index", compact('museum_branches'));
+
         }
 
 
@@ -84,7 +83,14 @@ class MuseumBranchController extends Controller
 
       $data = $this->museumBranchRepository->find($id);
 
-      return view("content.museum-branches.edit", compact('data'));
+      if( $data!=null && $data->museum_id==museumAccessId()){
+        return view("content.museum-branches.edit", compact('data'));
+      }else{
+        return redirect()->back();
+      }
+
+
+
     }
 
     /**
