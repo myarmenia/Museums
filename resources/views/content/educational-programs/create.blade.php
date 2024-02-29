@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Account settings - Account')
+@section('title', 'Կրթական ծրագրեր')
 
 @section('content')
 
@@ -26,32 +26,18 @@
     </div>
     <div class="card-body">
 
-        <form action="{{route('users.store')}}" method="post">
+        <form action="{{route('educational_programs_store')}}" method="post">
 
-            <div class="mb-3 row">
-                <label for="name" class="col-md-2 col-form-label">Անուն</label>
-                <div class="col-md-10">
-                    <input class="form-control" type="text" placeholder="Անուն" id="name" name="name" value="{{old('name')}}">
-                </div>
-            </div>
-            @error('name')
-            <div class="mb-3 row justify-content-end">
-                <div class="col-sm-10 text-danger fts-14">{{$message}}
-                </div>
-            </div>
-            @enderror
-
-
-            @foreach (languages() as $lang)
+           @foreach (languages() as $lang)
                   <div class="mb-3 row">
                       <label for="lang-{{ $lang }}" class="col-md-2 col-form-label">Վերնագիր {{ $lang }}</label>
 
                       <div class="col-md-10">
                           <input class="form-control" placeholder="Վերնագիր" value="{{ old("translate.$lang.name") }}"
-                              id="title-{{ $lang }}" name="translate[{{ $lang }}][title]" />
+                              id="name-{{ $lang }}" name="translate[{{ $lang }}][name]" />
                       </div>
                   </div>
-                  @error("translate.$lang.title")
+                  @error("translate.$lang.name")
                       <div class="mb-3 row justify-content-end">
                           <div class="col-sm-10 text-danger fts-14">{{ $message }}
                           </div>
@@ -84,8 +70,7 @@
             </div>
             @error("price")
                 <div class="mb-3 row justify-content-end">
-                    <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                    </div>
+                    <div class="col-sm-10 text-danger fts-14">{{ $message }}</div>
                 </div>
             @enderror
 
@@ -98,8 +83,7 @@
             </div>
             @error("max_quantity")
                 <div class="mb-3 row justify-content-end">
-                    <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                    </div>
+                    <div class="col-sm-10 text-danger fts-14">{{ $message }} </div>
                 </div>
             @enderror
 
@@ -112,10 +96,16 @@
             </div>
             @error("min_quantity")
                 <div class="mb-3 row justify-content-end">
-                    <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                    </div>
+                    <div class="col-sm-10 text-danger fts-14">{{ $message }} </div>
                 </div>
             @enderror
+
+            <div class="row justify-content-end">
+              <div class="col-sm-10">
+                  <button type="submit" class="btn btn-primary">Ստեղծել</button>
+
+              </div>
+          </div>
 
         </form>
     </div>

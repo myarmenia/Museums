@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 class EducationalProgramCreateController extends Controller
 {
     public function __invoke(){
+      
         return view("content.educational-programs.create");
     }
 }
