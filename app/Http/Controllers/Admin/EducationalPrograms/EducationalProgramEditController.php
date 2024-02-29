@@ -7,5 +7,8 @@ use Illuminate\Http\Request;
 
 class EducationalProgramEditController extends Controller
 {
-    //
+  public function __invoke(){
+
+    return view("content.educational-programs.create");
+}
 }

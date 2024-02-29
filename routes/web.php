@@ -3,6 +3,10 @@
 use App\Http\Controllers\Admin\ChangeStatusController;
 use App\Http\Controllers\Admin\DeleteItemController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCreateController;
+use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramEditController;
+use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramListController;
+use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramStoreController;
+use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
 use App\Http\Controllers\Admin\UserController;
@@ -183,7 +187,12 @@ Route::group(['prefix'=>'product'],function(){
 });
 
   Route::group(['prefix' => 'educational-programs'], function () {
-    Route::get('/create', EducationalProgramCreateController::class)->name('educational_programs_create');
+    Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
+    Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
+    Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
+    Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
+    Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
+
 
 
   });
