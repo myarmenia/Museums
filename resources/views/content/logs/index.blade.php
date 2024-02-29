@@ -29,27 +29,27 @@
         <div class="card-body">
 
             <div>
-                <form action="{{route('users_visitors')}}" method="get" class="row g-3 mt-2" style="display: flex">
+                <form action="{{route('logs')}}" method="get" class="row g-3 mt-2" style="display: flex">
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
 
 
                         <div class="col-2">
                             <select id="defaultSelect" name="type" class="form-select" value="{{ request()->input('type') }}" >
                                     <option value="" disabled selected>Գործ․ տեսակ</option>
-                                    <option value="all">{{__('logs.all')}}</option>
-                                    <option value="store">{{__('logs.store')}}</option>
-                                    <option value="update">{{__('logs.update')}}</option>
-                                    <option value="change_status">{{__('logs.change_status')}}</option>
-                                    <option value="delete">{{__('logs.delete')}}</option>
+                                    <option value="" >{{__('logs.all')}}</option>
+                                    <option value="store" {{ request()->input('type') == 'store' ? 'selected' : '' }}>{{__('logs.store')}}</option>
+                                    <option value="update" {{ request()->input('type') == 'update' ? 'selected' : '' }}>{{__('logs.update')}}</option>
+                                    <option value="change_status" {{ request()->input('type') == 'change_status' ? 'selected' : '' }}>{{__('logs.change_status')}}</option>
+                                    <option value="delete" {{ request()->input('type') == 'delete' ? 'selected' : '' }}>{{__('logs.delete')}}</option>
 
                             </select>
                         </div>
                         <div class="col-2">
-                            <select id="defaultSelect" name="type" class="form-select" value="{{ request()->input('role') ?? ''}}" >
+                            <select id="defaultSelect" name="roles" class="form-select" value="{{ request()->input('roles') ?? ''}}" >
                                 <option value="" disabled selected>Դեր</option>
-                                <option value="all">{{__('logs.all')}}</option>
+                                <option value="">{{__('logs.all')}}</option>
                                 @foreach (allRoleNames() as $role)
-                                    <option value="{{ $role }}">{{ __('roles.' . $role) }}</option>
+                                    <option value="{{ $role }}" {{ request()->input('roles') == $role ? 'selected' : '' }}>{{ __('roles.' . $role) }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -81,59 +81,24 @@
                         </tr>
                     </thead>
                     <tbody>
-
                         @foreach ($data as $key => $log)
+
                             <tr>
                                 <td>{{ ++$i }}</td>
                                 <td>{{ $log->user->name }} {{ $log->user->surname }}</td>
-                                <td>{{ implode(', ', $log->roles->pluck('name')->toArray()) }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->phone }}</td>
+                                <td>{{ __("roles.".$log->user->roles[0]->name) }}</td>
+                                <td>{{ __("logs.$log->type") }}</td>
+                                <td>{{ __("db_table.$log->tb_name") }}</td>
+                                <td>{{ $log->data }}</td>
+                                <td>{{ $log->created_at->format('d-m-Y')}}</td>
 
-
-                                <td>
-                                    @if (!empty($user->getRoleNames()))
-                                        @foreach ($user->getRoleNames() as $v)
-                                            <label>{{ __("roles.$v") }}</label>
-                                        @endforeach
-                                    @endif
-                                </td>
-
-                                <td>
-                                    <div class="dropdown action" data-id="{{ $user->id }}" data-tb-name="users">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-
-                                        <div class="dropdown-menu">
-
-                                            <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input change_status" type="checkbox"
-                                                        role="switch" data-field-name="status"
-                                                        {{ $user->status ? 'checked' : null }}>
-                                                </div>Կարգավիճակ
-                                            </a>
-                                            <a class="dropdown-item" href="{{route('users.edit', $user->id)}}"><i
-                                                class="bx bx-edit-alt me-1"></i>Փոփոխել
-                                            </a>
-                                            <button type="button" class="dropdown-item click_delete_item"
-                                                data-bs-toggle="modal" data-bs-target="#smallModal"><i
-                                                    class="bx bx-trash me-1"></i>
-                                                Ջնջել
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
             <div class="demo-inline-spacing">
-                {{-- {{ $data->links() }} --}}
+                {{ $data->links() }}
             </div>
         </div>
     </div>

@@ -14,7 +14,7 @@ trait FilterTrait {
 // dd($filters);
   $tableName = $this->getTable();
   $likeFilterFields = isset($this->likeFilterFields) ? $this->likeFilterFields : [];
-  $defaultFillableFields = $this->filterFields;
+  $filterFields = $this->filterFields;
   $filterFieldsInRelation = $this->filterFieldsInRelation;
   $hasRelationFields = isset($this->hasRelationFields)? $this->hasRelationFields : []; //fields  for relation
   $hasRelationTranslation = isset($this->hasRelationTranslation) ? $this->hasRelationTranslation :[];   // fields for model translation
@@ -24,7 +24,9 @@ trait FilterTrait {
 // dd($filterFieldsInRelation);
 // dd($hasRelationFields);
 // dd($hasRelationTranslation,$filterFieldsInRelation);
-$like_or_equal = null;
+
+  $hasRelation = isset($this->hasRelation) ? $this->hasRelation : [];  //  relation name array
+  $like_or_equal = null;
 
   foreach ($filters as $field => $value) {
 
@@ -37,7 +39,7 @@ $like_or_equal = null;
             $builder->whereIn($field, $value);
         }
 
-        if(in_array($field,$defaultFillableFields) ){
+        if(in_array($field, $filterFields) ){
 
           $builder->where($field, $value);
         }
@@ -65,11 +67,11 @@ $like_or_equal = null;
           });
 
         }
-        if (isset($hasRelationFields) && in_array($field, $filterFieldsInRelation)) {
+        if (isset($hasRelation) && in_array($field, $hasRelation)) {
 
-          $name="item_translations";
+          $name = $field;
           $search_name = "name";
-          $action="LIKE";
+          $action = "LIKE";
           $data = '%'.$value.'%';
           $builder->whereHas($name, function ($query) use ($action, $data,  $search_name) {
               $query->where($search_name, $action, $data);

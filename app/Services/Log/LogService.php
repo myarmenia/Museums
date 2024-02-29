@@ -27,7 +27,7 @@ class LogService
       return $log ? true : false;
   }
 
-  public function all(){
-      return Log::latest()->all();
+  public static function all(){
+      return Log::latest();
   }
 }
