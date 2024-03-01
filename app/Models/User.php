@@ -75,6 +75,11 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     return $this->belongsToMany(User::class, 'museum_staff',  'admin_id','user_id');
   }
 
+  public function logs()
+  {
+    return $this->hasMany(Log::class);
+  }
+
   public function hasInStaff($id)
   {
       $user = $this->museum_staff_admin()->where('user_id', $id)->first();
