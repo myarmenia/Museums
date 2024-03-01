@@ -42,18 +42,56 @@
                                     <ul>
                                         <li data-value="">{{__('selects.all')}}</li>
 
-                                        @foreach($roles as $key => $role)
+                                        {{-- @foreach($roles as $key => $role)
                                             <li data-value="{{$role}}">{{$role}}</li>
-                                        @endforeach
+                                        @endforeach --}}
                                     </ul>
                                 </div>
-                            </div>
+                        </div>
+                        <div class="col-md-10">
+                        <select id="defaultSelect" name="type" class="form-select" value="{{ request()->input('type') }}" >
+                                <option value="">Գործ․ տեսակ</option>
+                                    <option value="{{ $item->id }}">{{__('logs.all')}}</option>
+                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
+                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
+                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
+                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
+
+                                @foreach ($product_category as $item)
+                                    <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="new-select rounded" id="">
+                                <div class="new-select-title-box">
+                                    <input type="text" value="{{ request()->input('role') ?? ''}}" hidden name="role" />
+                                    <span role="select-title">{{__('selects.roles')}}</span>
+                                    <img class="new-select-icon" src="{{asset('assets/images/select-chev.svg')}}" />
+                                </div>
+                                <div class="new-select-options-box">
+                                    <ul>
+                                        <li data-value="">{{__('selects.all')}}</li>
+                                        <li data-value="store">{{__('selects.store')}}</li>
+                                        <li data-value="update">{{__('selects.update')}}</li>
+                                        <li data-value="change_status">{{__('selects.change_status')}}</li>
+                                        <li data-value="delete">{{__('selects.delete')}}</li>
+
+
+                                    </ul>
+                                </div>
+                        </div>
                         <div class="col-2">
                             <input type="text" class="form-control" id="role" placeholder="Դեր" name="role" value="{{ request()->input('role') }}">
                         </div>
 
+
+
                         <div class="col-2">
-                            <input type="text" class="form-control" id="date" placeholder="Ամսատիվ" name="date" value="{{ request()->input('phone') }}">
+                            <input type="date" class="form-control" id="datefrom" placeholder="Ստեղծման ամսաթիվ" name="from_created_at" value="{{ request()->input('from_created_at') }}">
+                        </div>
+
+                        <div class="col-2">
+                            <input type="date" class="form-control" id="dateto" placeholder="Ստեղծման ամսաթիվ" name="to_created_at" value="{{ request()->input('to_created_at') }}">
                         </div>
 
                         <button class="btn btn-primary col-2">Որոնել</button>

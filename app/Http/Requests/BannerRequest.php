@@ -28,7 +28,7 @@ class BannerRequest extends FormRequest
       ];
 
         if(Request::method()=="POST"){
-          // $array['photo'] = 'required|image|dimensions:min_width=1530,min_height=880,max_width=1550,max_height=920';
+          $array['photo'] = 'required|image|dimensions:min_width=1530,min_height=880,max_width=1550,max_height=920';
       }
       return $array;
     }

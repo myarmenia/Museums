@@ -53,6 +53,13 @@
       "url": "museum"
     },
     {
+      "name": "Հաղորդագրություններ",
+      "icon": "menu-icon tf-icons bx bx-message",
+      "slug": "chat",
+      "roles": ["all"],
+      "url": "chats"
+    },
+    {
       "url": "product/list",
       "name": "Ապրանքներ",
       "icon": "menu-icon tf-icons bx bx-museum",

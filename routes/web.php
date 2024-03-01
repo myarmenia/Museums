@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\Product\ProductEditController;
 use App\Http\Controllers\Admin\Product\ProductListController;
 use App\Http\Controllers\Admin\Product\ProductStoreController;
 use App\Http\Controllers\Admin\Product\ProductUpdateController;
+use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\museum\MuseumController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
@@ -192,6 +193,12 @@ Route::group(['prefix'=>'product'],function(){
 
 });
 
+Route::group(['prefix' => 'chats'], function () {
+  Route::get('/', [ChatController::class, 'index'])->name('chats');
+  Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
+  Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
+});
+
   Route::group(['prefix' => 'educational-programs', 'middleware' => ['role:museum_admin|content_manager']], function () {
     Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
     Route::group(['middleware' => ['model_access']], function () {
@@ -202,6 +209,7 @@ Route::group(['prefix'=>'product'],function(){
     });
 
   });
+
   Route::group(['prefix'=>'banner'],function(){
     Route::get('/list', [BannerListController::class, 'index'])->name('banner_list');
     Route::get('/create', [BannerCreateController::class,'create'])->name('banner_create');
@@ -209,8 +217,6 @@ Route::group(['prefix'=>'product'],function(){
     Route::get('edit/{id}', [BannerEditController::class, 'edit'])->name('banner_edit');
     Route::put('/update/{id}', [BannerUpdateController::class,'update'])->name('banner_update');
   });
-
-
 
 // Route::post('video-upload', [FileUploadService::class, 'videoUpload'])->name('video-upload');
 
