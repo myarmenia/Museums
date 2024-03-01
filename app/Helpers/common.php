@@ -140,6 +140,19 @@ if(!function_exists('museumAccessId')){
   }
 }
 
+if(!function_exists('getAuthMuseumId')){
+    function getAuthMuseumId()
+    {
+        $authId = auth()->id();
+
+        if($museum = MuseumStaff::where('user_id', $authId)->first()) {
+            return $museum->museum_id;
+        };
+
+        return false;
+    }
+}
+
 
 
 

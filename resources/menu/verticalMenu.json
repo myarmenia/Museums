@@ -56,7 +56,7 @@
       "name": "Հաղորդագրություններ",
       "icon": "menu-icon tf-icons bx bx-message",
       "slug": "chat",
-      "roles": ["all"],
+      "roles": ["super_admin", "general_manager"],
       "url": "chats"
     },
     {

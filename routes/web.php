@@ -190,7 +190,7 @@ Route::group(['prefix'=>'product'],function(){
 
 });
 
-Route::group(['prefix' => 'chats'], function () {
+Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_manager|super_admin|general_manager|manager']], function () {
   Route::get('/', [ChatController::class, 'index'])->name('chats');
   Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
   Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
