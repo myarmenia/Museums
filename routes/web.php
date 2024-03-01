@@ -201,9 +201,9 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
 
   Route::group(['prefix' => 'educational-programs', 'middleware' => ['role:museum_admin|content_manager']], function () {
     Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
+    Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
+    Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
     Route::group(['middleware' => ['model_access']], function () {
-        Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
-        Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
         Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
         Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
     });
