@@ -10,16 +10,16 @@
 
 @section('content')
 
-    {{-- <h4 class="py-3 mb-4">
+    <h4 class="py-3 mb-4">
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('product_list')}}">Ապրանքներ </a>
+                  <a href="{{route('banner_list')}}">Բաններ </a>
               </li>
-              <li class="breadcrumb-item active">Ստեղծել ապրանք</li>
+              <li class="breadcrumb-item active">Ստեղծել բաններ</li>
           </ol>
       </nav>
-  </h4> --}}
+  </h4>
     <div class="card">
 
         <div class="d-flex justify-content-between align-items-center">
@@ -34,61 +34,26 @@
 
 
               @foreach (languages() as $lang)
-                <div class="mb-3 row">
-                  <label for="name-{{ $lang}}" class="col-md-2 col-form-label">Անվանում {{ $lang }}
-                  <span class="required-field text-danger">*</span>
-                  </label>
-                    <div class="col-md-10">
-                        <input class="form-control"
-                              placeholder="Անվանումը {{ $lang }}"
-                              value="{{ old("translate.$lang.name") }}"
-                              name="translate[{{ $lang }}][name]"
-                              id="name-{{ $lang}}" name="name"
-                              />
-                    </div>
-                    @error("translate.$lang.name")
-                        <div class="mb-3 row justify-content-end">
-                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                            </div>
-                        </div>
-                    @enderror
+              <div class="mb-3 row">
+                <label for="text-{{ $lang }}" class="col-md-2 col-form-label">Բանների տեքստ {{ $lang }}
+                <span class="required-field text-danger">*</span>
+                </label>
+                <div class="col-md-10">
+                    <textarea class="form-control" placeholder="Բանների տեքստ {{ $lang }}"
+                        id="working_days-{{ $lang }}"
+                        name="translate[{{ $lang }}][text]">{{ old("translate.$lang.text") }}
+                    </textarea>
+
                 </div>
+            </div>
+            @error("translate.$lang.text")
+                <div class="mb-3 mt-5 row justify-content-end">
+                    <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                    </div>
+                </div>
+            @enderror
 
               @endforeach
-              <div class="mb-3 row">
-                <label for="email" class="col-md-2 col-form-label">Գին
-                  <span class="required-field text-danger">*</span>
-                </label>
-
-                <div class="col-md-10">
-                    <input class="form-control" placeholder="Գինը" value="{{ old('price') }}"
-                        id="price" name="price" />
-                </div>
-                @error("price")
-                  <div class="mb-3 row justify-content-end">
-                      <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                      </div>
-                  </div>
-                @enderror
-              </div>
-              <div class="mb-3 row">
-                <label for="phone_number" class="col-md-2 col-form-label">Քանակ
-                  <span class="required-field text-danger">*</span>
-                </label>
-                <div class="col-md-10">
-                    <input class="form-control" placeholder="Քանակ" value="{{ old('quantity') }}"
-                        id="quantity" name="quantity" />
-                </div>
-                @error("quantity")
-                  <div class="mb-3 row justify-content-end">
-                      <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                      </div>
-                  </div>
-                @enderror
-              </div>
-
-
-
 
 
                 <div class="mb-3 row">

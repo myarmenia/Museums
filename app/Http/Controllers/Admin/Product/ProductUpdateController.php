@@ -23,7 +23,7 @@ class ProductUpdateController extends Controller
     }
     public function update(ProductRequest $request, string $id){
 
-      $product = $this->itemUpdate($request,'products','product_id',$id);
+      $product = $this->itemUpdate($request,$id);
 
       if($product){
 

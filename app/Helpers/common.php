@@ -2,6 +2,7 @@
 use App\Models\Museum;
 use App\Models\MuseumStaff;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 function translateMessageApi($message, $lang=null)
 {
@@ -140,6 +141,7 @@ if(!function_exists('museumAccessId')){
   }
 }
 
+
 if(!function_exists('getAuthMuseumId')){
     function getAuthMuseumId()
     {
@@ -151,6 +153,14 @@ if(!function_exists('getAuthMuseumId')){
 
         return false;
     }
+}
+
+if (!function_exists('allRoles')) {
+  function allRoleNames()
+  {
+    return Role::all()->pluck('name', 'name')->toArray();
+  }
+
 }
 
 

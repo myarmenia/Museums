@@ -16,7 +16,7 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                <a href="{{route('product_list')}}">Ապրանքներ </a>
+                <a href="{{route('banner_list')}}">Բաններ </a>
               </li>
               <li class="breadcrumb-item active">Խմբագրել</li>
           </ol>
@@ -31,86 +31,34 @@
 
         </div>
         <div class="card-body">
-          {{-- {{dd($data)}} --}}
 
-            <form action="{{ route('product_update',$data->id) }}" method="POST" enctype="multipart/form-data">
+
+            <form action="{{ route('banner_update',$data->id) }}" method="POST" enctype="multipart/form-data">
               @method('put')
-              <input type = "hidden" name = "museum_id" value="{{ $data->museum_id }}">
-              <div class="mb-3 row">
-                <label for="region" class="col-md-2 col-form-label"> Կատեգորիա <span class="required-field">*</span></label>
-                <div class="col-md-10">
-                    <select id="defaultSelect" name="product_category_id" class="form-select">
-                        <option value="">Ընտրեք Կատեգորիան</option>
-                        @foreach ($category as $item)
-                        @if ($data->product_category_id == $item->id)
-                              <option value="{{ $item->id}}" selected>{{ __('product-categories.' . $item->key) }}</option>
 
-                        @else
-                              <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}</option>
 
-                        @endif
-
-                        @endforeach
-                    </select>
-                    @error('product_category_id')
-                        <div class="justify-content-end">
-                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                            </div>
-                        </div>
-                    @enderror
-                </div>
-              </div>
               @foreach (languages() as $lang)
-                <div class="mb-3 row">
-                  <label for="name-{{ $lang}}" class="col-md-2 col-form-label">Անվանում {{ $lang }}
-                  <span class="required-field text-danger">*</span>
-                  </label>
-                    <div class="col-md-10">
-                        <input class="form-control"
-                              placeholder="Անվանումը {{ $lang }}"
-                              value="{{ $data->translation($lang)->name ?? old("translate.$lang.name") }}"
-                              name="translate[{{ $lang }}][name]"
-                              id="name-{{ $lang}}" name="name"
-                              />
-                    </div>
-                    @error("translate.$lang.name")
-                        <div class="mb-3 row justify-content-end">
-                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                            </div>
-                        </div>
-                    @enderror
-                </div>
 
-              @endforeach
               <div class="mb-3 row">
-                <label for="email" class="col-md-2 col-form-label">Գին
-                  <span class="required-field text-danger">*</span>
+                <label for="text-{{ $lang }}" class="col-md-2 col-form-label">Բանների տեքստ {{ $lang }}
+                <span class="required-field text-danger">*</span>
                 </label>
+                <div class="col-md-10">
+                    <textarea class="form-control" placeholder="Բանների տեքստ {{ $lang }}"
+                        id="working_days-{{ $lang }}"
+                        name="translate[{{ $lang }}][text]">{{ $data->translation($lang)->text }}
+                    </textarea>
 
-                <div class="col-md-10">
-                    <input class="form-control" placeholder="Գինը" value="{{ $data->price ?? old('price') }}"
-                        id="price" name="price" />
+
                 </div>
-                @error("price")
-                  <div class="mb-3 row justify-content-end">
+                @error("translate.$lang.text")
+                  <div class="mb-3 mt-5 row justify-content-end">
                       <div class="col-sm-10 text-danger fts-14">{{ $message }}
                       </div>
                   </div>
                 @enderror
-              </div>
-              <div class="mb-3 row">
-                <label for="phone_number" class="col-md-2 col-form-label">Քանակ</label>
-                <div class="col-md-10">
-                    <input class="form-control" placeholder="Քանակ" value="{{ $data->quantity ?? old('quantity') }}"
-                        id="quantity" name="quantity" />
-                </div>
-                @error("quantity")
-                  <div class="mb-3 row justify-content-end">
-                      <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                      </div>
-                  </div>
-                @enderror
-              </div>
+            </div>
+            @endforeach
 
 
 

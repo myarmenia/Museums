@@ -85,7 +85,7 @@
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "general-news",
       "roles": ["super_admin"],
-      "url": "/banner"
+      "url": "banner/list"
     },
 
     {

@@ -34,9 +34,7 @@ use Illuminate\Support\Facades\Schema;
 
               $lang[$relation_foreign_key] = $item->id;
               $lang['lang'] = $key;
-
               $item->item_translations()->create($lang);
-
             }
           }
 
