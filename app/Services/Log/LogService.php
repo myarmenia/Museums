@@ -26,4 +26,26 @@ class LogService
 
       return $log ? true : false;
   }
+
+  public static function all(){
+      return Log::latest();
+  }
+
+
+  
+  public static function logFilter(array $data, $model)
+  {
+      $filteredData  = $model->filter($data);
+
+      if(isset($data['role'])){
+        $role = $data['role'];
+        $filteredData  = $filteredData ->whereHas('user', function ($query) use ($role){
+                      $query->whereHas('roles', function ($q) use ($role){
+                            $q->where('name', $role);
+                      });
+                });
+      }
+
+    return $filteredData ;
+  }
 }

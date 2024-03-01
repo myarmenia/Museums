@@ -28,6 +28,10 @@ class ChatController extends Controller
     {
         $data = $this->chatService->getRoomMessage($id);
 
+        if(!$data) {
+            return redirect()->back();
+        }
+
         return view('content.chat.messages', compact('data'));
     }
 

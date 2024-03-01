@@ -29,62 +29,30 @@
         <div class="card-body">
 
             <div>
-                <form action="{{route('users_visitors')}}" method="get" class="row g-3 mt-2" style="display: flex">
+                <form action="{{route('logs')}}" method="get" class="row g-3 mt-2" style="display: flex">
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
 
-                      <div class="new-select rounded" id="">
-                                <div class="new-select-title-box">
-                                    <input type="text" value="{{ request()->input('role') ?? ''}}" hidden name="role" />
-                                    <span role="select-title">{{__('selects.roles')}}</span>
-                                    <img class="new-select-icon" src="{{asset('assets/images/select-chev.svg')}}" />
-                                </div>
-                                <div class="new-select-options-box">
-                                    <ul>
-                                        <li data-value="">{{__('selects.all')}}</li>
 
-                                        {{-- @foreach($roles as $key => $role)
-                                            <li data-value="{{$role}}">{{$role}}</li>
-                                        @endforeach --}}
-                                    </ul>
-                                </div>
+                        <div class="col-2">
+                            <select id="defaultSelect" name="type" class="form-select" value="{{ request()->input('type') }}" >
+                                    <option value="" disabled selected>Գործ․ տեսակ</option>
+                                    <option value="" >{{__('logs.all')}}</option>
+                                    <option value="store" {{ request()->input('type') == 'store' ? 'selected' : '' }}>{{__('logs.store')}}</option>
+                                    <option value="update" {{ request()->input('type') == 'update' ? 'selected' : '' }}>{{__('logs.update')}}</option>
+                                    <option value="change_status" {{ request()->input('type') == 'change_status' ? 'selected' : '' }}>{{__('logs.change_status')}}</option>
+                                    <option value="delete" {{ request()->input('type') == 'delete' ? 'selected' : '' }}>{{__('logs.delete')}}</option>
+
+                            </select>
                         </div>
-                        <div class="col-md-10">
-                        <select id="defaultSelect" name="type" class="form-select" value="{{ request()->input('type') }}" >
-                                <option value="">Գործ․ տեսակ</option>
-                                    <option value="{{ $item->id }}">{{__('logs.all')}}</option>
-                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
-                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
-                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
-                                    <option value="{{ $item->id }}">{{__('selects.store')}}</option>
-
-                                @foreach ($product_category as $item)
-                                    <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}</option>
+                        <div class="col-2">
+                            <select id="defaultSelect" name="role" class="form-select" value="{{ request()->input('role') ?? ''}}" >
+                                <option value="" disabled selected>Դեր</option>
+                                <option value="">{{__('logs.all')}}</option>
+                                @foreach (allRoleNames() as $role)
+                                    <option value="{{ $role }}" {{ request()->input('role') == $role ? 'selected' : '' }}>{{ __('roles.' . $role) }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="new-select rounded" id="">
-                                <div class="new-select-title-box">
-                                    <input type="text" value="{{ request()->input('role') ?? ''}}" hidden name="role" />
-                                    <span role="select-title">{{__('selects.roles')}}</span>
-                                    <img class="new-select-icon" src="{{asset('assets/images/select-chev.svg')}}" />
-                                </div>
-                                <div class="new-select-options-box">
-                                    <ul>
-                                        <li data-value="">{{__('selects.all')}}</li>
-                                        <li data-value="store">{{__('selects.store')}}</li>
-                                        <li data-value="update">{{__('selects.update')}}</li>
-                                        <li data-value="change_status">{{__('selects.change_status')}}</li>
-                                        <li data-value="delete">{{__('selects.delete')}}</li>
-
-
-                                    </ul>
-                                </div>
-                        </div>
-                        <div class="col-2">
-                            <input type="text" class="form-control" id="role" placeholder="Դեր" name="role" value="{{ request()->input('role') }}">
-                        </div>
-
-
 
                         <div class="col-2">
                             <input type="date" class="form-control" id="datefrom" placeholder="Ստեղծման ամսաթիվ" name="from_created_at" value="{{ request()->input('from_created_at') }}">
@@ -95,7 +63,7 @@
                         </div>
 
                         <button class="btn btn-primary col-2">Որոնել</button>
-
+                        <a class="btn btn-primary" href="{{ route('logs') }}">Չեղարկել</a>
                     </div>
                 </form>
             </div>
@@ -107,61 +75,25 @@
                             <th>Օգտագործող</th>
                             <th>Դեր</th>
                             <th>Գործ․ տեսակ</th>
-                            <th>Գործ․ օբեկտ</th>
+                            <th>Գործ․ օբյեկտ</th>
                             <th>Տվյալներ</th>
-                            <th>Ամսատիվ</th>
-                            {{-- <th>Գործողություն</th> --}}
+                            <th>Ամսաթիվ</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($data as $key => $log)
 
-                        {{-- @foreach ($data as $key => $log)
                             <tr>
                                 <td>{{ ++$i }}</td>
                                 <td>{{ $log->user->name }} {{ $log->user->surname }}</td>
-                                <td>{{ implode(', ', $log->roles->pluck('name')->toArray()) }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->phone }}</td>
+                                <td>{{ __("roles.".$log->user->roles[0]->name) }}</td>
+                                <td>{{ __("logs.$log->type") }}</td>
+                                <td>{{ __("db_table.$log->tb_name") }}</td>
+                                <td>{{ $log->data }}</td>
+                                <td>{{ $log->created_at->format('d-m-Y')}}</td>
 
-
-                                <td>
-                                    @if (!empty($user->getRoleNames()))
-                                        @foreach ($user->getRoleNames() as $v)
-                                            <label>{{ __("roles.$v") }}</label>
-                                        @endforeach
-                                    @endif
-                                </td>
-
-                                <td>
-                                    <div class="dropdown action" data-id="{{ $user->id }}" data-tb-name="users">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-
-                                        <div class="dropdown-menu">
-
-                                            <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input change_status" type="checkbox"
-                                                        role="switch" data-field-name="status"
-                                                        {{ $user->status ? 'checked' : null }}>
-                                                </div>Կարգավիճակ
-                                            </a>
-                                            <a class="dropdown-item" href="{{route('users.edit', $user->id)}}"><i
-                                                class="bx bx-edit-alt me-1"></i>Փոփոխել
-                                            </a>
-                                            <button type="button" class="dropdown-item click_delete_item"
-                                                data-bs-toggle="modal" data-bs-target="#smallModal"><i
-                                                    class="bx bx-trash me-1"></i>
-                                                Ջնջել
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </td>
                             </tr>
-                        @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>

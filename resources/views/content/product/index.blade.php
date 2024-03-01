@@ -70,7 +70,7 @@
 
             </div>
           </form>
-
+     
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">
                     <thead>

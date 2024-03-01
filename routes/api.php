@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\Banner\BannerCantroller;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\Courses\CourseLanguagesController;
 use App\Http\Controllers\API\ForgotPasswordController;
@@ -51,7 +52,7 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     Route::group(['prefix' => 'email'], function ($router) {
         Route::post('feedback', SendFeedbackController::class);
-        Route::post('clientProject', SendClientProjectDetController::class);    
+        Route::post('clientProject', SendClientProjectDetController::class);
         Route::post('clientQuestion', SendYourQuestionController::class);
     });
 
@@ -76,6 +77,9 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::group(['prefix' => 'museum'], function ($router) {
         Route::get('get-museum', [MuseumController::class, 'getMuseum']);
         Route::get('get-museum/{id}', [MuseumController::class, 'getMuseumById']);
+    });
+    Route::group(['prefix' => 'banner'], function ($router) {
+      Route::get('list', [BannerCantroller::class, 'index']);
     });
 
   });
