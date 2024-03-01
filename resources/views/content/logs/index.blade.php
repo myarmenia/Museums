@@ -45,11 +45,11 @@
                             </select>
                         </div>
                         <div class="col-2">
-                            <select id="defaultSelect" name="roles" class="form-select" value="{{ request()->input('roles') ?? ''}}" >
+                            <select id="defaultSelect" name="role" class="form-select" value="{{ request()->input('role') ?? ''}}" >
                                 <option value="" disabled selected>Դեր</option>
                                 <option value="">{{__('logs.all')}}</option>
                                 @foreach (allRoleNames() as $role)
-                                    <option value="{{ $role }}" {{ request()->input('roles') == $role ? 'selected' : '' }}>{{ __('roles.' . $role) }}</option>
+                                    <option value="{{ $role }}" {{ request()->input('role') == $role ? 'selected' : '' }}>{{ __('roles.' . $role) }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -63,7 +63,7 @@
                         </div>
 
                         <button class="btn btn-primary col-2">Որոնել</button>
-
+                        <a class="btn btn-primary" href="{{ route('logs') }}">Չեղարկել</a>
                     </div>
                 </form>
             </div>

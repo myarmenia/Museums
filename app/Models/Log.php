@@ -14,8 +14,7 @@ class Log extends Model
     protected $table = 'logs';
 
     protected $filterFields = ['type'];
-    protected $filterFieldsInRelation = ['name'];
-   
+
     public function user(): BelongsTo
     {
       return $this->belongsTo(User::class, 'user_id');
