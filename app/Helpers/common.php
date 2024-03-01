@@ -141,11 +141,26 @@ if(!function_exists('museumAccessId')){
   }
 }
 
+
+if(!function_exists('getAuthMuseumId')){
+    function getAuthMuseumId()
+    {
+        $authId = auth()->id();
+
+        if($museum = MuseumStaff::where('user_id', $authId)->first()) {
+            return $museum->museum_id;
+        };
+
+        return false;
+    }
+}
+
 if (!function_exists('allRoles')) {
   function allRoleNames()
   {
     return Role::all()->pluck('name', 'name')->toArray();
   }
+
 }
 
 
