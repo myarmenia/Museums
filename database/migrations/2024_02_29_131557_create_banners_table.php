@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('banners', function (Blueprint $table) {
           $table->id();
+          $table->boolean('status')->default(1);
           $table->softDeletes();
           $table->timestamps();
         });

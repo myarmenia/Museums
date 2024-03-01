@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\Banner\BannerCreateController;
+use App\Http\Controllers\Admin\Banner\BannerEditController;
+use App\Http\Controllers\Admin\Banner\BannerListController;
 use App\Http\Controllers\Admin\Banner\BannerStoreController;
+use App\Http\Controllers\Admin\Banner\BannerUpdateController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ChangeStatusController;
 use App\Http\Controllers\Admin\DeleteItemController;
@@ -199,17 +202,13 @@ Route::group(['prefix'=>'product'],function(){
     });
 
   });
-  // Route::group(['prefix'=>'product'],function(){
-  //   Route::get('/list', [ProductListController::class, 'index'])->name('product_list');
-  //   Route::get('/create', [ProductCreateController::class, 'create'])->name('product_create');
-  //   Route::post('/store', [ProductStoreController::class,'store'])->name('product_store');
-  //   Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product_edit');
-  //   Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product_update');
-
-  // });
-  Route::get('/banner', [BannerCreateController::class,'create']);
-  Route::post('/store', BannerStoreController::class,'store')->name('banner_store');
-
+  Route::group(['prefix'=>'banner'],function(){
+    Route::get('/list', [BannerListController::class, 'index'])->name('banner_list');
+    Route::get('/create', [BannerCreateController::class,'create'])->name('banner_create');
+    Route::post('/store', [BannerStoreController::class,'store'])->name('banner_store');
+    Route::get('edit/{id}', [BannerEditController::class, 'edit'])->name('banner_edit');
+    Route::put('/update/{id}', [BannerUpdateController::class,'update'])->name('banner_update');
+  });
 
 
 
