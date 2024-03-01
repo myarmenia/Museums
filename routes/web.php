@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\Banner\BannerCreateController;
+use App\Http\Controllers\Admin\Banner\BannerEditController;
+use App\Http\Controllers\Admin\Banner\BannerListController;
 use App\Http\Controllers\Admin\Banner\BannerStoreController;
+use App\Http\Controllers\Admin\Banner\BannerUpdateController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ChangeStatusController;
 use App\Http\Controllers\Admin\DeleteItemController;
@@ -207,9 +210,13 @@ Route::group(['prefix' => 'chats'], function () {
 
   });
 
-  Route::get('/banner', [BannerCreateController::class,'create']);
-
-  Route::post('/store', [BannerStoreController::class,'store'])->name('banner_store');
+  Route::group(['prefix'=>'banner'],function(){
+    Route::get('/list', [BannerListController::class, 'index'])->name('banner_list');
+    Route::get('/create', [BannerCreateController::class,'create'])->name('banner_create');
+    Route::post('/store', [BannerStoreController::class,'store'])->name('banner_store');
+    Route::get('edit/{id}', [BannerEditController::class, 'edit'])->name('banner_edit');
+    Route::put('/update/{id}', [BannerUpdateController::class,'update'])->name('banner_update');
+  });
 
 // Route::post('video-upload', [FileUploadService::class, 'videoUpload'])->name('video-upload');
 

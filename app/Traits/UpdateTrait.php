@@ -23,15 +23,18 @@ trait UpdateTrait{
 
       $model = new $className;
       $relation_foreign_key = $model->getForeignKey();
+
       $table_name = $model->getTable();
 
       $item = $model::where('id', $id)->first();
+
       $item->update($data);
       if($item){
 
         foreach($request['translate'] as $key => $lang){
 
-          $item->item_translations()->where([$relation_foreign_key => $id,'lang' => $key])->update($lang);
+        $item->item_translations()->where([$relation_foreign_key => $id,'lang' => $key])->update($lang);
+
         }
 
         if(isset($request['photo'])){
@@ -55,6 +58,7 @@ trait UpdateTrait{
       }
     }
     else{
+
       return false;
 
     }
