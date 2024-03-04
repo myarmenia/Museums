@@ -31,7 +31,7 @@
             </div>
             {{-- @if (museumAccessId()!=null) --}}
               <div>
-                  <a href="{{ route('banner_create') }}" class="btn btn-primary mx-4">Ստեղծել Ապրանք </a>
+                  <a href="{{ route('banner_create') }}" class="btn btn-primary mx-4">Ստեղծել բաններ </a>
               </div>
 
             {{-- @endif --}}

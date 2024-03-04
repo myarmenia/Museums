@@ -83,7 +83,7 @@
                 @enderror
                 <div class="mt-5 row justify-content-end">
                   <div class="col-sm-10">
-                      <button type="submit" class="btn btn-primary">Պահպանել</button>
+                      <button type="submit" class="btn btn-primary">Ստեղծել</button>
                   </div>
               </div>
         </div>
