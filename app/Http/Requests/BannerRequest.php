@@ -35,7 +35,6 @@ class BannerRequest extends FormRequest
     public function messages(): array
     {
         return [
-
             'translate.*.text' => 'Անվանում դաշտը պարտադիր է',
             'photo' => 'Լուսանկարի դաշտը պարտադիր է:',
             'photo.dimensions' =>'Լուսանկարի լայնքը պետք է լինի 1530 մինչև 1550 և բարձրությունը 880 մինչև 920',
