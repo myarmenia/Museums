@@ -21,9 +21,10 @@ class ChatService
             $museumId = getAuthMuseumId();
             if($museumId){
                 $rooms = $this->chatRepository->getMuseumRooms($museumId);  
+            }else{
+                return false;
             }
 
-            return false;
         }
        
         return $rooms;
@@ -45,6 +46,8 @@ class ChatService
             } 
         }
 
+        $this->updateChatRead($id);
+
         return $this->chatRepository->getRoomMessage($id);
     }
 
@@ -61,7 +64,7 @@ class ChatService
 
     public function updateChatRead($id)
     {
-        return Chat::where('id', $id)->update(['read' => 0]);
+        return Chat::where('id', $id)->update(['read' => 1]);
     }
 
     public function getChatVisitorEmail($id)

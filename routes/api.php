@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Banner\BannerCantroller;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\Courses\CourseLanguagesController;
@@ -80,6 +81,11 @@ Route::group(['middleware' => ['api']], function ($router) {
     });
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'chat'], function ($router) {
+        Route::post('add-message', [ChatController::class, 'addMessage']);
+        Route::post('add-admin-message', [ChatController::class, 'addAdminMessage']);
     });
 
   });
