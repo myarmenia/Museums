@@ -101,6 +101,8 @@ class MuseumService
             PhoneService::createPhone($phoneData);
 
             MuseumStaff::where('admin_id', auth()->id())->update(['museum_id' => $getCreatedMuseumId]);
+            session(['success' => 'Թանգարանը հաջողությամբ ավելացված է']);
+
             DB::commit();
 
             return true;
@@ -194,6 +196,8 @@ class MuseumService
                 ImageService::createImageble($imagesData, true);
             }
         }
+        session(['success' => 'Թանգարանը հաջողությամբ փոփոխված է']);
+
         DB::commit();
 
         return true;

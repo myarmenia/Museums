@@ -53,6 +53,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="demo-inline-spacing">
+                {{ $data->links() }}
+            </div>
         </div>
     </div>
 
