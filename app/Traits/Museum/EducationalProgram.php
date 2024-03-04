@@ -18,4 +18,9 @@ trait EducationalProgram
     public function getAllReservetions() {
         return EducationalProgramReservation::where(["museum_id" => museumAccessId()])->first();
     }
+
+    public function getSingleMuseumEducationalProgramsForAPI($id)
+    {
+      return ModelEducationalProgram::where(["museum_id" => $id, "status" => 1])->get();
+    }
 }

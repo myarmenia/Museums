@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Banner\BannerCantroller;
+use App\Http\Controllers\API\EducationalPrograms\EducationalProgramController;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\Courses\CourseLanguagesController;
 use App\Http\Controllers\API\ForgotPasswordController;
@@ -78,6 +79,8 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::group(['prefix' => 'museum'], function ($router) {
         Route::get('get-museum', [MuseumController::class, 'getMuseum']);
         Route::get('get-museum/{id}', [MuseumController::class, 'getMuseumById']);
+        Route::get('/{id}/educational-programs', EducationalProgramController::class);
+
     });
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);
