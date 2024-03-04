@@ -12,7 +12,7 @@ class BannerCantroller extends Controller
 {
     public function index(){
 
-    $banner=Banner::where('id','>',0)->with('item_translations')->get();
+    $banner=Banner::where('id','>',0)->where('status',1)->with('item_translations')->get();
 
       return BannerResource::collection($banner);
 

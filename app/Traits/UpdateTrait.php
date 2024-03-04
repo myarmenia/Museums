@@ -43,7 +43,8 @@ trait UpdateTrait{
 
           if(Storage::exists($image->path)){
             Storage::delete($image->path);
-            $image->delete();
+
+            $image = Image::where('imageable_id',$id)->delete();
           }
           $path = FileUploadService::upload($request['photo'], $table_name.'/'.$id);
           $photoData = [
