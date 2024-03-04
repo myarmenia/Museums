@@ -25,33 +25,27 @@ class EducationalProgramReserveRequest extends FormRequest
     public function rules(): array
     {
 
-      $min = 1;
-      $max = 60;
+          $min = 1;
+          $max = 50;
 
-      if(isset(request()->educational_program_id) && request()->educational_program_id != 'null'){
-        $educational_program = EducationalProgram::where(['museum_id' => museumAccessId(), 'id' => request()->educational_program_id])->first();
-        $min = $educational_program->min_quantity;
-        $max = $educational_program->max_quantity;
-        // request()->educational_program_id = null;
+          if(request()->educational_program_id != "null_id" && request()->educational_program_id != "null" && request()->educational_program_id != null){
 
-      }
+              $educational_program = EducationalProgram::where(['museum_id' => museumAccessId(), 'id' => request()->educational_program_id])->first();
+              $min = $educational_program->min_quantity;
+              $max = $educational_program->max_quantity;
+          }
 
-      return  [
-        // 'educational_program_id' => 'required',
-        'date'=> 'required|after_or_equal:'.now()->format('Y-m-d'),
+          return [
+            'educational_program_id' => 'required',
+            'date' => 'required|after_or_equal:' . now()->format('Y-m-d'),
+            'time' => 'required|date_format:H:i',
+            'visitor_quantity' => 'required|integer|min:' . $min . '|max:' . $max,
+            'description' => 'required',
+          ];
 
-        'time'=> 'required|date_format:H:i',
-        'visitor_quantity'=> 'required|integer|min:'.$min.'|max:'.$max,
-        'description' => 'required'
-      ];
+
     }
-    // public function messages(): array
-    // {
-    //     return [
-    //       'data.before_or_equal'=>'55555555',
 
-    //     ];
-    // }
 
     protected function failedValidation(Validator $validator)
     {

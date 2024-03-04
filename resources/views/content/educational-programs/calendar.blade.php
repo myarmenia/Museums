@@ -48,39 +48,40 @@
                 <div class="card-body">
                     <form id="reserve">
                         <div class="mb-3">
-                            <label class="form-label" for="educational_program_id">Ծրագրի տեսակը</label>
-                            <select id="educational_program_id" name="educational_program_id" class="form-select"
-                                value="">
+                            <label class="form-label" for="educational_program_id">Ծրագրի տեսակը <span class="required-field text-danger">*</span></label>
+                            <select id="educational_program_id" name="educational_program_id" class="form-select item">
                                 <option value="" disabled selected>Ծրագրի տեսակը</option>
 
                                 @foreach (museumEducationalPrograms() as $item)
                                     <option value="{{ $item->id }}">{{ __('logs.store') }}</option>
                                 @endforeach
-                                <option value="0">Էքսկուրսիա</option>
+                                <option value="null_id">Էքսկուրսիա</option>
 
                             </select>
                         </div>
+
                         <div class="mb-3">
-                            <label class="form-label" for="date">Այցելության օրը</label>
-                            <input type="date" class="form-control" id="date" placeholder="Այցելության օրը"
+                            <label class="form-label" for="date">Այցելության օրը <span class="required-field text-danger">*</span></label>
+                            <input type="date" class="form-control item" id="date" placeholder="Այցելության օրը"
                                 name="date">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="time">Այցելության ժամը</label>
-                            <input type="time" class="form-control" id="time" placeholder="Այցելության ժամը"
+                            <label class="form-label" for="time">Այցելության ժամը <span class="required-field text-danger">*</span></label>
+                            <input type="time" class="form-control item" id="time" placeholder="Այցելության ժամը"
                                 name="time">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="visitor_quantity">Այցելության քանակը</label>
-                            <input type="text" class="form-control" id="visitor_quantity"
+                            <label class="form-label" for="visitor_quantity">Այցելության քանակը <span class="required-field text-danger">*</span></label>
+                            <input type="text" class="form-control item" id="visitor_quantity"
                                 placeholder="Այցելության քանակը" name="visitor_quantity">
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="description">Մանրամասներ</label>
-                            <textarea id="description" class="form-control" placeholder="Մանրամասներ" name="description"></textarea>
+                            <label class="form-label" for="description">Մանրամասներ <span class="required-field text-danger">*</span></label>
+                            <textarea id="description" class="form-control item" placeholder="Մանրամասներ" name="description"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Ամրագրել</button>
+                        <button type="submit" class="btn btn-primary ">Ամրագրել</button>
+                        <div class="result_message"></div>
                     </form>
                 </div>
             </div>
