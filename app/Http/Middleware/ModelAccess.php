@@ -29,7 +29,8 @@ class ModelAccess
             if (class_exists($className)) {
                 $model = new $className;
                 $item = $model::find($request->id);
-                if ($item->museum_id != museumAccessId()) {
+          
+                if ($item != null && $item->museum_id != museumAccessId()) {
                   return redirect()->back();
 
                 } else {

@@ -2,6 +2,7 @@
 namespace App\Traits\Museum;
 
 use App\Models\EducationalProgram as ModelEducationalProgram;
+use App\Models\EducationalProgramReservation;
 
 trait EducationalProgram
 {
@@ -12,5 +13,9 @@ trait EducationalProgram
 
     public function getEducationalProgram($id) {
         return ModelEducationalProgram::where(["id" => $id, "museum_id" => museumAccessId()])->first();
+    }
+
+    public function getAllReservetions() {
+        return EducationalProgramReservation::where(["museum_id" => museumAccessId()])->first();
     }
 }

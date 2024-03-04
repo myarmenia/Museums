@@ -16,4 +16,9 @@ class Message extends Model
     ];
 
     protected $table = 'messages';
+
+    //add messages types 
+    const TYPE_VISITOR = 'visitor';
+    const TYPE_MUSEUM = 'museum';
+
 }

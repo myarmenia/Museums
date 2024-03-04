@@ -7,9 +7,7 @@ use Mail;
 
 class ChatService 
 {
-
     protected $chatRepository;
-
     public function __construct(ChatRepository $chatRepository)
     {
         $this->chatRepository = $chatRepository;
@@ -17,11 +15,16 @@ class ChatService
 
     public function getRooms()
     {
-        if(isSuperAdmin()){
+        if($this->adminStaffCheck()){
             $rooms = $this->chatRepository->getSuperAdminRooms(); 
         }else {
-            $museumId = haveMuseum();
-            $rooms = $this->chatRepository->getMuseumRooms($museumId);  
+            $museumId = getAuthMuseumId();
+            if($museumId){
+                $rooms = $this->chatRepository->getMuseumRooms($museumId);  
+            }else{
+                return false;
+            }
+
         }
        
         return $rooms;
@@ -29,6 +32,22 @@ class ChatService
 
     public function getRoomMessage($id)
     {
+        if($this->adminStaffCheck()){
+            if($chat = Chat::find($id)){
+                if($chat->museum_id){
+                    return false;
+                }
+            };
+        }else {
+            $getChatIds = $this->getAuthChat();  
+
+            if (!in_array($id, $getChatIds)) {
+                return false;
+            } 
+        }
+
+        $this->updateChatRead($id);
+
         return $this->chatRepository->getRoomMessage($id);
     }
 
@@ -45,7 +64,7 @@ class ChatService
 
     public function updateChatRead($id)
     {
-        return Chat::where('id', $id)->update(['read' => 0]);
+        return Chat::where('id', $id)->update(['read' => 1]);
     }
 
     public function getChatVisitorEmail($id)
@@ -70,4 +89,21 @@ class ChatService
     {
        return Mail::send(new SendMessageToUnverifiedUser($email, $text));
     }
+
+    public function getAuthChat()
+    {
+        $museumId = getAuthMuseumId();
+        if($museumId){
+            $chat = Chat::where('museum_id', $museumId)->pluck('id');
+            return  $chat->all();
+        };
+
+        return [];
+    }
+
+    public function adminStaffCheck()
+    {
+       return  auth()->user()->hasRole(['super_admin', 'general_manager']);
+    }
+
 }

@@ -1,7 +1,10 @@
 <?php
+
+use App\Models\EducationalProgram;
 use App\Models\Museum;
 use App\Models\MuseumStaff;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 function translateMessageApi($message, $lang=null)
 {
@@ -138,6 +141,37 @@ if(!function_exists('museumAccessId')){
   {
       return Auth::user()->museum_staff_user ? Auth::user()->museum_staff_user->museum_id : false;
   }
+}
+
+
+if(!function_exists('getAuthMuseumId')){
+    function getAuthMuseumId()
+    {
+        $authId = auth()->id();
+
+        if($museum = MuseumStaff::where('user_id', $authId)->first()) {
+            return $museum->museum_id;
+        };
+
+        return false;
+    }
+}
+
+if (!function_exists('allRoles')) {
+  function allRoleNames()
+  {
+    return Role::all()->pluck('name', 'name')->toArray();
+  }
+
+}
+
+if (!function_exists('museumEducationalPrograms')) {
+  function museumEducationalPrograms()
+  {
+
+    return museumAccessId() ? EducationalProgram::where('museum_id', museumAccessId())->get() : [];
+  }
+
 }
 
 
