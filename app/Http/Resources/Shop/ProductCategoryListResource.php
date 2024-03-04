@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Project;
+namespace App\Http\Resources\Shop;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CreateImagePathResource extends JsonResource
+class ProductCategoryListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,9 +14,12 @@ class CreateImagePathResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+      // dd($this);
         return [
-            'id' => $this->id,
-            'path' => route('get-file', ['path' => $this->path]),
+          "id" => $this->id,
+          "key" => $this->key,
+          "status" => $this->status,
         ];
+
     }
 }

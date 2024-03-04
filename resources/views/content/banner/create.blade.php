@@ -57,11 +57,13 @@
 
 
                 <div class="mb-3 row">
-                    <label for="photo" class="col-md-2 col-form-label">Ապրանքի նկար
+                    <label for="photo" class="col-md-2 col-form-label">Բանեռի նկար
                     <span class="required-field text-danger">*</span>
                     </label>
 
                     <div class="col-md-10">
+                      <p>Լուսանկարի լայնքը պետք է լինի 1530 մինչև 1550 և բարձրությունը 880 մինչև 920</p>
+
                         <div class="d-flex flex-wrap align-items-start align-items-sm-center">
                             <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                                 <span class="d-none d-sm-block">Ներբեռնել նկար</span>
@@ -83,7 +85,7 @@
                 @enderror
                 <div class="mt-5 row justify-content-end">
                   <div class="col-sm-10">
-                      <button type="submit" class="btn btn-primary">Պահպանել</button>
+                      <button type="submit" class="btn btn-primary">Ստեղծել</button>
                   </div>
               </div>
         </div>
