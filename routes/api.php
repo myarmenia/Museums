@@ -15,6 +15,7 @@ use App\Http\Controllers\API\TestController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
+use App\Http\Controllers\API\Product\ProductCantroller;
 use App\Http\Controllers\API\Student\DashboardController;
 use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
@@ -81,6 +82,9 @@ Route::group(['middleware' => ['api']], function ($router) {
     });
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);
+    });
+    Route::group(['prefix' => 'product'], function ($router) {
+      Route::get('list', [ProductCantroller::class, 'index']);
     });
 
     Route::group(['prefix' => 'chat'], function ($router) {
