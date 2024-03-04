@@ -76,6 +76,16 @@
         "museum_admin",
         "content_manager"
       ]
+    },
+    {
+      "url": "events/list",
+      "name": "Միջոցառումներ",
+      "icon": "menu-icon tf-icons bx bx-list-ul",
+      "slug": "event_list",
+      "roles": [
+        "museum_admin"
+
+      ]
     }
 
   ]

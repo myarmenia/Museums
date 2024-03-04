@@ -35,10 +35,9 @@ class ProductCantroller extends Controller
       ->orderBy('id', 'DESC')->paginate(10)->withQueryString();
 
 
-     
-      return  ShopShopResource::collection($data);
+     $shop=[];
 
-
+      return ShopShopResource::collection($data);
 
   }
   public function museumList(){
