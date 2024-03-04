@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramListControl
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramStoreController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramUpdateController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveStoreController;
+use App\Http\Controllers\Admin\Events\EventCreateController;
+use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
 use App\Http\Controllers\Admin\UserController;
@@ -226,6 +228,11 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
     Route::post('/store', [BannerStoreController::class,'store'])->name('banner_store');
     Route::get('edit/{id}', [BannerEditController::class, 'edit'])->name('banner_edit');
     Route::put('/update/{id}', [BannerUpdateController::class,'update'])->name('banner_update');
+  });
+  Route::group(['prefix' => 'events'], function ($router) {
+    Route::get('list',EventListController::class)->name('event_list');
+    Route::get('list',EventCreateController::class)->name('event_create');
+
   });
 
 

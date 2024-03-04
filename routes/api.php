@@ -96,6 +96,8 @@ Route::group(['middleware' => ['api']], function ($router) {
       Route::get('product-category', [ShopProductCantroller::class, 'productCategory']);
 
     });
+   
+
 
     Route::group(['prefix' => 'chat'], function ($router) {
         Route::post('add-message', [ChatController::class, 'addMessage']);
