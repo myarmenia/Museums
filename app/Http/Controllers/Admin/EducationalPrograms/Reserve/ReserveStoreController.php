@@ -18,11 +18,16 @@ class ReserveStoreController extends Controller
 
   public function __invoke(EducationalProgramReserveRequest $request){
 
+   
+    if ($request->educational_program_id == "null_id") {
+        $request['educational_program_id'] = null;
+    }
+
     $reservetion = $this->itemStore($request);
 
-      if($reservetion){
+    if($reservetion){
 
-        return redirect()->route('educational_programs_list');
-      }
+      return redirect()->route('educational_programs_list');
+    }
   }
 }

@@ -42,13 +42,13 @@ $( '#reserve' ).on('submit', function ( e ) {
     var educational_program_type = 'educational_program'
     var educational_program_id = $( "#educational_program_id" ).val()
 
-    if($( "#educational_program_id" ).val() == 0){
+    if($( "#educational_program_id" ).val() == 'null_id'){
           educational_program_type = 'excursion'
-          educational_program_id = null
+
     }
-    
+
     formData.append("type", educational_program_type)
-    formData.append("educational_program_id", educational_program_id)
+
 
     $('.error').html('')
     $.ajax({
@@ -61,7 +61,9 @@ $( '#reserve' ).on('submit', function ( e ) {
         console.log('befor sebd')
       },
       success: function(data){
-        alert(data);
+        // alert(data);
+        $('.item').val('')
+        $('.result_message').html(`<span class=" text-success">Ամրագրումը կատարված է</span>`)
       },
       error: function(data){
         var errors = data.responseJSON.errors;
