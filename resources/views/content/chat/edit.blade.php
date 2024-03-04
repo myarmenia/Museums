@@ -276,7 +276,7 @@
                                     @if($image->main != 1)
                                         <div class="uploaded-image-div mx-2">
                                             <img src="{{route('get-file', ['path' => $image->path])}}" class="d-block rounded uploaded-image uploaded-photo-project">
-                                            <button type="button" class="btn btn-outline-danger btn-sm mt-2 delete_item" data-url="{{route('delete_item',['images',$image->id ])}}">Remove</button>
+                                            <button type="button" class="btn btn-outline-danger btn-sm mt-2 delete_item" data-url="{{route('delete_item',['images',$image->id ])}}">Ջնջել</button>
                                         </div>
                                     @endif
                                 @endforeach

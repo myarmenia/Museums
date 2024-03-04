@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-
+    @include('includes.alert')
     <h4 class="py-3 mb-4">
         <span class="text-muted fw-light">Թանգարան /</span> Փոփոխել թանգարանը
     </h4>
@@ -257,7 +257,7 @@
                     </div>
                 @enderror
 
-                <div class="mb-3 row">
+                <div class="mb-5 row">
                     <label for="photos" class="col-md-2 col-form-label d-flex">Նկար
                         <div class="mx-2" title="Նկարների լայնքը պետք է լինի 446 մինչև 460 և բարձրությունը 370 մինչև 380">
                             <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
@@ -276,7 +276,7 @@
                                     @if($image->main != 1)
                                         <div class="uploaded-image-div mx-2">
                                             <img src="{{route('get-file', ['path' => $image->path])}}" class="d-block rounded uploaded-image uploaded-photo-project">
-                                            <button type="button" class="btn btn-outline-danger btn-sm mt-2 delete_item" data-url="{{route('delete_item',['images',$image->id ])}}">Remove</button>
+                                            <button type="button" class="btn btn-outline-danger btn-sm mt-2 delete_item" data-url="{{route('delete_item',['images',$image->id ])}}">Ջնջել</button>
                                         </div>
                                     @endif
                                 @endforeach
@@ -285,11 +285,12 @@
                     </div>
                 </div>
                 @error('photos.*')
-                    <div class="mb-3 row justify-content-end">
+                    <div class=" row justify-content-end">
                         <div class="col-sm-10 text-danger fts-14" id="photos_div">{{ $message }}
                         </div>
                     </div>
                 @enderror
+
 
                 <div class="mt-5 row justify-content-end">
                     <div class="col-sm-10">
