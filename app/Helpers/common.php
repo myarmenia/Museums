@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\EducationalProgram;
 use App\Models\Museum;
 use App\Models\MuseumStaff;
 use Illuminate\Support\Facades\Auth;
@@ -159,6 +161,15 @@ if (!function_exists('allRoles')) {
   function allRoleNames()
   {
     return Role::all()->pluck('name', 'name')->toArray();
+  }
+
+}
+
+if (!function_exists('museumEducationalPrograms')) {
+  function museumEducationalPrograms()
+  {
+
+    return museumAccessId() ? EducationalProgram::where('museum_id', museumAccessId())->get() : [];
   }
 
 }

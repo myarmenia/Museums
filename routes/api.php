@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Banner\BannerCantroller;
+use App\Http\Controllers\API\EducationalPrograms\EducationalProgramController;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\Courses\CourseLanguagesController;
 use App\Http\Controllers\API\ForgotPasswordController;
@@ -14,6 +16,7 @@ use App\Http\Controllers\API\TestController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
+use App\Http\Controllers\API\Product\ProductCantroller;
 use App\Http\Controllers\API\Student\DashboardController;
 use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
@@ -77,9 +80,19 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::group(['prefix' => 'museum'], function ($router) {
         Route::get('get-museum', [MuseumController::class, 'getMuseum']);
         Route::get('get-museum/{id}', [MuseumController::class, 'getMuseumById']);
+        Route::get('/{id}/educational-programs', EducationalProgramController::class);
+
     });
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);
+    });
+    Route::group(['prefix' => 'product'], function ($router) {
+      Route::get('list', [ProductCantroller::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'chat'], function ($router) {
+        Route::post('add-message', [ChatController::class, 'addMessage']);
+        Route::post('add-admin-message', [ChatController::class, 'addAdminMessage']);
     });
 
   });

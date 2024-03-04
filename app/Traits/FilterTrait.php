@@ -33,6 +33,7 @@ trait FilterTrait {
             }
 
             if(in_array($field, $filterFields) ){
+              // dd($field,$filterFields);
 
               $builder->where($field, $value);
             }

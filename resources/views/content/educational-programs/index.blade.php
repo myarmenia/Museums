@@ -47,51 +47,52 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                        @foreach ($data as $key => $program)
-                            <tr>
-                                <td>{{ ++$key }}</td>
-                                <td>{{ $program->translation("am")->name }}</td>
-                                <td>{{ $program->price }}</td>
-                                <td>{{ $program->min_quantity }}</td>
-                                <td>{{ $program->max_quantity }}</td>
-                                <td class="status">
-                                    @if ($program->status)
-                                        <span class="badge bg-label-success me-1">Ակտիվ</span>
-                                    @else
-                                        <span class="badge bg-label-danger me-1">Ապաակտիվ</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="dropdown action" data-id="{{ $program->id }}" data-tb-name="educational_programs">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-
-                                        <div class="dropdown-menu">
-
-                                            <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input change_status" type="checkbox"
-                                                        role="switch" data-field-name="status"
-                                                        {{ $program->status ? 'checked' : null }}>
-                                                </div>Կարգավիճակ
-                                            </a>
-                                            <a class="dropdown-item" href="{{route('educational_programs_edit', $program->id)}}"><i
-                                                class="bx bx-edit-alt me-1"></i>Փոփոխել
-                                            </a>
-                                            <button type="button" class="dropdown-item click_delete_item"
-                                                data-bs-toggle="modal" data-bs-target="#smallModal"><i
-                                                    class="bx bx-trash me-1"></i>
-                                                Ջնջել
+                        @if (count($data) > 0)
+                            @foreach ($data as $key => $program)
+                                <tr>
+                                    <td>{{ ++$key }}</td>
+                                    <td>{{ $program->translation("am")->name }}</td>
+                                    <td>{{ $program->price }}</td>
+                                    <td>{{ $program->min_quantity }}</td>
+                                    <td>{{ $program->max_quantity }}</td>
+                                    <td class="status">
+                                        @if ($program->status)
+                                            <span class="badge bg-label-success me-1">Ակտիվ</span>
+                                        @else
+                                            <span class="badge bg-label-danger me-1">Ապաակտիվ</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="dropdown action" data-id="{{ $program->id }}" data-tb-name="educational_programs">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
 
+                                            <div class="dropdown-menu">
+
+                                                <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input change_status" type="checkbox"
+                                                            role="switch" data-field-name="status"
+                                                            {{ $program->status ? 'checked' : null }}>
+                                                    </div>Կարգավիճակ
+                                                </a>
+                                                <a class="dropdown-item" href="{{route('educational_programs_edit', $program->id)}}"><i
+                                                    class="bx bx-edit-alt me-1"></i>Փոփոխել
+                                                </a>
+                                                <button type="button" class="dropdown-item click_delete_item"
+                                                    data-bs-toggle="modal" data-bs-target="#smallModal"><i
+                                                        class="bx bx-trash me-1"></i>
+                                                    Ջնջել
+                                                </button>
+
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
