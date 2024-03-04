@@ -216,6 +216,7 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
         Route::get('calendar', EducationalProgramCalendarController::class)->name('educational_programs_calendar');
         Route::post('reserve-store', ReserveStoreController::class)->name('educational_programs_reserve_store');
         // Route::get('calendar-data', GetCalendarDataController::class);
+        
 
 
     });
