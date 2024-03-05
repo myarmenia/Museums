@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramListControl
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramStoreController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramUpdateController;
 use App\Http\Controllers\Admin\EducationalPrograms\GetCalendarDataController;
+use App\Http\Controllers\Admin\EducationalPrograms\Reserve\GetDayReservationsController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveStoreController;
 use App\Http\Controllers\Admin\Events\EventCreateController;
 use App\Http\Controllers\Admin\Events\EventListController;
@@ -217,9 +218,8 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
       Route::group(['middleware' => ['role:museum_admin|manager|cashier']], function () {
         Route::get('calendar', EducationalProgramCalendarController::class)->name('educational_programs_calendar');
         Route::post('reserve-store', ReserveStoreController::class)->name('educational_programs_reserve_store');
-        // Route::get('calendar-data', GetCalendarDataController::class);
-        
-
+        Route::get('calendar-data', GetCalendarDataController::class);
+        Route::get('get-day-reservations/{date}', GetDayReservationsController::class);
 
     });
 
