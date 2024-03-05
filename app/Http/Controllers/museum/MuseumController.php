@@ -35,7 +35,7 @@ class MuseumController extends Controller
 
     public function create()
     {
-        if( $id = haveMuseum()) {
+        if( $id = museumAccessId()) {
             return redirect()->route('museum.edit', ['id' => $id]);
         };
         $regions = Region::all();

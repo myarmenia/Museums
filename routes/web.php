@@ -148,11 +148,13 @@ Route::get('logs', [LogController::class, 'index'])->name('logs');
 // Route::post('open-next-lesson', [OpenNextLessonController::class,'index'])->name('open_next_lesson');
 
 Route::group(['prefix' => 'museum'], function () {
-  Route::get('/', [MuseumController::class, 'index'])->name('museum');
-  Route::get('/create', [MuseumController::class, 'create'])->name('create-museum')->middleware('museum');
-  Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
-  Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit')->middleware('museum_edit_middleware');
-  Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
+  Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin');
+  Route::group(['middleware' => ['role:museum_admin|content_manager']], function () {
+    Route::get('/create', [MuseumController::class, 'create'])->name('create-museum');
+    Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
+    Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit');
+    Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
+  });
 
 
 
