@@ -105,7 +105,7 @@ class MuseumService
 
             DB::commit();
 
-            return true;
+            return $getCreatedMuseumId;
         } catch (\Exception $e) {
             session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
             DB::rollBack();
