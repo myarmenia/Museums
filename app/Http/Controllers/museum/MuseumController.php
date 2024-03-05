@@ -45,9 +45,9 @@ class MuseumController extends Controller
 
     public function addMuseum(MuseumRequest $request)
     {
-        $this->museumService->createMuseum($request->all());
+        $id = $this->museumService->createMuseum($request->all());
 
-        return redirect()->route('museum');
+        return redirect()->route('museum.edit', ['id' => $id]);
 
     }
 
