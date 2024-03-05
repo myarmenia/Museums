@@ -87,6 +87,7 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);
     });
+    // creating product slide 
     Route::group(['prefix' => 'product'], function ($router) {
       Route::get('list', [ProductCantroller::class, 'index']);
     });
@@ -96,7 +97,7 @@ Route::group(['middleware' => ['api']], function ($router) {
       Route::get('product-category', [ShopProductCantroller::class, 'productCategory']);
 
     });
-   
+
 
 
     Route::group(['prefix' => 'chat'], function ($router) {
