@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Museum extends Model
 {
@@ -65,6 +66,12 @@ class Museum extends Model
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class, 'museum_geographical_location_id', 'id');
+    }
+
+    public function translation($lang)
+    {
+
+      return $this->hasOne(MuseumTranslation::class)->where('lang', $lang)->first();
     }
 
 

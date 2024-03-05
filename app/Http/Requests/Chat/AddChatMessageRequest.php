@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Requests\Chat;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+
+class AddChatMessageRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [  
+            'email' => 'required|email',    
+            'museum_id' => 'required|exists:museums,id',
+            'text' => 'required|string',
+            'title' => 'required|string',
+        ];
+    }
+
+    protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'errors' => $validator->errors(),
+        ], 422));
+    }
+}

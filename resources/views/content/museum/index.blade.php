@@ -37,7 +37,7 @@
                             <tr>
                                 <td>{{ ++$i }}</td>
                                 <td>{{ $museum->translationsAdmin->first()->name}}</td>
-                                <td>{{ $museum->user->name}}</td>
+                                <td>{{ $museum->translationsAdmin->first()->director_name}}</td>
                                 <td>{{ $museum->email}}</td>
                                 <td>{{ $museum->created_at }}</td>
                                 <td>
@@ -52,6 +52,9 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+            <div class="demo-inline-spacing">
+                {{ $data->links() }}
             </div>
         </div>
     </div>

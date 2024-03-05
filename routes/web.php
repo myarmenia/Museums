@@ -8,11 +8,16 @@ use App\Http\Controllers\Admin\Banner\BannerUpdateController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ChangeStatusController;
 use App\Http\Controllers\Admin\DeleteItemController;
+use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCalendarController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCreateController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramEditController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramListController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramStoreController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramUpdateController;
+use App\Http\Controllers\Admin\EducationalPrograms\GetCalendarDataController;
+use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveStoreController;
+use App\Http\Controllers\Admin\Events\EventCreateController;
+use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
 use App\Http\Controllers\Admin\UserController;
@@ -199,14 +204,25 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
   Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
 });
 
-  Route::group(['prefix' => 'educational-programs', 'middleware' => ['role:museum_admin|content_manager']], function () {
-    Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
-    Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
-    Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
-    Route::group(['middleware' => ['model_access']], function () {
-        Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
-        Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
+  Route::group(['prefix' => 'educational-programs'], function () {
+      Route::group(['middleware' => ['role:museum_admin|content_manager']], function () {
+          Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
+          Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
+          Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
+          Route::group(['middleware' => ['model_access']], function () {
+              Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
+              Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
+          });
+      });
+      Route::group(['middleware' => ['role:museum_admin|manager|cashier']], function () {
+        Route::get('calendar', EducationalProgramCalendarController::class)->name('educational_programs_calendar');
+        Route::post('reserve-store', ReserveStoreController::class)->name('educational_programs_reserve_store');
+        // Route::get('calendar-data', GetCalendarDataController::class);
+        
+
+
     });
+
 
   });
 
@@ -217,8 +233,12 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
     Route::get('edit/{id}', [BannerEditController::class, 'edit'])->name('banner_edit');
     Route::put('/update/{id}', [BannerUpdateController::class,'update'])->name('banner_update');
   });
+  Route::group(['prefix' => 'events'], function ($router) {
+    Route::get('list',EventListController::class)->name('event_list');
+    Route::get('list',EventCreateController::class)->name('event_create');
 
-// Route::post('video-upload', [FileUploadService::class, 'videoUpload'])->name('video-upload');
+  });
+
 
 });
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Projects;
+namespace App\Http\Resources\EducationalPrograms;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProjectsForHomePageResource extends JsonResource
+class GetCalendarResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,9 +15,8 @@ class ProjectsForHomePageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-          "id" => $this->id,
-          "path" => route('get-file', ['path' => $this->images()->first()->path]),
-          "description" => getProjectDescription($this->translation),        
+          "title" => 'Этап' . $this->stage_number,
+          "start" => $this->created_at
         ];
     }
 }

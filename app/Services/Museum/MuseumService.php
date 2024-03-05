@@ -30,6 +30,12 @@ class MuseumService
 
     public function createMuseum($data)
     {
+
+        if(array_key_exists('photos', $data) && count($data['photos']) > 3) {
+            session(['errorMessage' => 'Նկարների քանակը չպետք է գերազանցի 3ը']);
+            return redirect()->back();
+        }
+
         try {
             DB::beginTransaction();
             $languages = languages();
@@ -95,6 +101,8 @@ class MuseumService
             PhoneService::createPhone($phoneData);
 
             MuseumStaff::where('admin_id', auth()->id())->update(['museum_id' => $getCreatedMuseumId]);
+            session(['success' => 'Թանգարանը հաջողությամբ ավելացված է']);
+
             DB::commit();
 
             return true;
@@ -121,8 +129,15 @@ class MuseumService
     public function updateMuseum($data, $id)
     {
 
-        // try {
-        //     DB::beginTransaction();
+        if(array_key_exists('photos', $data) && !$check = $this->checkMuseumPhotoCount($id, count($data['photos']), 3)) {
+            if(!$check) {
+                session(['errorMessage' => 'Նկարների քանակը չպետք է գերազանցի 3ը']);
+                return redirect()->back();
+            }
+        }
+
+        try {
+            DB::beginTransaction();
         $languages = languages();
 
         $regionId = Region::where('name', $data['region'])->first()->id;
@@ -181,23 +196,43 @@ class MuseumService
                 ImageService::createImageble($imagesData, true);
             }
         }
-        // DB::commit();
+        session(['success' => 'Թանգարանը հաջողությամբ փոփոխված է']);
+
+        DB::commit();
 
         return true;
-        // } catch (\Exception $e) {
-        //     session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
-        //     DB::rollBack();
-        //     return false;
-        // } catch (\Error $e) {
-        //     session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
-        //     DB::rollBack();
-        //     return false;
-        // }
+        } catch (\Exception $e) {
+            session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
+            DB::rollBack();
+            dd($e->getMessage());
+            return false;
+        } catch (\Error $e) {
+            session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
+            DB::rollBack();
+            dd($e->getMessage());
+            return false;
+        }
     }
 
     public function getMuseumByAuthUser()
     {
         return Museum::where('user_id', auth()->id())->first()->id;
+    }
+
+    public function checkMuseumPhotoCount($id, $count, $countMax)
+    {
+        if($count > $countMax) {
+            return false;
+        }
+
+        $museum = Museum::find($id);
+
+        if((count($museum->images->where('main', false)) + $count > $countMax)) {
+            return false;
+        }
+
+        return true;
+
     }
 
 
