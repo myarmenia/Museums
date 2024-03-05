@@ -20,6 +20,7 @@ class ProductResource extends JsonResource
         'created_at' => $this->created_at->format("d.m.Y"),
         'image' => isset($this->images[0])?route('get-file',['path'=>$this->images[0]->path]):null,
         'name' => $this-> translation(session("languages"))->name,
+        'price'=> $this->price,
 
         ];
     }

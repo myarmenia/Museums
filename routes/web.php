@@ -18,7 +18,10 @@ use App\Http\Controllers\Admin\EducationalPrograms\GetCalendarDataController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\GetDayReservationsController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveStoreController;
 use App\Http\Controllers\Admin\Events\EventCreateController;
+use App\Http\Controllers\Admin\Events\EventEditController;
 use App\Http\Controllers\Admin\Events\EventListController;
+use App\Http\Controllers\Admin\Events\EventStoreController;
+use App\Http\Controllers\Admin\Events\EventUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
 use App\Http\Controllers\Admin\UserController;
@@ -223,6 +226,7 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
         Route::get('calendar-data', GetCalendarDataController::class);
         Route::get('get-day-reservations/{date}', GetDayReservationsController::class);
 
+
     });
 
 
@@ -237,7 +241,12 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
   });
   Route::group(['prefix' => 'events'], function ($router) {
     Route::get('list',EventListController::class)->name('event_list');
-    Route::get('list',EventCreateController::class)->name('event_create');
+    Route::get('create',EventCreateController::class)->name('event_create');
+    Route::post('store',EventStoreController::class)->name('event_store');
+    Route::get('edit/{id}', EventEditController::class)->name('event_edit');
+    Route::put('update/{id}', EventUpdateController::class)->name('event_update');
+
+
 
   });
 

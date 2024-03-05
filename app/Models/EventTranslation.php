@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class EventTranslation extends Model
 {
     use HasFactory;
+
+    protected $guarded=[];
+    protected $table = 'event_translations';
+
 }
