@@ -73,7 +73,7 @@
                       </div>
                   </div>
               @enderror
-            @endforeach
+              @endforeach
 
               <div class="mb-3 row">
                 <label for="phone_number" class="col-md-2 col-form-label">Միջոցառման սկիզբ
@@ -174,15 +174,12 @@
                       <button type="submit" class="btn btn-primary">Ստեղծել</button>
                   </div>
               </div>
+              </div>
+
+
+            </form>
+
         </div>
-
-
-        </form>
-        
-      </div>
-
-    </div>
-
 
     </div>
 @endsection

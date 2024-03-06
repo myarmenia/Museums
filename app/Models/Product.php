@@ -44,7 +44,10 @@ protected $hasRelationTranslation = ['item_translations'];
   public function translation($lang){
 
     return $this->hasOne(ProductTranslation::class)->where('lang', $lang)->first();
- }
+  }
+  public function similar_products($museum_id){
+    return $this->where('museum_id',$museum_id)->get()->take(4);
+  }
 
 
 }
