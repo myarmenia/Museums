@@ -30,12 +30,13 @@ trait UpdateTrait{
 
       $item->update($data);
       if($item){
+          if($request['translate']!=null){
+            foreach($request['translate'] as $key => $lang){
 
-        foreach($request['translate'] as $key => $lang){
+                $item->item_translations()->where([$relation_foreign_key => $id,'lang' => $key])->update($lang);
 
-        $item->item_translations()->where([$relation_foreign_key => $id,'lang' => $key])->update($lang);
-
-        }
+            }
+          }
 
         if(isset($request['photo'])){
 
