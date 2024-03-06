@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
-      function calendar() {
+
+  // ==================  C A L E N D A R =================================
+    function calendar() {
         var calendarEl = document.getElementById('calendar');
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -11,12 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
           },
-          views: {
-            timeGridFourDay: {
-              type: 'timeGrid',
-              duration: { days: 4 }
-            }
-          },
+          // slotLabelFormat: {
+          //   hour: '2-digit',
+          //   minute: '2-digit',
+          //   hour12: false,
+          // },
+          // slotLabelContent: info => {
+          //   if (info.text === '24:00') {
+          //     info.text = '00:00';
+          //   }
+          // },
+          timeFormat: 'HH:mm',
           weekNumbers: true,
           dayMaxEvents: true, // allow "more" link when too many events
           // events: '/api/demo-feeds/events.json',
@@ -26,18 +33,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
       }
 
-      calendar()
+  // ====================== E N D ==================================
 
+    calendar()
 
-      // let calendarTds = document.querySelectorAll('#calendar td')
-      //     calendarTds.forEach(element => {
-      //       element.addEventListener('click', showReservetionInfo)
-      //     });
-
-      // function showReservetionInfo() {
-
-      //   console.log(this)
-      // }
+  // ==================  Click calendar td and get reservations ============================
 
       $('table[role=presentation]').on('click', "td", function(){
           var reserved_date = $(this).attr('data-date')
@@ -49,65 +49,111 @@ document.addEventListener('DOMContentLoaded', function () {
             beforeSend: function (x) {
               console.log('befor sebd')
             },
-            success: function (data) {
+            success: function (response) {
 
+              $('.your-component').html(response);
               $('#show_reservetion').click()
-            },
-            // error: function (data) {
-            //   var errors = data.responseJSON.errors;
+            }
 
-            //   $.each(errors, function (field_name, error) {
-            //     $(document).find('[name=' + field_name + ']').after('<span class="error text-strong text-danger">' + error + '</span>')
-            //   })
-
-            // }
           });
 
       })
-
-      // =========== store educational program reservetion ==================================
-      $('#reserve').on('submit', function (e) {
-        e.preventDefault()
-        var formData = new FormData($(this)[0]);
-        var educational_program_type = 'educational_program'
-        var educational_program_id = $("#educational_program_id").val()
-
-        if ($("#educational_program_id").val() == 'null_id') {
-          educational_program_type = 'excursion'
-
-        }
-
-        formData.append("type", educational_program_type)
+  // ========================== E N D ===========================================================
 
 
-        $('.error').html('')
-        $.ajax({
-          url: '/educational-programs/reserve-store',
-          data: formData,
-          processData: false,
-          contentType: false,
-          type: 'POST',
-          beforeSend: function (x) {
-            console.log('befor sebd')
-          },
-          success: function (data) {
+  // =========== store or update educational program reservetion ==================================
+      $('body').on('submit', '.reserve', function (e) {
 
-            $('.item').val('')
-            $('.result_message').html(`<span class=" text-success">Ամրագրումը կատարված է</span>`)
-            calendar()
-          },
-          error: function (data) {
-            var errors = data.responseJSON.errors;
+          e.preventDefault()
+          var $that = $(this)
+          var formData = new FormData($(this)[0]);
+          var educational_program_type = 'educational_program'
+          var educational_program_id = $(this).find(".educational_program_id").val()
+          var method = $(this).attr('method')
+          var url = ''
 
-            $.each(errors, function (field_name, error) {
-              $(document).find('[name=' + field_name + ']').after('<span class="error text-strong text-danger">' + error + '</span>')
-            })
+          if (educational_program_id == 'null_id') {
+            educational_program_type = 'excursion'
 
           }
+
+          if(method == 'post'){
+            url = '/educational-programs/reserve-store'
+          }
+          else{
+            var reserve_id = $(this).attr('data-id')
+              url = '/educational-programs/reserve-update/' + reserve_id
+          }
+
+          formData.append("type", educational_program_type)
+          console.log(educational_program_id)
+          $('.error').html('')
+
+          $.ajax({
+              url: url,
+              data: formData,
+              processData: false,
+              contentType: false,
+              type: 'post',
+              beforeSend: function (x) {
+                console.log('befor sebd')
+              },
+              success: function (data) {
+                if (method == 'post') {
+                  $that.find('.item').val('')
+
+                }
+                $that.find('.result_message').html(`<span class=" text-success">Գործողությունը կատարված է</span>`)
+                calendar()
+              },
+              error: function (data) {
+                var errors = data.responseJSON.errors;
+
+                $.each(errors, function (field_name, error) {
+                  $that.find('[name=' + field_name + ']').after('<span class="error text-strong text-danger">' + error + '</span>')
+                })
+
+              }
+          });
+        })
+  // ==================== E N D =======================================================
+
+
+  // ==================== D E L E T E    R E S E R V A T I O N =======================================================
+
+      $('body').on('click', '.delete-reservation', function(){
+        // delete -item / { tb_name } / { id }
+
+        var id = $(this).attr('data-item-id')
+        var tb_name = $(this).attr('data-tb-name')
+        var parent = $(this).parents('.accordion-item')
+
+        $.ajax({
+          url: '/delete-item/' + tb_name + '/' + id,
+            processData: false,
+            contentType: false,
+            type: 'get',
+            success: function (response) {
+              let message = ''
+              let type = ''
+              if (response.result) {
+                message = 'Գործողությունը հաստատված է։'
+                type = 'success'
+                parent.remove()
+                calendar();
+              }
+              else {
+                message = 'Սխալ է տեղի ունեցել։'
+                type = 'danger'
+              }
+
+              $('.reservetion-result').html(`<span class="text-${type}">${message}</span>`)
+            }
+
         });
       })
+  // ==================== E N D =======================================================
 
-      // ==================== E N D =======================================================
 
 
 });
