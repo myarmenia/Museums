@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class GetCalendarDataController extends Controller
 {
     use GetCalendarData;
-    public function index($id)
+    public function __invoke()
     {
       // $student_attendance = $this->getAll($id);
         $data = $this->getData();

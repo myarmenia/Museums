@@ -15,8 +15,8 @@ class GetCalendarResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-          "title" => 'Этап' . $this->stage_number,
-          "start" => $this->created_at
+          "title" => $this->educational_program ? $this->educational_program->translation('am')->name : 'Էքսկուրսիա',
+          "start" => $this->date. " " . $this->time,
         ];
     }
 }

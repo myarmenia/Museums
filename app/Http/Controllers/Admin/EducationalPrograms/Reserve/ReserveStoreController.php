@@ -18,7 +18,7 @@ class ReserveStoreController extends Controller
 
   public function __invoke(EducationalProgramReserveRequest $request){
 
-   
+
     if ($request->educational_program_id == "null_id") {
         $request['educational_program_id'] = null;
     }

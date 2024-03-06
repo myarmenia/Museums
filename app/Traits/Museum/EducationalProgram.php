@@ -23,4 +23,11 @@ trait EducationalProgram
     {
       return ModelEducationalProgram::where(["museum_id" => $id, "status" => 1])->get();
     }
+
+    public function getDayReservetions($date)
+    {
+      return EducationalProgramReservation::where(["museum_id" => museumAccessId(), 'date' => $date])->get();
+    }
+
+    
 }

@@ -30,7 +30,7 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('product_list')}}">Ապրանքներ </a>
+                  <a href="{{route('product_list')}}">Միջոցառումներ </a>
               </li>
               <li class="breadcrumb-item active">Ցանկ</li>
           </ol>
@@ -40,7 +40,7 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Ապրանքների ցանկ</h5>
+                <h5 class="card-header">Միջոցառումների ցանկ</h5>
             </div>
             @if (museumAccessId()!=null)
               <div>
@@ -50,57 +50,7 @@
             @endif
         </div>
         <div class="card-body">
-          {{-- <form action="{{route('product_list')}}" method="get" class="row g-3 mt-2" style="display: flex">
-
-            <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
-              <div class="col-2">
-                <input type="text" class="form-control" id="" placeholder="Անվանում" name="name" value="{{ request()->input('name') }}">
-            </div>
-            <div class="mb-3 row">
-
-              <div class="col-md-10">
-                  <select id="defaultSelect" name="product_category_id" class="form-select" value="{{ request()->input('product_category_id') }}" >
-                      <option value="">ֆիլտրել ըստ կատեգորիաի</option>
-
-                      @foreach ($product_category as $item)
-
-                          @if (request()->input('product_category_id')!=null &&$item->id==request()->input('product_category_id'))
-
-                                <option value="{{ $item->id }}" selected>{{ __('product-categories.' . $item->key) }}</option>
-
-                          @else
-                            <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}</option>
-
-                          @endif
-
-                      @endforeach
-                  </select>
-              </div>
-            </div>
-
-            <div class="mb-3 row">
-              <div class="col-md-10">
-                  <select id="defaultSelect" name="museum_id" class="form-select" value="{{ request()->input('museum_id') }}" >
-                      <option value="">ֆիլտրել ըստ թանգարանների</option>
-                      @foreach ($museums as $item)
-                        @if (request()->input('museum_id')!=null && $item->id==request()->input('museum_id') )
-                              <option value="{{ $item->id }}" selected>{{ $item->translation('am')->name }}</option>
-                        @else
-
-                        @endif
-                          <option value="{{ $item->id }}">{{ $item->translation('am')->name }}</option>
-                      @endforeach
-                  </select>
-              </div>
-            </div>
-
-
-
-                <button class="btn btn-primary col-2">Փնտրել</button>
-
-            </div>
-          </form> --}}
-
+        
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">
                     <thead>
