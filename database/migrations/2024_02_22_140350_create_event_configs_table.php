@@ -18,9 +18,9 @@ return new class extends Migration
             $table->date('day');
             $table->time('start_time');
             $table->time('end_time');
-            $table->integer('visitors_quantity_limitation');
-            $table->integer('visitors_quantity');
-            $table->integer('price');
+            $table->integer('visitors_quantity_limitation')->nullable();
+            $table->integer('visitors_quantity')->default(0);
+            $table->integer('price')->nullable();
             $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
