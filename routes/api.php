@@ -18,6 +18,7 @@ use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
 use App\Http\Controllers\API\Product\ProductCantroller;
 use App\Http\Controllers\API\Shop\ProductCantroller as ShopProductCantroller;
+use App\Http\Controllers\API\Shop\SingleProductController;
 use App\Http\Controllers\API\Student\DashboardController;
 use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
@@ -87,7 +88,7 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);
     });
-    // creating product slide 
+    // creating product slide
     Route::group(['prefix' => 'product'], function ($router) {
       Route::get('list', [ProductCantroller::class, 'index']);
     });
@@ -95,6 +96,7 @@ Route::group(['middleware' => ['api']], function ($router) {
       Route::get('product-list', [ShopProductCantroller::class, 'index']);
       Route::get('museum-list', [ShopProductCantroller::class, 'museumList']);
       Route::get('product-category', [ShopProductCantroller::class, 'productCategory']);
+      Route::get('product/{id}',SingleProductController::class);
 
     });
 
