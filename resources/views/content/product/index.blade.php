@@ -51,7 +51,7 @@
         </div>
         <div class="card-body">
           <form action="{{route('product_list')}}" method="get" class="row g-3 mt-2" style="display: flex">
-        
+
             <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
               <div class="col-2">
                 <input type="text" class="form-control" id="" placeholder="Անվանում" name="name" value="{{ request()->input('name') }}">
@@ -77,23 +77,23 @@
                   </select>
               </div>
             </div>
+            @role('super_admin')
+              <div class="mb-3 row">
+                <div class="col-md-10">
+                    <select id="defaultSelect" name="museum_id" class="form-select" value="{{ request()->input('museum_id') }}" >
+                        <option value="">ֆիլտրել ըստ թանգարանների</option>
+                        @foreach ($museums as $item)
+                          @if (request()->input('museum_id')!=null && $item->id==request()->input('museum_id') )
+                                <option value="{{ $item->id }}" selected>{{ $item->translation('am')->name }}</option>
+                          @else
+                              <option value="{{ $item->id }}">{{ $item->translation('am')->name }}</option>
+                          @endif
 
-            <div class="mb-3 row">
-              <div class="col-md-10">
-                  <select id="defaultSelect" name="museum_id" class="form-select" value="{{ request()->input('museum_id') }}" >
-                      <option value="">ֆիլտրել ըստ թանգարանների</option>
-                      @foreach ($museums as $item)
-                        @if (request()->input('museum_id')!=null && $item->id==request()->input('museum_id') )
-                              <option value="{{ $item->id }}" selected>{{ $item->translation('am')->name }}</option>
-                        @else
-
-                        @endif
-                          <option value="{{ $item->id }}">{{ $item->translation('am')->name }}</option>
-                      @endforeach
-                  </select>
+                        @endforeach
+                    </select>
+                </div>
               </div>
-            </div>
-
+              @endrole
 
 
                 <button class="btn btn-primary col-2">Փնտրել</button>
