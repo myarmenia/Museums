@@ -13,21 +13,16 @@ document.addEventListener('DOMContentLoaded', function () {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
           },
-          // slotLabelFormat: {
-          //   hour: '2-digit',
-          //   minute: '2-digit',
-          //   hour12: false,
-          // },
-          // slotLabelContent: info => {
-          //   if (info.text === '24:00') {
-          //     info.text = '00:00';
-          //   }
-          // },
-          timeFormat: 'HH:mm',
           weekNumbers: true,
           dayMaxEvents: true, // allow "more" link when too many events
           // events: '/api/demo-feeds/events.json',
-          events: `/educational-programs/calendar-data`
+          events: `/educational-programs/calendar-data`,
+          eventTimeFormat: {
+            hour: '2-digit', //2-digit, numeric
+            minute: '2-digit', //2-digit, numeric
+            hour12: false //true, false
+          },
+          slotDuration: '01:00:00'
         });
         calendar.render();
 
@@ -105,6 +100,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 $that.find('.result_message').html(`<span class=" text-success">Գործողությունը կատարված է</span>`)
                 calendar()
+                setTimeout(function()  {
+                    $('.result_message').html('');
+                }, 2000);
               },
               error: function (data) {
                 var errors = data.responseJSON.errors;
