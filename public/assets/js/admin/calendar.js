@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             minute: '2-digit', //2-digit, numeric
             hour12: false //true, false
           },
-          slotDuration: '01:00:00'
+          // slotDuration: '01:00:00'
         });
         calendar.render();
 

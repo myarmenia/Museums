@@ -74,7 +74,8 @@
       "slug": "educational-programs",
       "roles": [
         "museum_admin",
-        "content_manager"
+        "manager",
+        "cashier"
       ]
     },
     {
@@ -84,7 +85,8 @@
       "slug": "educational-programs",
       "roles": [
         "museum_admin",
-        "content_manager"
+        "manager",
+        "cashier"
       ]
     },
     {

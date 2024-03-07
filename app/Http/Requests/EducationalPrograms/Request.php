@@ -22,9 +22,9 @@ class Request extends FormRequest
     public function rules(): array
     {
         return  [
-          
+
             'price'=> 'required|integer|gt:0',
-            'max_quantity'=> 'required|integer|gt:0',
+            'max_quantity'=> 'required|integer|gt:0|min:' . request()->min_quantity,
             'min_quantity'=> 'required|integer|gt:0',
             'translate.*.name' => 'required',
             'translate.*.description' => 'required',
