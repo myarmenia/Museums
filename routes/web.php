@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\Product\ProductListController;
 use App\Http\Controllers\Admin\Product\ProductStoreController;
 use App\Http\Controllers\Admin\Product\ProductUpdateController;
 use App\Http\Controllers\Chat\ChatController;
+use App\Http\Controllers\Corporative\CorporativeSaleController;
 use App\Http\Controllers\museum\MuseumController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
@@ -251,6 +252,12 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
   });
 
 
+});
+
+Route::group(['prefix' => 'corporative', 'middleware' => ['role:museum_admin|manager']], function () {
+  Route::get('/', [CorporativeSaleController::class, 'index'])->name('corporative');
+  Route::get('/create', [CorporativeSaleController::class, 'create'])->name('corporative.create');
+  Route::post('/create', [CorporativeSaleController::class, 'addCorporative'])->name('corporative.add');
 });
 
 Route::get('get-file', [FileUploadService::class, 'get_file'])->name('get-file');
