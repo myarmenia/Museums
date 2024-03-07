@@ -8,6 +8,7 @@ use App\Models\Region;
 use App\Repositories\Museum\MuseumRepository;
 use App\Services\Image\ImageService;
 use App\Services\Link\LinkService;
+use App\Services\Log\LogService;
 use App\Services\Phone\PhoneService;
 use Illuminate\Support\Facades\DB;
 
@@ -101,7 +102,20 @@ class MuseumService
             PhoneService::createPhone($phoneData);
 
             MuseumStaff::where('admin_id', auth()->id())->update(['museum_id' => $getCreatedMuseumId]);
+
             session(['success' => 'Թանգարանը հաջողությամբ ավելացված է']);
+
+            $data['general_photo'] = $data['general_photo']->getClientOriginalName();
+
+            if (array_key_exists('photos', $data)) { 
+                $photos = $data['photos'];
+                $data['photos'] = [];
+                foreach ($photos as $photo) {
+                    $data['photos'][] = $photo->getClientOriginalName();
+                }
+            }
+
+            LogService::store($data, auth()->id(), 'museums', 'store');
 
             DB::commit();
 
@@ -197,6 +211,20 @@ class MuseumService
             }
         }
         session(['success' => 'Թանգարանը հաջողությամբ փոփոխված է']);
+
+        if (array_key_exists('general_photo', $data)) {
+            $data['general_photo'] = $data['general_photo']->getClientOriginalName();
+        }
+        
+        if (array_key_exists('photos', $data)) { 
+            $photos = $data['photos'];
+            $data['photos'] = [];
+            foreach ($photos as $photo) {
+                $data['photos'][] = $photo->getClientOriginalName();
+            }
+        }
+
+        LogService::store($data, auth()->id(), 'museums', 'update');
 
         DB::commit();
 

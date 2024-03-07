@@ -12,9 +12,8 @@ class GetCalendarDataController extends Controller
     use GetCalendarData;
     public function __invoke()
     {
-      // $student_attendance = $this->getAll($id);
-        $data = $this->getData();
 
+        $data = $this->getData();
 
         $result = GetCalendarResource::collection($data);
 
