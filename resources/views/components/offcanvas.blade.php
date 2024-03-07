@@ -7,7 +7,7 @@
                           <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 
                     </div>
-                    <div class="reservetion-result text-center"></div>
+                    <div class="reservetion-result text-center"><span class="text-danger">{{count($reservetions) == 0 ? 'Գրանցումներ չկան' : ''}}</span></div>
                     <div class="offcanvas-body my-auto mx-0 flex-grow-0">
                         <div class="reservetions">
                             @if (count($reservetions) > 0)
@@ -40,7 +40,7 @@
                                                     <div class="mb-3">
                                                         <label class="form-label" for="date-{{$key}}">Այցելության օրը <span class="required-field text-danger">*</span></label>
                                                         <input type="date" class="form-control item" id="date-{{$key}}" placeholder=""
-                                                            name="date" value="{{$item->date}}" data-date="MM-DD-YYYY">
+                                                            name="date" value="{{$item->date}}" min="{{date('Y-m-d')}}">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label class="form-label" for="time-{{$key}}">Այցելության ժամը <span class="required-field text-danger">*</span></label>
@@ -61,7 +61,7 @@
                                                         <button type="submit" class="btn btn-primary ">Պահպանել</button>
                                                         <button type="button" class="btn btn-outline-danger delete-reservation" data-item-id="{{$item->id}}" data-tb-name="educational_program_reservations">Ջնջել</button>
                                                     </div>
-                                                    <div class="result_message"></div>
+                                                    <div class="result_message mt-2"></div>
                                                 </form>
                                               </div>
                                             </div>

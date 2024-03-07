@@ -23,11 +23,17 @@ document.addEventListener('DOMContentLoaded', function () {
           //     info.text = '00:00';
           //   }
           // },
-          timeFormat: 'HH:mm',
+
           weekNumbers: true,
           dayMaxEvents: true, // allow "more" link when too many events
           // events: '/api/demo-feeds/events.json',
-          events: `/educational-programs/calendar-data`
+          events: `/educational-programs/calendar-data`,
+          eventTimeFormat: {
+            hour: '2-digit', //2-digit, numeric
+            minute: '2-digit', //2-digit, numeric
+            hour12: false //true, false
+          },
+          slotDuration: '01:00:00'
         });
         calendar.render();
 
@@ -105,6 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 $that.find('.result_message').html(`<span class=" text-success">Գործողությունը կատարված է</span>`)
                 calendar()
+                setTimeout(function()  {
+                    $('.result_message').html('');
+                }, 2000);
               },
               error: function (data) {
                 var errors = data.responseJSON.errors;
@@ -153,8 +162,25 @@ document.addEventListener('DOMContentLoaded', function () {
         });
       })
   // ==================== E N D =======================================================
+  function setDateFormat() {
+    const inputDate = document.getElementById('date');
+    inputDate.addEventListener('change', function() {
+      const dateParts = this.value.split('-');
+      const year = dateParts[2];
+      const month = dateParts[1];
+      const day = dateParts[0];
+      const formattedDate = `${day}-${month}-${year}`;
+      this.value = formattedDate;
+    });
+  }
 
-
+  // Call the function to set date format
+  setDateFormat();
+function setTimeout11(className){
+  setTimeout(function()  {
+    $('.'+classNmae).html('');
+   }, 2000);
+}
 
 });
 

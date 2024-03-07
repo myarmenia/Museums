@@ -15,10 +15,8 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('educational_programs_list') }}">Կրթական ծրագրեր</a>
+                    <a href="{{ route('educational_programs_list') }}">Այցելությունների օրացույց և ամրագրում</a>
                 </li>
-                <li class="breadcrumb-item active">Ստեղծել նոր ծրագիր</li>
-
             </ol>
         </nav>
     </h4>
@@ -27,10 +25,7 @@
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-12">
             <div class="card mb-4">
-                <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0">Basic Layout</h5> <small class="text-muted float-end">Default label</small>
-                </div>
-                <div class="card-body">
+                <div class="card-body py-0">
                     <div id='calendar'></div>
 
                 </div>
@@ -51,7 +46,7 @@
                                 <option value="" disabled selected>Ծրագրի տեսակը</option>
 
                                 @foreach (museumEducationalPrograms() as $item)
-                                    <option value="{{ $item->id }}">{{ __('logs.store') }}</option>
+                                    <option value="{{ $item->id }}">{{$item->translation('am')->name}}</option>
                                 @endforeach
                                 <option value="null_id">Էքսկուրսիա</option>
 
@@ -61,7 +56,7 @@
                         <div class="mb-3">
                             <label class="form-label" for="date">Այցելության օրը <span class="required-field text-danger">*</span></label>
                             <input type="date" class="form-control item" id="date" placeholder="Այցելության օրը"
-                                name="date" >
+                                name="date" min="{{date('Y-m-d')}}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="time">Այցելության ժամը <span class="required-field text-danger">*</span></label>
@@ -79,7 +74,7 @@
                             <textarea id="description" class="form-control item" placeholder="Մանրամասներ" name="description"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary ">Ամրագրել</button>
-                        <div class="result_message"></div>
+                        <div class="result_message mt-2"></div>
                     </form>
                 </div>
             </div>
