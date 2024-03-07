@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramUpdateContr
 use App\Http\Controllers\Admin\EducationalPrograms\GetCalendarDataController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\GetDayReservationsController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveStoreController;
+use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveUpdateController;
 use App\Http\Controllers\Admin\Events\EventCreateController;
 use App\Http\Controllers\Admin\Events\EventEditController;
 use App\Http\Controllers\Admin\Events\EventListController;
@@ -76,10 +77,13 @@ use App\Http\Controllers\tables\Basic as TablesBasic;
 
 
 // authentication
+
 Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
+
 // Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
 Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])->name('auth-reset-password-basic');
 Auth::routes(['register' => false]);
+
 
 // Route::post('/web/login-check', [AuthController::class, 'login'])->name('web-login-check');
 
@@ -212,7 +216,7 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
 });
 
   Route::group(['prefix' => 'educational-programs'], function () {
-      Route::group(['middleware' => ['role:museum_admin|content_manager']], function () {
+      Route::group(['middleware' => ['role:museum_admin|manager|content_manager']], function () {
           Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
           Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
           Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
@@ -224,13 +228,11 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
       Route::group(['middleware' => ['role:museum_admin|manager|cashier']], function () {
         Route::get('calendar', EducationalProgramCalendarController::class)->name('educational_programs_calendar');
         Route::post('reserve-store', ReserveStoreController::class)->name('educational_programs_reserve_store');
+        Route::post('reserve-update/{id}', ReserveUpdateController::class)->name('educational_programs_reserve_update');
         Route::get('calendar-data', GetCalendarDataController::class);
         Route::get('get-day-reservations/{date}', GetDayReservationsController::class);
 
-
     });
-
-
   });
 
   Route::group(['prefix'=>'banner'],function(){

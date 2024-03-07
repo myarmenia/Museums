@@ -14,10 +14,11 @@ class GetDayReservationsController extends Controller
 
 
     $reservetions = $this->getDayReservetions($date);
-dd($reservetions);
+
     if ($reservetions) {
 
-      return redirect()->route('educational_programs_list');
+      // return response()->json($reservetions);
+      return view('components.offcanvas', ['reservetions' => $reservetions]);
     }
   }
 }

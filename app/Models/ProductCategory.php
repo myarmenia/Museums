@@ -15,5 +15,9 @@ class ProductCategory extends Model
     {
       return $this->hasMany(Product::class);
     }
+    public function translation($lang){
+
+      return $this->hasOne(ProductCategoryTranslation::class)->where('lang',$lang)->first();
+   }
 
 }

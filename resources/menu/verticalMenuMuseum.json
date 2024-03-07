@@ -85,6 +85,16 @@
       ]
     },
     {
+      "url": "educational-programs/calendar",
+      "name": "Այցելությունների օրացույց",
+      "icon": "menu-icon tf-icons bx bx-calendar",
+      "slug": "educational-programs",
+      "roles": [
+        "museum_admin",
+        "content_manager"
+      ]
+    },
+    {
       "url": "events/list",
       "name": "Միջոցառումներ",
       "icon": "menu-icon tf-icons bx bx-list-ul",
