@@ -94,5 +94,6 @@ class Kernel extends HttpKernel
     'model_access' => ModelAccess::class,
     'acess_in_item' => AcessInItem::class,
 
+
   ];
 }
