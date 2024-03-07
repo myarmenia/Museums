@@ -212,7 +212,7 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
 });
 
   Route::group(['prefix' => 'educational-programs'], function () {
-      Route::group(['middleware' => ['role:museum_admin|content_manager']], function () {
+      Route::group(['middleware' => ['role:museum_admin|manager|content_manager']], function () {
           Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
           Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
           Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
@@ -228,10 +228,7 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
         Route::get('calendar-data', GetCalendarDataController::class);
         Route::get('get-day-reservations/{date}', GetDayReservationsController::class);
 
-
     });
-
-
   });
 
   Route::group(['prefix'=>'banner'],function(){

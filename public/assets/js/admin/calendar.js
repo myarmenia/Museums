@@ -13,17 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
           },
-          // slotLabelFormat: {
-          //   hour: '2-digit',
-          //   minute: '2-digit',
-          //   hour12: false,
-          // },
-          // slotLabelContent: info => {
-          //   if (info.text === '24:00') {
-          //     info.text = '00:00';
-          //   }
-          // },
-
           weekNumbers: true,
           dayMaxEvents: true, // allow "more" link when too many events
           // events: '/api/demo-feeds/events.json',
@@ -162,25 +151,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
       })
   // ==================== E N D =======================================================
-  function setDateFormat() {
-    const inputDate = document.getElementById('date');
-    inputDate.addEventListener('change', function() {
-      const dateParts = this.value.split('-');
-      const year = dateParts[2];
-      const month = dateParts[1];
-      const day = dateParts[0];
-      const formattedDate = `${day}-${month}-${year}`;
-      this.value = formattedDate;
-    });
-  }
 
-  // Call the function to set date format
-  setDateFormat();
-function setTimeout11(className){
-  setTimeout(function()  {
-    $('.'+classNmae).html('');
-   }, 2000);
-}
+
 
 });
 

@@ -11,6 +11,9 @@
     <link href="{{ asset('assets/css/admin/calendar.css') }}" rel='stylesheet' />
 @endsection
 @section('content')
+    @if (!museumAccessId())
+        <div class="alert alert-danger"> Նախ ստեղծեք թանգարան </div>
+    @endif
     <h4 class="py-3 mb-4">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
