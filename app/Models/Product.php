@@ -26,7 +26,7 @@ protected $hasRelationTranslation = ['item_translations'];
 
   public function category(): BelongsTo
   {
-    return $this->belongsTo(ProductCategory::class, 'museum_id');
+    return $this->belongsTo(ProductCategory::class, 'product_category_id');
   }
   public function museum(): BelongsTo
   {
@@ -46,7 +46,7 @@ protected $hasRelationTranslation = ['item_translations'];
     return $this->hasOne(ProductTranslation::class)->where('lang', $lang)->first();
   }
   public function similar_products($museum_id){
-    return $this->where('museum_id',$museum_id)->get()->take(4);
+    return $this->where('museum_id', $museum_id)->get()->take(4);
   }
 
 

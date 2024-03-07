@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             CountriesSeeder::class,
             RegionSeeder::class,
             TicketTypeSeeder::class,
-            ProductCategorySeeder::class
+            ProductCategorySeeder::class,
+            ProductCategoryTranslationSeeder::class
 
     ]);
     }
