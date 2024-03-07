@@ -90,7 +90,7 @@ class Kernel extends HttpKernel
     'museum' => \App\Http\Middleware\Museum\MuseumMiddleware::class,
     'museum_branch_middleware' => \App\Http\Middleware\MuseumBranch\MuseumBranchMiddleware::class,
     'product_viewer_list' => \App\Http\Middleware\ProductViewerListMiddleware::class,
-    'model_access' => ModelAccess::class
-
+    'model_access' => ModelAccess::class,
+   
   ];
 }
