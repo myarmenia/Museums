@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\Input;
 class NewsController extends Controller
 {
   use GetNewsTrait;
+
     protected $newsService;
 
     public $title;
@@ -30,9 +31,11 @@ class NewsController extends Controller
 
       $addressRequest='web';
         $data=$this->getAllNews($request->all(),$addressRequest);
+        $data=$data->orderBy('id', 'DESC')->paginate(6)->withQueryString();
 
             return view("content.news.index", compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 3);
+            ->with('i', ($request->input('page', 1) - 1) * 6);
+
 
     }
 

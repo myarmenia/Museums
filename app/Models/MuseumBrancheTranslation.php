@@ -10,5 +10,8 @@ class MuseumBrancheTranslation extends Model
 {
     use HasFactory, SoftDeletes;
     protected $guarded = [];
+    public function museum_branches(){
+      return $this->belongsTo(MuseumBranch::class,"museum_branch_id");
+    }
 
 }

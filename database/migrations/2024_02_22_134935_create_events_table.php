@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('museum_id');
             $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
             $table->integer('price');
+            $table->integer('visitors_quantity_limitation');
             $table->date('start_date');
             $table->date('end_date');
             $table->boolean('status')->default(1);

@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Requests\Auth\ResendVerifyRequest;
 use App\Http\Requests\SingupRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\API\AuthService;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Google_Client;
 
 class AuthController extends BaseController
 {
@@ -71,6 +70,32 @@ class AuthController extends BaseController
         // return response()->json($readyData);
     }
 
+    public function authGoogle(Request $request)
+    {
+
+        $token = $request->input('token');
+
+        $client = new Google_Client();
+        $client->setClientId(env('GOOGLE_CLIENT_ID'));
+        $client->setClientSecret(env('GOOGLE_CLIENT_SECRET'));
+        $payload = $client->verifyIdToken($token);
+
+        $email = $payload['email'];
+
+        $user = User::where('email', $email)->firstOrCreate([
+            'name' => $payload['given_name'],
+            'surname' => $payload['family_name'],
+            'email' => $email,
+            'google_id' => $payload['sub'],
+            'status' => 1,
+        ]);
+
+        $token = JWTAuth::fromUser($user);
+
+        return response()->json(['success' => true, 'token' => $token, 'user' => $user]);
+       
+    }
+
     // public function refresh()
     // {
     //     return $this->respondWithToken(auth('api')->refresh());
@@ -91,9 +116,21 @@ class AuthController extends BaseController
 
         if($haveOrNot){
             return response()->json(['success' => true, 'message' => translateMessageApi('status-active')]);
-         }
+        }
  
-         return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong')]);
+        return response()->json(['success' => false, 'message' => translateMessageApi('wrong-code')]);
 
+    }
+
+    public function resendVerify(ResendVerifyRequest $request)
+    {
+        $send = $this->authService->resendVerify($request->all());
+
+        if($send){
+            return response()->json(['success' => true, 'message' => translateMessageApi('email_verified')]);
+        }
+
+        return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong'), 500]);
+        
     }
 }

@@ -20,13 +20,6 @@
     },
 
     {
-      "name": "Project",
-      "icon": "menu-icon tf-icons bx bx-collection",
-      "slug": "project",
-      "roles": ["all"],
-      "url": "project"
-    },
-    {
       "url": "/users",
       "name": "Օգտագործողներ",
       "icon": "menu-icon tf-icons bx bx-user",
@@ -56,25 +49,52 @@
       "name": "Թանգարաններ",
       "icon": "menu-icon tf-icons bx bx-museum",
       "slug": "museum",
-      "roles": ["all"],
+      "roles": ["super_admin"],
       "url": "museum"
     },
+    {
+      "name": "Հաղորդագրություններ",
+      "icon": "menu-icon tf-icons bx bx-message",
+      "slug": "chat",
+      "roles": ["super_admin", "general_manager"],
+      "url": "chats"
+    },
+    {
+      "url": "product/list",
+      "name": "Ապրանքներ",
+      "icon": "menu-icon tf-icons bx bx-museum",
+      "slug": "general-news",
+      "roles": [
+        "super_admin"
+
+        ]
+
+    },
+
 
     {
       "name": "Նորություններ",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "general-news",
       "roles": ["general_manager","super_admin"],
-      "submenu": [
-        {
-          "url": "/news/news",
-          "name": "News",
-          "slug": "news"
-        }
+      "url": "/news/news"
 
-      ]
+    },
+    {
+      "name": "Բաններ",
+      "icon": "menu-icon tf-icons bx bx-box",
+      "slug": "general-news",
+      "roles": ["super_admin"],
+      "url": "banner/list"
     },
 
+    {
+      "name": "Լոգավորում",
+      "icon": "menu-icon tf-icons bx bx-data",
+      "slug": "logs",
+      "roles": ["super_admin"],
+      "url": "logs"
+    },
 
     {
       "name": "Account Settings",

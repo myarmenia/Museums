@@ -1,9 +1,7 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Account settings - Account')
 @section('page-script')
     <script src="{{ asset('assets/js/change-status.js') }}"></script>
-    <script src="{{ asset('assets/js/admin/users/student-is-present.js') }}"></script>
     <script src="{{ asset('assets/js/delete-item.js') }}"></script>
 @endsection
 
@@ -15,14 +13,14 @@
                 <li class="breadcrumb-item">
                     <a href="javascript:void(0);">Այցելուներ</a>
                 </li>
-                <li class="breadcrumb-item active">Ցուցակ</li>
+                <li class="breadcrumb-item active">Ցանկ</li>
             </ol>
         </nav>
     </h4>
     <div class="card">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Այցելուների ցուցակ</h5>
+                <h5 class="card-header">Այցելուների ցանկ</h5>
             </div>
 
         </div>

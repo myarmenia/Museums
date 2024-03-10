@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AcessInItem;
+use App\Http\Middleware\ModelAccess;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -86,7 +88,11 @@ class Kernel extends HttpKernel
     // 'authCheck' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
     'user_managment_middleware' => \App\Http\Middleware\UserManagmentMiddleware::class,
     'museum_edit_middleware' => \App\Http\Middleware\Museum\MuseumEditMiddleware::class,
-    'museum' => \App\Http\Middleware\Museum\MuseumMiddleware::class
+    'museum' => \App\Http\Middleware\Museum\MuseumMiddleware::class,
+    'museum_branch_middleware' => \App\Http\Middleware\MuseumBranch\MuseumBranchMiddleware::class,
+    'product_viewer_list' => \App\Http\Middleware\ProductViewerListMiddleware::class,
+    'model_access' => ModelAccess::class,
+    'acess_in_item' => AcessInItem::class,
 
 
   ];

@@ -21,12 +21,19 @@
     {
       "name": "Թանգարան",
       "icon": "menu-icon tf-icons bx bx-museum",
-      "slug": "museum",
-      "url": "museum",
+      "slug": "museum/create",
+      "url": "museum/create",
       "roles": [
         "museum_admin",
         "content_manager"
       ]
+    },
+    {
+      "name": "Հաղորդագրություններ",
+      "icon": "menu-icon tf-icons bx bx-message",
+      "slug": "chat",
+      "roles": ["museum_admin", "content_manager", "manager"],
+      "url": "chats"
     },
     {
       "url": "/users",
@@ -43,8 +50,53 @@
       "name": "Մասնաճյուղեր",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "general-news",
-      "roles": ["museum_admin"]
+      "roles": [
+        "museum_admin",
+        "content_manager"
+      ]
 
+    },
+    {
+      "url": "product/list",
+      "name": "Ապրանքներ",
+      "icon": "menu-icon tf-icons bx bx-box",
+      "slug": "general-news",
+      "roles": [
+        "museum_admin",
+        "content_manager"]
+
+    },
+
+    {
+      "url": "educational-programs/list",
+      "name": "Կրթական ծրագրեր",
+      "icon": "menu-icon tf-icons bx bx-list-ul",
+      "slug": "educational-programs",
+      "roles": [
+        "museum_admin",
+        "content_manager"
+      ]
+    },
+    {
+      "url": "educational-programs/calendar",
+      "name": "Այցելությունների օրացույց",
+      "icon": "menu-icon tf-icons bx bx-calendar",
+      "slug": "educational-programs",
+      "roles": [
+        "museum_admin",
+        "content_manager"
+      ]
+    },
+    {
+      "url": "events/list",
+      "name": "Միջոցառումներ",
+      "icon": "menu-icon tf-icons bx bx-list-ul",
+      "slug": "event_list",
+      "roles": [
+        "museum_admin"
+
+      ]
     }
+
   ]
 }

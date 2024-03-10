@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-
+    @include('includes.alert')
     <h4 class="py-3 mb-4">
         <span class="text-muted fw-light">Թանգարան /</span> Ստեղծել նոր թանգարան
     </h4>

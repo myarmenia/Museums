@@ -15,7 +15,7 @@ class ForgotPasswordService
   {
     $user = User::where('email', $email)->first();
     if ($user) {
-      $token = sha1(Str::random(80));
+      $token = mt_rand(10000, 99999);
       $email = $user->email;
       PasswordReset::updateOrCreate(
         ["email" => $email],
@@ -24,10 +24,9 @@ class ForgotPasswordService
 
       Mail::send(new SendForgotToken($email, $token));
 
-      return response()->json(['success' => true, 'message' => translateMessageApi('password-reset-link-sent')], 200);
+      return true;
     } else {
-      return response()->json(['error' => translateMessageApi('password-reset-link-sent')], 500);
-      // return response()->json(['error' => translateMessageApi('user-email-not-found')], 500);
+      return false;
     }
 
   }
@@ -56,4 +55,24 @@ class ForgotPasswordService
 
     return false;
   }
+
+  public function resendForgot($data)
+    {
+        $email = $data['email'];
+
+        if($forgot = PasswordReset::where('email', $email)->first()){
+            $token = mt_rand(10000, 99999);
+            $forgot->update([
+                'token' => $token
+            ]);
+
+            Mail::send(new SendForgotToken($email, $token));
+
+            return true;
+        }
+
+        return false;
+        
+    }
+  
 }

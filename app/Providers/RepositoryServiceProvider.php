@@ -22,7 +22,7 @@ class RepositoryServiceProvider extends ServiceProvider
   {
 
     $this->app->bind(UserInterface::class, UserRepository::class);
-    // $this->app->bind(MuseumBranchesRepositoryInterface::class, MuseumBranchRepository::class);
+
 
 
 

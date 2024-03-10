@@ -1,6 +1,5 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Account settings - Account')
 @section('page-script')
     <script src="{{ asset('assets/js/admin\project\project-upload-photo.js') }}"></script>
 @endsection
@@ -35,7 +34,9 @@
               <input type = "hidden"name = "museum_id" value="{{ $data->id }}">
               @foreach (languages() as $lang)
                 <div class="mb-3 row">
-                  <label for="name-{{ $lang}}" class="col-md-2 col-form-label">Անվանում {{ $lang }}</label>
+                  <label for="name-{{ $lang}}" class="col-md-2 col-form-label">Անվանում {{ $lang }}
+                  <span class="required-field text-danger">*</span>
+                  </label>
                     <div class="col-md-10">
                         <input class="form-control"
                               placeholder="Անվանումը {{ $lang }}"
@@ -52,7 +53,9 @@
                     @enderror
                 </div>
                 <div class="mb-3 row">
-                  <label for="address-{{ $lang}}" class="col-md-2 col-form-label">Հասցե {{ $lang }}</label>
+                  <label for="address-{{ $lang}}" class="col-md-2 col-form-label">Հասցե {{ $lang }}
+                  <span class="required-field text-danger">*</span>
+                  </label>
                     <div class="col-md-10">
                         <input class="form-control"
                               placeholder="Հասցե {{ $lang }}"
@@ -70,7 +73,10 @@
                 </div>
               @endforeach
               <div class="mb-3 row">
-                <label for="email" class="col-md-2 col-form-label">Էլեկտրոնային հասցե</label>
+                <label for="email" class="col-md-2 col-form-label">Էլեկտրոնային հասցե
+                  <span class="required-field text-danger">*</span>
+                </label>
+
                 <div class="col-md-10">
                     <input class="form-control" placeholder="Էլեկտրոնային հասցե" value="{{ old('email') }}"
                         id="email" name="email" />
@@ -111,12 +117,13 @@
 
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
-                        <label for="working_days-{{ $lang }}" class="col-md-2 col-form-label">Աշխատանքային օրեր {{ $lang }}</label>
+                        <label for="working_days-{{ $lang }}" class="col-md-2 col-form-label">Աշխատանքային օրեր {{ $lang }}
+                        <span class="required-field text-danger">*</span>
+                        </label>
                         <div class="col-md-10">
                             <textarea class="form-control" placeholder="Աշխատանքային օրեր {{ $lang }}"
                                 id="working_days-{{ $lang }}"
-                                name="translate[{{ $lang }}][working_days]" />
-                                {{ old("translate.$lang.working_days") }}
+                                name="translate[{{ $lang }}][working_days]">{{ old("translate.$lang.working_days") }}
                             </textarea>
 
                         </div>
@@ -131,7 +138,10 @@
 
                     <div class="mb-3 row">
                         <label for="description-{{ $lang }}" class="col-md-2 col-form-label">Նկարագիր
-                            {{ $lang }}</label>
+                            {{ $lang }}
+                            <span class="required-field text-danger">*</span>
+                        </label>
+
 
                         <div class="col-md-10">
                             <textarea id="description-{{ $lang }}" class="form-control" placeholder="Նկարագիր"
@@ -150,7 +160,10 @@
 
 
                 <div class="mb-3 row">
-                    <label for="photo" class="col-md-2 col-form-label">Նորության նկար</label>
+                    <label for="photo" class="col-md-2 col-form-label">Մասնաճյուղի նկար
+                    <span class="required-field text-danger">*</span>
+                    </label>
+
                     <div class="col-md-10">
                         <div class="d-flex flex-wrap align-items-start align-items-sm-center">
                             <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
@@ -166,7 +179,7 @@
                     </div>
                 </div>
                 @error('photo')
-                    <div class="mb-3 row justify-content-end">
+                    <div class="mb-3 mt-5 row justify-content-end" >
                         <div class="col-sm-10 text-danger fts-14">{{ $message }}
                         </div>
                     </div>
