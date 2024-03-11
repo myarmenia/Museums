@@ -5,7 +5,9 @@ use App\Models\Image;
 use App\Models\Product;
 use App\Models\ProductTranslation;
 use App\Services\FileUploadService;
+use App\Services\Log\LogService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -55,6 +57,8 @@ trait UpdateTrait{
 
           $item->images()->create($photoData);
         }
+
+        LogService::store($request->all(), Auth::id(), $table_name, 'update');
 
         return true;
       }
