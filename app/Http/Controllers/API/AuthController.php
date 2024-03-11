@@ -112,10 +112,10 @@ class AuthController extends BaseController
 
     public function checkVerifyToken(Request $request)
     {
-        $haveOrNot = $this->authService->checkVerifyToken($request->all());
+        $dataOrError = $this->authService->checkVerifyToken($request->all());
 
-        if($haveOrNot){
-            return response()->json(['success' => true, 'message' => translateMessageApi('status-active')]);
+        if($dataOrError){
+            return response()->json($dataOrError);
         }
  
         return response()->json(['success' => false, 'message' => translateMessageApi('wrong-code')]);
@@ -132,5 +132,18 @@ class AuthController extends BaseController
 
         return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong'), 500]);
         
+    }
+
+    public function signupInfo(Request $request)
+    {
+        if(auth('api')->user()){
+            $addedData = $this->authService->signupInfo($request->all());
+
+            if($addedData){
+                return response()->json(['success' => true, 'message' => translateMessageApi('user-edit'), 'user' => $addedData]);
+            }
+        }
+
+        return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
     }
 }
