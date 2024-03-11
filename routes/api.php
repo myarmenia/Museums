@@ -38,6 +38,9 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::post('check-verify-token', [AuthController::class, 'checkVerifyToken']);
         Route::get('me', [AuthController::class, 'me']);
         Route::post('resend-verify', [AuthController::class, 'resendVerify']);
+        Route::group(['prefix' => 'mobile'], function ($router) {
+          Route::post('signup-info', [AuthController::class, 'signupInfo']);
+        });
     });
 
     Route::group(['middleware' => 'apiAuthCheck'], function ($router) {

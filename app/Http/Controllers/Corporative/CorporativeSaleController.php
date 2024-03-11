@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Corporative;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Requests\Corporative\CorporativeRequest;
 use App\Models\CorporativeSale;
 use App\Models\CorporativeVisitorCount;
 use App\Services\Corporative\CorporativeSaleService;
@@ -36,7 +37,7 @@ class CorporativeSaleController extends BaseController
         return view('content.corporative.create');
     }
 
-    public function addCorporative(Request $request)
+    public function addCorporative(CorporativeRequest $request)
     {
         dd($request->all());
         $id = $this->museumService->createMuseum($request->all());

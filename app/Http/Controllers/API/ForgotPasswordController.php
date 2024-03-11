@@ -20,13 +20,10 @@ class ForgotPasswordController extends Controller
 
     public function sendResetLink(Request $request)
     {
-       $message = $this->forgotPasswordService->sendResetLink($request->get('email'));
+       $this->forgotPasswordService->sendResetLink($request->get('email'));
 
-       if($message){
-        return response()->json(['success' => true, 'message' => translateMessageApi('password-reset-link-sent')], 200);
-       }
+       return response()->json(['success' => true, 'message' => translateMessageApi('password-reset-link-sent')], 200);
 
-      return response()->json(['error' => translateMessageApi('password-reset-link-sent')], 500);
     }
 
     public function checkForgotToken(ForgotPasswordRequest $request)
