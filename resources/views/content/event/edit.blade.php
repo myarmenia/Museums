@@ -182,20 +182,29 @@
               </div>
 
         </form>
-        <hr>
+        {{-- {{ dd($data->event_configs) }} --}}
+        @if (count($data->event_configs)>0)
+          @foreach ($data->event_configs as  $conf)
+          {{-- {{ dd($conf) }} --}}
+          <div class="card-body" >
+              <x-edit-event-config :id="$data->id" :count="$conf->id" :value="$conf" ></x-edit-event-config>
+            </div>
+          @endforeach
+        @endif
+
+
+   {{-- ============Միջոցառման օրերի կարգավորումներ============= --}}
         <div class="m-3 row">
           <label for="email" class="col-form-label">Միջոցառման օրերի կարգավորումներ
               <button id="add_event_config" data-id="{{ $data->id }}" class="btn btn-primary mx-3">+</button>
-
           </label>
         </div>
 
     </div>
-    {{-- ============================ --}}
+    {{-- =============Միջոցառման օրերի կարգավորումներ sections=============== --}}
     <div class="card my-2"  id="config_div" style="display:none">
       <form id="submit_event_config"  method="POST" action={{ route('event_config_store')}}>
-@csrf
-
+        @csrf
 
         <div class="card-body" id="event_config"></div>
 
@@ -208,3 +217,4 @@
       </form>
     </div>
 @endsection
+<x-modal-delete></x-modal-delete>

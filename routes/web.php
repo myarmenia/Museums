@@ -73,8 +73,9 @@ use App\Http\Controllers\form_elements\BasicInput;
 use App\Http\Controllers\form_elements\InputGroups;
 use App\Http\Controllers\form_layouts\VerticalForm;
 use App\Http\Controllers\form_layouts\HorizontalForm;
+use App\Http\Controllers\IncrementController;
 use App\Http\Controllers\tables\Basic as TablesBasic;
-
+use Illuminate\Http\Request;
 
 // authentication
 
@@ -249,12 +250,20 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
     Route::get('edit/{id}', EventEditController::class)->name('event_edit');
     Route::put('update/{id}', EventUpdateController::class)->name('event_update');
 
-        Route::get('config/component/{id}', function () {
-          // dd(request()->id);
-          $id=request()->id;
-          $count=0;
-          return view('components.event-config',compact('id','count'));
-      })->name('config.component');
+      //   Route::get('config/component/{id}', function (Request $request) {
+
+      //     $id = request()->id;
+      //     $value = session(['my_variable' => 0]);
+
+      //     $value++;
+
+      //     $request->session()->put('my_variable', $value);
+      //     $value = $request->session()->get('my_variable', $value);
+
+      //         $count=session('my_variable');
+      //     return view('components.event-config',compact('id','count','value'));
+      // })->name('config.component');
+      Route::get('config/component/{id}/{value}', [IncrementController::class,'increment']);
       Route::post('event-config',EventConfigController::class)->name('event_config_store');
 
 

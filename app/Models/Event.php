@@ -24,6 +24,11 @@ class Event extends Model
   {
     return $this->morphMany(Image::class, 'imageable');
   }
+  public function event_configs():HasMany
+  {
+    return $this->hasMany(EventConfig::class);
+  }
   
+
 
 }

@@ -50,7 +50,7 @@
             @endif
         </div>
         <div class="card-body">
-        
+
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">
                     <thead>
@@ -70,7 +70,7 @@
 
 
 @if($data!=false)
-                        {{-- @foreach ($data as $key => $item)
+                        @foreach ($data as $key => $item)
 
                             <tr>
                                 <td>{{ ++$i }}</td>
@@ -92,7 +92,7 @@
                                 <td>{{ $item->created_at }}</td>
                                 @if (museumAccessId()!=null)
                                 <td>
-                                  <div class="dropdown action" data-id="{{ $item['id'] }}" data-tb-name="products">
+                                  <div class="dropdown action" data-id="{{ $item['id'] }}" data-tb-name="events">
                                       <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                           data-bs-toggle="dropdown">
                                           <i class="bx bx-dots-vertical-rounded"></i>
@@ -105,7 +105,7 @@
                                                   {{ $item['status'] ? 'checked' : null }}>
                                           </div>Կարգավիճակ
                                       </a>
-                                          <a class="dropdown-item" href="{{route('product_edit',$item['id'])}}"><i
+                                          <a class="dropdown-item" href="{{route('event_edit',$item['id'])}}"><i
                                                   class="bx bx-edit-alt me-1"></i>Խմբագրել</a>
                                           <button type="button" class="dropdown-item click_delete_item"
                                               data-bs-toggle="modal" data-bs-target="#smallModal"><i
@@ -118,7 +118,7 @@
                                 @endif
 
                             </tr>
-                        @endforeach --}}
+                        @endforeach
 @endif
                     </tbody>
                 </table>
