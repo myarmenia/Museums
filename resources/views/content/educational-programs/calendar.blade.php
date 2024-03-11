@@ -49,7 +49,9 @@
                                 <option value="" disabled selected>Ծրագրի տեսակը</option>
 
                                 @foreach (museumEducationalPrograms() as $item)
-                                    <option value="{{ $item->id }}">{{$item->translation('am')->name}}</option>
+                                    @if ($item->status)
+                                        <option value="{{ $item->id }}">{{$item->translation('am')->name}}</option>
+                                    @endif
                                 @endforeach
                                 <option value="null_id">Էքսկուրսիա</option>
 

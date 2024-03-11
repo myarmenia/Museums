@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   // ==================  C A L E N D A R =================================
-  function calendar() {
+function calendar() {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {

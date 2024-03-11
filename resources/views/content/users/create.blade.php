@@ -26,7 +26,7 @@
         <form action="{{route('users.store')}}" method="post">
 
             <div class="mb-3 row">
-                <label for="name" class="col-md-2 col-form-label">Անուն</label>
+                <label for="name" class="col-md-2 col-form-label">Անուն <span class="required-field text-danger">*</span></label>
                 <div class="col-md-10">
                     <input class="form-control" type="text" placeholder="Անուն" id="name" name="name" value="{{old('name')}}">
                 </div>
@@ -39,7 +39,7 @@
             @enderror
 
             <div class="mb-3 row">
-                <label for="surname" class="col-md-2 col-form-label">Ազգանուն</label>
+                <label for="surname" class="col-md-2 col-form-label">Ազգանուն <span class="required-field text-danger">*</span></label>
                 <div class="col-md-10">
                     <input class="form-control" type="text" placeholder="Ազգանուն" id="surname" name="surname" value="{{old('surname')}}">
                 </div>
@@ -52,7 +52,7 @@
             @enderror
 
             <div class="mb-3 row">
-                <label for="email" class="col-md-2 col-form-label">Էլ․ հասցե</label>
+                <label for="email" class="col-md-2 col-form-label">Էլ․ հասցե <span class="required-field text-danger">*</span></label>
                 <div class="col-md-10">
                     <input class="form-control" type="search" placeholder="Էլ․ հասցե" id="email" name="email" value="{{old('email')}}">
                 </div>
@@ -73,7 +73,7 @@
 
             <div class="mb-3 row form-password-toggle">
 
-                <label class="col-md-2 col-form-label" for="password">Գաղտնաբառ</label>
+                <label class="col-md-2 col-form-label" for="password">Գաղտնաբառ <span class="required-field text-danger">*</span></label>
                 <div class="col-md-10 ">
                     <div class="input-group">
                         <input type="password" class="form-control" id="password" placeholder="Գաղտնաբառ" aria-describedby="basic-default-password2" name="password">
@@ -90,7 +90,7 @@
             @enderror
 
              <div class="mb-3 row form-password-toggle">
-                 <label class="col-md-2 col-form-label" for="confirm-password">Կրկնել գաղտնաբառը</label>
+                 <label class="col-md-2 col-form-label" for="confirm-password">Կրկնել գաղտնաբառը <span class="required-field text-danger">*</span></label>
                  <div class="col-md-10 ">
                      <div class="input-group">
                          <input type="password" class="form-control" id="confirm-password" placeholder="Կրկնել գաղտնաբառը" aria-describedby="basic-default-confirm-password2" name="confirm-password">
@@ -102,7 +102,7 @@
 
             <div class="mb-3 row">
 
-                <label for="role" class="col-md-2 col-form-label">Դերեր</label>
+                <label for="role" class="col-md-2 col-form-label">Դերեր <span class="required-field text-danger">*</span></label>
                 <div class="col-md-10">
                     <select class="form-select" id="roles" name="roles[]" multiple>
                         <option value="" disabled>Դերեր</option>

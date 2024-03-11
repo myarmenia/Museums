@@ -49,7 +49,9 @@
                                 <option value="" disabled selected>Դեր</option>
                                 <option value="">{{__('logs.all')}}</option>
                                 @foreach (allRoleNames() as $role)
-                                    <option value="{{ $role }}" {{ request()->input('role') == $role ? 'selected' : '' }}>{{ __('roles.' . $role) }}</option>
+                                  @if ($role != 'visitor')
+                                      <option value="{{ $role }}" {{ request()->input('role') == $role ? 'selected' : '' }}>{{ __('roles.' . $role) }}</option>
+                                  @endif
                                 @endforeach
                             </select>
                         </div>
