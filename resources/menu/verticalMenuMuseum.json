@@ -36,6 +36,13 @@
       "url": "chats"
     },
     {
+      "name": "Կորպորատիվ վաճառք",
+      "icon": "menu-icon tf-icons bx bx-command",
+      "slug": "corporative",
+      "roles": ["museum_admin", "manager"],
+      "url": "corporative"
+    },
+    {
       "url": "/users",
       "name": "Օգտագործողներ",
       "icon": "menu-icon tf-icons bx bx-user",
