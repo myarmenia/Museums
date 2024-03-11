@@ -8,9 +8,15 @@ use Illuminate\Http\Request;
 
 class EventListController extends Controller
 {
-  public function __invoke(){
-    $data = Event::all();
-    return view('content.event.index',compact("data"));
+  public function __invoke(Request $request){
+    $data = Event::where('id','>',0)
+    // return view('content.event.index',compact("data"));
+    ->orderBy('id', 'DESC')->paginate(10)->withQueryString();
+    return view('content.event.index', [
+        'data' => $data,
+
+    ])
+         ->with('i', ($request->input('page', 1) - 1) * 10);
   }
 
 }
