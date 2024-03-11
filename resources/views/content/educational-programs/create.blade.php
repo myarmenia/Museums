@@ -28,7 +28,7 @@
 
            @foreach (languages() as $lang)
                   <div class="mb-3 row">
-                      <label for="name-{{ $lang }}" class="col-md-2 col-form-label">Վերնագիր {{ $lang }}</label>
+                      <label for="name-{{ $lang }}" class="col-md-2 col-form-label">Վերնագիր {{ $lang }} <span class="required-field text-danger">*</span></label>
 
                       <div class="col-md-10">
                           <input class="form-control" placeholder="Վերնագիր" value="{{ old("translate.$lang.name") }}"
@@ -43,7 +43,7 @@
                   @enderror
 
                   <div class="mb-3 row">
-                        <label for="description-{{ $lang }}" class="col-md-2 col-form-label">Նկարագրություն {{ $lang }}</label>
+                        <label for="description-{{ $lang }}" class="col-md-2 col-form-label">Նկարագրություն {{ $lang }} <span class="required-field text-danger">*</span></label>
 
                         <div class="col-md-10">
                             <textarea id="description-{{ $lang }}" class="form-control" placeholder="Նկարագրություն"
@@ -60,7 +60,7 @@
             @endforeach
 
             <div class="mb-3 row">
-                <label for="price" class="col-md-2 col-form-label">Գին</label>
+                <label for="price" class="col-md-2 col-form-label">Գին <span class="required-field text-danger">*</span></label>
 
                 <div class="col-md-10">
                     <input class="form-control" placeholder="Գին" value="{{ old("price") }}" id="price" name="price" />
@@ -73,7 +73,7 @@
             @enderror
 
             <div class="mb-3 row">
-                <label for="min_quantity" class="col-md-2 col-form-label">Այցելուների նվազագույն քանակ</label>
+                <label for="min_quantity" class="col-md-2 col-form-label">Այցելուների նվազագույն քանակ <span class="required-field text-danger">*</span></label>
 
                 <div class="col-md-10">
                     <input class="form-control" placeholder="Այցելուների նվազագույն քանակ" value="{{ old("min_quantity") }}" id="min_quantity" name="min_quantity" />
@@ -86,7 +86,7 @@
             @enderror
 
             <div class="mb-3 row">
-                <label for="max_quantity" class="col-md-2 col-form-label">Այցելուների առավելագույն քանակ</label>
+                <label for="max_quantity" class="col-md-2 col-form-label">Այցելուների առավելագույն քանակ <span class="required-field text-danger">*</span></label>
 
                 <div class="col-md-10">
                     <input class="form-control" placeholder="Այցելուների առավելագույն քանակ" value="{{ old("max_quantity") }}" id="max_quantity" name="max_quantity" />

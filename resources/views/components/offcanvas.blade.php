@@ -27,10 +27,16 @@
                                                         <label class="form-label" for="educational_program">Ծրագրի տեսակը <span class="required-field text-danger">*</span></label>
 
                                                         <select id="educational_program" name="educational_program_id" class="form-select item educational_program_id">
-                                                            <option value="" disabled selected>Ծրագրի տեսակը</option>
+                                                            <option value="" disabled selected >Ծրագրի տեսակը</option>
 
                                                             @foreach (museumEducationalPrograms() as $program)
-                                                                <option value="{{ $program->id }}" {{$program->id == $item->educational_program_id ? 'selected' : ''}}>{{ __('logs.store') }}</option>
+                                                                @if ($program->status)
+                                                                    <option value="{{ $program->id }}" {{$program->id == $item->educational_program_id ? 'selected' : ''}}>{{$program->translation('am')->name}}</option>
+
+                                                                @endif
+                                                                @if (!$program->status && $program->id == $item->educational_program_id)
+                                                                    <option value="{{ $program->id }}" {{$program->id == $item->educational_program_id ? 'selected' : ''}}>{{$program->translation('am')->name}}</option>
+                                                                @endif
                                                             @endforeach
                                                             <option value="null_id" {{!in_array($item->educational_program_id, museumEducationalPrograms()->pluck('id')->toArray()) ? 'selected' : ''}}>Էքսկուրսիա</option>
 

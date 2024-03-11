@@ -32,7 +32,7 @@ class ProductCantroller extends Controller
 
     $data = $this->model
                 ->filter($request->all())
-      ->orderBy('id', 'DESC')->paginate(10)->withQueryString();
+      ->orderBy('id', 'DESC')->paginate(12)->withQueryString();
 
 
      $shop=[];
