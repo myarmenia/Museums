@@ -8,7 +8,6 @@
                 <a href="{{route('corporative')}}">Կորպորատիվ</a>
             </li>
             <li class="breadcrumb-item active">Ստեղծել նոր կորպորատիվ</li>
-
         </ol>
     </nav>
 </h4>
@@ -22,7 +21,7 @@
     </div>
     <div class="card-body">
 
-        <form action="{{route('corporative.add')}}" method="post">
+        <form action="{{route('corporative.add')}}" method="post"  enctype="multipart/form-data">
             <div class="mb-3 row">
                 <label for="name" class="col-md-2 col-form-label">Անուն <span class="required-field">*</span></label>
                 <div class="col-md-10">
@@ -95,27 +94,12 @@
             </div>
             @enderror
 
-            @dd('continue here')
             <div class="mb-3 row">
-                <label for="file" class="col-md-2 col-form-label d-flex">Ֆալյ</label>
-                <div class="input-group">
-                    <input type="file" class="form-control" id="inputGroupFile03" aria-label="Upload">
+                <label for="file" class="col-md-2 col-form-label">Ֆալյ</label>
+                <div class="col-md-10">
+                    <input type="file" class="form-control" name="file" aria-label="Upload">
                 </div>
-                {{-- <div class="col-md-10">
-                    <div class="d-flex flex-wrap align-items-start align-items-sm-center">
-                        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                            
-                            <span class="d-none d-sm-block">Ավելացնել նոր ֆալյ</span>
-                            <i class="bx bx-upload d-block d-sm-none"></i>
-
-                            <input type="file" id="upload" name="file" class="account-file-input"
-                                hidden accept="file/*" />
-                        </label>
-                    </div>
-                </div> --}}
             </div>
-
-
 
             <div class="row justify-content-end">
                 <div class="col-sm-10">
