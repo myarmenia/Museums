@@ -3,7 +3,9 @@
 
 use App\Models\Product;
 use App\Services\FileUploadService;
+use App\Services\Log\LogService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -47,6 +49,9 @@ use Illuminate\Support\Facades\Schema;
 
               $item->images()->create($photoData);
             }
+
+            LogService::store($request->all(), Auth::id(), $table_name, 'store');
+
 
           return true;
         }
