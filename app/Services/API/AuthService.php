@@ -139,13 +139,20 @@ class AuthService
       $haveOrNot = VerifyUser::where('email', $data['email'])->where('verify_token', $data['token'])->first();
   
       if($haveOrNot){
-        $statusapproved = User::where('email', $data['email'])->update([
+        $user = User::where('email', $data['email'])->first();
+        $token = JWTAuth::fromUser($user);
+        $statusapproved = $user->update([
           'status' => 1
         ]);
 
         if($statusapproved){
-             VerifyUser::where('email', $data['email'])->delete();
-            return true;
+            VerifyUser::where('email', $data['email'])->delete();
+            return [
+                'success' => true, 
+                'message' => translateMessageApi('status-active'),
+                'access_token' => $token,
+                'authUser' => $user
+            ];
         }
 
         return false;
@@ -171,6 +178,21 @@ class AuthService
 
         return false;
         
+    }
+
+    public function signupInfo($data)
+    {
+        if(array_key_exists('country', $data) &&  $data['country']){
+            $data['country_id'] = Country::where('key', $data['country'])->first()->id;
+        }
+
+        if (array_key_exists('password', $data)) {
+            unset($data['password']);
+        }
+
+        $user = auth('api')->user()->update($data);
+
+        return $user;
     }
 
 }

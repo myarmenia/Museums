@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\EditRequest;
 use App\Services\API\UserService;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {

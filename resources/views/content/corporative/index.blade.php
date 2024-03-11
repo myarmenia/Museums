@@ -10,7 +10,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="javascript:void(0);">Օգտագործողներ</a>
+                    <a href="javascript:void(0);">Կորպորատիվ</a>
                 </li>
                 <li class="breadcrumb-item active">Ցանկ</li>
             </ol>
@@ -19,11 +19,11 @@
     <div class="card">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Օգտագործողների ցանկ</h5>
+                <h5 class="card-header">Կորպորատիվի ցանկ</h5>
             </div>
 
               <div>
-                <a href="{{ route('users.create') }}" class="btn btn-primary mx-4">Ստեղծել նոր օգտատեր </a>
+                <a href="{{ route('corporative.create') }}" class="btn btn-primary mx-4">Ստեղծել նոր կորպորատիվ </a>
               </div>
 
         </div>
@@ -36,12 +36,15 @@
                         <tr>
                             <th>No</th>
                             <th>Անուն</th>
-                            <th>Ազգանուն</th>
+                            <th>ՀՎՀՀ</th>
+                            <th>Ֆայլ</th>
                             <th>Էլ․ հասցե</th>
-                            <th>Հեռախոս</th>
-                            <th>Կարգավիճակ</th>
-                            <th>Դերեր</th>
-                            <th>Գործողություն</th>
+                            <th>Պայմանագրի համար</th>
+                            <th>Տոմսերի քանակ</th>
+                            <th>Մնացած տոմսեր</th>
+                            <th>Գին</th>
+                            <th>Ակտիվ է մինչև</th>
+                            <th>Ջնջել</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,37 +73,32 @@
                                 </td>
 
                                 <td>
-                                  @if ((in_array('museum_admin', $user->getRoleNames()->toArray()) || in_array('super_admin', $user->getRoleNames()->toArray())) && Auth::id() == $user->id)
-                                      <i class="bx bx-stop-circle text-danger"></i>
-                                  @else
-                                      <div class="dropdown action" data-id="{{ $user->id }}" data-tb-name="users">
-                                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                              data-bs-toggle="dropdown">
-                                              <i class="bx bx-dots-vertical-rounded"></i>
-                                          </button>
+                                    <div class="dropdown action" data-id="{{ $user->id }}" data-tb-name="users">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                            data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
 
-                                          <div class="dropdown-menu">
+                                        <div class="dropdown-menu">
 
-                                              <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                                  <div class="form-check form-switch">
-                                                      <input class="form-check-input change_status" type="checkbox"
-                                                          role="switch" data-field-name="status"
-                                                          {{ $user->status ? 'checked' : null }}>
-                                                  </div>Կարգավիճակ
-                                              </a>
-                                              <a class="dropdown-item" href="{{route('users.edit', $user->id)}}"><i
-                                                  class="bx bx-edit-alt me-1"></i>Փոփոխել
-                                              </a>
-                                              <button type="button" class="dropdown-item click_delete_item"
-                                                  data-bs-toggle="modal" data-bs-target="#smallModal"><i
-                                                      class="bx bx-trash me-1"></i>
-                                                  Ջնջել
-                                              </button>
+                                            <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input change_status" type="checkbox"
+                                                        role="switch" data-field-name="status"
+                                                        {{ $user->status ? 'checked' : null }}>
+                                                </div>Կարգավիճակ
+                                            </a>
+                                            <a class="dropdown-item" href="{{route('users.edit', $user->id)}}"><i
+                                                class="bx bx-edit-alt me-1"></i>Փոփոխել
+                                            </a>
+                                            <button type="button" class="dropdown-item click_delete_item"
+                                                data-bs-toggle="modal" data-bs-target="#smallModal"><i
+                                                    class="bx bx-trash me-1"></i>
+                                                Ջնջել
+                                            </button>
 
-                                          </div>
+                                        </div>
                                     </div>
-                                  @endif
-
                                 </td>
                             </tr>
                         @endforeach
