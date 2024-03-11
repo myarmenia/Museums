@@ -6,6 +6,7 @@ use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Auth;
 
 class UserManagmentMiddleware
 {
@@ -25,7 +26,7 @@ class UserManagmentMiddleware
       if($user != null){
         $user_g_name = $user->roles->pluck('g_name')[0];
 
-          if ($administrator->hasRole('super_admin')) {
+          if ($administrator->hasRole('super_admin') && Auth::id() != $id) {
             return $user_g_name == 'admin' || $user_g_name == 'super_admin' || $user_g_name == 'web' ?  $next($request) : redirect()->back();
           }
 
