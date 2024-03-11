@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\EducationalPrograms\GetCalendarDataController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\GetDayReservationsController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveStoreController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveUpdateController;
+use App\Http\Controllers\Admin\Events\EventConfigController;
 use App\Http\Controllers\Admin\Events\EventCreateController;
 use App\Http\Controllers\Admin\Events\EventEditController;
 use App\Http\Controllers\Admin\Events\EventListController;
@@ -247,6 +248,14 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
     Route::post('store',EventStoreController::class)->name('event_store');
     Route::get('edit/{id}', EventEditController::class)->name('event_edit');
     Route::put('update/{id}', EventUpdateController::class)->name('event_update');
+
+        Route::get('config/component/{id}', function () {
+          // dd(request()->id);
+          $id=request()->id;
+          $count=0;
+          return view('components.event-config',compact('id','count'));
+      })->name('config.component');
+      Route::post('event-config',EventConfigController::class)->name('event_config_store');
 
 
 
