@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
 
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
 
             $table->string('email');
             $table->string('token');
