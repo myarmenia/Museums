@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('cart_united_tickets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('museum_id');
-            $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
+            $table->foreign('museum_id')->references('id')->on('museums')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedBigInteger('cart_id');
-            $table->foreign('cart_id')->references('id')->on('carts')->onUpdate('cascade');
+            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade')->onUpdate('cascade');
 
             $table->integer('price');
             $table->timestamps();

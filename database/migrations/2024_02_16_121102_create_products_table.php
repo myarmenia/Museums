@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_category_id');
             $table->foreign('product_category_id')->references('id')->on('product_categories')->onUpdate('cascade');
             $table->unsignedBigInteger('museum_id');
-            $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
+            $table->foreign('museum_id')->references('id')->on('museums')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('price');
             $table->integer('quantity');
             $table->boolean('status')->default(1);

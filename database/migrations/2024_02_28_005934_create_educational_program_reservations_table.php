@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('educational_program_id')->references('id')->on('educational_programs')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedBigInteger('museum_id');
-            $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
+            $table->foreign('museum_id')->references('id')->on('museums')->onDelete('cascade')->onUpdate('cascade');
 
             $table->integer('visitor_quantity')->nullable();
             $table->date('date');
