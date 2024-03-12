@@ -50,9 +50,9 @@ class TicketTypeSeeder extends Seeder
             [
               'id' => 5,
               'name' => 'united',
-              'coefficient' => 0.5,
-              'min_quantity' => 1,
-              'max_quantity' => 10
+              'coefficient' => null,
+              'min_quantity' => 2,
+              'max_quantity' => null
 
             ],
             [
