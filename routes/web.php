@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\EducationalPrograms\GetCalendarDataController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\GetDayReservationsController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveStoreController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveUpdateController;
+use App\Http\Controllers\Admin\Events\EventConfigComponentController;
 use App\Http\Controllers\Admin\Events\EventConfigController;
 use App\Http\Controllers\Admin\Events\EventCreateController;
 use App\Http\Controllers\Admin\Events\EventEditController;
@@ -251,21 +252,11 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
     Route::get('edit/{id}', EventEditController::class)->name('event_edit');
     Route::put('update/{id}', EventUpdateController::class)->name('event_update');
 
-      //   Route::get('config/component/{id}', function (Request $request) {
 
-      //     $id = request()->id;
-      //     $value = session(['my_variable' => 0]);
-
-      //     $value++;
-
-      //     $request->session()->put('my_variable', $value);
-      //     $value = $request->session()->get('my_variable', $value);
-
-      //         $count=session('my_variable');
-      //     return view('components.event-config',compact('id','count','value'));
-      // })->name('config.component');
       Route::get('config/component/{id}/{value}', [IncrementController::class,'increment']);
       Route::post('event-config',EventConfigController::class)->name('event_config_store');
+      // Route::post('/call-edit-component',EventConfigComponentController::class)->name('edit_component');
+
 
 
 
