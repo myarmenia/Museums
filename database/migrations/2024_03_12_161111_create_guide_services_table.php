@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('museums', function (Blueprint $table) {
+        Schema::create('guide_services', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->on('users');
-            $table->integer('museum_geographical_location_id');
-            $table->string('email')->nullable();
-            $table->string('account_number');
-            // $table->string('working_hours');
+            $table->unsignedBigInteger('museum_id');
+            $table->foreign('museum_id')->references('id')->on('museums')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('price_am');
+            $table->integer('price_other');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('museums');
+        Schema::dropIfExists('guide_services');
     }
 };

@@ -12,8 +12,8 @@ class Ticket extends Model
 
     protected $guarded = [];
 
-  public function user()
+  public function museum()
   {
-    return $this->belongsTo(User::class, 'museum_id');
+    return $this->belongsTo(Museum::class, 'museum_id');
   }
 }
