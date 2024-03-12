@@ -6,8 +6,9 @@
     </label>
     <div class="col-md-10">
         <input class="form-control" type="date"
-        value="{{ old('day') }}"
+        value="{{ $value['day'] ?? old('day') }}"
 
+          {{-- name="event_config[{{ $id }}][{{$count}}][day]" --}}
           name="event_config[{{ $id }}][{{$count}}][day]"
            />
     </div>
@@ -24,7 +25,7 @@
     </label>
     <div class="col-md-10">
         <input class="form-control" type="time"
-         value="{{ old('start_time') }}"
+         value="{{ $value['start_time'] ?? old('start_time') }}"
           name="event_config[{{ $id }}][{{$count}}][start_time]" />
     </div>
     @error("time")
@@ -40,7 +41,7 @@
     </label>
     <div class="col-md-10">
         <input class="form-control" type="time"
-         value="{{ old('end_time') }}"
+         value="{{ $value['end_time'] ??  old('end_time') }}"
           name="event_config[{{ $id }}][{{$count}}][end_time]" />
     </div>
     @error("time")
@@ -49,6 +50,12 @@
           </div>
       </div>
     @enderror
+    <div class="d-flex justify-content-end mt-2">
+      <button type="button" class="btn btn-outline-danger delete-event-config" data-item-id="{{$value->id}}" data-tb-name="event_configs">Ջնջել</button>
+      {{-- <button type="button" class="dropdown-item click_delete_item" data-bs-toggle="modal" data-bs-target="#smallModal"><i class="bx bx-trash me-1"></i> --}}
+
+    </div>
   </div>
+
 </div>
 <hr>
