@@ -34,7 +34,7 @@ class CorporativeRequest extends FormRequest
             'tickets_count.numeric' => "Տոմսերի քանակ դաշտը պետք է պարունակի միայն թիվ",
             'tickets_count.min' => "Տոմսերի քանակ դաշտը պետք է ամենաքիչը 100տոմս",
             'price.required' => 'Գին դաշտը պարտադիր է',
-            'price.numeric' => 'Գին դաշտը պարտադիր է',
+            'price.numeric' => 'Գին դաշտը դաշտը պետք է պարունակի միայն թիվ',
             'email' => 'Էլփոստ դաշտը պետք է լինի email տիպի',
         ];
     }
