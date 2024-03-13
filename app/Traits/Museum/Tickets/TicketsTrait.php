@@ -1,5 +1,6 @@
 <?php
 namespace App\Traits\Museum\Tickets;
+use App\Models\GuideService;
 use App\Models\Ticket;
 use App\Models\TicketSubscriptionSetting;
 
@@ -16,12 +17,10 @@ trait TicketsTrait
     return TicketSubscriptionSetting::where("museum_id", museumAccessId())->first();
   }
 
-  // public function getGuideService()
-  // {
-  //   return EducationalProgramReservation::where(["museum_id" => museumAccessId()])->first();
-  // }
-
-
+  public function getGuideService()
+  {
+    return GuideService::where(["museum_id" => museumAccessId()])->first();
+  }
 
 
 }

@@ -223,6 +223,8 @@ return [
     'event_config.*.*.day'=> 'Կարգավորման օրը',
     'event_config.*.*.end_time'=> 'ժամի ավարտ',
     'event_config.*.*.start_time'=> 'ժամի սկիզբ',
+    'price_am' => 'Գին',
+    'price_other' => 'Գին'
   ],
 
 ];

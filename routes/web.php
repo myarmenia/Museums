@@ -27,8 +27,10 @@ use App\Http\Controllers\Admin\Events\EventStoreController;
 use App\Http\Controllers\Admin\Events\EventUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
+use App\Http\Controllers\Admin\Tickets\GuideServiceController;
 use App\Http\Controllers\Admin\Tickets\ShowTicketsController;
-use App\Http\Controllers\Admin\Tickets\StandartTicketStoreController;
+use App\Http\Controllers\Admin\Tickets\StandartTicketController;
+use App\Http\Controllers\Admin\Tickets\SubscriptionTicketController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\News\NewsController;
 use App\Http\Controllers\Admin\Product\CreateController;
@@ -254,12 +256,14 @@ Route::group(['middleware' => ['auth']], function () {
   Route::group(['prefix' => 'tickets'], function () {
     Route::group(['middleware' => ['role:museum_admin|manager']], function () {
       Route::get('show', ShowTicketsController::class)->name('tickets_show');
-      Route::post('ticket-standart', StandartTicketStoreController::class)->name('ticket_standart_store');
-      Route::post('ticket-standart/{id}', StandartTicketStoreController::class)->name('ticket_standart_update');
-      Route::post('ticket-subscription', StandartTicketStoreController::class)->name('ticket_subscription_store');
-      Route::post('ticket-subscription/{id}', StandartTicketStoreController::class)->name('ticket_subscription_update');
-
-
+          Route::group(['middleware' => ['model_access']], function () {
+          Route::post('ticket-standart', StandartTicketController::class)->name('ticket_standart_store');
+          Route::post('ticket-standart/{id}', StandartTicketController::class)->name('ticket_standart_update');
+          Route::post('ticket-subscription', SubscriptionTicketController::class)->name('ticket_subscription_store');
+          Route::post('ticket-subscription/{id}', SubscriptionTicketController::class)->name('ticket_subscription_update');
+          Route::post('guide-service', GuideServiceController::class)->name('guide_service_store');
+          Route::post('guide-service/{id}', GuideServiceController::class)->name('guide_service_update');
+      });
 
     });
   });

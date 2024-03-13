@@ -15,10 +15,9 @@ class ShowTicketsController extends Controller
 
     $ticket_standart = $this->getStandart();
     $ticket_subscription = $this->getSubscription();
-    // $data = $this->getAllEducationalPrograms();
+    $guide_service = $this->getGuideService();
 
-    // return view("content.educational-programs.index", compact('data'));
-    return view("content.tickets.index", compact('ticket_standart','ticket_subscription'));
+    return view("content.tickets.index", compact('ticket_standart', 'ticket_subscription', 'guide_service'));
 
 
   }
