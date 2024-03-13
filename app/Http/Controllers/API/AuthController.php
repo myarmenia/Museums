@@ -25,13 +25,14 @@ class AuthController extends BaseController
     {
         try {
             $data = $this->authService->login($request);
+            $status = $data['status'];
+            unset($data['status']);
+            // $readyData = [
+            //     'authUser' => $data['authUser'],
+            //     'access_token' => $data['token'],
+            // ];
 
-            $readyData = [
-                'authUser' => $data['authUser'],
-                'access_token' => $data['token'],
-            ];
-
-            return response()->json($readyData);
+            return response()->json($data, $status);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], $e->getCode());
         }

@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 class EventEditController extends Controller
 {
   use  EventTrait;
+  public function __construct(){
+
+    $this->middleware('role:museum_admin');
+
+  }
     public function __invoke($id){
 
       $data = $this->getEvent($id);
