@@ -56,7 +56,7 @@
       "url": "musuem_branches/list",
       "name": "Մասնաճյուղեր",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "general-news",
+      "slug": "branches-list",
       "roles": [
         "museum_admin",
         "content_manager"
@@ -67,7 +67,7 @@
       "url": "product/list",
       "name": "Ապրանքներ",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "general-news",
+      "slug": "product_list",
       "roles": [
         "museum_admin",
         "content_manager"]
