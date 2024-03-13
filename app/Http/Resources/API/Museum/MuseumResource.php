@@ -23,7 +23,7 @@ class MuseumResource extends JsonResource
             'address' => $translations->address,
             'description' => $translations->description,
             'name' => $translations->name,
-            'photo'=> $mainPhotoPath ? route('get-file', ['path' => $mainPhotoPath]) : ''
+            'photo'=> $mainPhotoPath ? route('get-file', ['path' => $mainPhotoPath]) : '',
         ];
     }
 }
