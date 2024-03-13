@@ -7,10 +7,8 @@ use Illuminate\Http\Request;
 
 class IncrementController extends Controller
 {
-  public function increment($id,$value){
-    // dd($id, $value);
-    $count = $value + 1;
-    // dd($count);
+  public function increment($id,$count){
+   
     return view('components.event-config',compact('id','count',));
   }
 }
