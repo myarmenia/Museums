@@ -4,6 +4,7 @@ namespace App\Services\Corporative;
 use App\Mail\CorporativeCouponEmail;
 use App\Models\CorporativeSale;
 use App\Services\FileUploadService;
+use App\Services\Log\LogService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -16,6 +17,7 @@ class CorporativeSaleService
     {
         
         if (array_key_exists('file', $data)) {
+            $fileOrginalName = $data['file']->getClientOriginalName();
             $path = FileUploadService::upload($data['file'], 'files');
  
             if(!$path){
@@ -41,6 +43,16 @@ class CorporativeSaleService
             if($corporative){
                 Mail::send(new CorporativeCouponEmail($data['email'], $coupon));
             }
+
+            unset($data['coupon']);
+
+            if (array_key_exists('file_path', $data)) {
+                unset($data['file_path']);
+                $data['file'] = $fileOrginalName;
+            }
+
+            LogService::store($data, auth()->id(), 'corporative_sales', 'store');
+
             DB::commit();
 
             return true;

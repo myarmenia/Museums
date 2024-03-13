@@ -52,7 +52,7 @@
             @enderror
 
             <div class="mb-3 row">
-                <label for="email" class="col-md-2 col-form-label">Էլ․ հասցե</label>
+                <label for="email" class="col-md-2 col-form-label">Էլ․ հասցե<span class="required-field">*</span></label>
                 <div class="col-md-10">
                     <input type="email" class="form-control" type="search" placeholder="Էլ․ հասցե" id="email" name="email" value="{{old('email')}}">
                 </div>
