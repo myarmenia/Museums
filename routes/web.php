@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\Events\EventUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
 use App\Http\Controllers\Admin\Tickets\ShowTicketsController;
+use App\Http\Controllers\Admin\Tickets\StandartTicketStoreController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\News\NewsController;
 use App\Http\Controllers\Admin\Product\CreateController;
@@ -232,10 +233,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('edit/{id}', EventEditController::class)->name('event_edit');
     Route::put('update/{id}', EventUpdateController::class)->name('event_update');
 
-
       Route::get('config/component/{id}/{value}', [IncrementController::class,'increment']);
       Route::post('event-config',EventConfigController::class)->name('event_config_store');
       // Route::post('/call-edit-component',EventConfigComponentController::class)->name('edit_component');
+
+
 
 
 
@@ -248,9 +250,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/create', [CorporativeSaleController::class, 'addCorporative'])->name('corporative.add');
   });
 
+
   Route::group(['prefix' => 'tickets'], function () {
     Route::group(['middleware' => ['role:museum_admin|manager']], function () {
       Route::get('show', ShowTicketsController::class)->name('tickets_show');
+      Route::post('ticket-standart', StandartTicketStoreController::class)->name('ticket_standart_store');
+      Route::post('ticket-standart/{id}', StandartTicketStoreController::class)->name('ticket_standart_update');
+      Route::post('ticket-subscription', StandartTicketStoreController::class)->name('ticket_subscription_store');
+      Route::post('ticket-subscription/{id}', StandartTicketStoreController::class)->name('ticket_subscription_update');
+
+
+
     });
   });
 
