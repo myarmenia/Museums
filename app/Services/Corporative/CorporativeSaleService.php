@@ -1,11 +1,13 @@
 <?php
 namespace App\Services\Corporative;
 
+use App\Mail\CorporativeCouponEmail;
 use App\Models\CorporativeSale;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Mail;
 
 class CorporativeSaleService
 {
@@ -29,14 +31,16 @@ class CorporativeSaleService
 
         try {
             DB::beginTransaction();
-            $date = Carbon::now(); // Получаем текущую дату и время
+            $date = Carbon::now();
             $newDate = $date->addYear();
             $coupon = $this->generateUniqueCoupon();
             $data['coupon'] = $coupon;
             $data['museum_id'] = getAuthMuseumId();
             $data['ttl_at'] = $newDate;
-            CorporativeSale::create($data);
-
+            $corporative = CorporativeSale::create($data);
+            if($corporative){
+                Mail::send(new CorporativeCouponEmail($data['email'], $coupon));
+            }
             DB::commit();
 
             return true;

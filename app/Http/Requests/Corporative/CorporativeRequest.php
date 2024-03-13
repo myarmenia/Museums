@@ -21,7 +21,7 @@ class CorporativeRequest extends FormRequest
             'tin' => 'required|filled',
             'tickets_count' => 'required|numeric|min:100',
             'price' => 'required|filled|numeric',
-            'email' => 'nullable|email',
+            'email' => 'required|filled|email',
         ];
     }
 
@@ -35,7 +35,7 @@ class CorporativeRequest extends FormRequest
             'tickets_count.min' => "Տոմսերի քանակ դաշտը պետք է ամենաքիչը 100տոմս",
             'price.required' => 'Գին դաշտը պարտադիր է',
             'price.numeric' => 'Գին դաշտը դաշտը պետք է պարունակի միայն թիվ',
-            'email' => 'Էլփոստ դաշտը պետք է լինի email տիպի',
+            'email' => 'Էլփոստ դաշտը դաշտը պարտադիր է և պետք է լինի email տիպի',
         ];
     }
 }
