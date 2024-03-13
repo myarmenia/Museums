@@ -1,4 +1,7 @@
 @extends('layouts/contentNavbarLayout')
+@section('page-script')
+    <script src="{{ asset('assets/js/delete-item.js') }}"></script>
+@endsection
 @section('content')
 
 <h4 class="py-3 mb-4">
@@ -49,9 +52,9 @@
             @enderror
 
             <div class="mb-3 row">
-                <label for="email" class="col-md-2 col-form-label">Էլ․ հասցե</label>
+                <label for="email" class="col-md-2 col-form-label">Էլ․ հասցե<span class="required-field">*</span></label>
                 <div class="col-md-10">
-                    <input class="form-control" type="search" placeholder="Էլ․ հասցե" id="email" name="email" value="{{old('email')}}">
+                    <input type="email" class="form-control" type="search" placeholder="Էլ․ հասցե" id="email" name="email" value="{{old('email')}}">
                 </div>
             </div>
             @error('email')
@@ -71,7 +74,7 @@
             <div class="mb-3 row">
                 <label for="tickets_count" class="col-md-2 col-form-label">Տոմսերի քանակ<span class="required-field">*</span></label>
                 <div class="col-md-10">
-                    <input class="form-control" type="search" placeholder="Տոմսերի քանակ" id="tickets_count" name="tickets_count" value="{{old('tickets_count')}}">
+                    <input class="form-control" type="text" placeholder="Տոմսերի քանակ" id="tickets_count" name="tickets_count" value="{{old('tickets_count')}}">
                 </div>
             </div>
             @error('tickets_count')
@@ -84,7 +87,7 @@
             <div class="mb-3 row">
                 <label for="price" class="col-md-2 col-form-label">Գին<span class="required-field">*</span></label>
                 <div class="col-md-10">
-                    <input class="form-control" type="search" placeholder="Ընդհանուր գին" id="price" name="price" value="{{old('price')}}">
+                    <input class="form-control" type="text" placeholder="Ընդհանուր գին" id="price" name="price" value="{{old('price')}}">
                 </div>
             </div>
             @error('price')
