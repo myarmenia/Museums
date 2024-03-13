@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\EducationalPrograms\GetCalendarDataController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\GetDayReservationsController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveStoreController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveUpdateController;
+use App\Http\Controllers\Admin\Events\EventConfigComponentController;
 use App\Http\Controllers\Admin\Events\EventConfigController;
 use App\Http\Controllers\Admin\Events\EventCreateController;
 use App\Http\Controllers\Admin\Events\EventEditController;
@@ -230,9 +231,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('create', EventCreateController::class)->name('event_create');
     Route::post('store', EventStoreController::class)->name('event_store');
     Route::get('edit/{id}', EventEditController::class)->name('event_edit');
-    Route::put('update/{id}', EventUpdateController::class)->name('event_update');   
-    Route::get('config/component/{id}/{value}', [IncrementController::class, 'increment']);
-    Route::post('event-config', EventConfigController::class)->name('event_config_store');
+    Route::put('update/{id}', EventUpdateController::class)->name('event_update');
+
+      Route::get('config/component/{id}/{value}', [IncrementController::class,'increment']);
+      Route::post('event-config',EventConfigController::class)->name('event_config_store');
+      // Route::post('/call-edit-component',EventConfigComponentController::class)->name('edit_component');
+
+
 
 
 

@@ -6,17 +6,18 @@
     </label>
     <div class="col-md-10">
         <input class="form-control" type="date"
-        value="{{ old('day') }}"
+            value="{{ old('day') }}"
 
-          name="event_config[{{ $id }}][{{$count}}][day]"
+            name="event_config[{{ $id }}][{{$count}}][day]"
            />
     </div>
-    @error("day")
-      <div class="mb-3 row justify-content-end">
-          <div class="col-sm-10 text-danger fts-14">{{ $message }}
+
+      <div class="mb-3 row justify-content-end" data-id="event_config.{{ $id }}.{{$count}}.day">
+          <div class="col-sm-10 text-danger fts-14" >
+     
           </div>
       </div>
-    @enderror
+    {{-- @enderror --}}
   </div>
   <div class="mb-3 row">
     <label for="time" class="col-md-2 col-form-label">ժամի սկիզբ
@@ -27,12 +28,13 @@
          value="{{ old('start_time') }}"
           name="event_config[{{ $id }}][{{$count}}][start_time]" />
     </div>
-    @error("time")
-      <div class="mb-3 row justify-content-end">
-          <div class="col-sm-10 text-danger fts-14">{{ $message }}
+    {{-- @error("event_config.$id.$count.start_time") --}}
+      <div class="mb-3 row justify-content-end" data-id="event_config.{{ $id }}.{{$count}}.start_time">
+          <div class="col-sm-10 text-danger fts-14">
+            {{-- {{ $message }} --}}
           </div>
       </div>
-    @enderror
+
   </div>
   <div class="mb-3 row">
     <label for="time" class="col-md-2 col-form-label">ժամի ավարտ
@@ -43,12 +45,13 @@
          value="{{ old('end_time') }}"
           name="event_config[{{ $id }}][{{$count}}][end_time]" />
     </div>
-    @error("time")
-      <div class="mb-3 row justify-content-end">
-          <div class="col-sm-10 text-danger fts-14">{{ $message }}
+
+      <div class="mb-3 row justify-content-end" data-id="event_config.{{ $id }}.{{$count}}.end_time">
+          <div class="col-sm-10 text-danger fts-14">
+
           </div>
       </div>
-    @enderror
+
   </div>
 </div>
 <hr>
