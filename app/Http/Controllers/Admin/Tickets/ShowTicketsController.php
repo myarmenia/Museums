@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class ShowTicketsController extends Controller
 {
+
   use TicketsTrait;
   public function __invoke()
   {
@@ -18,6 +19,7 @@ class ShowTicketsController extends Controller
 
     // return view("content.educational-programs.index", compact('data'));
     return view("content.tickets.index", compact('ticket_standart','ticket_subscription'));
+
 
   }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('museums', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->on('users');
+            $table->foreignId('user_id')->on('users')->onUpdate('cascade');
             $table->integer('museum_geographical_location_id');
             $table->string('email')->nullable();
             $table->string('account_number');

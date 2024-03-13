@@ -230,23 +230,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('create', EventCreateController::class)->name('event_create');
     Route::post('store', EventStoreController::class)->name('event_store');
     Route::get('edit/{id}', EventEditController::class)->name('event_edit');
-    Route::put('update/{id}', EventUpdateController::class)->name('event_update');
-
-    //   Route::get('config/component/{id}', function (Request $request) {
-
-    //     $id = request()->id;
-    //     $value = session(['my_variable' => 0]);
-
-    //     $value++;
-
-    //     $request->session()->put('my_variable', $value);
-    //     $value = $request->session()->get('my_variable', $value);
-
-    //         $count=session('my_variable');
-    //     return view('components.event-config',compact('id','count','value'));
-    // })->name('config.component');
+    Route::put('update/{id}', EventUpdateController::class)->name('event_update');   
     Route::get('config/component/{id}/{value}', [IncrementController::class, 'increment']);
     Route::post('event-config', EventConfigController::class)->name('event_config_store');
+
 
 
 
@@ -258,6 +245,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/create', [CorporativeSaleController::class, 'addCorporative'])->name('corporative.add');
   });
 
+
   Route::group(['prefix' => 'tickets'], function () {
     Route::group(['middleware' => ['role:museum_admin|manager']], function () {
       Route::get('show', ShowTicketsController::class)->name('tickets_show');
@@ -265,6 +253,7 @@ Route::group(['middleware' => ['auth']], function () {
       Route::post('ticket-standart/{id}', StandartTicketStoreController::class)->name('ticket_standart_update');
       Route::post('ticket-subscription', StandartTicketStoreController::class)->name('ticket_subscription_store');
       Route::post('ticket-subscription/{id}', StandartTicketStoreController::class)->name('ticket_subscription_update');
+
 
 
     });
