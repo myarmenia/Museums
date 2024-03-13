@@ -224,7 +224,10 @@ return [
     'event_config.*.*.end_time'=> 'ժամի ավարտ',
     'event_config.*.*.start_time'=> 'ժամի սկիզբ',
     'price_am' => 'Գին',
-    'price_other' => 'Գին'
-  ],
+    'price_other' => 'Գին',
+    'start_date'=> 'Միջոցառման սկիզբ',
+    'end_date'=> 'Միջոցառման ավարտ'
+
+  ]
 
 ];
