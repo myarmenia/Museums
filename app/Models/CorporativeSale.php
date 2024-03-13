@@ -14,6 +14,7 @@ class CorporativeSale extends Model
         'name',
         'tin',
         'file_path',
+        'museum_id',
         'email',
         'contract_number',
         'tickets_count',

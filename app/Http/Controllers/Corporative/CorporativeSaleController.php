@@ -20,13 +20,13 @@ class CorporativeSaleController extends BaseController
 
     public function index(Request $request)
     {
-        // if(haveMuseumAdmin() && $id = haveMuseum()) {
-        //     return redirect()->route('museum.edit', ['id' => (int) $id]);
-        // }elseif (haveMuseumAdmin() && !haveMuseum()) {
-        //     return redirect()->route('create-museum');
-        // };
+        $museumId = getAuthMuseumId();
+        if(!$museumId) {
+            session(['errorMessage' => 'Սկզբից ստեղծեք Ձեր թանգարանը']);
+            return redirect()->route('create-museum');
+        }
         
-        $data = CorporativeSale::orderBy('id', 'DESC')->paginate(5);
+        $data = CorporativeSale::where('museum_id', $museumId)->orderBy('id', 'DESC')->paginate(5);
 
         return view('content.corporative.index', compact('data'))
                ->with('i', ($request->input('page', 1) - 1) * 5);
@@ -39,10 +39,8 @@ class CorporativeSaleController extends BaseController
 
     public function addCorporative(CorporativeRequest $request)
     {
-        dd($request->all());
-        $id = $this->museumService->createMuseum($request->all());
+        $this->corporativeSaleService->createCorporative($request->all());
 
-        return redirect()->route('museum.edit', ['id' => $id]);
-
+        return redirect()->route('corporative');
     }
 }
