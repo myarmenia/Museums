@@ -1,8 +1,8 @@
 <?php
   // Variables
   return [
-    "creatorName" => "Webex",
-    "creatorUrl" => "https://webex.com",
+    "creatorName" => "Webex Technologies LLC",
+    "creatorUrl" => "https://webex.am",
     "templateName" => "ebEx",
     "templateSuffix" => "Bootstrap 5 HTML Laravel Free Admin Template",
     "templateVersion" => "1.1.0",
