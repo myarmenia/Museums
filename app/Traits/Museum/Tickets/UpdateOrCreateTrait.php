@@ -2,6 +2,7 @@
 namespace App\Traits\Museum\Tickets;
 
 use App\Models\Ticket;
+use App\Models\TicketType;
 use App\Services\Log\LogService;
 use Auth;
 use Illuminate\Http\Request;
@@ -23,6 +24,13 @@ trait UpdateOrCreateTrait
 
       if (in_array('museum_id', Schema::getColumnListing($table_name))) {
           $data['museum_id'] = museumAccessId();
+      }
+
+      if ($request['percent'] != null) {
+
+          $coefficient = $request['percent'] / 100;
+          $data['coefficient'] = $coefficient;
+          TicketType::where('name', 'united')->update(['coefficient' => $coefficient]);
       }
 
 

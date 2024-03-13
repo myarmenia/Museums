@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\Admin\Tickets;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Tickets\TicketRequest;
-use App\Models\Ticket;
+use App\Http\Requests\Tickets\UnitedServiceRequest;
+use App\Models\CartUnitedTickets;
+use App\Models\TicketUnitedSetting;
 use App\Traits\Museum\Tickets\UpdateOrCreateTrait;
 use Illuminate\Http\Request;
 
-class StandartTicketController extends Controller
+class UnitedTicketController extends Controller
 {
   use UpdateOrCreateTrait;
 
   public function model()
   {
-    return Ticket::class;
+    return TicketUnitedSetting::class;
   }
 
-  public function __invoke(TicketRequest $request)
+  public function __invoke(UnitedServiceRequest $request)
   {
 
     $ticket = $this->itemUpdateOrCreate($request);
@@ -25,6 +26,7 @@ class StandartTicketController extends Controller
     if ($ticket) {
 
       return response()->json(['result' => 'success']);
+
     }
   }
 }

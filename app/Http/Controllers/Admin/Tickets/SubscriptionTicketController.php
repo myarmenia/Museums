@@ -24,7 +24,8 @@ class SubscriptionTicketController extends Controller
 
     if ($ticket) {
 
-      return redirect()->route('educational_programs_list');
+      return response()->json(['result' => 'success']);
+
     }
   }
 }

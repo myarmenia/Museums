@@ -24,7 +24,8 @@ class GuideServiceController extends Controller
 
     if ($guide_service) {
 
-      return redirect()->route('educational_programs_list');
+      return response()->json(['result' => 'success']);
+
     }
   }
 }

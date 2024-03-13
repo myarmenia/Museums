@@ -226,7 +226,9 @@ return [
     'price_am' => 'Գին',
     'price_other' => 'Գին',
     'start_date'=> 'Միջոցառման սկիզբ',
-    'end_date'=> 'Միջոցառման ավարտ'
+    'end_date'=> 'Միջոցառման ավարտ',
+    'min_museum_quantity' => 'Թանգարանների նվազագույն քանակ',
+    'percent' => 'Տոկոս'
 
   ]
 
