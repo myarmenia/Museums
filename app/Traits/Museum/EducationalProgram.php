@@ -21,7 +21,7 @@ trait EducationalProgram
 
     public function getSingleMuseumEducationalProgramsForAPI($id)
     {
-      return ModelEducationalProgram::where(["museum_id" => $id, "status" => 1])->get();
+      return ModelEducationalProgram::where(["museum_id" => $id, "status" => 1])->orderBy('id', 'desc')->paginate(5);
     }
 
     public function getDayReservetions($date)
@@ -29,5 +29,5 @@ trait EducationalProgram
       return EducationalProgramReservation::where(["museum_id" => museumAccessId(), 'date' => $date])->get();
     }
 
-    
+
 }
