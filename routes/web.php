@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\Events\EventStoreController;
 use App\Http\Controllers\Admin\Events\EventUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
+use App\Http\Controllers\Admin\Tickets\ShowTicketsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\News\NewsController;
 use App\Http\Controllers\Admin\Product\CreateController;
@@ -145,110 +146,89 @@ Route::group(['middleware' => ['auth']], function () {
   // tables
   Route::get('/tables/basic', [TablesBasic::class, 'index'])->name('tables-basic');
 
+  Route::post('change-status', [ChangeStatusController::class, 'change_status'])->name('change_status');
+  Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class, 'index'])->name('delete_item');
+  Route::get('logs', [LogController::class, 'index'])->name('logs');
 
 
-Route::post('change-status', [ChangeStatusController::class,'change_status'])->name('change_status');
-// Route::get('student-is-present/{id}', [StudentIsPresentController::class,'index']);
-Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class,'index'])->name('delete_item');
-Route::get('logs', [LogController::class, 'index'])->name('logs');
+  Route::group(['prefix' => 'museum'], function () {
+    Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin');
+    Route::group(['middleware' => ['role:museum_admin|content_manager']], function () {
+      Route::get('/create', [MuseumController::class, 'create'])->name('create-museum');
+      Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
+      Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit');
+      Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
+    });
 
-  // Route::post('open-course/{user_id}', [OpenCourseLanguageForStudentController::class,'index'])->name('open_course');
-// Route::get('srudent-info/{id}', [StudentInfoController::class,'index'])->name('users.info');
-
-// Route::get('student-attendances/{id}', [StudentAttendancesController::class,'index']);
-// Route::post('open-next-lesson', [OpenNextLessonController::class,'index'])->name('open_next_lesson');
-
-Route::group(['prefix' => 'museum'], function () {
-  Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin');
-  Route::group(['middleware' => ['role:museum_admin|content_manager']], function () {
-    Route::get('/create', [MuseumController::class, 'create'])->name('create-museum');
-    Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
-    Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit');
-    Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
   });
 
+  // News
+  Route::group(['prefix' => 'news'], function () {
+    Route::get('/news', [NewsController::class, 'index'])->name('news');
+    Route::get('/news-create', [NewsController::class, 'createNewsPage'])->name('news-create-page');
+    Route::post('/news-create', [NewsController::class, 'createNews'])->name('news-create');
 
+    Route::get('/news-edit/{id}', [NewsController::class, 'editNews'])->name('news-edit');
+    Route::put('/news-update/{id}', [NewsController::class, 'updateNews'])->name('news-update');
 
-});
+  });
+  // Museum branches
+  Route::group(['prefix' => 'musuem_branches'], function () {
+    Route::get('/list', [MuseumBranchController::class, 'index'])->name('branches-list');
+    Route::get('/create', [MuseumBranchController::class, 'create'])->name('branches-create');
+    Route::post('/store', [MuseumBranchController::class, 'store'])->name('branches-store');
+    Route::get('/edit/{id}', [MuseumBranchController::class, 'edit'])->name('branches-edit');
+    Route::put('/update/{id}', [MuseumBranchController::class, 'update'])->name('branches-update');
 
+  });
+  Route::group(['prefix' => 'product'], function () {
+    Route::get('/list', [ProductListController::class, 'index'])->name('product_list');
+    Route::get('/create', [ProductCreateController::class, 'create'])->name('product_create');
+    Route::post('/store', [ProductStoreController::class, 'store'])->name('product_store');
+    Route::get('/edit/{id}', [ProductEditController::class, 'edit'])->name('product_edit');
+    Route::put('/update/{id}', [ProductUpdateController::class, 'update'])->name('product_update');
 
+  });
 
-//Project
-// Route::group(['prefix' => 'project'], function () {
-//   Route::get('/', [ProjectController::class, 'index'])->name('project');
-//   Route::get('/create', [ProjectController::class, 'create'])->name('create-project');
-//   Route::post('/add-project', [ProjectController::class, 'addProject'])->name('project.add');
-//   Route::get('/edit/{id}', [ProjectController::class, 'edit'])->name('project.edit');
-//   Route::post('/update/{id}', [ProjectController::class, 'update'])->name('project.update');
-
-
-// });
-
-// News
-Route::group(['prefix' => 'news'], function () {
-  Route::get('/news', [NewsController::class, 'index'])->name('news');
-  Route::get('/news-create', [NewsController::class, 'createNewsPage'])->name('news-create-page');
-  Route::post('/news-create', [NewsController::class,'createNews'])->name('news-create');
-
-  Route::get('/news-edit/{id}', [NewsController::class,'editNews'])->name('news-edit');
-  Route::put('/news-update/{id}', [NewsController::class,'updateNews'])->name('news-update');
-
-});
-// Museum branches
-Route::group(['prefix'=>'musuem_branches'],function(){
-  Route::get('/list', [MuseumBranchController::class, 'index'])->name('branches-list');
-  Route::get('/create', [MuseumBranchController::class, 'create'])->name('branches-create');
-  Route::post('/store', [MuseumBranchController::class,'store'])->name('branches-store');
-  Route::get('/edit/{id}', [MuseumBranchController::class,'edit'])->name('branches-edit');
-  Route::put('/update/{id}', [MuseumBranchController::class,'update'])->name('branches-update');
-
-});
-Route::group(['prefix'=>'product'],function(){
-  Route::get('/list', [ProductListController::class, 'index'])->name('product_list');
-  Route::get('/create', [ProductCreateController::class, 'create'])->name('product_create');
-  Route::post('/store', [ProductStoreController::class,'store'])->name('product_store');
-  Route::get('/edit/{id}', [ProductEditController::class,'edit'])->name('product_edit');
-  Route::put('/update/{id}', [ProductUpdateController::class,'update'])->name('product_update');
-
-});
-
-Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_manager|super_admin|general_manager|manager']], function () {
-  Route::get('/', [ChatController::class, 'index'])->name('chats');
-  Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
-  Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
-});
+  Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_manager|super_admin|general_manager|manager']], function () {
+    Route::get('/', [ChatController::class, 'index'])->name('chats');
+    Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
+    Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
+  });
 
   Route::group(['prefix' => 'educational-programs'], function () {
-      Route::group(['middleware' => ['role:museum_admin|manager|content_manager']], function () {
-          Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
-          Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
-          Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
-          Route::group(['middleware' => ['model_access']], function () {
-              Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
-              Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
-          });
+    Route::group(['middleware' => ['role:museum_admin|manager|content_manager']], function () {
+      Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
+      Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
+      Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
+      Route::group(['middleware' => ['model_access']], function () {
+        Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
+        Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
       });
-      Route::group(['middleware' => ['role:museum_admin|manager|cashier']], function () {
-        Route::get('calendar', EducationalProgramCalendarController::class)->name('educational_programs_calendar');
-        Route::post('reserve-store', ReserveStoreController::class)->name('educational_programs_reserve_store');
-        Route::post('reserve-update/{id}', ReserveUpdateController::class)->name('educational_programs_reserve_update');
-        Route::get('calendar-data', GetCalendarDataController::class);
-        Route::get('get-day-reservations/{date}', GetDayReservationsController::class);
+    });
+    Route::group(['middleware' => ['role:museum_admin|manager|cashier']], function () {
+      Route::get('calendar', EducationalProgramCalendarController::class)->name('educational_programs_calendar');
+      Route::post('reserve-store', ReserveStoreController::class)->name('educational_programs_reserve_store');
+      Route::post('reserve-update/{id}', ReserveUpdateController::class)->name('educational_programs_reserve_update');
+      Route::get('calendar-data', GetCalendarDataController::class);
+      Route::get('get-day-reservations/{date}', GetDayReservationsController::class);
 
     });
   });
 
-  Route::group(['prefix'=>'banner'],function(){
+
+
+  Route::group(['prefix' => 'banner'], function () {
     Route::get('/list', [BannerListController::class, 'index'])->name('banner_list');
-    Route::get('/create', [BannerCreateController::class,'create'])->name('banner_create');
-    Route::post('/store', [BannerStoreController::class,'store'])->name('banner_store');
+    Route::get('/create', [BannerCreateController::class, 'create'])->name('banner_create');
+    Route::post('/store', [BannerStoreController::class, 'store'])->name('banner_store');
     Route::get('edit/{id}', [BannerEditController::class, 'edit'])->name('banner_edit');
-    Route::put('/update/{id}', [BannerUpdateController::class,'update'])->name('banner_update');
+    Route::put('/update/{id}', [BannerUpdateController::class, 'update'])->name('banner_update');
   });
   Route::group(['prefix' => 'events'], function ($router) {
-    Route::get('list',EventListController::class)->name('event_list');
-    Route::get('create',EventCreateController::class)->name('event_create');
-    Route::post('store',EventStoreController::class)->name('event_store');
+    Route::get('list', EventListController::class)->name('event_list');
+    Route::get('create', EventCreateController::class)->name('event_create');
+    Route::post('store', EventStoreController::class)->name('event_store');
     Route::get('edit/{id}', EventEditController::class)->name('event_edit');
     Route::put('update/{id}', EventUpdateController::class)->name('event_update');
 
@@ -262,13 +242,21 @@ Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_m
 
   });
 
+  Route::group(['prefix' => 'corporative', 'middleware' => ['role:museum_admin|manager']], function () {
+    Route::get('/', [CorporativeSaleController::class, 'index'])->name('corporative');
+    Route::get('/create', [CorporativeSaleController::class, 'create'])->name('corporative.create');
+    Route::post('/create', [CorporativeSaleController::class, 'addCorporative'])->name('corporative.add');
+  });
+
+  Route::group(['prefix' => 'tickets'], function () {
+    Route::group(['middleware' => ['role:museum_admin|manager']], function () {
+      Route::get('show', ShowTicketsController::class)->name('tickets_show');
+    });
+  });
+
 
 });
 
-Route::group(['prefix' => 'corporative', 'middleware' => ['role:museum_admin|manager']], function () {
-  Route::get('/', [CorporativeSaleController::class, 'index'])->name('corporative');
-  Route::get('/create', [CorporativeSaleController::class, 'create'])->name('corporative.create');
-  Route::post('/create', [CorporativeSaleController::class, 'addCorporative'])->name('corporative.add');
-});
+
 
 Route::get('get-file', [FileUploadService::class, 'get_file'])->name('get-file');

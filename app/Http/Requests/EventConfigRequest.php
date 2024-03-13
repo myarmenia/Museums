@@ -31,44 +31,42 @@ class EventConfigRequest extends FormRequest
         $url = URL::previous();
         $segments = explode('/', $url);
         $lastSegment = end($segments);
-      // dd($lastSegment);
+
         $event=Event::where('id',$lastSegment)->first();
 
         $array= [
-          // 'event_config.*.*.day'=>'required',
-          'event_config.*.*.start_time' => 'required',
-          'event_config.*.*.end_time' => 'required',
+
+          'event_config.*.*.start_time' => 'required|date_format:H:i|before_or_equal:event_config.*.*.end_time',
+          'event_config.*.*.end_time'=>'required|date_format:H:i|after_or_equal:event_config.*.*.start_time'
         ];
-        // dd($this->event_config);
+
         foreach($this->event_config as $value){
           foreach($value as $data){
 
             if(strtotime($event->start_date)>strtotime($data['day']) || strtotime($event->end_date)<strtotime($data['day'])){
               $start_time=$event->start_date;
               $array['event_config.*.*.day']="required|date|after:$start_time|before:$event->end_date";
+                 }
 
 
-                        }
           }
         }
 
-
-// dd($array);
         return $array;
 
     }
     public function messages(): array
     {
-        $array=[
+        return [
 
-            'event_config.*.*.day' => 'Օր դաշտը պարտադիր է',
-        
-            'event_config.*.*.start_time' => 'Սկսվելու ժամանակը պարտադիր է',
-            'event_config.*.*.end_time' => 'Ավարտվելու  ժամանակը պարտադիր է',
+            'event_config.*.*.day.required' => 'Օր դաշտը պարտադիր է',
+            'event_config.*.*.start_time.required' => 'Սկսվելու ժամանակը պարտադիր է',
+            'event_config.*.*.end_time.required' => 'Ավարտվելու  ժամանակը պարտադիր է',
 
         ];
 
-        return $array;
+
+
 
     }
     protected function failedValidation(Validator $validator)

@@ -23,11 +23,6 @@ class EventConfigController extends Controller
 
         foreach($value as $data){
 
-          if(strtotime($event->start_date)>strtotime($data['day']) || strtotime($event->end_date)<strtotime($data['day'])){
-// dd(777);
-            return response()->json(["errorMessage"=> "Մուտքագրեք միջոցառման վավեր օր"],422);
-            // return redirect()->back()->with(["errorMessage"=>"Մուտքագրեք միջոցառման վավեր օր"]);
-          }
 
           $data['event_id']=$key;
 
@@ -36,15 +31,9 @@ class EventConfigController extends Controller
         }
 
       }
-
-
       $data = $this->getEvent($id);
       $configs= EventConfig::whereIn('id',$config_arr)->get();
-      // $configs= Event::where('id',11)->get();
-      // dd($configs);
       return response()->json(["message"=> $configs]);
-      // return view('components.edit-event-config');
 
-      // return redirect()->route('event_edit', $id);
     }
 }
