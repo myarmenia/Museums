@@ -223,6 +223,8 @@ return [
     'event_config.*.*.day'=> 'Կարգավորման օրը',
     'event_config.*.*.end_time'=> 'ժամի ավարտ',
     'event_config.*.*.start_time'=> 'ժամի սկիզբ',
+    'start_date'=> 'Միջոցառման սկիզբ',
+    'end_date'=> 'Միջոցառման ավարտ',
   ],
 
 ];

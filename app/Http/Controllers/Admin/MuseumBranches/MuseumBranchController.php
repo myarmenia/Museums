@@ -18,7 +18,7 @@ class MuseumBranchController extends Controller
     private $museumBranchRepository;
     public function __construct(MuseumBranchesRepositoryInterface $museumBranchRepository){
 
-      $this->middleware('role:museum_admin|content_manager');
+      $this->middleware('role:museum_admin');
       $this->middleware('museum_branch_middleware')->only(['edit','update']);
       $this->museumBranchRepository = $museumBranchRepository;
 
@@ -30,10 +30,10 @@ class MuseumBranchController extends Controller
 
 
         $museum_branches = $this->museumBranchRepository->all();
-        if($museum_branches==false){
-          return view("content.museum-branches.index", compact('museum_branches'));
+        // if($museum_branches==false){
+        //   return view("content.museum-branches.index", compact('museum_branches'));
 
-        }
+        // }
 
 
         return view("content.museum-branches.index", compact('museum_branches'));
