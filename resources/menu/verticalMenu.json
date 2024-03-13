@@ -63,7 +63,7 @@
       "url": "product/list",
       "name": "Ապրանքներ",
       "icon": "menu-icon tf-icons bx bx-museum",
-      "slug": "general-news",
+      "slug": "product_list",
       "roles": [
         "super_admin"
 
@@ -75,7 +75,7 @@
     {
       "name": "Նորություններ",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "general-news",
+      "slug": "news",
       "roles": ["general_manager","super_admin"],
       "url": "/news/news"
 
@@ -83,7 +83,7 @@
     {
       "name": "Բաններ",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "general-news",
+      "slug": "banner_list",
       "roles": ["super_admin"],
       "url": "banner/list"
     },

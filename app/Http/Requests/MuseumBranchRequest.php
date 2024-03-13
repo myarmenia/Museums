@@ -25,6 +25,7 @@ class MuseumBranchRequest extends FormRequest
 
       $array= [
         'email'=> 'required',
+        'phone_number'=> 'required',
         'translate.*.name' => 'required',
         'translate.*.address' => 'required',
         'translate.*.description' => 'required',
@@ -34,9 +35,9 @@ class MuseumBranchRequest extends FormRequest
     if($this->link!=null){
       $array['link']= 'url';
     }
-    if($this->phone_number!=null){
-      $array['phone_number']= 'integer';
-    }
+    // if($this->phone_number!=null){
+    //   $array['phone_number']= 'required';
+    // }
     if($this->email!=null){
       $array['email']= 'email';
     }
@@ -54,7 +55,7 @@ class MuseumBranchRequest extends FormRequest
           'translate.*.working_days'=>'Աշխատանքային օրեր դաշտը պարտադիր է։',
           'photo' => 'Լուսանկարի դաշտը պարտադիր է:',
           'link' => 'Հղումը պետք է լինի վավեր URL:',
-          'phone_number' => 'Հեռախոսահամարը պետք է լինի թիվ:',
+          // 'phone_number' => 'Հեռախոսահամար պետք է լինի թիվ:',
         ];
     }
 }
