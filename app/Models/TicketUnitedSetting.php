@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class TicketUnitedSetting extends Model
 {
     use HasFactory;
+  protected $guarded = [];
+
 }
