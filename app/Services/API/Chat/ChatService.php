@@ -18,7 +18,7 @@ class ChatService
     {
         $museumId = (int) $data['museum_id'];
 
-        if($authId = auth()->id()){
+        if($authId = auth('api')->id()){
             $chatId = $this->haveChat($authId,  $museumId);
             if(!$chatId){
                 $chatData = [
@@ -26,6 +26,11 @@ class ChatService
                     'museum_id' => $museumId,
                     'title' => $data['title'],
                 ];
+
+                if($chatData['education_program_type']){
+                    $chatData['education_program_type'] = $data['education_program_type'];
+                }
+
                 $chatId = $this->createChat($chatData);
             }
             
@@ -86,7 +91,7 @@ class ChatService
     {
         $chatData = [];
 
-        if($authId = auth()->id()){
+        if($authId = auth('api')->id()){
             $chatData = [
                 'visitor_id' => $authId,
             ];
@@ -111,6 +116,15 @@ class ChatService
         }
 
         return ['success' => false, 'error' => 500];
+    }
+
+    public function getMuseumMessage($museumId)
+    {
+        $userId = auth('api')->id();
+
+        $data = $this->chatRepository->getMuseumMessage($museumId, $userId);
+        
+        return $data? $data : [];
     }
 
 
