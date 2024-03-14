@@ -49,4 +49,27 @@ class ChatController extends Controller
         
         return new ChatResource($data);
     }
+
+    public function deleteChat($id)
+    {
+        $deleted = $this->chatService->deleteChat((int) $id);
+
+        if($deleted) {
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false]);
+    }
+
+    public function getAdminMessage()
+    {
+        $data = $this->chatService->getAdminMessage();
+
+        if(empty($data)){
+            return response()->json(['data' => $data]);
+        };
+        
+        return new ChatResource($data);
+    }
+    
 }

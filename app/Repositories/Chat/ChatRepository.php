@@ -65,4 +65,14 @@ class ChatRepository implements ChatInterface
           ])->first();
      }
 
+     public function getAdminMessage($userId)
+     {
+          return Chat::where('visitor_id', $userId)->whereNull('museum_id')->with([
+               'visitor',
+               'messages' => function ($query) {
+                    $query->orderBy('id', 'ASC')->get();
+               }
+          ])->first();
+     }
+
 }

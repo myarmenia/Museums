@@ -124,8 +124,24 @@ class ChatService
 
         $data = $this->chatRepository->getMuseumMessage($museumId, $userId);
         
-        return $data? $data : [];
+        return $data ? $data : [];
     }
 
+    public function deleteChat($id)
+    {
+        $authId = auth('api')->id();
 
+        return Chat::where('visitor_id', $authId)->where('id', $id)->delete();
+    }
+
+    public function getAdminMessage()
+    {
+        $userId = auth('api')->id();
+
+        $data = $this->chatRepository->getAdminMessage($userId);
+        
+        return $data ? $data : [];
+    }
+
+    
 }
