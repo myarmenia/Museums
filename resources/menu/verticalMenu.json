@@ -95,6 +95,20 @@
       "roles": ["super_admin"],
       "url": "logs"
     },
+    {
+      "url": "tickets/united",
+      "name": "Միասնական տոմս",
+      "icon": "menu-icon tf-icons bx bxs-coupon",
+      "slug": "tickets_united",
+      "roles": [
+        "super_admin",
+        "general_manager"
+      ]
+    },
+
+
+
+
 
     {
       "name": "Account Settings",

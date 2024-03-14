@@ -105,6 +105,16 @@
         "museum_admin"
 
       ]
+    },
+    {
+      "url": "tickets/show",
+      "name": "Տոմս",
+      "icon": "menu-icon tf-icons bx bxs-coupon",
+      "slug": "tickets_show",
+      "roles": [
+        "museum_admin",
+        "manager"
+      ]
     }
 
   ]

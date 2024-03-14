@@ -24,8 +24,8 @@ class EventRequest extends FormRequest
     {
       // dd($this);
       $array= [
-        'start_date'=>'required',
-        'end_date' => 'required',
+        'start_date'=>'required|date|before:end_date',
+        'end_date' => "required|date|after:start_date",
         'price'=> 'required|integer|gt:0',
         'visitors_quantity_limitation'=> 'required|integer|gt:0',
         'translate.*.name' => 'required',
@@ -33,7 +33,7 @@ class EventRequest extends FormRequest
     ];
 
       if(Request::method()=="POST"){
-        // $array['photo'] = 'required|image';
+        $array['photo'] = 'required|image';
     }
     return $array;
     }

@@ -34,7 +34,6 @@ function calendar() {
 
   // ==================  Click calendar td and get reservations ============================
 
-  // $('table[role=presentation]').on('click', "td", function(){
   $('body').on('click', '.fc-daygrid-day', function () {
 
 

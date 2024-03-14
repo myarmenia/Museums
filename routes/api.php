@@ -9,6 +9,7 @@ use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\Courses\CourseLanguagesController;
 use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\API\Lessons\LessonController;
+use App\Http\Controllers\API\MuseumBranch\MuseumBranchesController;
 use App\Http\Controllers\API\MuseumController;
 use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\SendOrderController;
@@ -113,6 +114,10 @@ Route::group(['middleware' => ['api']], function ($router) {
 
   });
   Route::get('test-museum',[TestController::class, 'test']);
+  
+  Route::group(['prefix' => 'museum-branches'], function ($router) {
+    Route::get('/{museum_id}',MuseumBranchesController::class);
 
+  });
 
 });
