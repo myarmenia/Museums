@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Chat;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Chat\AddAdminChatMessageRequest;
 use App\Http\Requests\Chat\AddChatMessageRequest;
+use App\Http\Resources\API\Chat\AllChatResource;
 use App\Http\Resources\API\Chat\ChatResource;
 use App\Services\API\Chat\ChatService;
 use Illuminate\Http\Request;
@@ -70,6 +71,17 @@ class ChatController extends Controller
         };
         
         return new ChatResource($data);
+    }
+
+    public function getAllMuseumsMessages()
+    {
+        $data = $this->chatService->getAllMuseumsMessages();
+
+        if(empty($data)){
+            return response()->json(['data' => $data]);
+        };
+        
+        return AllChatResource::collection($data);
     }
     
 }

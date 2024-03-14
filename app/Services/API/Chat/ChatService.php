@@ -143,5 +143,14 @@ class ChatService
         return $data ? $data : [];
     }
 
+    public function getAllMuseumsMessages()
+    {
+        $userId = auth('api')->id();
+        
+        $data = $this->chatRepository->getAllMuseumsMessages($userId);
+        
+        return $data ? $data : [];
+    }
+
     
 }

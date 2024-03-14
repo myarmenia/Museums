@@ -32,5 +32,9 @@ class Chat extends Model
         return $this->hasMany(Message::class, 'chat_id', 'id');
     }
 
+    public function museum()
+    {
+        return $this->hasOne(Museum::class, 'id', 'museum_id');
+    }
     
 }

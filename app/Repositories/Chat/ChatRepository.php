@@ -75,4 +75,15 @@ class ChatRepository implements ChatInterface
           ])->first();
      }
 
+     public function getAllMuseumsMessages($userId)
+     {
+          return Chat::with([
+               'museum.getCurrentTranslation',
+               'museum.images',
+               'messages' => function ($query) {
+                    $query->orderBy('id', 'ASC')->get();
+               }
+          ])->where('visitor_id', $userId)->whereNotNull('museum_id')->get();
+     }
+
 }
