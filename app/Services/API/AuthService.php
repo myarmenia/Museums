@@ -106,7 +106,7 @@ class AuthService
 
                    return [
                         'success' => false, 
-                        'message' => translateMessageApi('email-not-verified'),
+                        'message' => translateMessageApi('email_verified'),
                         'is_verify' => false,
                         'status' => 401
                     ];
