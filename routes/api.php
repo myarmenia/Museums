@@ -107,8 +107,15 @@ Route::group(['middleware' => ['api']], function ($router) {
 
 
     Route::group(['prefix' => 'chat'], function ($router) {
-        Route::post('add-message', [ChatController::class, 'addMessage']);
-        Route::post('add-admin-message', [ChatController::class, 'addAdminMessage']);
+      Route::group(['middleware' => 'apiAuthCheck'], function ($router) {
+        Route::get('get-museum-message/{id}', [ChatController::class, 'getMuseumMessage']);
+        Route::get('get-admin-message', [ChatController::class, 'getAdminMessage']);
+        Route::get('get-all-museums-messages', [ChatController::class, 'getAllMuseumsMessages']);
+        Route::get('delete-chat/{id}', [ChatController::class, 'deleteChat']);
+      });
+      // Route::get('get-museum-message/{id}', [ChatController::class, 'getMuseumMessage'])->middleware('apiAuthCheck');
+      Route::post('add-message', [ChatController::class, 'addMessage']);
+      Route::post('add-admin-message', [ChatController::class, 'addAdminMessage']);
     });
 
   });
