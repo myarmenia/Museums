@@ -22,6 +22,8 @@ class Event extends Model
     protected $table = 'events';
 
     protected $filterFields =['museum_id'];
+    protected $filterDateFields = ['start_date', 'end_date'];
+
     protected $filterFieldsInRelation = ['museum_geographical_location_id'];
     protected $hasRelation = ['museum'];
 

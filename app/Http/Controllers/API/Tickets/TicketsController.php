@@ -15,9 +15,9 @@ class TicketsController extends BaseController
   public function __invoke(Request $request)
   {
 
-    try {
+    // try {
 
-          $museums = $this->getAllMuseums();
+          $museums = $this->getAllMuseums($request);
           $params = null;
 
           if($request->type == 'united'){
@@ -26,6 +26,9 @@ class TicketsController extends BaseController
 
               $params['min_museum_quantity'] = unitedTicketSettings()->min_museum_quantity;
               $params['discount_percent'] = unitedTicketSettings()->percent;
+              $params['min_ticket_quantity'] = ticketType('united')->min_quantity;
+              $params['max_ticket_quantity'] = ticketType('united')->max_quantity;
+
 
           }
           else{
@@ -35,10 +38,10 @@ class TicketsController extends BaseController
 
         return $this->sendResponse($data, 'success', $params);
 
-    } catch (\Throwable $th) {
+    // } catch (\Throwable $th) {
 
-        return $this->sendError($th->errorInfo, 'error');
-    }
+    //     return $this->sendError($th->errorInfo, 'error');
+    // }
 
 
   }
