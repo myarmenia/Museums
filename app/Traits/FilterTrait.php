@@ -13,6 +13,7 @@ trait FilterTrait {
       }
 
       $tableName = $this->getTable();
+
       $likeFilterFields = isset($this->likeFilterFields) ? $this->likeFilterFields : false;
       $filterFields = isset($this->filterFields) ? $this->filterFields : false;
       $filterFieldsInRelation = isset($this->filterFieldsInRelation) ? $this->filterFieldsInRelation : false;
@@ -20,9 +21,9 @@ trait FilterTrait {
       $hasRelationTranslation = isset($this->hasRelationTranslation) ? $this->hasRelationTranslation : false;   // fields for model translation
       $hasRelation = isset($this->hasRelation) ? $this->hasRelation : false;  //  relation name array
       $like_or_equal = null;
-
+      // dd($filters, $hasRelation, $filterFieldsInRelation);
       foreach ($filters as $field => $value) {
-
+// dd($filters, $field,  $value);
             if( $value!=null) {
 
             if($likeFilterFields && in_array($field, $likeFilterFields)) {
@@ -31,7 +32,7 @@ trait FilterTrait {
             else if(is_array($value)) {
                 $builder->whereIn($field, $value);
             }
-
+// dd($field, $filterFields);
             if(in_array($field, $filterFields) ){
               // dd($field,$filterFields);
 
@@ -61,7 +62,8 @@ trait FilterTrait {
               });
 
             }
-            if ($hasRelation && in_array($field, $hasRelation)) {
+
+            if($hasRelation && in_array($field, $hasRelation)) {
 
               $name = $field;
               $search_name = "name";

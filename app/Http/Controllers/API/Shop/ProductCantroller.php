@@ -21,29 +21,18 @@ class ProductCantroller extends Controller
 
 	public function __construct(Product $model)
 	{
-
-
 		$this->model = $model;
 	}
   public function index(Request $request){
-
-    $product_category = ProductCategory::all();
-    $museums = Museum::all();
 
     $data = $this->model
                 ->filter($request->all())
       ->orderBy('id', 'DESC')->paginate(12)->withQueryString();
 
-
-     $shop=[];
-
       return ShopShopResource::collection($data);
 
   }
-  public function museumList(){
-    $museums=Museum::all();
-    return MuseumListResource::collection($museums);
-  }
+  
   public function productCategory(){
     $product_category = ProductCategory::all();
     return ProductCategoryListResource::collection($product_category);

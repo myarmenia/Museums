@@ -1,12 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Banner\BannerCantroller;
 use App\Http\Controllers\API\EducationalPrograms\EducationalProgramController;
+use App\Http\Controllers\API\Events\EventController;
+use App\Http\Controllers\API\Events\EventsListController;
+use App\Http\Controllers\API\Events\SingleEventController;
 use App\Http\Controllers\API\HomeController;
-use App\Http\Controllers\API\Courses\CourseLanguagesController;
 use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\API\Lessons\LessonController;
 use App\Http\Controllers\API\MuseumBranch\MuseumBranchesController;
@@ -18,7 +21,9 @@ use App\Http\Controllers\API\Tickets\TicketsController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
+use App\Http\Controllers\API\MuseumListController;
 use App\Http\Controllers\API\Product\ProductCantroller;
+use App\Http\Controllers\API\RegionListController;
 use App\Http\Controllers\API\Shop\ProductCantroller as ShopProductCantroller;
 use App\Http\Controllers\API\Shop\SingleProductController;
 use App\Http\Controllers\API\Student\DashboardController;
@@ -45,15 +50,14 @@ Route::group(['middleware' => ['api']], function ($router) {
         });
     });
 
-    Route::group(['middleware' => 'apiAuthCheck'], function ($router) {
-        Route::get('course-language',[CourseLanguagesController::class,'index']);
-        Route::get('language-lessons/{id}',[LessonController::class,'languageLessons']);
-        Route::get('user-current-lesson/',[UserCurrentLessonController::class,'index']);
+
+    Route::group(['middleware' => 'apiAuthCheck'], function ($router) {     
 
         Route::group(['prefix' => 'user'], function ($router) {
             Route::post('edit', [UserController::class, 'edit']);
             Route::post('editPassword', [UserController::class, 'editPassword']);
         });
+
     });
 
     Route::group(['prefix' => 'email'], function ($router) {
@@ -90,7 +94,7 @@ Route::group(['middleware' => ['api']], function ($router) {
     });
     Route::group(['prefix' => 'shop'], function ($router) {
       Route::get('product-list', [ShopProductCantroller::class, 'index']);
-      Route::get('museum-list', [ShopProductCantroller::class, 'museumList']);
+
       Route::get('product-category', [ShopProductCantroller::class, 'productCategory']);
       Route::get('product/{id}',SingleProductController::class);
 
@@ -123,5 +127,12 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::get('/{museum_id}',MuseumBranchesController::class);
 
   });
+  Route::group(['prefix' => 'events'], function ($router) {
+    Route::get('events-list',[EventsListController::class,'index']);
+    Route::get('single-event/{event_id}',SingleEventController::class);
+
+  });
+  Route::get('museum-list', MuseumListController::class);
+  Route::get('region-list', RegionListController::class);
 
 });

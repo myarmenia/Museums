@@ -71,6 +71,9 @@ class Museum extends Model
 
       return $this->hasOne(MuseumTranslation::class)->where('lang', $lang)->first();
     }
+    public function events(){
+      return $this->hasMany(Event::class);
+    }
 
 
     public function standart_tickets(): HasOne
