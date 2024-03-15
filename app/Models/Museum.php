@@ -46,6 +46,11 @@ class Museum extends Model
         return $this->hasMany(MuseumTranslation::class, 'museum_id', 'id');
     }
 
+    public function getCurrentTranslation(): HasMany
+    {
+        return $this->hasMany(MuseumTranslation::class, 'museum_id', 'id')->where('lang', session('languages'));
+    }
+
     public function translationsAdmin(): HasMany
     {
         return $this->hasMany(MuseumTranslation::class, 'museum_id', 'id')->where('lang', 'am');;
@@ -55,13 +60,6 @@ class Museum extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-
-  public function tickets(): HasMany
-  {
-      return $this->hasMany(Ticket::class);
-
-  }
 
     public function region(): BelongsTo
     {
@@ -76,6 +74,24 @@ class Museum extends Model
     public function events(){
       return $this->hasMany(Event::class);
     }
+
+
+    public function standart_tickets(): HasOne
+    {
+      return $this->hasOne(Ticket::class);
+
+    }
+
+    public function subscription_tickets(): HasOne
+    {
+      return $this->hasOne(TicketSubscriptionSetting::class);
+
+    }
+
+    public function united_ticket_price(){
+      return $this->standart_tickets->price * ticketType('united')->coefficient;
+    }
+
 
 
 }

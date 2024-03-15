@@ -20,7 +20,7 @@ class TicketTypeSeeder extends Seeder
             'name' => 'standart',
             'coefficient' => 1,
             'min_quantity' => 1,
-            'max_quantity' => null
+            'max_quantity' => 10
 
           ],
           [
@@ -28,7 +28,7 @@ class TicketTypeSeeder extends Seeder
               'name' => 'discount',
               'coefficient' => 0.5,
               'min_quantity' => 1,
-              'max_quantity' => null
+              'max_quantity' => 10
 
             ],
             [
@@ -36,7 +36,7 @@ class TicketTypeSeeder extends Seeder
               'name' => 'free',
               'coefficient' => 0,
               'min_quantity' => 1,
-              'max_quantity' => null
+              'max_quantity' => 10
 
             ],
             [
