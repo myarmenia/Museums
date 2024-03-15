@@ -26,6 +26,7 @@ class EventListResource extends JsonResource
           'region'=> $this->museum->region->name,
           'event_configs'=>EventConfigResource::collection($this->event_configs),
 
+
         ];
     }
 }

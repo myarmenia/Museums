@@ -12,9 +12,8 @@
       </label>
       <div class="col-md-10">
           <input class="form-control" type="date"
-          value="{{ $conf->day }}"
-
-            {{-- name="event_config[{{$data->$id }}][{{$conf->id}}][day]" --}}
+              value = "{{ $conf->day }}"
+              name="event_config[{{$conf->event_id}}][{{$conf->id}}][day]"
             />
       </div>
 
@@ -25,8 +24,8 @@
       </label>
       <div class="col-md-10">
           <input class="form-control" type="time"
-          value="{{ $conf->start_time  }}"
-            {{-- name="event_config[{{ $id }}][{{$count}}][start_time]" --}}
+            value="{{ $conf->start_time  }}"
+            name="event_config[{{$conf->event_id}}][{{$conf->id}}][start_time]"
             />
       </div>
 
@@ -37,12 +36,13 @@
       </label>
       <div class="col-md-10">
           <input class="form-control" type="time"
-          value="{{ $conf->end_time }}"
-            {{-- name="event_config[{{ $id }}][{{$count}}][end_time]" --}}
+              value="{{ $conf->end_time }}"
+              name="event_config[{{$conf->event_id}}][{{$conf->id}}][end_time]"
              />
       </div>
 
       <div class="d-flex justify-content-end mt-2">
+        <button type="button" class="btn btn-outline-danger update-event-config mx-1" data-item-id="{{$conf->id}}" data-tb-name="event_configs">Թարմացնել</button>
         <button type="button" class="btn btn-outline-danger delete-event-config" data-item-id="{{$conf->id}}" data-tb-name="event_configs">Ջնջել</button>
 
       </div>
