@@ -85,7 +85,7 @@ class TicketTypeSeeder extends Seeder
 
 
         foreach ($ticket_types as $type) {
-          TicketType::updateOrCreate($type);
+          TicketType::updateOrCreate(['id' => $type['id']], $type);
         }
     }
 }
