@@ -9,5 +9,5 @@ class EventConfig extends Model
 {
     use HasFactory;
     protected $guarded=[];
-    
+
 }

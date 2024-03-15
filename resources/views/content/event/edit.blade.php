@@ -186,7 +186,7 @@
 
 
               <x-edit-event-config :data="$data"  ></x-edit-event-config>
-                {{-- <x-edit-event-config :id="$data->id" :count="$conf->id" :value="$conf" ></x-edit-event-config> --}}
+             
 
 
 

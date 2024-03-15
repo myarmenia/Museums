@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Shop;
+namespace App\Http\Resources\API\Tickets;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MuseumListResource extends JsonResource
+class TicketResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,10 +14,9 @@ class MuseumListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-      // dd($this);
-        return [
-          "id" => $this->id,
-          'name'=>$this->translation(session("languages"))->name
-        ];
+
+
+        return $this->getType($request->type);
+
     }
 }

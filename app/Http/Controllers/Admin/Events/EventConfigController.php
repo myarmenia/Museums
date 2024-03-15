@@ -25,7 +25,8 @@ class EventConfigController extends Controller
 
 
           $data['event_id']=$key;
-
+          $data['visitors_quantity_limitation']=$event->visitors_quantity_limitation;
+          $data['price']=$event->price;
           $event_config=EventConfig::create($data);
           array_push($config_arr,$event_config->id);
         }

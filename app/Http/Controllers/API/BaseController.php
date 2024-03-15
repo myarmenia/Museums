@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
-    public function sendResponse($result = null, $message, $count_page = null)
+    public function sendResponse($result = null, $message, $params = null)
     {
         $response = [
             'success' => true,
@@ -15,8 +15,8 @@ class BaseController extends Controller
             'message' => $message,
         ];
 
-        if ($count_page != null) {
-            $response['count_page'] = $count_page;
+        if ($params != null) {
+          $response['params'] = $params;
         }
 
         return response()->json($response, 200);
