@@ -13,7 +13,10 @@ class ForgotPasswordService
 {
   public function sendResetLink($email)
   {
-    $user = User::where('email', $email)->first();
+    $user = User::where('email', $email)->whereHas('roles', function ($query) {
+                $query->where('name', 'visitor');
+            })->first();
+
     if ($user) {
       $token = mt_rand(10000, 99999);
       $email = $user->email;
