@@ -51,7 +51,7 @@ Route::group(['middleware' => ['api']], function ($router) {
     });
 
 
-    Route::group(['middleware' => 'apiAuthCheck'], function ($router) {     
+    Route::group(['middleware' => 'apiAuthCheck'], function ($router) {
 
         Route::group(['prefix' => 'user'], function ($router) {
             Route::post('edit', [UserController::class, 'edit']);
@@ -132,6 +132,7 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::get('single-event/{event_id}',SingleEventController::class);
 
   });
+  
   Route::get('museum-list', MuseumListController::class);
   Route::get('region-list', RegionListController::class);
 
