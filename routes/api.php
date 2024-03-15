@@ -21,6 +21,8 @@ use App\Http\Controllers\API\Tickets\TicketsController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
+use App\Http\Controllers\API\Museum\SinggleMuseumEventsController;
+use App\Http\Controllers\API\Museum\SingleMuseumEventsController;
 use App\Http\Controllers\API\MuseumListController;
 use App\Http\Controllers\API\Product\ProductCantroller;
 use App\Http\Controllers\API\RegionListController;
@@ -83,7 +85,7 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::get('get-museum', [MuseumController::class, 'getMuseum']);
         Route::get('get-museum/{id}', [MuseumController::class, 'getMuseumById']);
         Route::get('/{id}/educational-programs', EducationalProgramController::class);
-
+        Route::get('/{museum_id}/events', SingleMuseumEventsController::class);
     });
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);
@@ -132,7 +134,7 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::get('single-event/{event_id}',SingleEventController::class);
 
   });
-  
+
   Route::get('museum-list', MuseumListController::class);
   Route::get('region-list', RegionListController::class);
 
