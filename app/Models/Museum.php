@@ -46,6 +46,11 @@ class Museum extends Model
         return $this->hasMany(MuseumTranslation::class, 'museum_id', 'id');
     }
 
+    public function getCurrentTranslation(): HasMany
+    {
+        return $this->hasMany(MuseumTranslation::class, 'museum_id', 'id')->where('lang', session('languages'));
+    }
+
     public function translationsAdmin(): HasMany
     {
         return $this->hasMany(MuseumTranslation::class, 'museum_id', 'id')->where('lang', 'am');;

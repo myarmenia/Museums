@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Chat extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'visitor_id',
@@ -31,5 +32,9 @@ class Chat extends Model
         return $this->hasMany(Message::class, 'chat_id', 'id');
     }
 
+    public function museum()
+    {
+        return $this->hasOne(Museum::class, 'id', 'museum_id');
+    }
     
 }
