@@ -14,6 +14,7 @@ use App\Http\Controllers\API\MuseumController;
 use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\SendOrderController;
 use App\Http\Controllers\API\TestController;
+use App\Http\Controllers\API\Tickets\TicketsController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
@@ -55,10 +56,6 @@ Route::group(['middleware' => ['api']], function ($router) {
         });
     });
 
-    Route::group(['prefix' => 'project'], function ($router) {
-        Route::get('getProject', [ProjectController::class, 'getProject']);
-    });
-
     Route::group(['prefix' => 'email'], function ($router) {
         Route::post('feedback', SendFeedbackController::class);
         Route::post('clientProject', SendClientProjectDetController::class);
@@ -72,11 +69,6 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::post('trial-course', [TrialCourseController::class, 'trialCourse']);
     Route::post('send-order', SendOrderController::class);
 
-
-
-    // Route::get('dashboard',[DashboardController::class,'index']);
-    // Route::get('home',[HomeController::class,'home']);
-    // Route::get('visit-history',[VisitHistoryController::class,'index']);
 
     Route::group(['prefix' => 'news'], function ($router) {
         Route::get('get-news', [NewsController::class, 'getNewslist']);
@@ -118,9 +110,15 @@ Route::group(['middleware' => ['api']], function ($router) {
       Route::post('add-admin-message', [ChatController::class, 'addAdminMessage']);
     });
 
+    Route::group(['prefix' => 'tickets'], function ($router) {
+      Route::get('', TicketsController::class);
+
+
+    });
+
   });
   Route::get('test-museum',[TestController::class, 'test']);
-  
+
   Route::group(['prefix' => 'museum-branches'], function ($router) {
     Route::get('/{museum_id}',MuseumBranchesController::class);
 

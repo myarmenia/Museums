@@ -3,6 +3,8 @@
 use App\Models\EducationalProgram;
 use App\Models\Museum;
 use App\Models\MuseumStaff;
+use App\Models\TicketType;
+use App\Models\TicketUnitedSetting;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
@@ -170,6 +172,22 @@ if (!function_exists('museumEducationalPrograms')) {
   {
 
     return museumAccessId() ? EducationalProgram::where('museum_id', museumAccessId())->get() : [];
+  }
+
+}
+
+if (!function_exists('ticketType')) {
+  function ticketType($type)
+  {
+   return TicketType::where('name', $type)->first();
+  }
+
+}
+
+if (!function_exists('unitedTicketSettings')) {
+  function unitedTicketSettings()
+  {
+    return TicketUnitedSetting::first();
   }
 
 }
