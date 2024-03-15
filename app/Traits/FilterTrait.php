@@ -75,6 +75,18 @@ trait FilterTrait {
               });
 
             }
+            if($hasRelation && in_array($field,  $filterFieldsInRelation)) {
+              dd($hasRelation);
+
+                            $name = $field;
+                            $search_name = $field;
+                            $action = "=";
+                            $builder->whereHas('museum', function ($query) use ($action, $search_name, $value) {
+                                $query->where('museum_geographical_location_id', $action, $value);
+
+                            });
+
+                          }
 
           }
 

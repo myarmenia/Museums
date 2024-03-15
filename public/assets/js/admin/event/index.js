@@ -70,18 +70,7 @@ let count=0
             if(data.message){
               window.location.reload();
             }
-            // $('#events_config_append').append(444)
-            // $.get('/call-edit-component', function(data) {
-            //   console.log(data)
-                  // $('#event_config').append(data);
-                  // var errors = data.responseJSON.errors;
-                  // console.log(errors)
 
-                  // $.each(errors, function (field_name, error) {
-                  //   $that.find('[name=' + field_name + ']').after('<span class="error text-strong text-danger">' + error + '</span>')
-                  // })
-
-              // });
         },
         error: function (data) {
 
@@ -99,9 +88,56 @@ let count=0
 
         }
       });
-  
+
 
     } )
+
+    $('.event_config_update').on('submit',function(e){
+      e.preventDefault()
+      var formData = new FormData($(this)[0]);
+      let that=$(this)
+      let id=$(this).attr('data-config-id')
+      console.log(id)
+     let tb_name = $(this).attr('data-tb-name')
+     let url = `/events/event-config-update/`
+
+     $.ajax({
+      url: url,
+      data: formData,
+      processData: false,
+      contentType: false,
+      type: 'Post',
+      beforeSend: function (x) {
+        console.log('befor sebd')
+      },
+      success: function (data) {
+
+
+        // if (method == 'post') {
+          if(data.message){
+            window.location.reload();
+          }
+
+      },
+      error: function (data) {
+
+        if(data.errorMessage){
+          console.log(data.errorMessage)
+        }
+
+        var errors = data.responseJSON.errors;
+
+        $.each(errors, function (field_name, error) {
+
+
+          $that.find('[data-id="' + field_name + '"]').append("<div class='col-sm-10 mt-2 text-danger fts-14 event-config-log' >" + error + "</div>")
+        })
+
+      }
+    });
+
+
+   })
 
 })
 

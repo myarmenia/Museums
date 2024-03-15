@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class EventConfigController extends Controller
 {
   use  EventTrait;
-    public function __invoke(EventConfigRequest $request){
+    public function store(EventConfigRequest $request){
 // dd($request->all());
       $id='';
       $config_arr=[];
@@ -36,5 +36,10 @@ class EventConfigController extends Controller
       $configs= EventConfig::whereIn('id',$config_arr)->get();
       return response()->json(["message"=> $configs]);
 
+    }
+    public function update(Request $request){
+      // dd($id);
+      dd($request->all());
+        // dd($request->event_config);
     }
 }

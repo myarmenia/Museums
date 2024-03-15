@@ -24,6 +24,7 @@ class EventListResource extends JsonResource
           'start_date'=> $this->start_date,
           'end_date' => $this->end_date,
           'region'=> $this->museum->region->name,
+          'image'=>isset($this->images[0])?route('get-file',['path'=>$this->images[0]->path]):null,
           'event_configs'=>EventConfigResource::collection($this->event_configs),
 
 
