@@ -89,7 +89,7 @@ class Museum extends Model
     }
 
     public function united_ticket_price(){
-      return $this->standart_tickets->price * ticketType('united')->coefficient;
+      return $this->standart_tickets->price - ($this->standart_tickets->price * ticketType('united')->coefficient);
     }
 
 

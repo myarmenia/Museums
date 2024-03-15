@@ -14,6 +14,12 @@ class EventsTicketsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+                  'id' => $this->id,
+                  'price' => $this->price,
+                  'min' => ticketType('event')->min_quantity,
+                  'max' => $this->visitors_quantity_limitation - $this->visitors_quantity,
+                  'type' => 'event'
+              ];
     }
 }
