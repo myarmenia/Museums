@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\Tickets;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\API\Museum\MuseumsViaTicketsResource;
-use App\Http\Resources\API\Museum\UnitedTicketsResource;
+use App\Http\Resources\API\Tickets\UnitedTicketsResource;
 use App\Traits\Museum\MuseumTrait;
 use Illuminate\Http\Request;
 
@@ -15,27 +15,30 @@ class TicketsController extends BaseController
   public function __invoke(Request $request)
   {
 
-    // try {
+    try {
 
-      $museums = $this->getAllMuseums();
+          $museums = $this->getAllMuseums();
+          $params = null;
 
-      if($request->type == 'united'){
-        $data = UnitedTicketsResource::collection($museums);
-        
+          if($request->type == 'united'){
+              $data = UnitedTicketsResource::collection($museums);
+              $data = json_decode(json_encode($data));
 
-      }
-      else{
-          $data = MuseumsViaTicketsResource::collection($museums);
+              $params['min_museum_quantity'] = unitedTicketSettings()->min_museum_quantity;
+              $params['discount_percent'] = unitedTicketSettings()->percent;
 
+          }
+          else{
+              $data = MuseumsViaTicketsResource::collection($museums);
+
+          }
+
+        return $this->sendResponse($data, 'success', $params);
+
+    } catch (\Throwable $th) {
+
+        return $this->sendError($th->errorInfo, 'error');
     }
-
-
-      return $this->sendResponse($data, 'success');
-
-    // } catch (\Throwable $th) {
-
-    //   return $this->sendError($th->errorInfo, 'error');
-    // }
 
 
   }

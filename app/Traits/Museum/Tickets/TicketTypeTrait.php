@@ -52,19 +52,7 @@ trait TicketTypeTrait
             'max' => ticketType('united')->max_quantity
           ];
           break;
-        // case 'event':
-
-        //     $items = $this->event_configs;
-        //     foreach ($items as $key => $value) {
-        //         $d = [
-        //             'id' => $this->id,
-        //             'price' => $value->price,
-        //             'min' => ticketType('event')->min_quantity,
-        //             'max' => $value->visitors_quantity_limitation - $value->visitors_quantity
-        //         ];
-        //         array_push($data, $d);
-        //     }
-        //     break;
+       
     }
 
 

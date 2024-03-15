@@ -18,7 +18,7 @@ class EducationalProgramController extends BaseController
 
           $educational_program = $this->getSingleMuseumEducationalProgramsForAPI($id);
 
-          return $this->sendResponse(EducationalProgramsResource::collection($educational_program), 'success', $educational_program->lastPage());
+          return $this->sendResponse(EducationalProgramsResource::collection($educational_program), 'success', ['page_count' => $educational_program->lastPage()]);
 
       } catch (\Throwable $th) {
 
