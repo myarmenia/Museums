@@ -23,7 +23,7 @@ class SingleEventResource extends JsonResource
         'end_date' => $this->end_date,
         'region'=> $this->museum->region->name,
         'event_configs'=>EventConfigResource::collection($this->event_configs),
-        'same_museum_event'=>EventListResource::collection($this->similar_event())
+        'same_museum_event'=>EventListResource::collection($this->similar_event($this->museum_id, $this->id)),
 
       ];
     }

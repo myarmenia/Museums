@@ -113,7 +113,7 @@
                   <span class="required-field text-danger">*</span>
                 </label>
                 <div class="col-md-10">
-                    <input class="form-control" placeholder="Տոմսերի առավելագույն քանակ մեկ օրվա համար" value="{{ old('visitors_quantity_limitation	') }}"
+                    <input class="form-control" placeholder="Տոմսերի առավելագույն քանակ մեկ օրվա համար" value="{{ old('visitors_quantity_limitation') }}"
                         id="visitors_quantity_limitation" name="visitors_quantity_limitation" />
                 </div>
                 @error("visitors_quantity_limitation")
