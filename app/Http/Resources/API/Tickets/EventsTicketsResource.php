@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\API\Museum\Tickets;
+namespace App\Http\Resources\API\Tickets;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

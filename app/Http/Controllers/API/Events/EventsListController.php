@@ -20,9 +20,6 @@ class EventsListController extends BaseController
 	}
   public function index(Request $request){
 
-    // $events_list = Event::all();
-
-    // dd($request->all());
     $data = $this->model
                 ->filter($request->all())
       ->where('status',1)
