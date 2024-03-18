@@ -14,7 +14,7 @@
 
       <div class="mb-3 row justify-content-end" data-id="event_config.{{ $id }}.{{$count}}.day">
           <div class="col-sm-10 text-danger fts-14" >
-     
+
           </div>
       </div>
     {{-- @enderror --}}
@@ -28,10 +28,10 @@
          value="{{ old('start_time') }}"
           name="event_config[{{ $id }}][{{$count}}][start_time]" />
     </div>
-    {{-- @error("event_config.$id.$count.start_time") --}}
+
       <div class="mb-3 row justify-content-end" data-id="event_config.{{ $id }}.{{$count}}.start_time">
           <div class="col-sm-10 text-danger fts-14">
-            {{-- {{ $message }} --}}
+
           </div>
       </div>
 
@@ -51,6 +51,12 @@
 
           </div>
       </div>
+
+
+  </div>
+  <div class="d-flex justify-content-end mt-2">
+
+    {{-- <button type="button" class="btn btn-outline-danger delete-event-config" data-count="{{$count}}" data-tb-name="event_configs">Ջնջել</button> --}}
 
   </div>
 </div>

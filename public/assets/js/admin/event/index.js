@@ -95,11 +95,12 @@ let count=0
     $('.event_config_update').on('submit',function(e){
       e.preventDefault()
       var formData = new FormData($(this)[0]);
-      let that=$(this)
+      let $that=$(this)
       let id=$(this).attr('data-config-id')
-      console.log(id)
+      // console.log(id)
      let tb_name = $(this).attr('data-tb-name')
      let url = `/events/event-config-update/`
+     $('.invalid_error').html('')
 
      $.ajax({
       url: url,
@@ -115,21 +116,22 @@ let count=0
 
         // if (method == 'post') {
           if(data.message){
-            window.location.reload();
+            console.log(data.message)
+
           }
 
       },
       error: function (data) {
 
-        if(data.errorMessage){
-          console.log(data.errorMessage)
-        }
+
 
         var errors = data.responseJSON.errors;
+      
 
         $.each(errors, function (field_name, error) {
+          let k=$that.find('[data-id="' + field_name + '"]')
 
-
+          $that.find('[data-id="' + field_name + '"]').innerHTML=''
           $that.find('[data-id="' + field_name + '"]').append("<div class='col-sm-10 mt-2 text-danger fts-14 event-config-log' >" + error + "</div>")
         })
 

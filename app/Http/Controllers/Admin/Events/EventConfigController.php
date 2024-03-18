@@ -37,9 +37,31 @@ class EventConfigController extends Controller
       return response()->json(["message"=> $configs]);
 
     }
-    public function update(Request $request){
-      // dd($id);
-      dd($request->all());
-        // dd($request->event_config);
+    public function update(EventConfigRequest  $request){
+
+      $event_id='';
+      foreach($request->event_config as $key=>$value){
+        $event_id=$key;
+        $event=Event::find($event_id);
+        // dd($event);
+        foreach($value as $conf_id=>$data){
+
+          $data['event_id']=$key;
+          $data['visitors_quantity_limitation']=$event->visitors_quantity_limitation;
+          $data['price']=$event->price;
+
+          $event_conf=EventConfig::find($conf_id);
+          $event_conf->update($data);
+
+
+
+
+
+        }
+
+      }
+
+      return response()->json(["message"=>  'updated']);
+
     }
 }
