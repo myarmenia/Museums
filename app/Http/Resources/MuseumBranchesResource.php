@@ -22,6 +22,7 @@ class MuseumBranchesResource extends JsonResource
           'description'=>$this->translation(session('languages'))->description,
           'working_days'=>$this->translation(session('languages'))->working_days,
           'address'=>$this->translation(session('languages'))->address,
+          'photo'=> route('get-file', ['path' => $this->images[0]->path]),
         ];
     }
 }
