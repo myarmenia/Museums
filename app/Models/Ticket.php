@@ -12,6 +12,7 @@ class Ticket extends Model
     use HasFactory, SoftDeletes, TicketTypeTrait;
 
     protected $guarded = [];
+    protected $boolFilterFields = ['status'];
 
   public function museum()
   {

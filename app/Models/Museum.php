@@ -24,7 +24,11 @@ class Museum extends Model
         'account_number',
     ];
 
-    protected $relationFilter = ['event' => ['start_date', 'end_date', 'status']];
+    protected $relationFilter = [
+        'events' => ['start_date', 'end_date','status','museum_id']
+
+    ];
+
 
     public function museum_branches(): HasMany
     {
