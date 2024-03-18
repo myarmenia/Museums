@@ -30,7 +30,6 @@ class UnitedTicketsResource extends JsonResource
 
         ];
 
-        $data['min_museum_quantity'] = unitedTicketSettings()->min_museum_quantity;
         return $data;
     }
 }

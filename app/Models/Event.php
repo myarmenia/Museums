@@ -4,9 +4,9 @@ namespace App\Models;
 
 
 use App\Traits\FilterTrait;
-use App\Traits\Museum\Tickets\TicketTypeTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Event extends Model
 {
 
-    use HasFactory, SoftDeletes, FilterTrait, TicketTypeTrait;
+
+    use HasFactory, SoftDeletes, FilterTrait;
+
 
     protected $guarded=[];
     protected $table = 'events';
@@ -39,12 +41,18 @@ class Event extends Model
   {
     return $this->hasMany(EventConfig::class);
   }
+  public function museum():BelongsTo
+  {
+    return $this->belongsTo(Museum::class,'museum_id');
+  }
+
 
   public function similar_event($museum_id,$event_id){
+
     return $this->where([
       ['museum_id','=',$museum_id],
       ['id','!=',$event_id]
-    ] )->get()->take(2);
+    ] )->get();
 
 
   }

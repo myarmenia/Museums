@@ -20,9 +20,10 @@ class ShopResource extends JsonResource
 
 
       return [
-
+// dd($this->museum->name);
         'id' => $this->id,
         'museum_id'=>$this->museum_id,
+        'museum_name'=>$this->museum->translation(session("languages"))->name,
         'product_category_id'=>$this->product_category_id,
         'created_at' => $this->created_at->format("d.m.Y"),
         'image' => isset($this->images[0])?route('get-file',['path'=>$this->images[0]->path]):null,
