@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Event extends Model
 {
 
-    use HasFactory, SoftDeletes, FilterTrait, TicketTypeTrai;
+    use HasFactory, SoftDeletes, FilterTrait, TicketTypeTrait;
 
     protected $guarded=[];
     protected $table = 'events';

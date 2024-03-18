@@ -22,11 +22,18 @@ class CorporativeSaleController extends BaseController
     {
         $museumId = getAuthMuseumId();
         if(!$museumId) {
-            session(['errorMessage' => 'Սկզբից ստեղծեք Ձեր թանգարանը']);
+            session(['errorMessage' => 'Նախ ստեղծեք թանգարան']);
             return redirect()->route('create-museum');
         }
+
+        $query = CorporativeSale::query();
         
-        $data = CorporativeSale::where('museum_id', $museumId)->orderBy('id', 'DESC')->paginate(5);
+        if (request()->filled('tin')) {
+            $tin = request()->tin;
+            $query->where('tin', $tin);
+        }
+    
+        $data = $query->where('museum_id', $museumId)->orderBy('id', 'DESC')->paginate(5);
 
         return view('content.corporative.index', compact('data'))
                ->with('i', ($request->input('page', 1) - 1) * 5);
