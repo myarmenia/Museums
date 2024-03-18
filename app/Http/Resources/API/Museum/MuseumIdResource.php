@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\API\Museum;
 
+use App\Http\Resources\MuseumBranchesResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,7 +22,7 @@ class MuseumIdResource extends JsonResource
         $links = $this->links->pluck('link', 'name')->toArray();
         $photos = $this->images->where('main', 0)->pluck('path')->map(function (string $path) {
             return route('get-file', ['path' => $path]);
-        });;
+        });
 
         return [
             'id' => $this->id,
@@ -34,6 +35,7 @@ class MuseumIdResource extends JsonResource
             'phones' => $phones,
             'links' => $links,
             'photos' => $photos,
+            'branches' => MuseumBranchesResource::collection($this->museum_branches),
             'main_photo'=> $mainPhotoPath ? route('get-file', ['path' => $mainPhotoPath]) : ''
         ];
     }

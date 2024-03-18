@@ -52,7 +52,7 @@ class MuseumRepository implements MuseumRepositoryInterface
     public function getMuseumByLangAndId($id)
     {
         return Museum::with([
-            'user', 'phones', 'images', 'links', 'region',
+            'user', 'phones', 'images', 'links', 'region', 'museum_branches',
             'translations' => function ($query) {
                 $query->where('lang', session('languages'))->get();
             }
