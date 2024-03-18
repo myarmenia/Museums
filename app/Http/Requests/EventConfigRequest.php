@@ -28,6 +28,7 @@ class EventConfigRequest extends FormRequest
      */
     public function rules(): array
     {
+      // dd($this);
         $url = URL::previous();
         $segments = explode('/', $url);
         $lastSegment = end($segments);
@@ -36,13 +37,13 @@ class EventConfigRequest extends FormRequest
 
         $array= [
 
-          'event_config.*.*.start_time' => 'required|date_format:H:i|before_or_equal:event_config.*.*.end_time',
-          'event_config.*.*.end_time'=>'required|date_format:H:i|after_or_equal:event_config.*.*.start_time'
+          'event_config.*.*.start_time' => 'required|before_or_equal:event_config.*.*.end_time',
+          'event_config.*.*.end_time'=>'required|after_or_equal:event_config.*.*.start_time'
         ];
 
         foreach($this->event_config as $value){
-          foreach($value as $data){
 
+          foreach($value as $data){
             if(strtotime($event->start_date)>strtotime($data['day']) || strtotime($event->end_date)<strtotime($data['day'])){
               $start_time=$event->start_date;
               $array['event_config.*.*.day']="required|date|after:$start_time|before:$event->end_date";
@@ -57,13 +58,15 @@ class EventConfigRequest extends FormRequest
     }
     public function messages(): array
     {
-        return [
+
+       $arr= [
 
             'event_config.*.*.day.required' => 'Օր դաշտը պարտադիր է',
             'event_config.*.*.start_time.required' => 'Սկսվելու ժամանակը պարտադիր է',
             'event_config.*.*.end_time.required' => 'Ավարտվելու  ժամանակը պարտադիր է',
 
         ];
+        return  $arr;
 
 
 

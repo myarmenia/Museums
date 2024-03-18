@@ -22,7 +22,7 @@ class Event extends Model
     protected $table = 'events';
 
     protected $filterFields =['museum_id'];
-    protected $filterFieldsInRelation = ['museum_geographical_location_id'];
+    protected $filterFieldsInRelation = ['museum_geographical_location_id','museum_id'];
     protected $hasRelation = ['museum'];
 
     public function item_translations():HasMany
