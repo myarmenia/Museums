@@ -22,13 +22,13 @@ class Event extends Model
     protected $guarded=[];
     protected $table = 'events';
 
-    protected $filterFields =['museum_id', 'status'];
     protected $defaultFillableFields = ['museum_id'];
-
-  protected $boolFilterFields = ['status'];
+    protected $boolFilterFields = ['status'];
     protected $filterDateRangeFields = ['start_date', 'end_date'];
 
-    protected $filterFieldsInRelation = ['museum_geographical_location_id'];
+    protected $filterFields =['museum_id'];
+    protected $filterFieldsInRelation = ['museum_geographical_location_id','museum_id'];
+
     protected $hasRelation = ['museum'];
 
     public function item_translations():HasMany

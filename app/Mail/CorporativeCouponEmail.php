@@ -13,12 +13,13 @@ class CorporativeCouponEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public string $coupon;
     public string $email;
+    
+    public array $data;
 
-    public function __construct($email, $coupon)
+    public function __construct($email, $data)
     {
-        $this->coupon = $coupon;
+        $this->data = $data;
         $this->email = $email;
     }
 
@@ -42,7 +43,7 @@ class CorporativeCouponEmail extends Mailable
     public function build()
     {
         return $this->with([
-            'coupon' => $this->coupon,
+            'data' => $this->data,
         ])
             ->to($this->email);
     }

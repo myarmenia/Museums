@@ -18,6 +18,7 @@ class SingleProductResource extends JsonResource
         return [
           'id' => $this->id,
           'museum_id'=>$this->museum_id,
+          'museum_name'=>$this->museum->translation(session("languages"))->name,
           'product_category_id'=>$this->category->translation(session("languages"))->name,
           'image' => isset($this->images[0])?route('get-file',['path'=>$this->images[0]->path]):null,
           'name' => $this-> translation(session("languages"))->name,

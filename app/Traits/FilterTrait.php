@@ -23,7 +23,7 @@ trait FilterTrait {
       $like_or_equal = null;
       // dd($filters, $hasRelation, $filterFieldsInRelation);
       foreach ($filters as $field => $value) {
-dd($filters, $field,  $value);
+// dd($filters, $field,  $value);
             if( $value!=null) {
 
             if($likeFilterFields && in_array($field, $likeFilterFields)) {
@@ -32,9 +32,9 @@ dd($filters, $field,  $value);
             else if(is_array($value)) {
                 $builder->whereIn($field, $value);
             }
-// dd($field, $filterFields);
+
             if(in_array($field, $filterFields) ){
-              // dd($field,$filterFields);
+
 
               $builder->where($field, $value);
             }
@@ -75,6 +75,26 @@ dd($filters, $field,  $value);
               });
 
             }
+            if($hasRelation){
+                foreach($hasRelation as $key=>$rel){
+
+                  if($rel && in_array($field,  $filterFieldsInRelation)){
+
+                                  $name = $field;
+                                  $search_name = $field;
+                                  $action = "=";
+                                  $builder->whereHas($rel, function ($query) use ($action, $search_name, $value) {
+                                      $query->where($search_name, $action, $value);
+
+                                  });
+
+                                }
+
+
+                }
+            }
+
+
 
           }
 

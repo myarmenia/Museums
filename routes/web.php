@@ -238,7 +238,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('update/{id}', EventUpdateController::class)->name('event_update');
 
       Route::get('config/component/{id}/{value}', [IncrementController::class,'increment']);
-      Route::post('event-config',EventConfigController::class)->name('event_config_store');
+      Route::post('event-config',[EventConfigController::class,'store'])->name('event_config_store');
+      Route::post('/event-config-update',[EventConfigController::class,'update'])->name('event_config_update');
       // Route::post('/call-edit-component',EventConfigComponentController::class)->name('edit_component');
 
 
