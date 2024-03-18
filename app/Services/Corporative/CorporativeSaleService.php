@@ -3,6 +3,7 @@ namespace App\Services\Corporative;
 
 use App\Mail\CorporativeCouponEmail;
 use App\Models\CorporativeSale;
+use App\Models\Museum;
 use App\Services\FileUploadService;
 use App\Services\Log\LogService;
 use Illuminate\Support\Facades\DB;
@@ -39,9 +40,21 @@ class CorporativeSaleService
             $data['coupon'] = $coupon;
             $data['museum_id'] = getAuthMuseumId();
             $data['ttl_at'] = $newDate;
+            $museumName = $this->getMuseumNameById($data['museum_id']);
+            $data['museum_name'] = $museumName;
+            
             $corporative = CorporativeSale::create($data);
             if($corporative){
-                Mail::send(new CorporativeCouponEmail($data['email'], $coupon));
+                $mailData = [
+                    'coupon' => $coupon,
+                    'museum_name' => $museumName,
+                    'ttl_at' => Carbon::parse($newDate)->format('Y-m-d'),
+                    'tickets_count' => $data['tickets_count'],
+                ];
+
+                Mail::send(new CorporativeCouponEmail($data['email'], $mailData));
+
+                unset($mailData);
             }
 
             unset($data['coupon']);
@@ -85,6 +98,13 @@ class CorporativeSaleService
     public function generateCoupon()
     {
         return Str::random(8);
+    }
+
+    public function getMuseumNameById($id)
+    {
+        $museum = Museum::with('translationsAdmin')->find($id);
+
+        return $museum->translationsAdmin[0]->name;
     }
     
 }
