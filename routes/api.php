@@ -17,6 +17,7 @@ use App\Http\Controllers\API\MuseumController;
 use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\SendOrderController;
 use App\Http\Controllers\API\TestController;
+use App\Http\Controllers\API\Tickets\SingleMuseumEventsTicketsController;
 use App\Http\Controllers\API\Tickets\TicketsController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
@@ -121,7 +122,7 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     Route::group(['prefix' => 'tickets'], function ($router) {
       Route::get('', TicketsController::class);
-
+      Route::get('museum/events', SingleMuseumEventsTicketsController::class);
 
     });
 

@@ -17,7 +17,8 @@ class EventsTicketsResource extends JsonResource
         return [
                   'id' => $this->id,
                   'price' => $this->price,
-                  'min' => ticketType('event')->min_quantity,
+                  'min' => 0,
+                  // 'min' => ticketType('event')->min_quantity,
                   'max' => $this->visitors_quantity_limitation - $this->visitors_quantity,
                   'type' => 'event'
               ];
