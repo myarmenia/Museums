@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
@@ -44,6 +45,10 @@ class Event extends Model
   public function museum():BelongsTo
   {
     return $this->belongsTo(Museum::class,'museum_id');
+  }
+  public function image(): MorphOne
+  {
+    return $this->morphOne(Image::class, 'imageable');
   }
 
 

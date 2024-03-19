@@ -95,6 +95,11 @@ class Museum extends Model
       return $this->hasMany(Product::class);
     }
 
+    public function educational_programs(): HasMany
+    {
+      return $this->HasMany(EducationalProgram::class);
+    }
+
 
 
 
