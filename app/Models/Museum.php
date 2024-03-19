@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Museum extends Model
 {
-    use HasFactory, ModelFilterTrait;
+    use HasFactory, FilterTrait;
 
     protected $table = 'museums';
 
