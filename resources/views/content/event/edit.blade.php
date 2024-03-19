@@ -186,7 +186,7 @@
 
 
               <x-edit-event-config :data="$data"  ></x-edit-event-config>
-             
+
 
 
 
@@ -195,7 +195,7 @@
    {{-- ============Միջոցառման օրերի կարգավորումներ============= --}}
         <div class="m-3 row">
           <label for="email" class="col-form-label">Միջոցառման օրերի կարգավորումներ
-              <button id="add_event_config" data-id="{{ $data->id }}" class="btn btn-primary mx-3">+</button>
+              <button id="add_event_config" data-id="{{ $data->id }}" data-conf-count='0' class="btn btn-primary mx-3">+</button>
           </label>
         </div>
 
@@ -205,7 +205,6 @@
       <form
       id="submit_event_config"
        method="POST"
-      {{-- action={{ route('event_config_store')}} --}}
       >
         @csrf
 
