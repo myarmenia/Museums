@@ -86,6 +86,9 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::get('get-museum/{id}', [MuseumController::class, 'getMuseumById']);
         Route::get('/{id}/educational-programs', EducationalProgramController::class);
         Route::get('/{museum_id}/events', SingleMuseumEventsController::class);
+        Route::group(['prefix' => 'mobile'], function ($router) {
+          Route::get('get-museum/{id}', [MuseumController::class, 'getMobileMuseumById']);
+        });
     });
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);

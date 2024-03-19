@@ -59,4 +59,21 @@ class MuseumRepository implements MuseumRepositoryInterface
         ])->find($id);
     }
 
+    public function getMobileMuseumById($id)
+    {
+        return Museum::with([
+            'user', 'translations', 'phones', 'images', 'links', 
+            'region', 
+            'products' => function ($query) {
+                $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
+            },
+            'educational_programs' => function ($query) {
+                $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
+            },
+            'events' => function ($query) {
+                $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
+            }
+        ])->find($id);
+    }
+
 }

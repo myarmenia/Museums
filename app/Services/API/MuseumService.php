@@ -35,5 +35,10 @@ class MuseumService
         return $this->museumRepository->getMuseumByLangAndId($id);
     }
 
+    public function getMobileMuseumById($id)
+    {
+        return $this->museumRepository->getMobileMuseumById($id);
+    }
+
 
 }
