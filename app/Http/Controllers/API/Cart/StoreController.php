@@ -18,17 +18,19 @@ class StoreController extends BaseController
 
       $row = $this->cartStore($request->all());
       // dd($row);
+      $cart = [];
       if($row){
         $cart = $this->getCartItems();
+        // dd($cart);
       }
       // $data['items_count'] = $row->count();
+      $user = auth('api')->user();
 
+      $data = new CartResource($user);
 
-        $data = CartResource::collection($cart);
+      $parrams['items_count'] = $cart->count();
 
-
-
-      return $this->sendResponse($data, 'success');
+      return $this->sendResponse($data, 'success', $parrams);
 
     // } catch (\Throwable $th) {
 

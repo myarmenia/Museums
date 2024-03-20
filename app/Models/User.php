@@ -52,6 +52,16 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     return $this->hasMany(Cart::class);
   }
 
+  public function cart_products()
+  {
+    return $this->carts()->where('product_id', '!=', null)->get();
+  }
+  public function cart_tickets()
+  {
+      return $this->carts()->where('product_id', null)->get();
+
+  }
+
   public function museum(){
     return $this->hasOne(Museum::class);
   }
