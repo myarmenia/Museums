@@ -23,7 +23,7 @@ trait FilterTrait {
       $like_or_equal = null;
       // dd($filters, $hasRelation, $filterFieldsInRelation);
       foreach ($filters as $field => $value) {
-dd($filters, $field,  $value);
+// dd($filters, $field,  $value);
             if( $value!=null) {
 
             if($likeFilterFields && in_array($field, $likeFilterFields)) {

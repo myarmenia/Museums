@@ -17,7 +17,7 @@ class SingleMuseumEventsTicketsController extends Controller
 
         $events = $this->getMuseumEvents($request->id);
       $data = $this->model
-        ->filter($request->all())
+        ->modelFilter($request->all())
         ->where('status', 1)
         ->orderBy('id', 'DESC')->paginate(12)->withQueryString();
 

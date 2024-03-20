@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ModelFilterTrait;
 use App\Traits\Museum\Tickets\TicketTypeTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ticket extends Model
 {
-    use HasFactory, SoftDeletes, TicketTypeTrait;
+    use HasFactory, SoftDeletes, TicketTypeTrait, ModelFilterTrait;
 
     protected $guarded = [];
 
