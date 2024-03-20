@@ -20,7 +20,19 @@ trait CartStoreTrait
       if($data['type'] == 'product'){
         $product = $this->getProduct($data['product_id']);
         $data['museum_id'] = $product->museum->id;
-        $total_price = $product->price * $data['quantity'];
+
+        $hasProduct = $user->carts->where('product_id', $data['product_id'])->first();
+
+        if($hasProduct){
+          $quantity = $data['quantity'] + $hasProduct->quantity;
+        }
+        else{
+          $quantity = $data['quantity'];
+        }
+
+        $total_price = $product->price * $quantity;
+
+        $data['quantity'] = $quantity;
         $data['total_price'] = $total_price;
 
       }
@@ -37,13 +49,14 @@ trait CartStoreTrait
 
   public function store($data)
   {
-    return Cart::create($data);
+    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'product_id' => $data['product_id']], $data);
   }
 
-  public function chetProductForUser($id)
+  public function getCartItems()
   {
+   
     $user = auth('api')->user();
-    return $user->carts->where('product_id', $id)->first();
+    return $user->carts;
   }
 
 
