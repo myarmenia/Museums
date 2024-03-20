@@ -29,9 +29,9 @@
         <div class="col-md-10">
             <input class="form-control"  type="time"
                 value = "{{ $conf->start_time }}"
-                {{-- name="day" --}}
+
                 name="event_config[{{$conf->event_id }}][{{$conf->id}}][start_time]"
-                     
+
               />
         </div>
         <div class="mb-3 row justify-content-end invalid_error" data-id="event_config.{{ $conf->event_id}}.{{$conf->id}}.start_time"></div>
@@ -47,7 +47,7 @@
         <div class="col-md-10">
             <input class="form-control" type="time"
                 value="{{ $conf->end_time }}"
-                {{-- name="end_time" --}}
+              
                 name="event_config[{{$conf->event_id }}][{{$conf->id}}][end_time]"
 
               />

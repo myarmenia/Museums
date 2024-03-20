@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\Cart\StoreController;
 use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Banner\BannerCantroller;
 use App\Http\Controllers\API\EducationalPrograms\EducationalProgramController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\API\MuseumController;
 use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\SendOrderController;
 use App\Http\Controllers\API\TestController;
+use App\Http\Controllers\API\Tickets\SingleMuseumEventsTicketsController;
 use App\Http\Controllers\API\Tickets\TicketsController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
@@ -86,6 +88,9 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::get('get-museum/{id}', [MuseumController::class, 'getMuseumById']);
         Route::get('/{id}/educational-programs', EducationalProgramController::class);
         Route::get('/{museum_id}/events', SingleMuseumEventsController::class);
+        Route::group(['prefix' => 'mobile'], function ($router) {
+          Route::get('get-museum/{id}', [MuseumController::class, 'getMobileMuseumById']);
+        });
     });
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);

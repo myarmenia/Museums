@@ -2,11 +2,13 @@
 
 namespace App\Http\Resources\API\Museum;
 
-use App\Http\Resources\MuseumBranchesResource;
+use App\Http\Resources\EducationalPrograms\EducationalProgramsResource;
+use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\MuseumBranchesResource;
 
-class MuseumIdResource extends JsonResource
+class MuseumMobileIdResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +17,6 @@ class MuseumIdResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-   
         $translations = $this->translations[0];
         $mainPhotoPath = $this->images->where('main', 1)->first()->path;
         $phones = $this->phones->pluck('number')->toArray();
@@ -35,7 +36,10 @@ class MuseumIdResource extends JsonResource
             'phones' => $phones,
             'links' => $links,
             'photos' => $photos,
+            'events' => MuseumEventResource::collection($this->events),
             'branches' => MuseumBranchesResource::collection($this->museum_branches),
+            'educational_programs' => EducationalProgramsResource::collection($this->educational_programs),
+            'products' => ProductResource::collection($this->products),
             'main_photo'=> $mainPhotoPath ? route('get-file', ['path' => $mainPhotoPath]) : ''
         ];
     }
