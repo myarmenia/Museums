@@ -40,5 +40,11 @@ trait CartStoreTrait
     return Cart::create($data);
   }
 
+  public function chetProductForUser($id)
+  {
+    $user = auth('api')->user();
+    return $user->carts->where('product_id', $id)->first();
+  }
+
 
 }
