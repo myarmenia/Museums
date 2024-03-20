@@ -22,7 +22,7 @@ class EventsListController extends BaseController
 
     $data = $this->model
                 ->filter($request->all())
-      ->where('status',1)
+      ->where('status',1)  
       ->orderBy('id', 'DESC')->paginate(12)->withQueryString();
     return $this->sendResponse(EventListResource::collection($data),'success',['page_count' => $data->lastPage()]);
 
