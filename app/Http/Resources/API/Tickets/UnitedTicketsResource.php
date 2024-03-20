@@ -18,8 +18,8 @@ class UnitedTicketsResource extends JsonResource
         $tickets = [
           'price' => $this->united_ticket_price(),
           'type' => 'united',
-          'min' => ticketType('united')->min_quantity,
-          'max' => ticketType('united')->max_quantity,
+          // 'min' => ticketType('united')->min_quantity,
+          // 'max' => ticketType('united')->max_quantity,
         ];
 
         $data = [

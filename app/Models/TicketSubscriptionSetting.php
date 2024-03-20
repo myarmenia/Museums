@@ -11,6 +11,9 @@ class TicketSubscriptionSetting extends Model
     use HasFactory, TicketTypeTrait;
   protected $guarded = [];
 
+  protected $boolFilterFields = ['status'];
+
+
   public function museum()
   {
     return $this->belongsTo(Museum::class, 'museum_id');

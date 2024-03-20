@@ -20,13 +20,14 @@ class MuseumsViaTicketsResource extends JsonResource
     $method = $request->type . '_tickets';
 
     // $tickets = class_basename($this->{$method}()) == 'HasOne' ? new TicketResource($this->{$method}) : TicketResource::collection($this->{$method});
+    $tickets = $request->type != 'event' ? new TicketResource($this->{$method}) : [];
 
     return [
       'id' => $this->id,
       'region_name' => $this->region->name,
       'name' => $this->translation(session("languages"))->name,
-      'tickets' => new TicketResource($this->{$method})
-     
+      'tickets' => $tickets
+
     ];
   }
 }

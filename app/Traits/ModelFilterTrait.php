@@ -4,9 +4,8 @@ namespace App\Traits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-
-trait FilterTrait {
-
+trait ModelFilterTrait
+{
   public function scopeFilter($builder, $filters = [])
   {
 
@@ -17,13 +16,11 @@ trait FilterTrait {
       }
 
       $tableName = $this->getTable();
-      $filterFields = isset($this->filterFields) ? $this->filterFields : false;
       $defaultFillableFields = $this->defaultFillableFields;
       $relationFilter = $this->relationFilter;
       $hasRelationTranslation = isset ($this->hasRelationTranslation) ? $this->hasRelationTranslation : false;   // fields for model translation
       $filterFieldsInRelation = isset ($this->filterFieldsInRelation) ? $this->filterFieldsInRelation : false;
       $filterDateRangeFields = $this->filterDateRangeFields;
-      $hasRelation = isset ($this->hasRelation) ? $this->hasRelation : false;  //  relation name array
 
       foreach ($filters as $field => $value) {
 
@@ -35,10 +32,6 @@ trait FilterTrait {
 
           if(isset($this->likeFilterFields) && in_array($field, $this->likeFilterFields)) {
               $builder->where($tableName.'.'.$field, 'LIKE', "%$value%");
-          }
-          if($filterFields && in_array($field, $filterFields) ){
-
-              $builder->where($field, $value);
           }
 
           if ($field == "from_created_at") {
@@ -92,26 +85,6 @@ trait FilterTrait {
                 });
 
           }
-
-          if($hasRelation){
-                foreach($hasRelation as $key=>$rel){
-
-                  if($rel && in_array($field,  $filterFieldsInRelation)){
-
-                                  $name = $field;
-                                  $search_name = $field;
-                                  $action = "=";
-                                  $builder->whereHas($rel, function ($query) use ($action, $search_name, $value) {
-                                      $query->where($search_name, $action, $value);
-
-                                  });
-
-                                }
-
-
-                }
-          }
-
           if (isset ($defaultFillableFields) && in_array($field, $defaultFillableFields)) {
               $builder->where($field, $value);
           }
@@ -136,6 +109,5 @@ trait FilterTrait {
         return in_array($needle, $values);
     });
   }
-
 
 }

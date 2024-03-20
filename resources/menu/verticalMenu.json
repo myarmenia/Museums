@@ -62,7 +62,7 @@
     {
       "url": "product/list",
       "name": "Ապրանքներ",
-      "icon": "menu-icon tf-icons bx bx-museum",
+      "icon": "menu-icon tf-icons bx bx-purchase-tag",
       "slug": "product_list",
       "roles": [
         "super_admin"

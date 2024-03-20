@@ -27,7 +27,7 @@ class ChatService
                     'title' => $data['title'],
                 ];
 
-                if($chatData['education_program_type']){
+                if(array_key_exists('education_program_type', $chatData) && $chatData['education_program_type']){
                     $chatData['education_program_type'] = $data['education_program_type'];
                 }
 
