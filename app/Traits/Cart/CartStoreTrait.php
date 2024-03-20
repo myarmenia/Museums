@@ -54,9 +54,10 @@ trait CartStoreTrait
 
   public function getCartItems()
   {
-   
+
     $user = auth('api')->user();
-    return $user->carts;
+    $cort_items = Cart::where('user_id', $user->id)->get();
+    return $cort_items;
   }
 
 
