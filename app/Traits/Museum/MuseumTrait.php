@@ -7,15 +7,18 @@ trait MuseumTrait
 {
   public function getAllMuseums($request)
   {
-    $request['start_date'] = '2024-03-10';
-    // dd($request->all());
-    $data = Museum::
-      filter($request->all())
 
-      ->orderBy('id', 'DESC')->paginate(12)->withQueryString();
-      dd($data);
-    return Museum::all();
+
+      if (request()->type == 'event') {
+// $request['start_date']='2024-03-11';
+        $request['status'] = 1;
+      }
+
+      $data = Museum::filter($request->all())->get();
+      return $data;
+
   }
+
   public function getMuseumEvents($id)
   {
     return Event::where(['museum_id' => $id, 'status' => 1])->get();

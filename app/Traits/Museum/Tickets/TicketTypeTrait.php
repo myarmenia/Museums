@@ -43,13 +43,15 @@ trait TicketTypeTrait
             break;
         case 'subscription':
             $data = [
-                  'id' => $this->id,
-                  'price' => $this->price,
-                  'min' => 0,
-                  'max' => ticketType('subscription')->max_quantity,
-                  'type' => 'subscription'
+                      [
+                        'id' => $this->id,
+                        'price' => $this->price,
+                        'min' => 0,
+                        'max' => ticketType('subscription')->max_quantity,
+                        'type' => 'subscription'
 
-                ];
+                      ]
+              ];
             break;
         case 'united':
           $data = [

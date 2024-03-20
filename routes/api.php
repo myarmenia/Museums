@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\Cart\StoreController;
 use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Banner\BannerCantroller;
 use App\Http\Controllers\API\EducationalPrograms\EducationalProgramController;
@@ -22,6 +23,8 @@ use App\Http\Controllers\API\Tickets\TicketsController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
+use App\Http\Controllers\API\Museum\SinggleMuseumEventsController;
+use App\Http\Controllers\API\Museum\SingleMuseumEventsController;
 use App\Http\Controllers\API\MuseumListController;
 use App\Http\Controllers\API\Product\ProductCantroller;
 use App\Http\Controllers\API\RegionListController;
@@ -84,7 +87,10 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::get('get-museum', [MuseumController::class, 'getMuseum']);
         Route::get('get-museum/{id}', [MuseumController::class, 'getMuseumById']);
         Route::get('/{id}/educational-programs', EducationalProgramController::class);
-
+        Route::get('/{museum_id}/events', SingleMuseumEventsController::class);
+        Route::group(['prefix' => 'mobile'], function ($router) {
+          Route::get('get-museum/{id}', [MuseumController::class, 'getMobileMuseumById']);
+        });
     });
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);
@@ -117,24 +123,43 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     Route::group(['prefix' => 'tickets'], function ($router) {
       Route::get('', TicketsController::class);
-      Route::get('museum/events', SingleMuseumEventsTicketsController::class);
+       Route::get('museum/events', SingleMuseumEventsTicketsController::class);
 
     });
+
+     Route::group(['prefix' => 'cart'], function ($router) {
+      Route::post('store', StoreController::class);
+
+    });
+
+    Route::group(['prefix' => 'events'], function ($router) {
+      Route::get('events-list',[EventsListController::class,'index']);
+      Route::get('single-event/{event_id}',SingleEventController::class);
+
+    });
+
+
+
+
+
+    Route::get('museum-list', MuseumListController::class);
+    Route::get('region-list', RegionListController::class);
+    Route::group(['prefix' => 'museum-branches'], function ($router) {
+      Route::get('/{museum_id}',MuseumBranchesController::class);
+
+    });
+    Route::group(['prefix' => 'events'], function ($router) {
+      Route::get('events-list', [EventsListController::class, 'index']);
+      Route::get('single-event/{event_id}', SingleEventController::class);
+
+    });
+
+    Route::get('museum-list', MuseumListController::class);
+    Route::get('region-list', RegionListController::class);
 
   });
   Route::get('test-museum',[TestController::class, 'test']);
 
-  Route::group(['prefix' => 'museum-branches'], function ($router) {
-    Route::get('/{museum_id}',MuseumBranchesController::class);
 
-  });
-  Route::group(['prefix' => 'events'], function ($router) {
-    Route::get('events-list',[EventsListController::class,'index']);
-    Route::get('single-event/{event_id}',SingleEventController::class);
-
-  });
-
-  Route::get('museum-list', MuseumListController::class);
-  Route::get('region-list', RegionListController::class);
 
 });

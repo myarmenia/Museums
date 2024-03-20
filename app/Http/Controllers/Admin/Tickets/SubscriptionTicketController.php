@@ -19,7 +19,7 @@ class SubscriptionTicketController extends Controller
 
   public function __invoke(TicketRequest $request)
   {
-
+    $request['status'] = isset($request->status) ? true : 0;
     $ticket = $this->itemUpdateOrCreate($request);
 
     if ($ticket) {

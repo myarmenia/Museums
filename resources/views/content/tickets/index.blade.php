@@ -43,7 +43,7 @@
           <div class="card my-3">
               <div class="d-flex justify-content-between align-items-center">
                   <div>
-                      <h6 class="card-header">Աբոնիմենտ</h6>
+                      <h6 class="card-header">Աբոնեմենտ</h6>
                   </div>
               </div>
               <div class="card-body">
@@ -52,7 +52,12 @@
                           <label for="subscription_price" class="col col-form-label">Գին <span class="required-field text-danger">*</span></label>
                           <input class="form-control" placeholder="Գին" value="{{ $ticket_subscription != null ? $ticket_subscription->price : '' }}" id="subscription_price" name="price" />
                       </div>
-
+                      <div class="mb-3 row">
+                            <div class="col-md-2 form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="status" {{$ticket_subscription != null && $ticket_subscription->status ? 'checked' : ''}} name="status">
+                                <label class="form-check-label" for="status">Կարգավիճակ</label>
+                            </div>
+                      </div>
 
                       <button type="submit" class="btn btn-primary">Պահպանել</button>
 

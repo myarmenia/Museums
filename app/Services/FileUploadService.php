@@ -30,14 +30,7 @@ class FileUploadService
         $path = $request['path'] ?? 'public/null_image.png';
         return response()->file(Storage::path($path));
     }
-    public function videoUpload(Request $request ){
-      if ($request->hasFile('video')) {
-        $file = $request->file('video');
-        dd($file);
-        $fileName = time() . '.' . $file->getClientOriginalExtension();
-        $file->storeAs('videos', $fileName, 'public');
-      }
-    }
+    
 
 
 }

@@ -27,6 +27,17 @@
         </div>
         <div class="card-body">
             <div class="table-responsive text-nowrap">
+                <form action="{{ route('corporative') }}" method="get" class="row g-3 mt-2" style="display: flex">
+                    <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
+                        <div class="col-2">
+                            <input type="text" class="form-control" id="" placeholder="ՀՎՀՀ" name="tin"
+                                value="{{ request()->input('tin') }}">
+                        </div>
+                        <div class="mb-3 row">
+                        </div>
+                        <button class="btn btn-primary col-2">Փնտրել</button>
+                    </div>
+                </form>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -51,10 +62,18 @@
                                 <td>{{ $corporative->tin }}</td>
                                 <td>
                                     @if ($corporative->file_path)
-                                        <a href="{{route('get-file', ['path' => $corporative->file_path])}}" target="_blank" > 
-                                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M16 7C6 7 2 16 2 16C2 16 6 25 16 25C26 25 30 16 30 16C30 16 26 7 16 7Z" stroke="#49536E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M16 21C18.7614 21 21 18.7614 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21Z" stroke="#49536E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <a href="{{ route('get-file', ['path' => $corporative->file_path]) }}"
+                                            target="_blank">
+                                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M16 7C6 7 2 16 2 16C2 16 6 25 16 25C26 25 30 16 30 16C30 16 26 7 16 7Z"
+                                                    stroke="#49536E" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M16 21C18.7614 21 21 18.7614 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21Z"
+                                                    stroke="#49536E" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
                                             </svg>
                                         </a>
                                     @endif
@@ -67,8 +86,9 @@
                                 <td>{{ $corporative->ttl_at }}</td>
                                 <td>
                                     <div class="action" data-id="{{ $corporative->id }}" data-tb-name="corporative_sales">
-                                        <button type="button" data-bs-toggle="modal" class="dropdown-item click_delete_item"
-                                            data-bs-target="#smallModal"><i class="bx bx-trash me-1"></i>
+                                        <button type="button" data-bs-toggle="modal"
+                                            class="dropdown-item click_delete_item" data-bs-target="#smallModal"><i
+                                                class="bx bx-trash me-1"></i>
                                         </button>
                                     </div>
                                 </td>

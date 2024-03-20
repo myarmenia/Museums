@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cart extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
   protected $guarded = [];
 
 
@@ -22,9 +22,14 @@ class Cart extends Model
     return $this->belongsTo(TicketType::class, 'ticket_type_id');
   }
 
-  public function museums()
+  public function museum()
   {
     return $this->belongsTo(Museum::class, 'museum_id');
+  }
+
+  public function product()
+  {
+    return $this->belongsTo(Product::class, 'product_id');
   }
 
 

@@ -32,7 +32,7 @@ class CorporativeRequest extends FormRequest
             'tin' => "ՀՎՀՀ դաշտը պարտադիր է",
             'tickets_count.required' => "Տոմսերի քանակ դաշտը պարտադիր է",
             'tickets_count.numeric' => "Տոմսերի քանակ դաշտը պետք է պարունակի միայն թիվ",
-            'tickets_count.min' => "Տոմսերի քանակ դաշտը պետք է ամենաքիչը 100տոմս",
+            'tickets_count.min' => "Տոմսերի նվազագույն քանակը պետք է լինի 100",
             'price.required' => 'Գին դաշտը պարտադիր է',
             'price.numeric' => 'Գին դաշտը դաշտը պետք է պարունակի միայն թիվ',
             'email' => 'Էլփոստ դաշտը դաշտը պարտադիր է և պետք է լինի email տիպի',

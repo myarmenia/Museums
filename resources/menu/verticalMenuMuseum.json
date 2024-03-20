@@ -66,7 +66,7 @@
     {
       "url": "product/list",
       "name": "Ապրանքներ",
-      "icon": "menu-icon tf-icons bx bx-box",
+      "icon": "menu-icon tf-icons bx bx-purchase-tag",
       "slug": "product_list",
       "roles": [
         "museum_admin",
@@ -99,7 +99,7 @@
     {
       "url": "events/list",
       "name": "Միջոցառումներ",
-      "icon": "menu-icon tf-icons bx bx-list-ul",
+      "icon": "menu-icon tf-icons bx bx-party",
       "slug": "event_list",
       "roles": [
         "museum_admin"
