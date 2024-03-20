@@ -130,17 +130,23 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     });
 
+
+
+
+
     Route::get('museum-list', MuseumListController::class);
     Route::get('region-list', RegionListController::class);
     Route::group(['prefix' => 'museum-branches'], function ($router) {
       Route::get('/{museum_id}',MuseumBranchesController::class);
 
     });
+    Route::group(['prefix' => 'events'], function ($router) {
+      Route::get('events-list', [EventsListController::class, 'index']);
+      Route::get('single-event/{event_id}', SingleEventController::class);
 
 
   });
   Route::get('test-museum',[TestController::class, 'test']);
-
 
 
 

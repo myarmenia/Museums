@@ -32,7 +32,9 @@ class Event extends Model
 
     protected $hasRelation = ['museum'];
 
-    public function item_translations():HasMany
+
+
+  public function item_translations():HasMany
   {
     return $this->hasMany(EventTranslation::class);
   }
