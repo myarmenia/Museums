@@ -11,12 +11,15 @@ $(function(){
       $.get('/events/config/component/'+btnId+'/'+count, function(data) {
 
             $('#event_config').append(data);
-            let btnDeleteConf = $('.delete-config')
 
           $('.delete-config').on('click',function(){
+            console.log($(this).parent().parent().remove())
                 $(this).parent().parent().remove()
 
-                if($('.item_config').length==0){
+
+                if($('#event_config>div').length==0){
+                  console.log($('.item_config').length);
+
                   $('#config_div').css('display','none')
 
                 }

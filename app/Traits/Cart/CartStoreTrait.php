@@ -21,10 +21,13 @@ trait CartStoreTrait
         $product = $this->getProduct($data['product_id']);
         $data['museum_id'] = $product->museum->id;
         $total_price = $product->price * $data['quantity'];
+        $data['total_price'] = $total_price;
+
       }
 
       $row = $this->store($data);
-dd($row);
+      return $row;
+// dd($row);
       // return Ticket::where("museum_id", museumAccessId())->first();
   }
 
