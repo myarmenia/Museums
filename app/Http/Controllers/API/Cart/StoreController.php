@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\API\Cart;
 
+use App\Http\Controllers\API\BaseController;
 use App\Http\Controllers\Controller;
 use App\Traits\Cart\CartStoreTrait;
 use Illuminate\Http\Request;
 
-class StoreController extends Controller
+class StoreController extends BaseController
 {
   use CartStoreTrait;
   public function __invoke(Request $request)
@@ -14,15 +15,16 @@ class StoreController extends Controller
 
     // try {
 
-      $data = $this->cartStore($request->all());
-
+      $row = $this->cartStore($request->all());
+      // dd($row);
+      $data['items_count'] = $row->count();
 
 
         // $data = MuseumsViaTicketsResource::collection($museums);
 
 
 
-      // return $this->sendResponse($data, 'success', $params);
+      return $this->sendResponse($data, 'success');
 
     // } catch (\Throwable $th) {
 
