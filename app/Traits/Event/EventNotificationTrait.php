@@ -18,15 +18,11 @@ trait EventNotificationTrait{
   $event_obj->lang['am']['event_text']=  $event->translation('am')->name;
   $event_obj->lang['ru']['event_text']= $event->translation('ru')->name;
   $event_obj->lang['en']['event_text']= $event->translation('en')->name;
-  // $event_obj->link=
-  dd($event_obj);
-  // $event_data = [
 
-  // ];
 
-    foreach($visitors as $visitor){
-      $visitor->notify(new EventNotification($offerData));
-    }
+    // foreach($visitors as $visitor){
+    //   $visitor->notify(new EventNotification($offerData));
+    // }
 
 
   }
