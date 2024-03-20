@@ -26,7 +26,6 @@ class Museum extends Model
 
     protected $relationFilter = [
         'events' => ['start_date', 'end_date','status','museum_id']
-
     ];
 
 
