@@ -18,14 +18,14 @@ trait TicketTypeTrait
                 [
                   'id' => $this->id,
                   'price' => ticketType('standart')->coefficient * $this->price,
-                  'min' => ticketType('standart')->min_quantity,
+                  'min' => 0,
                   'max' => ticketType('standart')->max_quantity,
                   'type' => 'standart'
                 ],
                 [
                   'id' => $this->id,
                   'price' => ticketType('discount')->coefficient * $this->price,
-                  'min' => ticketType('discount')->min_quantity,
+                  'min' => 0,
                   'max' => ticketType('discount')->max_quantity,
                   'type' => 'discount'
 
@@ -33,7 +33,7 @@ trait TicketTypeTrait
                 [
                   'id' => $this->id,
                   'price' => ticketType('free')->coefficient * $this->price,
-                  'min' => ticketType('free')->min_quantity,
+                  'min' => 0,
                   'max' => ticketType('free')->max_quantity,
                   'type' => 'free'
 
@@ -43,13 +43,15 @@ trait TicketTypeTrait
             break;
         case 'subscription':
             $data = [
-                  'id' => $this->id,
-                  'price' => $this->price,
-                  'min' => ticketType('subscription')->min_quantity,
-                  'max' => ticketType('subscription')->max_quantity,
-                  'type' => 'subscription'
+                      [
+                        'id' => $this->id,
+                        'price' => $this->price,
+                        'min' => 0,
+                        'max' => ticketType('subscription')->max_quantity,
+                        'type' => 'subscription'
 
-                ];
+                      ]
+              ];
             break;
         case 'united':
           $data = [

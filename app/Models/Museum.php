@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\FilterTrait;
+use App\Traits\ModelFilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Museum extends Model
 {
-    use HasFactory;
+    use HasFactory, FilterTrait;
 
     protected $table = 'museums';
 
@@ -21,6 +23,12 @@ class Museum extends Model
         'email',
         'account_number',
     ];
+
+    protected $relationFilter = [
+        'events' => ['start_date', 'end_date','status','museum_id']
+
+    ];
+
 
     public function museum_branches(): HasMany
     {
@@ -93,6 +101,11 @@ class Museum extends Model
     }
     public function products(){
       return $this->hasMany(Product::class);
+    }
+
+    public function educational_programs(): HasMany
+    {
+      return $this->HasMany(EducationalProgram::class);
     }
 
 

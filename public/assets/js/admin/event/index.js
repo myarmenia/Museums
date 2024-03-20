@@ -1,27 +1,33 @@
 
 $(function(){
 
-let count=0
 
+  let count = 0
   $('#add_event_config').on("click", function () {
 
-    $('#config_div').css('display','block')
       let btnId=$(this).attr('data-id')
       count++
+      $(this).attr('data-conf-count',count)
       $.get('/events/config/component/'+btnId+'/'+count, function(data) {
-        console.log(data.errors)
+
             $('#event_config').append(data);
-            // var errors = data.responseJSON.errors;
-// console.log(errors)
+            let btnDeleteConf = $('.delete-config')
 
-            // $.each(errors, function (field_name, error) {
-            //   $that.find('[name=' + field_name + ']').after('<span class="error text-strong text-danger">' + error + '</span>')
-            // })
+          $('.delete-config').on('click',function(){
+                $(this).parent().parent().remove()
 
-        });
+                if($('.item_config').length==0){
+                  $('#config_div').css('display','none')
+
+                }
+          })
+            $('#config_div').css('display','block')
+      });
+
 
 
     })
+
 
     $('.delete-event-config').on('click',function(){
        let id=$(this).attr('data-item-id')
@@ -126,7 +132,7 @@ let count=0
 
 
         var errors = data.responseJSON.errors;
-      
+
 
         $.each(errors, function (field_name, error) {
           let k=$that.find('[data-id="' + field_name + '"]')
