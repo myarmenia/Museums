@@ -5,12 +5,13 @@ use App\Models\Event;
 use App\Models\User;
 use App\Notifications\EventNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use stdClass;
 
 trait EventNotificationTrait{
   public function sendEvent($id) {
     $event = Event::where('id',$id)->first();
-    // dd($event->item_translations);
+ 
     $visitors = User::whereHas('roles', function ($query) {
       $query->where('name', 'visitor')->where('status',1);
   })->get();
@@ -22,8 +23,8 @@ trait EventNotificationTrait{
   $event_obj->lang['en']['name'] = $event->translation('en')->name;
   $event_obj->start_date = $event->start_date;
   $event_obj->end_date = $event->end_date;
-  $event_obj->link = "{{}}"
- dd($event_obj);
+  $event_obj->link = route('singleEvent',$id);
+//  dd($event_obj);
 
     foreach($visitors as $visitor){
 

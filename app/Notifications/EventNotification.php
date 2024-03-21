@@ -14,10 +14,14 @@ class EventNotification extends Notification
     /**
      * Create a new notification instance.
      */
+    public $user_id;
     public $event_obj;
-    public function __construct($event_obj)
+    public function __construct($user_id,$event_obj)
     {
-        $this->event_obj = $event_obj
+
+        $this->user_id = $user_id;
+        $this->event_obj = $event_obj;
+
     }
 
     /**
@@ -48,9 +52,11 @@ class EventNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-      dd($notifiable);
-        // return [
-        //     // 'event'=>
-        // ];
+      // dd($notifiable);
+      return  [
+            'event'=> $this->event_obj
+           
+        ];
+
     }
 }
