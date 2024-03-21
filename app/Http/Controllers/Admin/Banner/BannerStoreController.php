@@ -25,6 +25,7 @@ class BannerStoreController extends Controller
       $banner = $this->itemStore($request);
 
       if($banner){
+        
 
         return redirect()->route('banner_list');
       }
