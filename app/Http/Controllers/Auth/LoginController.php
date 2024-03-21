@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,11 +40,16 @@ class LoginController extends Controller
       if(Auth::user()->isAdmin() ){
         return "/";
       }else{
+
         Auth::logout();
         return '/';
       }
 
     } else {
+      // dd(999);
+
+
+      session(['success' => 'Ձեր հաշիվն ապաակտիվացված է:']);
       Auth::logout();
       return '/';
     }

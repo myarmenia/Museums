@@ -32,5 +32,15 @@ class Cart extends Model
     return $this->belongsTo(Product::class, 'product_id');
   }
 
+  public function cart_united_tickets()
+  {
+    return $this->hasMany(CartUnitedTickets::class);
+  }
+
+  public function event_config()
+  {
+    return $this->belongsTo(EventConfig::class, 'event_config_id');
+  }
+
 
 }
