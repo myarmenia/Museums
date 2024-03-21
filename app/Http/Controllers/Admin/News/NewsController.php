@@ -7,9 +7,11 @@ use App\Http\Requests\News\CreateNewsRequest;
 use App\Http\Resources\Project\ProjectResource;
 use App\Models\News;
 use App\Models\NewsTranslations;
+use App\Services\Log\LogService;
 use App\Services\News\NewsService;
 use App\Traits\News\GetNewsTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Input\Input;
 
 class NewsController extends Controller
@@ -47,12 +49,13 @@ class NewsController extends Controller
 
     public function createNews(CreateNewsRequest $request)
     {
-
+// dd($request->all());
         $createNews = $this->newsService->createNews($request->all());
+
 
         $data = News::orderBy('id', 'DESC')->with(['news_translations','images'])->paginate(5);
 
-        // $data = $this->newsService->customNewsResource($data);
+        LogService::store($request->all(), Auth::id(), 'news', 'store');
 
         return redirect()->route('news')
             ->with('i', ($request->input('page', 1) - 1) * 5)
@@ -70,6 +73,9 @@ class NewsController extends Controller
     public function updateNews(CreateNewsRequest $request, $id){
 
       $news = $this->newsService->updateNews($request->all(),$id);
+
+        LogService::store($request->except(["_token"]), Auth::id(), 'news', 'update');
+
       return redirect()->back();
 
     }

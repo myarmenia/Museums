@@ -5,6 +5,7 @@ use App\Models\Image;
 use App\Models\NewsTranslations;
 use App\Repositories\News\NewsRepository;
 use App\Services\FileUploadService;
+use App\Services\Log\LogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -47,7 +48,9 @@ class NewsService
             ];
 
             $news->images()->create($photoData);
+
         }
+
 
         return true;
     }
@@ -100,6 +103,7 @@ class NewsService
           $newstranslate->update($lang);
 
         }
+        
           session(['success' => 'Գործողությունը հաջողությամբ իրականացվեց']);
           return true;
       }
