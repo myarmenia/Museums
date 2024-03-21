@@ -150,7 +150,7 @@ Route::group(['middleware' => ['api']], function ($router) {
     });
     Route::group(['prefix' => 'events'], function ($router) {
       Route::get('events-list', [EventsListController::class, 'index']);
-      Route::get('single-event/{event_id}', SingleEventController::class);
+      Route::get('single-event/{event_id}', SingleEventController::class)->name('singleEvent');
 
     });
 

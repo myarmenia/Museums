@@ -17,7 +17,10 @@ class MuseumListResource extends JsonResource
       // dd($this);
         return [
           "id" => $this->id,
-          'name'=>$this->translation(session("languages"))->name
+          "name"=>$this->translation(session("languages"))->name,
+          "region_id"=>$this->museum_geographical_location_id,
+          "region_name" =>$this->region->name
+
         ];
     }
 }
