@@ -14,13 +14,20 @@ class TicketsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-          'id' => $this->id,
-          'type' => $this->type,
-          'museum_name' => $this->museum->translation(session("languages"))->name,
-          'quantity' => $this->quantity,
-          'total_price' => $this->total_price
 
-        ];
+        $data = [
+              'id' => $this->id,
+              'type' => $this->type,
+              'museum_name' => $this->type == 'united' ? '' : $this->museum->translation(session("languages"))->name,
+              'quantity' => $this->quantity,
+              'total_price' => $this->total_price
+
+            ];
+
+        if($this->type == 'event'){
+            $data['date'] = date('m-d-Y', strtotime($this->event_config->day)) . ' ' . date('H:i', strtotime($this->event_config->start_time)) . '-' . date('H:i', strtotime($this->event_config->end_time));
+        }
+
+        return $data;
     }
 }
