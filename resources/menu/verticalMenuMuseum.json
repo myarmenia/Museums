@@ -36,6 +36,13 @@
       "url": "chats"
     },
     {
+      "name": "Գանձապահ",
+      "icon": "menu-icon tf-icons bx bx-wallet",
+      "slug": "cashier",
+      "roles": ["museum_admin", "cashier"],
+      "url": "cashier"
+    },
+    {
       "name": "Կորպորատիվ վաճառք",
       "icon": "menu-icon tf-icons bx bx-command",
       "slug": "corporative",
