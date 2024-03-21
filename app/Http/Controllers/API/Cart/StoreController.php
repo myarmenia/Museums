@@ -16,16 +16,15 @@ class StoreController extends BaseController
 
     // try {
 
-      $row = $this->cartStore($request->all());
-      // dd($row);
-      $cart = [];
-      if($row){
-        $cart = $this->getCartItems();
-        // dd($cart);
-      }
-      // $data['items_count'] = $row->count();
-      $user = auth('api')->user();
+      $cart_store = $this->cartStore($request->all());
 
+
+      if(!$cart_store){
+          return $this->sendError('error');
+      }
+
+      $cart = $this->getCartItems();
+      $user = auth('api')->user();
       $data = new CartResource($user);
 
       $parrams = $cart->count();
