@@ -28,7 +28,7 @@ class StoreController extends BaseController
 
       $data = new CartResource($user);
 
-      $parrams['items_count'] = $cart->count();
+      $parrams = $cart->count();
 
       return $this->sendResponse($data, 'success', $parrams);
 
