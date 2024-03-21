@@ -50,7 +50,7 @@ trait UpdateTrait{
             Storage::delete($image->path);
 
             $image = Image::where('imageable_id',$id)->delete();
-          
+
 
           }
           $path = FileUploadService::upload($request['photo'], $table_name.'/'.$id);

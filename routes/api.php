@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\Cart\DeleteItemController;
 use App\Http\Controllers\API\Cart\StoreController;
 use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Banner\BannerCantroller;
@@ -26,6 +27,8 @@ use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
 use App\Http\Controllers\API\Museum\SinggleMuseumEventsController;
 use App\Http\Controllers\API\Museum\SingleMuseumEventsController;
 use App\Http\Controllers\API\MuseumListController;
+use App\Http\Controllers\API\Notification\AllNotificationController;
+use App\Http\Controllers\API\Notification\UnreadNotificationController;
 use App\Http\Controllers\API\Product\ProductCantroller;
 use App\Http\Controllers\API\RegionListController;
 use App\Http\Controllers\API\Shop\ProductCantroller as ShopProductCantroller;
@@ -52,6 +55,11 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::group(['prefix' => 'mobile'], function ($router) {
           Route::post('signup-info', [AuthController::class, 'signupInfo']);
         });
+
+        Route::group(['prefix' => 'notification'], function ($router) {
+          Route::get('unread', UnreadNotificationController::class);
+        });
+
     });
 
 
@@ -129,18 +137,10 @@ Route::group(['middleware' => ['api']], function ($router) {
 
      Route::group(['prefix' => 'cart'], function ($router) {
       Route::post('store', StoreController::class);
+      Route::get('item/{id}/delete', DeleteItemController::class);
+
 
     });
-
-    Route::group(['prefix' => 'events'], function ($router) {
-      Route::get('events-list',[EventsListController::class,'index']);
-      Route::get('single-event/{event_id}',SingleEventController::class);
-
-    });
-
-
-
-
 
     Route::get('museum-list', MuseumListController::class);
     Route::get('region-list', RegionListController::class);
@@ -148,17 +148,22 @@ Route::group(['middleware' => ['api']], function ($router) {
       Route::get('/{museum_id}',MuseumBranchesController::class);
 
     });
+
     Route::group(['prefix' => 'events'], function ($router) {
       Route::get('events-list', [EventsListController::class, 'index']);
-      Route::get('single-event/{event_id}', SingleEventController::class);
+      Route::get('single-event/{event_id}', SingleEventController::class)->name('singleEvent');
 
-    });
+
+     });
 
     Route::get('museum-list', MuseumListController::class);
     Route::get('region-list', RegionListController::class);
 
+
+
   });
   Route::get('test-museum',[TestController::class, 'test']);
+
 
 
 

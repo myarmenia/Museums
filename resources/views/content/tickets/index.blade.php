@@ -54,7 +54,7 @@
                       </div>
                       <div class="mb-3 row">
                             <div class="col-md-2 form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" id="status" {{$ticket_subscription && $ticket_subscription->status ? 'checked' : ''}} name="status">
+                                <input class="form-check-input" type="checkbox" id="status" {{$ticket_subscription != null && $ticket_subscription->status ? 'checked' : ''}} name="status">
                                 <label class="form-check-label" for="status">Կարգավիճակ</label>
                             </div>
                       </div>

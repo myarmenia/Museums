@@ -22,9 +22,24 @@ class Cart extends Model
     return $this->belongsTo(TicketType::class, 'ticket_type_id');
   }
 
-  public function museums()
+  public function museum()
   {
     return $this->belongsTo(Museum::class, 'museum_id');
+  }
+
+  public function product()
+  {
+    return $this->belongsTo(Product::class, 'product_id');
+  }
+
+  public function cart_united_tickets()
+  {
+    return $this->hasMany(CartUnitedTickets::class);
+  }
+
+  public function event_config()
+  {
+    return $this->belongsTo(EventConfig::class, 'event_config_id');
   }
 
 
