@@ -49,7 +49,7 @@ class LoginController extends Controller
       // dd(999);
 
 
-      session(['success' => 'Ձեր հաշիվն ապաակտիվացված է:']);
+      session(['errorMessage' => 'Ձեր հաշիվն ապաակտիվացված է:']);
       Auth::logout();
       return '/';
     }
