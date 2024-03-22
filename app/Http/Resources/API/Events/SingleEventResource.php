@@ -16,6 +16,8 @@ class SingleEventResource extends JsonResource
     {
       return [
         'museum_id'=> $this->museum_id,
+        'museum_name'=> $this->museum->translation(session('languages'))->name,
+        'museum_phones'=> $this->museum->phones,
         'price' => $this->price,
         'name' => $this->translation(session('languages'))->name,
         'description' =>$this->translation(session('languages'))->description,
