@@ -108,7 +108,7 @@ $(function(){
       let id=$(this).attr('data-config-id')
       // console.log(id)
      let tb_name = $(this).attr('data-tb-name')
-     let url = `events/event-config-update`
+     let url = "/events/event-config-update"
      $('.invalid_error').html('')
 
      $.ajax({
