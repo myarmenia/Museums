@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\Cart\DeleteItemController;
+use App\Http\Controllers\API\Cart\ItemsController;
 use App\Http\Controllers\API\Cart\StoreController;
 use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Banner\BannerCantroller;
@@ -28,6 +29,7 @@ use App\Http\Controllers\API\Museum\SinggleMuseumEventsController;
 use App\Http\Controllers\API\Museum\SingleMuseumEventsController;
 use App\Http\Controllers\API\MuseumListController;
 use App\Http\Controllers\API\Notification\AllNotificationController;
+use App\Http\Controllers\API\Notification\ReadNotificationController;
 use App\Http\Controllers\API\Notification\UnreadNotificationController;
 use App\Http\Controllers\API\Product\ProductCantroller;
 use App\Http\Controllers\API\RegionListController;
@@ -57,7 +59,8 @@ Route::group(['middleware' => ['api']], function ($router) {
         });
 
         Route::group(['prefix' => 'notification'], function ($router) {
-          Route::get('unread', UnreadNotificationController::class);
+          Route::get('unread', UnreadNotificationController::class)->name('unreadNotification');
+          Route::get('/{id}', ReadNotificationController::class);
         });
 
     });
@@ -68,6 +71,13 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::group(['prefix' => 'user'], function ($router) {
             Route::post('edit', [UserController::class, 'edit']);
             Route::post('editPassword', [UserController::class, 'editPassword']);
+        });
+
+        Route::group(['prefix' => 'cart'], function ($router) {
+          Route::post('store', StoreController::class);
+          Route::get('item/{id}/delete', DeleteItemController::class);
+          Route::get('items', ItemsController::class);
+
         });
 
     });
@@ -135,12 +145,7 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     });
 
-     Route::group(['prefix' => 'cart'], function ($router) {
-      Route::post('store', StoreController::class);
-      Route::get('item/{id}/delete', DeleteItemController::class);
 
-
-    });
 
     Route::get('museum-list', MuseumListController::class);
     Route::get('region-list', RegionListController::class);

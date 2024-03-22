@@ -191,6 +191,15 @@ if (!function_exists('unitedTicketSettings')) {
   }
 
 }
+if (!function_exists('notifications')) {
+  function notifications()
+  {
+    $user = auth('api')->user();
+    $notification = $user->unreadNotifications;
+    return $notification;
+  }
+
+}
 
 
 

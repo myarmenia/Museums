@@ -16,9 +16,8 @@ class CartResource extends JsonResource
     {
 
         return [
-          'products' => ProductsResource::collection($this->cart_products()),
-          'tickets' => TicketsResource::collection($this->cart_tickets()),
-
+          'products' => ProductsResource::collection($this['products']),
+          'tickets' => TicketsResource::collection($this['tickets'])
         ];
     }
 }

@@ -17,7 +17,5 @@ class SingleMuseumEventsTicketsController extends BaseController
       $events = $this->getMuseumEvents($request->museum_id);
 
       return $this->sendResponse(EventsListViaTicketsResource::collection($events), 'success');
-
-
   }
 }

@@ -18,7 +18,7 @@ class CheckAuthUserMiddleware
         if (!auth('api')->check()) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-        
+
         return $next($request);
     }
 }
