@@ -29,11 +29,13 @@ trait CartStoreTrait
     }
 
     if (isset ($data['tickets']) && count($data['tickets']) > 0) {
+
         foreach ($data['tickets'] as $key => $value) {
             $value['user_id'] = $user->id;
             $value['email'] = $email;
 
             if ($value['type'] == 'event') {
+            
                 $maked_data = $this->makeEventData($value, $user);
                 unset($maked_data['id']);
                 $row = $maked_data ? $this->updateOrCreateEvent($maked_data) : false;
