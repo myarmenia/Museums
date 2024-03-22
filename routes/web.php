@@ -204,6 +204,8 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::group(['prefix' => 'cashier', 'middleware' => ['role:museum_admin|cashier']], function () {
     Route::get('/', [CashierController::class, 'index'])->name('cashier.page');
+    Route::post('/check-coupon', [CashierController::class, 'checkCoupon'])->name('cashier.check.coupon');
+    Route::post('/corporative-ticket', [CashierController::class, 'corporativeTicket'])->name('cashier.buy.corporative');
     Route::post('/create-ticket', [CashierController::class, 'createTicket'])->name('cashier.add.ticket');
     // Route::get('/create', [CashierController::class, 'create'])->name('cashier.add');
     
