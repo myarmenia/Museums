@@ -122,10 +122,9 @@ $(function(){
       },
       success: function (data) {
 
-
-        // if (method == 'post') {
           if(data.message){
             console.log(data.message)
+            $that.css('background','transparent')
 
           }
 
