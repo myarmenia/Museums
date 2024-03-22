@@ -42,7 +42,7 @@ class TicketTypeSeeder extends Seeder
             [
               'id' => 4,
               'name' => 'subscription',
-              'coefficient' => null,
+              'coefficient' => 1,
               'min_quantity' => 1,
               'max_quantity' => 5
 

@@ -4,32 +4,35 @@ namespace App\Http\Controllers\API\Cart;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\API\Cart\CartResource;
 use App\Traits\Cart\CartStoreTrait;
+use App\Traits\Cart\CartTrait;
 use Illuminate\Http\Request;
 
 class StoreController extends BaseController
 {
-  use CartStoreTrait;
+  use CartTrait, CartStoreTrait;
   public function __invoke(Request $request)
   {
 
-    // try {
+      $user = auth('api')->user();
+      $cart_store = $this->cartStore($request->all());
 
-      $row = $this->cartStore($request->all());
-      // dd($row);
-      $data['items_count'] = $row->count();
+      if(!$cart_store){
+          return $this->sendError('error');
+      }
+
+      $products = $this->products($user);
+      $tickets = $this->tickets($user);
 
 
-        // $data = MuseumsViaTicketsResource::collection($museums);
+      $cart = $this->getCartItems($user);
+      $data = new CartResource(['products' => $products, 'tickets' => $tickets]);
 
+      $parrams['items_count'] = $cart->count();
 
+      return $this->sendResponse($data, 'success', $parrams);
 
-      return $this->sendResponse($data, 'success');
-
-    // } catch (\Throwable $th) {
-
-    //   return $this->sendError($th->errorInfo, 'error');
-    // }
 
 
   }

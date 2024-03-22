@@ -52,6 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     return $this->hasMany(Cart::class);
   }
 
+  
   public function museum(){
     return $this->hasOne(Museum::class);
   }

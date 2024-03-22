@@ -17,7 +17,7 @@ class Event extends Model
 {
 
 
-    use HasFactory, SoftDeletes, FilterTrait;
+    use HasFactory, SoftDeletes, ModelFilterTrait;
 
 
     protected $guarded=[];

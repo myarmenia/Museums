@@ -52,5 +52,7 @@ protected $hasRelationTranslation = ['item_translations'];
                   ] )->get()->take(4);
   }
 
+  
+
 
 }
