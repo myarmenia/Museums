@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\Cart\DeleteItemController;
+use App\Http\Controllers\API\Cart\ItemsController;
 use App\Http\Controllers\API\Cart\StoreController;
 use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Banner\BannerCantroller;
@@ -72,6 +73,13 @@ Route::group(['middleware' => ['api']], function ($router) {
             Route::post('editPassword', [UserController::class, 'editPassword']);
         });
 
+        Route::group(['prefix' => 'cart'], function ($router) {
+          Route::post('store', StoreController::class);
+          Route::get('item/{id}/delete', DeleteItemController::class);
+          Route::get('items', ItemsController::class);
+
+      });
+
     });
 
     Route::group(['prefix' => 'email'], function ($router) {
@@ -137,12 +145,7 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     });
 
-     Route::group(['prefix' => 'cart'], function ($router) {
-      Route::post('store', StoreController::class);
-      Route::get('item/{id}/delete', DeleteItemController::class);
 
-
-    });
 
     Route::get('museum-list', MuseumListController::class);
     Route::get('region-list', RegionListController::class);
