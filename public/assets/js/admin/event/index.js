@@ -124,8 +124,8 @@ $(function(){
 
           if(data.message){
 
-          //  $(this).find('.btn-outline-danger').
-          //  $(this).css("background-color", "green");
+           $('.btn-outline-danger').css({'background-color':'white','color':'red'})
+         
 
           }
 
