@@ -123,8 +123,8 @@ $(function(){
       success: function (data) {
 
           if(data.message){
-            console.log(data.message)
-            $that.css('background','transparent')
+
+          //  $(this).find('.btn-outline-danger').
 
           }
 
