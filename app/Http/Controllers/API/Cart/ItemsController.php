@@ -5,35 +5,25 @@ namespace App\Http\Controllers\API\Cart;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\API\Cart\CartResource;
-use App\Traits\Cart\CartStoreTrait;
 use App\Traits\Cart\CartTrait;
 use Illuminate\Http\Request;
 
-class StoreController extends BaseController
+class ItemsController extends BaseController
 {
-  use CartTrait, CartStoreTrait;
-  public function __invoke(Request $request)
-  {
+   use CartTrait;
+    public function __invoke(Request $request)
+    {
 
       $user = auth('api')->user();
-      $cart_store = $this->cartStore($request->all());
 
-      if(!$cart_store){
-          return $this->sendError('error');
-      }
-
+      $cart = $this->getCartItems($user);
       $products = $this->products($user);
       $tickets = $this->tickets($user);
 
-
-      $cart = $this->getCartItems($user);
       $data = new CartResource(['products' => $products, 'tickets' => $tickets]);
-
       $parrams['items_count'] = $cart->count();
 
       return $this->sendResponse($data, 'success', $parrams);
 
-
-
-  }
+    }
 }

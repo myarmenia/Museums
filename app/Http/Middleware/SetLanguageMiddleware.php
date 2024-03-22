@@ -10,9 +10,10 @@ class SetLanguageMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-         $language = $request->header('Accept-Language') ?? 'am';
-         session(['languages' => $language]);
+        $language = $request->header('Accept-Language') ?? 'am';
+        session(['languages' => $language]);
+        app()->setLocale(session('languages'));
 
-         return $next($request);
+        return $next($request);
     }
 }
