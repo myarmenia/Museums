@@ -18,4 +18,5 @@ class PhoneNumber extends Model
     ];
 
     public $timestamps = false;
+    
 }
