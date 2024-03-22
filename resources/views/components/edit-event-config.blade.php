@@ -6,8 +6,8 @@
 
 
   <div class="item_config">
-    <form class="event_config_update"  data-config-id="{{ $conf->id }}">
-
+    <form class="event_config_update" method="POST" data-config-id="{{ $conf->id }}">
+@csrf
       <div class="mb-3 row">
         <label for="phone_number" class="col-md-2 col-form-label">օր
           <span class="required-field text-danger">*</span>
@@ -47,7 +47,7 @@
         <div class="col-md-10">
             <input class="form-control" type="time"
                 value="{{ $conf->end_time }}"
-              
+
                 name="event_config[{{$conf->event_id }}][{{$conf->id}}][end_time]"
 
               />
