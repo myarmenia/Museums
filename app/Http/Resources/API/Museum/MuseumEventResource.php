@@ -19,6 +19,7 @@ class MuseumEventResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $translations->name,
+            'price' => $this->price,
             'photo' => route('get-file', ['path' => $this->image->path]),
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,

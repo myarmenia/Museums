@@ -41,6 +41,7 @@ use App\Http\Controllers\Admin\Product\ProductEditController;
 use App\Http\Controllers\Admin\Product\ProductListController;
 use App\Http\Controllers\Admin\Product\ProductStoreController;
 use App\Http\Controllers\Admin\Product\ProductUpdateController;
+use App\Http\Controllers\Admin\cashier\CashierController;
 use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\Corporative\CorporativeSaleController;
 use App\Http\Controllers\museum\MuseumController;
@@ -199,6 +200,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [ChatController::class, 'index'])->name('chats');
     Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
     Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
+  });
+
+  Route::group(['prefix' => 'cashier', 'middleware' => ['role:museum_admin|cashier']], function () {
+    Route::get('/', [CashierController::class, 'index'])->name('cashier.page');
+    Route::post('/create-ticket', [CashierController::class, 'createTicket'])->name('cashier.add.ticket');
+    // Route::get('/create', [CashierController::class, 'create'])->name('cashier.add');
+    
   });
 
   Route::group(['prefix' => 'educational-programs'], function () {

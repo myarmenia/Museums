@@ -29,6 +29,7 @@ use App\Http\Controllers\API\Museum\SinggleMuseumEventsController;
 use App\Http\Controllers\API\Museum\SingleMuseumEventsController;
 use App\Http\Controllers\API\MuseumListController;
 use App\Http\Controllers\API\Notification\AllNotificationController;
+use App\Http\Controllers\API\Notification\ReadNotificationController;
 use App\Http\Controllers\API\Notification\UnreadNotificationController;
 use App\Http\Controllers\API\Product\ProductCantroller;
 use App\Http\Controllers\API\RegionListController;
@@ -58,7 +59,8 @@ Route::group(['middleware' => ['api']], function ($router) {
         });
 
         Route::group(['prefix' => 'notification'], function ($router) {
-          Route::get('unread', UnreadNotificationController::class);
+          Route::get('unread', UnreadNotificationController::class)->name('unreadNotification');
+          Route::get('/{id}', ReadNotificationController::class);
         });
 
     });

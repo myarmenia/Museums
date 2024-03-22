@@ -66,8 +66,8 @@
               <button class="btn btn-primary d-grid w-100" type="submit">Մուտք</button>
             </div>
           </form>
-          @if(session('success'))
-          <div class="text-danger">{{ session('success') }}</div>
+          @if(session('errorMessage'))
+          <div class="text-danger">{{ session('errorMessage') }}</div>
         @endif
 
         </div>
