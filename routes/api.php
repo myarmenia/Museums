@@ -78,7 +78,7 @@ Route::group(['middleware' => ['api']], function ($router) {
           Route::get('item/{id}/delete', DeleteItemController::class);
           Route::get('items', ItemsController::class);
 
-      });
+        });
 
     });
 

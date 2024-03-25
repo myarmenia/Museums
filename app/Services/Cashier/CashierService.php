@@ -1,7 +1,10 @@
 <?php
 namespace App\Services\Cashier;
+use App\Models\CorporativeSale;
+use App\Models\CorporativeVisitorCount;
 use App\Models\Museum;
 use App\Models\Ticket;
+use Carbon\Carbon;
 
 class CashierService 
 {
@@ -17,6 +20,9 @@ class CashierService
         $data = [];
         $museumId = museumAccessId();
         $museum = Museum::with(['guide',
+        'aboniment' => function ($query){
+            $query->where('status', 1)->first();
+        },
         'educational_programs' => function ($query) {
             $query->orderBy('id', 'DESC')->where('status', 1)->get();
         },])->find($museumId);
@@ -29,12 +35,20 @@ class CashierService
             'sale' =>  intval($ticketPrice * $ticketType->coefficient),
         ];
 
+
         if($museum->guide){
             $data['ticket']['guid-arm'] = $museum->guide->price_am;
             $data['ticket']['guid-other'] = $museum->guide->price_other;
         }
         
         $data['educational'] = $this->customEducationalResource($museum->educational_programs);
+
+        if($museum->aboniment){
+            $data['aboniment'] = [
+                'price' => $museum->aboniment->price
+            ];
+        }
+
 
         return $data;
     }
@@ -62,6 +76,61 @@ class CashierService
         return $readyData;
 
 
+    }
+
+    public function checkCoupon($data)
+    {
+        $museumId = museumAccessId();
+       
+        $corporative = $this->getCorporative($museumId, $data['coupon']);
+        if($corporative){
+            return ['success' => true, 'data' => [
+                'companyName' => $corporative->name,
+                'availableTickets' => $corporative->tickets_count - $corporative->visitors_count
+            ]];
+        }
+
+        return ['success' => false, 'message' => "Տվյալ կուպոն ով տվյալ չի գտնվել"];
+
+    }
+
+    public function corporativeTicket($data)
+    {
+        $museumId = museumAccessId();
+        $coupon = $data['corporative-ticket'];
+
+        $corporative = $this->getCorporative($museumId, $coupon);
+        if($corporative){
+            $countBuyTicket = $data['buy-ticket'];
+            CorporativeVisitorCount::create([
+                'corporative_id' => $corporative->id,
+                'count' => $countBuyTicket
+            ]);
+
+            $existVisitorCount = $corporative->visitors_count;
+
+            $corporative->update([
+                'visitors_count' => $existVisitorCount + $countBuyTicket
+            ]);
+
+
+
+            dd("avelacnel email uxarkumy ev vajarman logikan ");
+
+            // return ['success' => true, 'data' => [
+            //     'companyName' => $corporative->name,
+            //     'availableTickets' => $corporative->tickets_count - $corporative->visitors_count
+            // ]];
+        }
+
+        dd($data);
+    }
+
+    public function getCorporative($museumId, $coupon)
+    {
+        $dateNow = Carbon::now()->format('Y-m-d');
+
+        return CorporativeSale::where('museum_id', $museumId)->whereDate('ttl_at', '>=', $dateNow)->where('coupon', $coupon)->first();
     }
 
    

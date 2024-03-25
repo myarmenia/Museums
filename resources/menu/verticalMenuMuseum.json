@@ -36,7 +36,7 @@
       "url": "chats"
     },
     {
-      "name": "Գանձապահ",
+      "name": "Դրամարկղ",
       "icon": "menu-icon tf-icons bx bx-wallet",
       "slug": "cashier",
       "roles": ["museum_admin", "cashier"],

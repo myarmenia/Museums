@@ -25,4 +25,18 @@ class CashierController extends Controller
    {
       dd($request->all());
    }
+
+   public function checkCoupon(Request $request)
+   {
+      $checkedData = $this->cashierService->checkCoupon($request->all());
+      
+      return response()->json($checkedData); 
+   }
+
+   public function corporativeTicket(Request $request)
+   {
+      $buyTicket = $this->cashierService->corporativeTicket($request->all());
+
+      dd($request->all());
+   }
 }
