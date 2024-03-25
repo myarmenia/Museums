@@ -19,9 +19,11 @@ trait MuseumTrait
 
   }
 
-  public function getMuseumEvents($id)
+  public function getMuseumEvents($request)
   {
-    return Event::where(['museum_id' => $id, 'status' => 1])->get();
+    // return Event::where(['museum_id' => $request->museum_id, 'status' => 1])->filter($request->all());
+    return Event::filter($request->all())->get();
+
   }
 
 }

@@ -14,7 +14,7 @@ class SingleMuseumEventsTicketsController extends BaseController
   public function __invoke(Request $request)
   {
 
-      $events = $this->getMuseumEvents($request->museum_id);
+      $events = $this->getMuseumEvents($request);
 
       return $this->sendResponse(EventsListViaTicketsResource::collection($events), 'success');
   }
