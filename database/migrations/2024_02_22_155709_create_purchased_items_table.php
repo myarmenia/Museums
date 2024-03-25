@@ -25,8 +25,13 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade');
 
+            $table->unsignedBigInteger('purchase_id')->nullable();
+            $table->foreign('purchase_id')->references('id')->on('purchases')->onUpdate('cascade')->onDelete('cascade');
+            
+            $table->unsignedBigInteger('event_config_id')->nullable()->after('product_id');
+            $table->foreign('event_config_id')->references('id')->on('event_configs')->onDelete('cascade')->onUpdate('cascade');
+
             $table->string('email');
-            $table->string('token');
             $table->integer('quantity');
             $table->integer('total_price');
             $table->string('type');       // product or ticket

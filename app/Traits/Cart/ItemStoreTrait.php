@@ -6,6 +6,7 @@ use App\Models\CartUnitedTickets;
 use App\Models\Event;
 use App\Models\EventConfig;
 use App\Models\Museum;
+use App\Models\PersonPurchase;
 use App\Models\Product;
 use App\Models\Ticket;
 use App\Models\TicketSubscriptionSetting;
@@ -13,14 +14,26 @@ use App\Models\TicketUnitedSetting;
 use Illuminate\Http\Request;
 
 
-trait CartStoreTrait
+trait ItemStoreTrait
 {
-  public function cartStore(array $data)
+  abstract function model();
+
+  public function getModel(){
+    $className = $this->model();
+
+    if(class_exists($className)) {
+
+        return new $className;
+    }
+  }
+  public function itemStore(array $data)
   {
     $user = auth('api')->user();
     $email = $user->email;
     $data['user_id'] = $user->id;
     $data['email'] = $email;
+
+
 
     if ($data['type'] == 'product') {
         $data = $this->makeProductData($data, $user);
@@ -35,7 +48,7 @@ trait CartStoreTrait
             $value['email'] = $email;
 
             if ($value['type'] == 'event') {
-            
+
                 $maked_data = $this->makeEventData($value, $user);
                 unset($maked_data['id']);
                 $row = $maked_data ? $this->updateOrCreateEvent($maked_data) : false;
@@ -59,6 +72,8 @@ trait CartStoreTrait
         }
     }
 
+
+
     return $row;
 
   }
@@ -80,20 +95,16 @@ trait CartStoreTrait
 
   public function updateOrCreateProduct($data)
   {
-    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'product_id' => $data['product_id']], $data);
+    return $this->getModel()->updateOrCreate(['user_id' => $data['user_id'], 'product_id' => $data['product_id']], $data);
   }
 
   public function updateOrCreateEvent($data)
   {
 
-    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'event_config_id' => $data['event_config_id']], $data);
+    return $this->getModel()->updateOrCreate(['user_id' => $data['user_id'], 'event_config_id' => $data['event_config_id']], $data);
   }
 
-  public function updateOrCreateStandart($data)
-  {
-    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'museum_id' => $data['museum_id'], 'type' => $data['type']], $data);
-  }
-
+  
   public function updateOrCreateUnitedTickets($data)
   {
 
@@ -101,7 +112,7 @@ trait CartStoreTrait
     unset($data['museum_ids']);
     unset($data['united']);
 
-    $cart = Cart::create($data);
+    $cart = $this->getModel()->create($data);
 
     foreach ($united as $key => $value) {
       $value['cart_id'] = $cart->id;
@@ -109,6 +120,11 @@ trait CartStoreTrait
     }
 
     return $cart;
+  }
+
+  public function updateOrCreateStandart($data)
+  {
+    return $this->getModel()->updateOrCreate(['user_id' => $data['user_id'], 'museum_id' => $data['museum_id'], 'type' => $data['type']], $data);
   }
 
   public function getStandartTicket($id)

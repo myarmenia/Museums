@@ -18,6 +18,7 @@ use App\Http\Controllers\API\Lessons\LessonController;
 use App\Http\Controllers\API\MuseumBranch\MuseumBranchesController;
 use App\Http\Controllers\API\MuseumController;
 use App\Http\Controllers\API\NewsController;
+use App\Http\Controllers\API\Purchase\PurchaseStoreController;
 use App\Http\Controllers\API\SendOrderController;
 use App\Http\Controllers\API\TestController;
 use App\Http\Controllers\API\Tickets\SingleMuseumEventsTicketsController;
@@ -164,6 +165,12 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::get('museum-list', MuseumListController::class);
     Route::get('region-list', RegionListController::class);
 
+    Route::group(['prefix' => 'purchase'], function ($router) {
+      Route::post('store', PurchaseStoreController::class)->name('purchase_store');
+      // Route::get('', TicketsController::class);
+      // Route::get('museum/events', SingleMuseumEventsTicketsController::class);
+
+    });
 
 
   });

@@ -201,6 +201,11 @@ if (!function_exists('notifications')) {
 
 }
 
+function generateToken()
+{
+  return md5(rand(1, 8) . microtime());
+}
+
 
 
 
