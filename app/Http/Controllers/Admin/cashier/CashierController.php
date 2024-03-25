@@ -39,4 +39,15 @@ class CashierController extends Controller
 
       dd($request->all());
    }
+
+   public function getEventDetails($id)
+   {
+      $event = $this->cashierService->getEventDetails($id);
+
+      if($event){
+         return response()->json($event);
+      }
+      
+      return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
+   }
 }

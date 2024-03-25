@@ -206,6 +206,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [CashierController::class, 'index'])->name('cashier.page');
     Route::post('/check-coupon', [CashierController::class, 'checkCoupon'])->name('cashier.check.coupon');
     Route::post('/corporative-ticket', [CashierController::class, 'corporativeTicket'])->name('cashier.buy.corporative');
+    Route::get('/get-event-details/{id}', [CashierController::class, 'getEventDetails'])->name('cashier.eveent.details');
     Route::post('/create-ticket', [CashierController::class, 'createTicket'])->name('cashier.add.ticket');
     // Route::get('/create', [CashierController::class, 'create'])->name('cashier.add');
     
