@@ -13,7 +13,7 @@
 @section('content')
     @include('includes.alert')
     <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Գանձարան /</span> Ստեղծել նոր տոմս
+        <span class="text-muted fw-light">Դրամարկղ /</span> Ստեղծել նոր տոմս
     </h4>
     <div class="card">
 
@@ -36,8 +36,18 @@
                 </li>
                 <li class="nav-item">
                     <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-top-messages" aria-controls="navs-top-messages"
-                        aria-selected="false">Messages</button>
+                        data-bs-target="#navs-top-event" aria-controls="navs-top-event"
+                        aria-selected="false">Միջոցառում</button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-top-aboniment" aria-controls="navs-top-aboniment"
+                        aria-selected="false">Աբոնիմենտ</button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-top-corporative" aria-controls="navs-top-corporative"
+                        aria-selected="false">Կորպորատիվ</button>
                 </li>
             </ul>
             <div class="tab-content">
@@ -128,11 +138,11 @@
                                 <tbody class="table-border-bottom-0">
                                     @foreach ($data['educational'] as $item)
                                         <tr class='table-default'>
+                                            {{-- @dd($item) --}}
                                             <td>{{ $item['name'] }}</td>
-                                            <td><input type="number" min="0" class="form-control" onwheel="return false;" price="<?=$data['ticket']['price']?>"
-                                                    id="standard-ticket" name="standard-ticket"
-                                                    value="{{ old('standard-ticket') }}"></td>
-                                            <td id = 'standard-ticket-price'>0</td>
+                                            <td><input type="number" min="0" class="form-control" onwheel="return false;" price="<?=$item['price']?>"
+                                                    id="educational_{{ $item['id'] }}" name="educational[{{ $item['id'] }}]"></td>
+                                            <td id = 'educational-ticket-price_{{ $item['id'] }}'>0</td>
                                         </tr>
                                     @endforeach
                                     
@@ -143,15 +153,11 @@
                             <div class="d-flex">
                                 <div class="me-3">Ընդհանուր</div>
                                 <div class="me-2">
-                                    <span id="ticket-total-count">0</span>
+                                    <span id="educational-total-count">0</span>
                                     <span>տոմս</span>
                                 </div>
                                 <div class="me-2">
-                                    <span id="git-total-count">0</span>
-                                    <span>Էքսկուրսավար</span>
-                                </div>
-                                <div class="me-2">
-                                    <span id="ticket-total-price">0</span>
+                                    <span id="educational-total-price">0</span>
                                     <span>դրամ</span>
                                 </div>
                             </div>
@@ -163,20 +169,111 @@
                         </div>
                     </form>
                 </div>
-                <div class="tab-pane fade" id="navs-top-messages" role="tabpanel">
-                    <p>
-                        Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies cupcake
-                        gummi
-                        bears
-                        cake chocolate.
-                    </p>
-                    <p class="mb-0">
-                        Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake. Sweet roll
-                        icing
-                        sesame snaps caramels danish toffee. Brownie biscuit dessert dessert. Pudding jelly jelly-o tart
-                        brownie
-                        jelly.
-                    </p>
+                <div class="tab-pane fade" id="navs-top-event" role="tabpanel">
+                    <form action="{{ route('cashier.add.ticket') }}" method="post">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table cashier-table">
+                                <thead>
+                                    <tr>
+                                        <th>Անուն</th>
+                                        <th>Քանակ</th>
+                                        <th>Արժեք</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    @foreach ($data['educational'] as $item)
+                                        <tr class='table-default'>
+                                            <td>{{ $item['name'] }}</td>
+                                            <td><input type="number" min="0" class="form-control" onwheel="return false;" price="<?=$item['price']?>"
+                                                    id="educational_{{ $item['id'] }}" name="educational[{{ $item['id'] }}]"></td>
+                                            <td id = 'educational-ticket-price_{{ $item['id'] }}'>0</td>
+                                        </tr>
+                                    @endforeach
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <div class="d-flex">
+                                <div class="me-3">Ընդհանուր</div>
+                                <div class="me-2">
+                                    <span id="educational-total-count">0</span>
+                                    <span>տոմս</span>
+                                </div>
+                                <div class="me-2">
+                                    <span id="educational-total-price">0</span>
+                                    <span>դրամ</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3 row justify-content-end">
+                            <div class="col-sm-10 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary">Պահպանել</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="navs-top-aboniment" role="tabpanel">
+                    <form action="{{ route('cashier.add.ticket') }}" method="post">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table cashier-table">
+                                <thead>
+                                    <tr>
+                                        <th>Անուն</th>
+                                        <th>Քանակ</th>
+                                        <th>Արժեք</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    <tr class='table-default'>
+                                        <td>Աբոնիմենտ</td>
+                                        <td><input type="number" min="0" class="form-control" onwheel="return false;" price="<?=$data['aboniment']['price']?>"
+                                                id="aboniment-ticket" name="aboniment-ticket"
+                                                value="{{ old('aboniment-ticket') }}"></td>
+                                        <td id = 'aboniment-ticket-price'>0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-3 row justify-content-end">
+                            <div class="col-sm-10 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary">Պահպանել</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="navs-top-corporative" role="tabpanel">
+                    <form action="{{ route('cashier.buy.corporative') }}" method="post">
+                        <div class="table-responsive text-nowrap">
+                            <div class="d-flex">
+                                <input type="text" class="form-control" id="corporative-coupon-input"
+                                   placeholder="Գրեք կուպոնը"  name="corporative-ticket">
+                                <button type="button" id = "corporative-coupon" class="btn btn-primary ms-2">ստուգել</button>
+                            </div>
+                            
+                        </div>
+                        <div id='corporative-sale' class="mt-3 d-none">
+                            <div>
+                                <label for="corporative-ticket-price">Ընկերության անուն - <span id="corporative-name"></span></label>
+                            </div>
+                            <div>
+                                <label for="corporative-ticket-price">Մնացած տոմսերի քանակ - <span id="count-corporative-ticket"></span></label>
+                            </div>
+
+                            <div class="mt-2">
+                                <label for="corporative-ticket-price">Քանակ</label>
+                                <input type="number" min="0" name='buy-ticket' class="form-control" onwheel="return false;" />
+                            </div>
+                            
+                            <div class="mt-3 row justify-content-end">
+                                <div class="col-sm-10 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Հաստատել</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
             </div>
 

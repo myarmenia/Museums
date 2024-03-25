@@ -112,7 +112,10 @@ class Museum extends Model
       return $this->hasOne(GuideService::class);
     }
 
-
+    public function aboniment(): HasOne
+    {
+      return $this->hasOne(TicketSubscriptionSetting::class);
+    }
 
 
 }
