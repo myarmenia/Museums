@@ -66,10 +66,24 @@ $(function () {
     $('#ticket-total-price').text(parseInt($('#standard-ticket-price').text()) + parseInt($('#sale-ticket-price').text()) + parseInt($('#git-arm-price').text()) + parseInt($('#git-other-price').text()));
   })
 
+  let mistakeQuantity = [];
   $('input[name^="educational"]').on('input', function () {
-    let ticketCount = $(this).val();
+    let ticketCount = parseInt($(this).val()) || 0;
     let productId = $(this).attr('name').match(/\[(\d+)\]/)[1];
-    if (ticketCount > 0) {
+    let minQuantity = parseInt($(this).attr('min_quantity'));
+    let maxQuantity = parseInt($(this).attr('max_quantity'));
+    if(ticketCount > 0){
+      if(ticketCount < minQuantity || ticketCount > maxQuantity){
+        mistakeQuantity.push(productId);
+      }else {
+        mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
+      }
+    }else if (ticketCount == 0 || ticketCount == '' || ticketCount == null || ticketCount < 0) {
+       mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
+    }
+    console.log(mistakeQuantity)
+
+    if (ticketCount > 0) {    
       let priceTicket = $(this).attr('price');
       let readyPrice = priceTicket * ticketCount;
       $('#educational-ticket-price_' + productId).text(readyPrice);
@@ -91,6 +105,13 @@ $(function () {
     });
     $('#educational-total-count').text(totalQuantity);
     $('#educational-total-price').text(totalPrice);
+
+    if(mistakeQuantity.length > 0){
+      $('#educational-error').attr('style', 'display: block !important');
+      ;
+    }else {
+      $('#educational-error').attr('style', 'display: none !important');
+    }
   });
 
   $('#aboniment-ticket').on('input', function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\cashier;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Cashier\CashierEventRequest;
 use App\Services\Cashier\CashierService;
 use Illuminate\Http\Request;
 
@@ -49,5 +50,10 @@ class CashierController extends Controller
       }
       
       return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
+   }
+
+   public function createEducational(CashierEventRequest $request)
+   {
+      dd($request->all());
    }
 }

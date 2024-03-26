@@ -125,25 +125,34 @@
                     </form>
                 </div>
                 <div class="tab-pane fade" id="navs-top-educational" role="tabpanel">
-                    <form action="{{ route('cashier.add.ticket') }}" method="post">
+                    <form action="{{ route('cashier.add.educational') }}" method="post">
                         <div class="table-responsive text-nowrap">
                             <table class="table cashier-table">
                                 <thead>
                                     <tr>
                                         <th>Անուն</th>
+                                        <th>Մասնակիցների միջակայք</th>
                                         <th>Քանակ</th>
                                         <th>Արժեք</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
+                                    <div id='educational-error' class='d-none' style="color:red">Տոմսերի քանակը պետք է համապատասխանի միջակայքին</div>
                                     @foreach ($data['educational'] as $item)
                                         <tr class='table-default'>
                                             {{-- @dd($item) --}}
                                             <td>{{ $item['name'] }}</td>
-                                            <td><input type="number" min="0" class="form-control" onwheel="return false;" price="<?=$item['price']?>"
+                                            <td>{{ $item['min_quantity'] . '-' . $item['max_quantity'] }}</td>
+                                            <td><input type="number" min="0" min_quantity={{$item['min_quantity']}} max_quantity={{$item['max_quantity']}} class="form-control" onwheel="return false;" price="<?=$item['price']?>"
                                                     id="educational_{{ $item['id'] }}" name="educational[{{ $item['id'] }}]"></td>
                                             <td id = 'educational-ticket-price_{{ $item['id'] }}'>0</td>
                                         </tr>
+                                        {{-- @error("educational.{$item['id']}")
+                                        <div class="mb-3 row justify-content-end">
+                                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                                            </div>
+                                        </div>
+                                    @enderror --}}
                                     @endforeach
                                     
                                 </tbody>
