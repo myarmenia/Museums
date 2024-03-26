@@ -3,22 +3,15 @@
 namespace App\Http\Controllers\API\Cart;
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\API\Cart\CartResource;
-use App\Models\Cart;
 use App\Traits\Cart\CartStoreTrait;
 use App\Traits\Cart\CartTrait;
-use App\Traits\Cart\ItemStoreTrait;
 use Illuminate\Http\Request;
 
 class StoreController extends BaseController
 {
-  use CartTrait, ItemStoreTrait;
+  use CartTrait, CartStoreTrait;
 
-  public function model()
-  {
-    return Cart::class;
-  }
   public function __invoke(Request $request)
   {
 

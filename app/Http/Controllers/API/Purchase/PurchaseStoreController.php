@@ -10,28 +10,29 @@ use App\Models\PurchasedItem;
 use App\Traits\Cart\ItemStoreTrait;
 use App\Traits\getPurchaseUniqueTokenTraite;
 use App\Traits\Purchase\PersonTrait;
+use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
 
 class PurchaseStoreController extends BaseController
 {
-    use ItemStoreTrait, getPurchaseUniqueTokenTraite, PersonTrait;
-      public function model()
-    {
-      return PurchasedItem::class;
-    }
+    use PurchaseTrait, getPurchaseUniqueTokenTraite, PersonTrait;
+
     public function __invoke(StoreRequest $request)
     {
 
-      $user = auth('api')->user();
+      $data = $request->all();
+      $data['type'] = 'online';
 
-      if (isset ($request['person']) && count($request['person']) > 0) {
-          $person = $this->createPerson($request['person']);
-          $request['email'] = $user->email;
-          $request['type'] = 'online';
-          $request['person_id'] = $person->id;
-      }
+      // $user = auth('api')->user();
 
-      $item_store = $this->itemStore($request->all());
+      // if (isset ($request['person']) && count($request['person']) > 0) {
+      //     $person = $this->createPerson($request['person']);
+      //     $request['email'] = $user->email;
+      //     $request['type'] = 'online';
+      //     $request['person_id'] = $person->id;
+      // }
+
+      $item_store = $this->itemStore($data);
 
       if (!$item_store) {
         return $this->sendError('error');
