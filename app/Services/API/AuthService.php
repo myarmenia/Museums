@@ -149,7 +149,9 @@ class AuthService
                 'login_at' => now(),
             ]);
             
-            $authUser = auth()->user()->toArray();
+            $authUser = auth()->user();
+            $authUser['card_count'] = $authUser->carts()->get()->count(); 
+            $authUser = $authUser->toArray();
 
             return [
                 'success' => true,
