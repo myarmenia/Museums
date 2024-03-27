@@ -2,7 +2,9 @@
 namespace App\Services\Cashier;
 use App\Models\CorporativeSale;
 use App\Models\CorporativeVisitorCount;
+use App\Models\Event;
 use App\Models\Museum;
+use App\Models\Product;
 use App\Models\Ticket;
 use Carbon\Carbon;
 
@@ -20,6 +22,9 @@ class CashierService
         $data = [];
         $museumId = museumAccessId();
         $museum = Museum::with(['guide',
+        'events' => function ($query){
+            $query->orderBy('id', 'DESC')->where('status', 1)->get();
+        },
         'aboniment' => function ($query){
             $query->where('status', 1)->first();
         },
@@ -35,7 +40,6 @@ class CashierService
             'sale' =>  intval($ticketPrice * $ticketType->coefficient),
         ];
 
-
         if($museum->guide){
             $data['ticket']['guid-arm'] = $museum->guide->price_am;
             $data['ticket']['guid-other'] = $museum->guide->price_other;
@@ -47,6 +51,14 @@ class CashierService
             $data['aboniment'] = [
                 'price' => $museum->aboniment->price
             ];
+        }
+
+        if($museum->events){
+            $data['events'] = $museum->events;
+        }
+
+        if($museum->products){
+            $data['products'] = $museum->products;
         }
 
 
@@ -131,6 +143,26 @@ class CashierService
         $dateNow = Carbon::now()->format('Y-m-d');
 
         return CorporativeSale::where('museum_id', $museumId)->whereDate('ttl_at', '>=', $dateNow)->where('coupon', $coupon)->first();
+    }
+
+    public function getEventDetails($eventId)
+    {
+        if($museumId = museumAccessId()) {
+            $event = Event::with('event_configs')->where("museum_id", $museumId)->find($eventId);
+
+            return $event;
+        }
+
+        session(['errorMessage' => 'Ինչ որ բան այն չէ']);
+
+        return false;
+    }
+
+    public function getProduct()
+    {
+        $museumId = museumAccessId();
+
+        return Product::where(['museum_id'=>$museumId, 'status'=>1])->orderBy('id', 'DESC')->paginate(10);
     }
 
    
