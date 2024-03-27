@@ -60,8 +60,6 @@ trait CartStoreTrait
       }
     }
 
-
-
     return $row;
   }
 

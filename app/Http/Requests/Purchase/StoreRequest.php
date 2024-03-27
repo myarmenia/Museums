@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
         $user = auth('api')->user();
         $data = [];
 
-        if($user == null) {
+        if(($user == null && $this->person == null) || ($user == null && $this->person != null && !isset($this->person['email']))) {
           $data = [
                 "email" => "required|email"
             ];
