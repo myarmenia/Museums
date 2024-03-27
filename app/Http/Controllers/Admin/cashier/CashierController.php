@@ -56,4 +56,17 @@ class CashierController extends Controller
    {
       dd($request->all());
    }
+
+   public function saleProduct(Request $request)
+   {
+      dd($request->all());
+   }
+
+   public function getProduct(Request $request)
+   {
+      $data = $this->cashierService->getProduct();
+
+      return view('content.cashier.product', compact('data'))
+               ->with('i', ($request->input('page', 1) - 1) * 5);
+   }
 }

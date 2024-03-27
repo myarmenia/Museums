@@ -49,6 +49,11 @@
                         data-bs-target="#navs-top-corporative" aria-controls="navs-top-corporative"
                         aria-selected="false">Կորպորատիվ</button>
                 </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-top-product" aria-controls="navs-top-product"
+                        aria-selected="false">Ապրանքներ</button>
+                </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
@@ -140,21 +145,13 @@
                                     <div id='educational-error' class='d-none' style="color:red">Տոմսերի քանակը պետք է համապատասխանի միջակայքին</div>
                                     @foreach ($data['educational'] as $item)
                                         <tr class='table-default'>
-                                            {{-- @dd($item) --}}
                                             <td>{{ $item['name'] }}</td>
                                             <td>{{ $item['min_quantity'] . '-' . $item['max_quantity'] }}</td>
                                             <td><input type="number" min="0" min_quantity={{$item['min_quantity']}} max_quantity={{$item['max_quantity']}} class="form-control" onwheel="return false;" price="<?=$item['price']?>"
                                                     id="educational_{{ $item['id'] }}" name="educational[{{ $item['id'] }}]"></td>
                                             <td id = 'educational-ticket-price_{{ $item['id'] }}'>0</td>
                                         </tr>
-                                        {{-- @error("educational.{$item['id']}")
-                                        <div class="mb-3 row justify-content-end">
-                                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                                            </div>
-                                        </div>
-                                    @enderror --}}
                                     @endforeach
-                                    
                                 </tbody>
                             </table>
                         </div>
@@ -173,7 +170,7 @@
                         </div>
                         <div class="mt-3 row justify-content-end">
                             <div class="col-sm-10 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary">Պահպանել</button>
+                                <button id='educational-button' type="submit" class="btn btn-primary">Պահպանել</button>
                             </div>
                         </div>
                     </form>
@@ -270,6 +267,53 @@
                             </div>
                         </div>
 
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="navs-top-product" role="tabpanel">
+                    <form action="{{ route('cashier.add.product') }}" method="post">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table cashier-table">
+                                <thead>
+                                    <tr>
+                                        <th>Անուն</th>
+                                        <th>Մասնակիցների միջակայք</th>
+                                        <th>Քանակ</th>
+                                        <th>Արժեք</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    <div id='product-error' class='d-none' style="color:red">Տոմսերի քանակը պետք է համապատասխանի միջակայքին</div>
+                                    @foreach ($data['products'] as $item)
+                                        <tr class='table-default'>
+                                            <td>{{ $item['name'] }}</td>
+                                            <td>{{ $item['min_quantity'] . '-' . $item['max_quantity'] }}</td>
+                                            <td><input type="number" min="0" min_quantity={{$item['min_quantity']}} max_quantity={{$item['max_quantity']}} class="form-control" onwheel="return false;" price="<?=$item['price']?>"
+                                                    id="product_{{ $item['id'] }}" name="product[{{ $item['id'] }}]"></td>
+                                            <td id = 'product-ticket-price_{{ $item['id'] }}'>0</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <div class="d-flex">
+                                <div class="me-3">Ընդհանուր</div>
+                                <div class="me-2">
+                                    <span id="product-total-count">0</span>
+                                    <span>տոմս</span>
+                                </div>
+                                <div class="me-2">
+                                    <span id="product-total-price">0</span>
+                                    <span>դրամ</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3 row justify-content-end">
+                            <div class="col-sm-10 d-flex justify-content-end">
+                                <button id='product-button' type="submit" class="btn btn-primary">Պահպանել</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

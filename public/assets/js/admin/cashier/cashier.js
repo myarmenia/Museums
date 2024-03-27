@@ -75,11 +75,14 @@ $(function () {
     if(ticketCount > 0){
       if(ticketCount < minQuantity || ticketCount > maxQuantity){
         mistakeQuantity.push(productId);
+        $('#educational-button').prop('disabled', true);
       }else {
         mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
+        $('#educational-button').prop('disabled', false);
       }
     }else if (ticketCount == 0 || ticketCount == '' || ticketCount == null || ticketCount < 0) {
        mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
+       $('#educational-button').prop('disabled', false);
     }
     console.log(mistakeQuantity)
 
@@ -107,7 +110,7 @@ $(function () {
     $('#educational-total-price').text(totalPrice);
 
     if(mistakeQuantity.length > 0){
-      $('#educational-error').attr('style', 'display: block !important');
+      $('#educational-error').attr('style', 'display: block !important; color:red;');
       ;
     }else {
       $('#educational-error').attr('style', 'display: none !important');

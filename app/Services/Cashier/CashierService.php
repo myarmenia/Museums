@@ -4,6 +4,7 @@ use App\Models\CorporativeSale;
 use App\Models\CorporativeVisitorCount;
 use App\Models\Event;
 use App\Models\Museum;
+use App\Models\Product;
 use App\Models\Ticket;
 use Carbon\Carbon;
 
@@ -54,6 +55,10 @@ class CashierService
 
         if($museum->events){
             $data['events'] = $museum->events;
+        }
+
+        if($museum->products){
+            $data['products'] = $museum->products;
         }
 
 
@@ -151,6 +156,13 @@ class CashierService
         session(['errorMessage' => 'Ինչ որ բան այն չէ']);
 
         return false;
+    }
+
+    public function getProduct()
+    {
+        $museumId = museumAccessId();
+
+        return Product::where(['museum_id'=>$museumId, 'status'=>1])->orderBy('id', 'DESC')->paginate(10);
     }
 
    
