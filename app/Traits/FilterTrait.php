@@ -36,7 +36,7 @@ trait FilterTrait {
           if(isset($this->likeFilterFields) && in_array($field, $this->likeFilterFields)) {
               $builder->where($tableName.'.'.$field, 'LIKE', "%$value%");
           }
-          if($filterFields && in_array($field, $filterFields) ){
+          if($filterFields && in_array($field, $filterFields)   && $value!=null ){
 
               $builder->where($field, $value);
           }

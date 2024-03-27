@@ -89,8 +89,8 @@ if(!function_exists('getLinkNames')){
         $arr = [
             'facebook' => 'Ֆեյսբուք',
             'instagram' => 'Ինստագրամ',
-            'virtual_tour' => 'Վեբ-սայթ',
-            'web_site' => 'Վիրտուալ էքսկուրսիա',
+            'virtual_tour' => 'Վիրտուալ էքսկուրսիա',
+            'web_site' => 'Վեբ-սայթ',
         ];
 
         return $arr[$key];
