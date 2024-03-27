@@ -25,6 +25,7 @@ class MuseumMobileIdResource extends JsonResource
         $photos = $this->images->where('main', 0)->pluck('path')->map(function (string $path) {
             return route('get-file', ['path' => $path]);
         });
+        $request['type'] = 'standart';
 
         return [
             'id' => $this->id,
