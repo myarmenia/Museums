@@ -7,10 +7,11 @@ trait PaymentTrait
 {
   public function addPayment(array $data)
   {
-
       Payment::create($data);
-
   }
 
+  public function getPayment($order_id){
+      Payment::where('payment_order_id', $order_id)->first();
+  }
 
 }

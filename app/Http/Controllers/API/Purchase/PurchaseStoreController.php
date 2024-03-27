@@ -33,14 +33,7 @@ class PurchaseStoreController extends BaseController
 
       $responce['redirect_url'] = $redirect_url;
 
-      // $cart = $this->getCartItems($user);
-      // $data = new CartResource(['products' => $products, 'tickets' => $tickets]);
-
-      // $parrams['items_count'] = $cart->count();
-
       return $redirect_url ? $this->sendResponse($responce, 'success') : $this->sendError('error');
-
-
 
     }
 }

@@ -18,6 +18,7 @@ use App\Http\Controllers\API\Lessons\LessonController;
 use App\Http\Controllers\API\MuseumBranch\MuseumBranchesController;
 use App\Http\Controllers\API\MuseumController;
 use App\Http\Controllers\API\NewsController;
+use App\Http\Controllers\API\Purchase\PaymentResultController;
 use App\Http\Controllers\API\Purchase\PurchaseStoreController;
 use App\Http\Controllers\API\SendOrderController;
 use App\Http\Controllers\API\TestController;
@@ -167,7 +168,7 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     Route::group(['prefix' => 'purchase'], function ($router) {
       Route::post('store', PurchaseStoreController::class)->name('purchase_store');
-      // Route::get('', TicketsController::class);
+      // Route::get('payment-result', PaymentResultController::class);
       // Route::get('museum/events', SingleMuseumEventsTicketsController::class);
 
     });
@@ -175,7 +176,7 @@ Route::group(['middleware' => ['api']], function ($router) {
 
   });
   Route::get('test-museum',[TestController::class, 'test']);
-
+  Route::get('payment-result', PaymentResultController::class);
 
 
 

@@ -29,7 +29,7 @@ trait PaymentRegister
           $item_params = new stdClass();
           $item_params->amount = $item->total_price;
           // $item_params->account = $item->museum->account_number;
-          $item_params->account = "900018001439";
+          $item_params->account = "900018001322";
           $item_params->beneficiary_name = $item->museum->translationsForAdmin->name;
           $item_params->notice = $this->getNotice($item->type);
           $item_params->description = "Վաճառք";
@@ -43,7 +43,7 @@ trait PaymentRegister
                 $item_params = new stdClass();
                 $item_params->amount = $united_item->total_price;
                 // $item_params->account = $united_item->museum->account_number;
-                $item_params->account = "900018001439";
+                $item_params->account = "900018001322";
                 $item_params->beneficiary_name = $united_item->museum->translationsForAdmin->name;
                 $item_params->notice = $this->getNotice('united');
                 $item_params->description = "Վաճառք";
@@ -57,14 +57,13 @@ trait PaymentRegister
       $client = new Client(['verify' => false]);
 
 
-      // dd($payments);
       $response = $client->post('https://api.e-payments.am/group-payments/register', [
           'headers' => [
             'Content-Type' => 'application/json',
             'token' => env('PAYMENT_TOKEN')
           ],
           'body' => json_encode([
-            "callback_url" => "https://www.google.com/callback",
+            "callback_url" => url(''). 'purchase/payment-result',
             "contact_email" => $data['email'],
             'payments' => $payments
             ])
