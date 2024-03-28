@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\cashier;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Cashier\CashierEventRequest;
 use App\Services\Cashier\CashierService;
 use Illuminate\Http\Request;
 
@@ -38,5 +39,34 @@ class CashierController extends Controller
       $buyTicket = $this->cashierService->corporativeTicket($request->all());
 
       dd($request->all());
+   }
+
+   public function getEventDetails($id)
+   {
+      $event = $this->cashierService->getEventDetails($id);
+
+      if($event){
+         return response()->json($event);
+      }
+      
+      return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
+   }
+
+   public function createEducational(CashierEventRequest $request)
+   {
+      dd($request->all());
+   }
+
+   public function saleProduct(Request $request)
+   {
+      dd($request->all());
+   }
+
+   public function getProduct(Request $request)
+   {
+      $data = $this->cashierService->getProduct();
+
+      return view('content.cashier.product', compact('data'))
+               ->with('i', ($request->input('page', 1) - 1) * 5);
    }
 }

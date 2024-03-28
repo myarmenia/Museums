@@ -5,3 +5,7 @@
 .cashier-table tr{
     border-color: transparent !important; 
 }
+
+.form-select {
+    width: 40% !important;
+}

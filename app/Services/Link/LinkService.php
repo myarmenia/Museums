@@ -37,8 +37,8 @@ class LinkService
             $readyLink = [
                 'link' => $link ?? '',
             ];
-              
-            $museum->links()->where('name', $key)->update($readyLink);
+
+            $museum->links()->updateOrCreate(['name' => $key], $readyLink);
 
         }
         return;
