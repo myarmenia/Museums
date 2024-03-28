@@ -158,11 +158,11 @@ class CashierService
         return false;
     }
 
-    public function getProduct()
+    public function getProduct($data)
     {
         $museumId = museumAccessId();
 
-        return Product::where(['museum_id'=>$museumId, 'status'=>1])->orderBy('id', 'DESC')->paginate(10);
+        return Product::with('images')->where(['museum_id'=>$museumId, 'status'=>1])->filter($data)->orderBy('id', 'DESC')->paginate(10)->withQueryString();
     }
 
    

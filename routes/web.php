@@ -212,6 +212,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/products', [CashierController::class, 'getProduct'])->name('cashier.product');
     Route::post('/sale-product', [CashierController::class, 'saleProduct'])->name('cashier.add.product');
     
+    
     // Route::get('/create', [CashierController::class, 'create'])->name('cashier.add');
     
   });
