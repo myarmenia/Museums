@@ -21,8 +21,9 @@ class PurchaseStoreController extends BaseController
 
       $purchase = $this->purchase($data);
 
-      if (!$purchase) {
-          return $this->sendError('error');
+      if (isset($purchase['error'])) {
+
+          return $this->sendError(__('messages.' . $purchase['error']));
       }
 
       $redirect_url = $this->register($purchase);
@@ -33,7 +34,7 @@ class PurchaseStoreController extends BaseController
 
       $responce['redirect_url'] = $redirect_url;
 
-      return $redirect_url ? $this->sendResponse($responce, 'success') : $this->sendError('error');
+      return  $this->sendResponse($responce, 'success');
 
     }
 }

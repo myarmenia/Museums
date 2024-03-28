@@ -6,11 +6,11 @@ use GuzzleHttp\Client;
 
 trait CheckPaymentStatusTrait
 {
-  public function checkStatus($order_id)
+  public function checkStatus(string $order_id)
   {
 
       $client = new Client(['verify' => false]);
-
+      $result_data = false;
 
       $response = $client->post('https://api.e-payments.am/group-payments/check-status', [
         'headers' => [
@@ -24,28 +24,39 @@ trait CheckPaymentStatusTrait
         ])
       ]);
 
-      // if ($response->getStatusCode() == 200) { // 200 OK
+      if ($response->getStatusCode() == 200) { // 200 OK
 
-      //       $response_d = $response->getBody()->getContents();
-      //       $response_data = json_decode($response_d);
-      //       $status = $response_data->status;
-      //       if ($response_data->status == 'OK') {
-      //         dd($response_data->data);
-      //         $payment = $this->getPayment($order_id);
-      //         group_payment_status
-      //         $payment_result = $response_data->data->payment->status;
+            $response_d = $response->getBody()->getContents();
+            $response_data = json_decode($response_d);
+            $payment_result = $response_data->status;
+            $response = '';
+            if ($response_data->status == 'OK') {
 
-      //         $payment->update(['status' => $response_data->status]);
-      //         if($response_data->data->group_payment_status == 'success' && $response_data->data->payment != null && $response_data->data->payment->status == 'confirmed')
-      //         $order_id = $response_data->data->order_number;
 
-      //         return $response_data->data->redirect_url;
-      //       } else {
-      //         $message = isset($response_data->message) ? $response_data->message : (isset($response_data->errors) ? $response_data->errors->payment : null);
-      //         return 'error_payment';
-      //       }
+                $group_payment_status = $response_data->data->group_payment_status;
+                $status = $response_data->data->payment != null ? $response_data->data->payment->status : null;
+                $result_data = ['status' => $status, 'group_payment_status' => $group_payment_status];
 
-      // }
+                // if($response_data->data->group_payment_status == 'success' && $response_data->data->payment != null && $response_data->data->payment->status == 'confirmed'){
+                //     $response = 'OK';
+                // }
+
+            } else {
+
+                $message = isset($response_data->message) ? $response_data->message : (isset($response_data->errors) ? $response_data->errors->payment : null);
+                // $response = 'error_payment';
+                $result_data = ['payment_message' => $message];
+            }
+
+            //  $payment = $this->getPayment($order_id);
+             $result_data['payment_result'] = $payment_result;
+            //  $payment->update($result_data);
+
+            //  $this->paymentCompletion($result_data, $order_id);
+
+      }
+
+      return $result_data;
   }
 
 

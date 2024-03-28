@@ -63,7 +63,7 @@ trait PaymentRegister
             'token' => env('PAYMENT_TOKEN')
           ],
           'body' => json_encode([
-            "callback_url" => url(''). 'purchase/payment-result',
+            "callback_url" => url(''). '/purchase/payment-result',
             "contact_email" => $data['email'],
             'payments' => $payments
             ])
@@ -81,8 +81,9 @@ trait PaymentRegister
                   $order_id = $response_data->data->order_number;
                   $order = [
                     'purchase_id' => $data->id,
-                    'payment_order_id'=>$order_id,
-                    'payment_result' => 'new'
+                    'payment_order_id' => $order_id,
+                    'payment_result' => 'new',
+                    'guard_name' => request()->request_type
                   ];
 
                   $this->addPayment($order);

@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('purchase_id')->nullable();
             $table->foreign('purchase_id')->references('id')->on('purchases')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('guard_name')->nullable();
 
             $table->string('payment_order_id')->nullable();
             $table->string('payment_result')->nullable();
-            $table->boolean('status')->default(0);
-            $table->integer('error_code')->nullable();
+            $table->string('group_payment_status')->nullable();
+            $table->string('status')->nullable();
             $table->string('payment_message')->nullable();
             $table->timestamps();
         });

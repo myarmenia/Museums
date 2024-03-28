@@ -172,11 +172,12 @@ Route::group(['middleware' => ['api']], function ($router) {
       // Route::get('museum/events', SingleMuseumEventsTicketsController::class);
 
     });
+    
+    Route::get('payment-result', PaymentResultController::class);
 
 
   });
   Route::get('test-museum',[TestController::class, 'test']);
-  Route::get('payment-result', PaymentResultController::class);
 
 
 

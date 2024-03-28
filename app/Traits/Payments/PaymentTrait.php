@@ -11,7 +11,8 @@ trait PaymentTrait
   }
 
   public function getPayment($order_id){
-      Payment::where('payment_order_id', $order_id)->first();
+
+      return Payment::where('payment_order_id', $order_id)->first();
   }
 
 }
