@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\API\Museum;
 
+use App\Http\Resources\API\Tickets\TicketResource;
 use App\Http\Resources\EducationalPrograms\EducationalProgramsResource;
 use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class MuseumMobileIdResource extends JsonResource
         $photos = $this->images->where('main', 0)->pluck('path')->map(function (string $path) {
             return route('get-file', ['path' => $path]);
         });
+        $request['type'] = 'standart';
 
         return [
             'id' => $this->id,
@@ -36,6 +38,7 @@ class MuseumMobileIdResource extends JsonResource
             'phones' => $phones,
             'links' => $links,
             'photos' => $photos,
+            'tickets' => new TicketResource($this->standart_tickets),
             'events' => MuseumEventResource::collection($this->events),
             'branches' => MuseumBranchesResource::collection($this->museum_branches),
             'educational_programs' => EducationalProgramsResource::collection($this->educational_programs),
