@@ -162,7 +162,7 @@ class CashierService
     {
         $museumId = museumAccessId();
 
-        return Product::where(['museum_id'=>$museumId, 'status'=>1])->filter($data)->orderBy('id', 'DESC')->paginate(10)->withQueryString();
+        return Product::with('images')->where(['museum_id'=>$museumId, 'status'=>1])->filter($data)->orderBy('id', 'DESC')->paginate(10)->withQueryString();
     }
 
    

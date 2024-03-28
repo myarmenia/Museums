@@ -54,6 +54,7 @@
                 <thead>
                     <tr>
                         <th>Անուն</th>
+                        <th>Նկար</th>
                         <th>Մնացել է</th>
                         <th>Քանակ</th>
                         <th>Արժեք</th>
@@ -61,9 +62,9 @@
                 </thead>
                 <tbody class="table-border-bottom-0">
                     @foreach ($data as $item)
-                        {{-- @dd($item->translation('am')) --}}
                         <tr class='table-default'>
                             <td>{{ $item->translation('am')->name }}</td>
+                            <td><img width="50" height="50" src="{{ route('get-file', ['path' => $item->images->first()->path]) }}"></img></td>
                             <td>{{ $item['quantity'] }}</td>
                             <td><input type="number" min="0" min_quantity={{ $item['min_quantity'] }}
                                     max_quantity={{ $item['max_quantity'] }} class="form-control" onwheel="return false;"
