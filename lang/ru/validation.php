@@ -136,7 +136,7 @@ return [
             'rule-name' => 'custom-message',
         ],
 
-       
+
     ],
 
     /*
@@ -150,5 +150,7 @@ return [
     |
     */
 
-    'attributes' => []
+    'attributes' => [
+        "email" => "Эл. почта"
+    ]
 ];

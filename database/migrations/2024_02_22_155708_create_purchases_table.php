@@ -19,14 +19,13 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
 
+            $table->unsignedBigInteger('person_purchase_id')->nullable();
+            $table->foreign('person_purchase_id')->references('id')->on('person_purchases')->onUpdate('cascade')->onDelete('cascade');
+
             $table->string('email');
-            $table->string('token');
+            $table->string('type');    //online or offline
             $table->integer('amount');
-            $table->string('payment_order_id')->nullable();
-            $table->string('payment_result')->nullable();
             $table->boolean('status')->default(0);
-            $table->integer('error_code')->nullable();
-            $table->string('payment_message')->nullable();
             $table->timestamps();
         });
     }

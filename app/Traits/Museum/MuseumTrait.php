@@ -10,7 +10,7 @@ trait MuseumTrait
 
 
       if (request()->type == 'event') {
-// $request['start_date']='2024-03-11';
+
         $request['status'] = 1;
       }
 
@@ -21,7 +21,7 @@ trait MuseumTrait
 
   public function getMuseumEvents($request)
   {
-    // return Event::where(['museum_id' => $request->museum_id, 'status' => 1])->filter($request->all());
+    $request['status'] = 1;
     return Event::filter($request->all())->get();
 
   }

@@ -63,6 +63,11 @@ class Museum extends Model
         return $this->hasMany(MuseumTranslation::class, 'museum_id', 'id')->where('lang', 'am');;
     }
 
+    public function translationsForAdmin(): HasOne
+    {
+      return $this->hasOne(MuseumTranslation::class, 'museum_id', 'id')->where('lang', 'am');
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
