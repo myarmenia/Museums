@@ -2,6 +2,7 @@
 namespace App\Traits\Payments;
 
 use App\Models\Payment;
+use App\Models\Purchase;
 
 
 trait PaymentCompletionTrait
@@ -16,6 +17,12 @@ trait PaymentCompletionTrait
             $response = 'OK';
 
             $this->updateItemQuantity($payment->purchase_id);
+            if($payment->guard_type == 'cart'){
+                $user = $payment->purchase->user;
+                if($user){
+                    $user->cart->delete();
+                }
+            }
             // code get QR
             // code send email
         }

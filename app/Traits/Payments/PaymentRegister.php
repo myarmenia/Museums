@@ -83,7 +83,9 @@ trait PaymentRegister
                     'purchase_id' => $data->id,
                     'payment_order_id' => $order_id,
                     'payment_result' => 'new',
-                    'guard_name' => request()->request_type
+                    'guard_name' => request()->request_name,
+                    'guard_type' => request()->request_type
+
                   ];
 
                   $this->addPayment($order);

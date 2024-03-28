@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('purchase_id')->nullable();
             $table->foreign('purchase_id')->references('id')->on('purchases')->onUpdate('cascade')->onDelete('cascade');
             $table->string('guard_name')->nullable();
-
+            $table->string('guard_type')->nullable();
             $table->string('payment_order_id')->nullable();
             $table->string('payment_result')->nullable();
             $table->string('group_payment_status')->nullable();
