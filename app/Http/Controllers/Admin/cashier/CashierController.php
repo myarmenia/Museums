@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\cashier;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cashier\CashierEventRequest;
+use App\Models\ProductCategory;
 use App\Services\Cashier\CashierService;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,7 @@ class CashierController extends Controller
 {
    public $cashierService;
 
-   public function __construct(CashierService $cashierService) 
+   public function __construct(CashierService $cashierService)
    {
       $this->cashierService = $cashierService;
    }
@@ -30,8 +31,8 @@ class CashierController extends Controller
    public function checkCoupon(Request $request)
    {
       $checkedData = $this->cashierService->checkCoupon($request->all());
-      
-      return response()->json($checkedData); 
+
+      return response()->json($checkedData);
    }
 
    public function corporativeTicket(Request $request)
@@ -45,10 +46,10 @@ class CashierController extends Controller
    {
       $event = $this->cashierService->getEventDetails($id);
 
-      if($event){
+      if ($event) {
          return response()->json($event);
       }
-      
+
       return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
    }
 
@@ -64,9 +65,13 @@ class CashierController extends Controller
 
    public function getProduct(Request $request)
    {
-      $data = $this->cashierService->getProduct();
+      $product_category = ProductCategory::all();
+      $data = $this->cashierService->getProduct($request->all());
 
-      return view('content.cashier.product', compact('data'))
-               ->with('i', ($request->input('page', 1) - 1) * 5);
+      return view('content.cashier.product', [
+         'data' => $data,
+         'product_category' => $product_category,
+      ])
+         ->with('i', ($request->input('page', 1) - 1) * 5);
    }
 }

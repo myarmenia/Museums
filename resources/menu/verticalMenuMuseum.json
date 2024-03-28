@@ -40,13 +40,6 @@
       "icon": "menu-icon tf-icons bx bx-wallet",
       "slug": "cashier",
       "roles": ["museum_admin", "cashier"],
-      "url": "cashier"
-    },
-    {
-      "name": "Դրամարկղ",
-      "icon": "menu-icon tf-icons bx bx-wallet",
-      "slug": "cashier",
-      "roles": ["museum_admin", "cashier"],
       "submenu": [
         {
           "url": "cashier/tickets",

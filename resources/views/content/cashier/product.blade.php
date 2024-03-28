@@ -1,88 +1,104 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Ապրանք - Վաճառք')
+@section('title', 'Ապրանքների - Դրամարկղ')
 
 @section('page-script')
-    <script src="{{ asset('assets/js/admin\cashier\cashier.js') }}"></script>
-@endsection
-
-@section('page-style')
-    <link rel="stylesheet" href="{{ asset('assets/css/admin/cashier/cashier.css') }}">
+    <script src="{{ asset('assets/js/admin\cashier\productCashier.js') }}"></script>
 @endsection
 
 @section('content')
     @include('includes.alert')
     <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Դրամարկղ /</span> Վաճառել ապրանք
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ route('dashboard-analytics') }}">Դրամարկղ</a>
+                </li>
+                <li class="breadcrumb-item active">Ապրանք</li>
+            </ol>
+        </nav>
     </h4>
-    <div class="card">
 
+    <div class="card">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Վաճառել ապրանք</h5>
+                <h4 class="card-header">Ապրանք</h4>
             </div>
         </div>
         <div class="card-body">
+            <form action="{{ route('cashier.product') }}" method="get" class="row g-3 mt-2" style="display: flex">
+                <div class="d-flex justify-content-end">
+                    <div class="mx-2">
+                        <select id="defaultSelect" name="product_category_id" class="form-select"
+                            value="{{ request()->input('product_category_id') }}">
+                            <option value="">ֆիլտրել ըստ կատեգորիաի</option>
+                            @foreach ($product_category as $item)
+                                @if (request()->input('product_category_id') != null && $item->id == request()->input('product_category_id'))
+                                    <option value="{{ $item->id }}" selected>
+                                        {{ __('product-categories.' . $item->key) }}</option>
+                                @else
+                                    <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}
+                                    </option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                    <button class="btn btn-primary">Փնտրել</button>
+                </div>
+        </div>
+        </form>
+        <form action="{{ route('cashier.add.product') }}" method="post">
 
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-top-educational" aria-controls="navs-top-educational"
-                        aria-selected="false">Կրթական</button>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane fade" id="navs-top-educational" role="tabpanel">
-                    <form action="{{ route('cashier.add.educational') }}" method="post">
-                        <div class="table-responsive text-nowrap">
-                            <table class="table cashier-table">
-                                <thead>
-                                    <tr>
-                                        <th>Անուն</th>
-                                        <th>Մասնակիցների միջակայք</th>
-                                        <th>Քանակ</th>
-                                        <th>Արժեք</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-border-bottom-0">
-                                    <div id='educational-error' class='d-none' style="color:red">Տոմսերի քանակը պետք է համապատասխանի միջակայքին</div>
-                                    @foreach ($data['educational'] as $item)
-                                        <tr class='table-default'>
-                                            <td>{{ $item['name'] }}</td>
-                                            <td>{{ $item['min_quantity'] . '-' . $item['max_quantity'] }}</td>
-                                            <td><input type="number" min="0" min_quantity={{$item['min_quantity']}} max_quantity={{$item['max_quantity']}} class="form-control" onwheel="return false;" price="<?=$item['price']?>"
-                                                    id="educational_{{ $item['id'] }}" name="educational[{{ $item['id'] }}]"></td>
-                                            <td id = 'educational-ticket-price_{{ $item['id'] }}'>0</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <div class="d-flex">
-                                <div class="me-3">Ընդհանուր</div>
-                                <div class="me-2">
-                                    <span id="educational-total-count">0</span>
-                                    <span>տոմս</span>
-                                </div>
-                                <div class="me-2">
-                                    <span id="educational-total-price">0</span>
-                                    <span>դրամ</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-3 row justify-content-end">
-                            <div class="col-sm-10 d-flex justify-content-end">
-                                <button id='educational-button' type="submit" class="btn btn-primary">Պահպանել</button>
-                            </div>
-                        </div>
-                    </form>
+        <div class="table-responsive text-nowrap">
+            <table class="table cashier-table">
+                <thead>
+                    <tr>
+                        <th>Անուն</th>
+                        <th>Մնացել է</th>
+                        <th>Քանակ</th>
+                        <th>Արժեք</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @foreach ($data as $item)
+                        {{-- @dd($item->translation('am')) --}}
+                        <tr class='table-default'>
+                            <td>{{ $item->translation('am')->name }}</td>
+                            <td>{{ $item['quantity'] }}</td>
+                            <td><input type="number" min="0" min_quantity={{ $item['min_quantity'] }}
+                                    max_quantity={{ $item['max_quantity'] }} class="form-control" onwheel="return false;"
+                                    price="<?= $item['price'] ?>" id="product_{{ $item['id'] }}"
+                                    name="product[{{ $item['id'] }}]"></td>
+                            <td id = 'product-ticket-price_{{ $item['id'] }}'>0</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-end">
+            <div class="d-flex">
+                <div class="me-3">Ընդհանուր</div>
+                <div class="me-2">
+                    <span id="product-total-count">0</span>
+                    <span>տոմս</span>
+                </div>
+                <div class="me-2">
+                    <span id="product-total-price">0</span>
+                    <span>դրամ</span>
                 </div>
             </div>
         </div>
+        <div class="mt-3 row justify-content-end">
+            <div class="col-sm-10 d-flex justify-content-end">
+                <button id='product-button' type="submit" class="btn btn-primary">Պահպանել</button>
+            </div>
+        </div>
+        </form>
+
+            <div class="demo-inline-spacing">
+                {{ $data->links() }}
+            </div>
     </div>
-
-
     </div>
 
 
