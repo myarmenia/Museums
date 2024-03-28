@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API\Cart;
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\API\Cart\CartResource;
 use App\Traits\Cart\CartStoreTrait;
 use App\Traits\Cart\CartTrait;
@@ -12,13 +11,14 @@ use Illuminate\Http\Request;
 class StoreController extends BaseController
 {
   use CartTrait, CartStoreTrait;
+
   public function __invoke(Request $request)
   {
 
       $user = auth('api')->user();
-      $cart_store = $this->cartStore($request->all());
+      $item_store = $this->itemStore($request->all());
 
-      if(!$cart_store){
+      if(!$item_store){
           return $this->sendError('error');
       }
 

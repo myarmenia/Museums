@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Country;
 use App\Models\EducationalProgram;
 use App\Models\Museum;
 use App\Models\MuseumStaff;
@@ -201,6 +202,18 @@ if (!function_exists('notifications')) {
 
 }
 
+function generateToken()
+{
+  return md5(rand(1, 8) . microtime());
+}
+
+if (!function_exists('getCountryId')) {
+    function getCountry($key)
+    {
+      return Country::where('key', $key)->first();
+    }
+
+}
 
 
 
