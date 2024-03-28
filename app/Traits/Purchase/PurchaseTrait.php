@@ -190,7 +190,7 @@ trait PurchaseTrait
       return false;
     }
 
-    if (!$event_config->event) {
+    if (!$event_config->event->status) {
       return false;
     }
 

@@ -18,7 +18,7 @@ class EventConfigResource extends JsonResource
         return [
           'id'=>$this->id,
           'event_id'=>$this->event_id,
-          'day'=>$this->day,
+          'day'=> date('d-m-Y', strtotime($this->day)),
           'start_time'=>$this->start_time,
           'end_time' =>$this->end_time,
           'visitors_quantity_limitation'=>$this->visitors_quantity_limitation,
