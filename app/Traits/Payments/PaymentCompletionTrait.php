@@ -23,7 +23,7 @@ trait PaymentCompletionTrait
                     $user->cart->delete();
                 }
             }
-            // code get QR
+            // code get QR via $paymant->purchase_id
             // code send email
         }
         else{

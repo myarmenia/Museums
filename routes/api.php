@@ -168,11 +168,10 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     Route::group(['prefix' => 'purchase'], function ($router) {
       Route::post('store', PurchaseStoreController::class)->name('purchase_store');
-      // Route::get('payment-result', PaymentResultController::class);
-      // Route::get('museum/events', SingleMuseumEventsTicketsController::class);
+     
 
     });
-    
+
     Route::get('payment-result', PaymentResultController::class);
 
 
