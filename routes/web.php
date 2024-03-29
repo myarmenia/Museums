@@ -45,6 +45,7 @@ use App\Http\Controllers\Admin\cashier\CashierController;
 use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\Corporative\CorporativeSaleController;
 use App\Http\Controllers\museum\MuseumController;
+use App\Http\Controllers\NodeApiController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -96,7 +97,7 @@ Auth::routes(['register' => false]);
 
 
 // Route::post('/web/login-check', [AuthController::class, 'login'])->name('web-login-check');
-
+Route::get('/test-qr', [NodeApiController::class, 'test']);
 Route::group(['middleware' => ['auth']], function () {
   // Main Page Route
   Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
