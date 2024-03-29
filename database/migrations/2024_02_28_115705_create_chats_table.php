@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('education_program_type')->nullable();
             $table->boolean('read')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

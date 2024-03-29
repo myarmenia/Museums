@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('museum_id')->references('id')->on('museums')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('price');
             $table->integer('valid_time_days')->default(365);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }
