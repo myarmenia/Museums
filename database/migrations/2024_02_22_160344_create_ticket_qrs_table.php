@@ -19,10 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('purchased_item_id');
             $table->foreign('purchased_item_id')->references('id')->on('purchased_items')->onUpdate('cascade');
 
-            $table->unsignedBigInteger('ticket_type_id')->nullable();
-            $table->foreign('ticket_type_id')->references('id')->on('ticket_types')->onUpdate('cascade');
-
-            $table->string('code')->unique();
+            $table->unsignedBigInteger('item_relation_id')->nullable();
+            $table->string('token')->unique();
             $table->string('path');
             $table->string('type');  // event , united, standart
             $table->integer('price');
