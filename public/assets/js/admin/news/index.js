@@ -37,17 +37,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
           imageContainer.appendChild(image);
 
 
-          const removeButton = document.createElement('button');
-          removeButton.type = 'button';
-          removeButton.className = 'btn btn-outline-danger remove_file btn-sm mt-2';
-          removeButton.id = fileInput.files[i].lastModified;
-          removeButton.textContent = 'Remove';
-
-
-          imageContainer.appendChild(removeButton);
-
+         
           uploadedImagesContainer.appendChild(imageContainer);
-          // uploadedImagesContainer.HTML(imageContainer);
+
 
           if(document.getElementById('photos_div')!=null){
 
