@@ -18,8 +18,12 @@ class StoreController extends BaseController
       $user = auth('api')->user();
       $item_store = $this->itemStore($request->all());
 
-      if(!$item_store){
-          return $this->sendError('error');
+      // if(!$item_store){
+      //     return $this->sendError('error');
+      // }
+      if (isset($item_store['error'])) {
+
+        return $this->sendError(__('messages.' . $item_store['error']));
       }
 
       $products = $this->products($user);

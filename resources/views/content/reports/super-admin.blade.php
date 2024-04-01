@@ -19,12 +19,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
 <script>
-      $( '#multiple-select-field' ).select2( {
-    theme: "bootstrap-5",
-    width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-    placeholder: $( this ).data( 'placeholder' ),
-    closeOnSelect: false,
-} );
+      $( '.select-2').select2( {
+          theme: "bootstrap-5",
+          width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+          placeholder: $( this ).data( 'placeholder' ),
+          closeOnSelect: false,
+      } );
 </script>
 
 @endsection
@@ -57,8 +57,7 @@
 
                         <div class="col-2">
                             {{-- <select id="defaultSelect" name="museum_id" class="form-select" value="{{ request()->input('type') }}" > --}}
-                              <select class="form-select" id="multiple-select-field" data-placeholder="Թանգարան" multiple>
-                                    {{-- <option value="" disabled selected>Թանգարան</option> --}}
+                              <select class="form-select select-2" id="multiple-select-museum" data-placeholder="Թանգարան" name="museum_id" multiple>
                                     @foreach ($museums as $museum)
                                         <option value="{{$museum->id}}" {{ request()->input('museum_id') == $museum->id ? 'selected' : '' }}>{{$museum->translationsForAdmin->name}}</option>
                                     @endforeach
@@ -66,32 +65,31 @@
                             </select>
                         </div>
                         <div class="col-2">
-                            <select id="defaultSelect" name="role" class="form-select" value="{{ request()->input('role') ?? ''}}" >
-                                <option disabled selected>Հաշվետվության տեսակ</option>
-                                <option value="financial" disabled selected>Ֆինասական</option>
-                                <option value="quantitative" disabled selected>Քանակական</option>
-                                <option value="fin_quant" disabled selected>Քանակ/Ֆին</option>
+                            <select id="multiple-select-type" name="type" class="form-select select-2" data-placeholder="Հաշվետվության տեսակ" value="{{ request()->input('type') ?? ''}}" >
+                                {{-- <option disabled selected>Հաշվետվության տեսակ</option> --}}
+                                <option value="financial" >Ֆինասական</option>
+                                <option value="quantitative" >Քանակական</option>
+                                <option value="fin_quant" >Քանակ/Ֆին</option>
                             </select>
                         </div>
 
                         <div class="col-2">
-                            <select id="defaultSelect" name="role" class="form-select" value="{{ request()->input('role') ?? ''}}" >
-                                <option disabled selected>Ժամանակահատված</option>
-                                <option value="first_trimester" disabled selected>1 եռամսյակ</option>
-                                <option value="second_trimester" disabled selected>2 եռամսյակ</option>
-                                <option value="third_trimester" disabled selected>3 եռամսյակ</option>
-                                <option value="fourth_trimester" disabled selected>4 եռամսյակ</option>
-                                <option value="first_semester" disabled selected>1 կիսամյակ</option>
-                                <option value="second_semester" disabled selected>2 կիսամյակ</option>
-                                <option value="per year" disabled selected>տարեկան</option>
-
+                            <select id="multiple-select-time" name="time" class="form-select select-2" value="{{ request()->input('time') ?? ''}}"  data-placeholder="Ժամանակահատված" multiple>
+                                <option value="first_trimester" selected>1 եռամսյակ</option>
+                                <option value="second_trimester" >2 եռամսյակ</option>
+                                <option value="third_trimester" >3 եռամսյակ</option>
+                                <option value="fourth_trimester" >4 եռամսյակ</option>
+                                <option value="first_semester" >1 կիսամյակ</option>
+                                <option value="second_semester" >2 կիսամյակ</option>
+                                <option value="per year" >տարեկան</option>
                             </select>
                         </div>
-
-
-
-                        <button class="btn btn-primary col-2">Որոնել</button>
-                        <a class="btn btn-primary" href="{{ route('logs') }}">Չեղարկել</a>
+                        <div class="col-6 d-flex justify-content-between">
+                            <button class="btn btn-primary col-2">Որոնել</button>
+                            <button class="btn btn-primary col-2">Համեմատել</button>
+                            <button class="btn btn-primary col-2">Արտահանել CSV</button>
+                            <a class="btn btn-primary" href="{{ route('logs') }}">Չեղարկել</a>
+                        </div>
                     </div>
                 </form>
             </div>
