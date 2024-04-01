@@ -83,7 +83,6 @@ trait PurchaseTrait
         $maked_data = $this->makeProductData($value);
         unset($maked_data['product_id']);
 
-        // $row = $maked_data ? $this->addItemInPurchasedItem($maked_data) : ['error' => 'product_not_available']; break;
         if ($maked_data) {
           $row = $this->addItemInPurchasedItem($maked_data);
         } else {
@@ -99,7 +98,6 @@ trait PurchaseTrait
         $maked_data = $this->makeEventData($value);
         unset($maked_data['id']);
 
-        // $row = $maked_data ? $this->addItemInPurchasedItem($maked_data) : ['error' => 'ticket_not_available']; break;
         if ($maked_data) {
           $row = $this->addItemInPurchasedItem($maked_data);
         } else {
@@ -114,10 +112,9 @@ trait PurchaseTrait
         $maked_data = $this->makeTicketData($value);
         unset($maked_data['id']);
 
-        // $row = $maked_data ? $this->addItemInPurchasedItem($maked_data) : ( ['error' => 'ticket_not_available']; break );
         if ($maked_data) {
           $row = $this->addItemInPurchasedItem($maked_data);
-        
+
         } else {
           $row = ['error' => 'ticket_not_available'];
           break;
@@ -129,7 +126,6 @@ trait PurchaseTrait
 
         $maked_data = $this->makeUnitedTicketData($value);
 
-        // $row = $maked_data ? $this->createUnitedTickets($maked_data) : ['error' => 'ticket_not_available']; break;
         if ($maked_data) {
           $row = $this->createUnitedTickets($maked_data);
         } else {
@@ -231,8 +227,7 @@ trait PurchaseTrait
         'price' => $discont_price
       ];
     }
-
-
+    
     $data['total_price'] = $total_price * $data['quantity'];
 
     return $data;

@@ -5,12 +5,12 @@ trait CartTrait
 {
   public function products($user)
   {
-      return $user->carts()->where('product_id', '!=', null)->get();
+      return $user->carts()->where('type', 'product')->get();
   }
 
   public function tickets($user)
   {
-      return $user->carts()->where('product_id', null)->get();
+      return $user->carts()->where('type', '!=', 'product')->get();
   }
 
   public function getCartItems($user)

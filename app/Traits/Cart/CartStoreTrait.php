@@ -35,9 +35,11 @@ trait CartStoreTrait
             continue;
         }
         else{
+
             if ($value['type'] == 'product') {
 
               $maked_data = $this->makeProductData($value);
+              unset($maked_data['product_id']);
 
               if ($maked_data) {
                   $row = $this->updateOrCreateProduct($maked_data);
@@ -66,6 +68,7 @@ trait CartStoreTrait
 
               if ($maked_data) {
                   $row = $this->updateOrCreateStandart($maked_data);
+
               } else {
                   $row = ['error' => 'ticket_not_available'];
                   break;
@@ -106,13 +109,13 @@ trait CartStoreTrait
 
   public function updateOrCreateProduct($data)
   {
-    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'product_id' => $data['product_id']], $data);
+    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'item_relation_id' => $data['item_relation_id']], $data);
   }
 
   public function updateOrCreateEvent($data)
   {
 
-    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'event_config_id' => $data['event_config_id']], $data);
+    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'item_relation_id' => $data['item_relation_id']], $data);
   }
 
 
@@ -135,7 +138,7 @@ trait CartStoreTrait
 
   public function updateOrCreateStandart($data)
   {
-    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'museum_id' => $data['museum_id'], 'type' => $data['type']], $data);
+    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'item_relation_id' => $data['item_relation_id'], 'type' => $data['type']], $data);
   }
 
   public function getStandartTicket($id)
@@ -159,7 +162,7 @@ trait CartStoreTrait
 
     $data['museum_id'] = $product->museum->id;
 
-    $hasProduct = $this->getAuthUser()->carts()->where('product_id', $data['product_id'])->first();
+    $hasProduct = $this->getAuthUser()->carts()->where('item_relation_id', $data['product_id'])->first();
 
     if ($hasProduct) {
       $quantity = $data['quantity'] + $hasProduct->quantity;
@@ -171,6 +174,7 @@ trait CartStoreTrait
 
     $data['quantity'] = $quantity;
     $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['product_id'];
 
     return $data;
   }
@@ -195,7 +199,7 @@ trait CartStoreTrait
     }
 
     $data['museum_id'] = $event_config ? $event_config->event->museum->id : false;
-    $hasEvent = $this->getAuthUser()->carts()->where('event_config_id', $data['id'])->first();
+    $hasEvent = $this->getAuthUser()->carts()->where('item_relation_id', $data['id'])->first();
 
     if ($hasEvent) {
       $quantity = $data['quantity'] + $hasEvent->quantity;
@@ -207,7 +211,7 @@ trait CartStoreTrait
 
     $data['quantity'] = $quantity;
     $data['total_price'] = $total_price;
-    $data['event_config_id'] = $data['id'];
+    $data['item_relation_id'] = $data['id'];
 
 
     return $data;
@@ -224,7 +228,7 @@ trait CartStoreTrait
 
     $data['museum_id'] = $ticket ? $ticket->museum->id : false;
 
-    $hasRow = $this->getAuthUser()->carts()->where(['museum_id' => $ticket->museum->id, 'type' => $data['type']])->first();
+    $hasRow = $this->getAuthUser()->carts()->where(['item_relation_id' => $data['id'], 'type' => $data['type']])->first();
 
     if ($hasRow) {
 
@@ -239,6 +243,7 @@ trait CartStoreTrait
 
     $data['quantity'] = $quantity;
     $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
 
     return $data;
   }
