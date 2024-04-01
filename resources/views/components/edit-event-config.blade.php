@@ -54,7 +54,8 @@
         </div>
         <div class="mb-3 row justify-content-end invalid_error" data-id="event_config.{{ $conf->event_id}}.{{$conf->id}}.end_time"></div>
 
-        <div class="d-flex justify-content-end mt-2">
+        <div class="d-flex justify-content-end text-center mt-2" >
+          <span class="update_text text-center ml-2" ></span>
           <button type="submit" class="btn btn-outline-danger update-event-config mx-1" data-item-id="{{$conf->id}}" data-tb-name="event_configs">Թարմացնել</button>
           <button type="button" class="btn btn-outline-danger delete-event-config" data-item-id="{{$conf->id}}" data-tb-name="event_configs">Ջնջել</button>
 
