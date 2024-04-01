@@ -35,7 +35,7 @@ trait PurchaseTrait
       $purchase_data['email'] = $user->email;
     }
 
-    if (isset ($data['person']) && count($data['person']) > 0) {
+    if (isset($data['person']) && count($data['person']) > 0) {
 
       $country_id = getCountry($data['person']['country_id'])->id;
       $data['person']['country_id'] = $country_id;
@@ -53,15 +53,15 @@ trait PurchaseTrait
     $item = $this->itemStore($data);
 
 
-    if(isset($item['error'])){
-        return $item;
+    if (isset($item['error'])) {
+      return $item;
     }
 
     $museum_id = $item && $item->museum_id != null ? $item->museum_id : null;    // museum_id ete cartic lini gnum@ petq e toghne null
     $prcase_items_count = $purchase->purchased_items->count();
 
     if ($prcase_items_count == 0) {
-        return ['error' => 'system_error'];
+      return ['error' => 'system_error'];
     }
 
     $amount = array_sum($purchase->purchased_items->pluck('total_price')->toArray());
@@ -74,72 +74,68 @@ trait PurchaseTrait
   {
 
 
-      foreach ($data['items'] as $key => $value) {
+    foreach ($data['items'] as $key => $value) {
 
-        $value['purchase_id'] = $data['purchase_id'];
+      $value['purchase_id'] = $data['purchase_id'];
 
-        if ($value['type'] == 'product') {
+      if ($value['type'] == 'product') {
 
-          $maked_data = $this->makeProductData($value);
-          unset($maked_data['product_id']);
+        $maked_data = $this->makeProductData($value);
+        unset($maked_data['product_id']);
 
-          // $row = $maked_data ? $this->addItemInPurchasedItem($maked_data) : ['error' => 'product_not_available']; break;
-          if ($maked_data) {
-              $row = $this->addItemInPurchasedItem($maked_data);
-          } else {
-              $row = ['error' => 'product_not_available'];
-              break;
-          }
-
-        }
-
-
-        if ($value['type'] == 'event') {
-
-          $maked_data = $this->makeEventData($value);
-          unset($maked_data['id']);
-
-          // $row = $maked_data ? $this->addItemInPurchasedItem($maked_data) : ['error' => 'ticket_not_available']; break;
-          if ($maked_data) {
-              $row = $this->addItemInPurchasedItem($maked_data);
-          } else {
-              $row = ['error' => 'ticket_not_available'];
-              break;
-          }
-
-        }
-
-        if ($value['type'] == 'standart' || $value['type'] == 'discount' || $value['type'] == 'free' || $value['type'] == 'subscription') {
-
-          $maked_data = $this->makeTicketData($value);
-          unset($maked_data['id']);
-
-          // $row = $maked_data ? $this->addItemInPurchasedItem($maked_data) : ( ['error' => 'ticket_not_available']; break );
-          if($maked_data){
-              $row =$this->addItemInPurchasedItem($maked_data);
-          }
-          else{
-              $row =['error' => 'ticket_not_available'];
-              break;
-          }
-
-        }
-
-        if ($value['type'] == 'united') {
-
-          $maked_data = $this->makeUnitedTicketData($value);
-
-          // $row = $maked_data ? $this->createUnitedTickets($maked_data) : ['error' => 'ticket_not_available']; break;
-          if ($maked_data) {
-              $row = $this->createUnitedTickets($maked_data);
-          } else {
-              $row = ['error' => 'ticket_not_available'];
-              break;
-          }
-
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+        } else {
+          $row = ['error' => 'product_not_available'];
+          break;
         }
 
       }
+
+
+      if ($value['type'] == 'event') {
+
+        $maked_data = $this->makeEventData($value);
+        unset($maked_data['id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+
+      if ($value['type'] == 'standart' || $value['type'] == 'discount' || $value['type'] == 'free' || $value['type'] == 'subscription') {
+
+        $maked_data = $this->makeTicketData($value);
+        unset($maked_data['id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+
+      if ($value['type'] == 'united') {
+
+        $maked_data = $this->makeUnitedTicketData($value);
+
+        if ($maked_data) {
+          $row = $this->createUnitedTickets($maked_data);
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+
+    }
 
     return $row;
 
@@ -147,9 +143,9 @@ trait PurchaseTrait
 
   public function makeProductData($data)
   {
-    $product = $this->getProduct($data['product_id']);
+    $product = $this->getProduct($data['product_id'], $data['quantity']);
 
-    if (!$product ) {
+    if (!$product) {
       return false;
     }
 
@@ -194,8 +190,13 @@ trait PurchaseTrait
       return false;
     }
 
-    $data['museum_id'] = $event_config ? $event_config->event->museum->id : false;
+    $remainder = $event_config->visitors_quantity_limitation - $event_config->visitors_quantity;
 
+    if($data['quantity'] > $remainder){
+      return false;
+    }
+
+    $data['museum_id'] = $event_config ? $event_config->event->museum->id : false;
     $total_price = $event_config->price * $data['quantity'];
 
     $data['total_price'] = $total_price;
@@ -226,17 +227,16 @@ trait PurchaseTrait
         'price' => $discont_price
       ];
     }
-
-
+    
     $data['total_price'] = $total_price * $data['quantity'];
 
     return $data;
   }
 
 
-  public function getProduct($id)
+  public function getProduct($id, $quantity)
   {
-    return Product::where(['id' => $id, 'status' => 1])->where('quantity', '>', 0)->first();
+    return Product::where(['id' => $id, 'status' => 1])->where('quantity', '>', $quantity)->first();
   }
 
   public function getEvent($id)
