@@ -63,7 +63,7 @@ trait PaymentRegister
             'token' => env('PAYMENT_TOKEN')
           ],
           'body' => json_encode([
-            "callback_url" => url(''). '/purchase/payment-result',
+            "callback_url" => url(''). '/api/payment-result',
             "contact_email" => $data['email'],
             'payments' => $payments
             ])

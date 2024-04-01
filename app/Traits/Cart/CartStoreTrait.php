@@ -18,54 +18,83 @@ use Illuminate\Http\Request;
 trait CartStoreTrait
 {
 
+  public function getAuthUser(){
+    return $user = auth('api')->user();
+  }
   public function itemStore(array $data)
   {
-    $user = auth('api')->user();
+    $user = $this->getAuthUser();
     $email = $user->email;
-    $data['user_id'] = $user->id;
-    $data['email'] = $email;
+    $row = [];
 
+    foreach ($data['items'] as $key => $value) {
 
-
-    if ($data['type'] == 'product') {
-      $data = $this->makeProductData($data, $user);
-      $row = $this->updateOrCreateProduct($data);
-    }
-
-    if (isset($data['tickets']) && count($data['tickets']) > 0) {
-
-      foreach ($data['tickets'] as $key => $value) {
         $value['user_id'] = $user->id;
         $value['email'] = $email;
-
-        if ($value['type'] == 'event') {
-
-          $maked_data = $this->makeEventData($value, $user);
-          unset($maked_data['id']);
-          $row = $maked_data ? $this->updateOrCreateEvent($maked_data) : false;
+        if($value['quantity'] < 1 ){
+            continue;
         }
+        else{
 
-        if ($value['type'] == 'standart' || $value['type'] == 'discount' || $value['type'] == 'free' || $value['type'] == 'subscription') {
-          $maked_data = $this->makeTicketData($value, $user);
-          unset($maked_data['id']);
-          $row = $maked_data ? $this->updateOrCreateStandart($maked_data) : false;
-        }
+            if ($value['type'] == 'product') {
 
-        if ($value['type'] == 'united') {
-          $maked_data = $this->makeUnitedTicketData($value, $user);
+              $maked_data = $this->makeProductData($value);
+              unset($maked_data['product_id']);
 
-          unset($maked_data['museum_ids']);
-          $row = $maked_data ? $this->updateOrCreateUnitedTickets($maked_data) : false;
-        }
+              if ($maked_data) {
+                  $row = $this->updateOrCreateProduct($maked_data);
+              } else {
+                  $row = ['error' => 'product_not_available'];
+                  break;
+              }
+            }
+
+            if ($value['type'] == 'event') {
+
+                $maked_data = $this->makeEventData($value);
+                unset($maked_data['id']);
+
+                if ($maked_data) {
+                    $row = $this->updateOrCreateEvent($maked_data);
+                } else {
+                    $row = ['error' => 'ticket_not_available'];
+                    break;
+                }
+            }
+
+            if ($value['type'] == 'standart' || $value['type'] == 'discount' || $value['type'] == 'free' || $value['type'] == 'subscription') {
+                $maked_data = $this->makeTicketData($value);
+                unset($maked_data['id']);
+
+              if ($maked_data) {
+                  $row = $this->updateOrCreateStandart($maked_data);
+
+              } else {
+                  $row = ['error' => 'ticket_not_available'];
+                  break;
+              }
+            }
+
+            if ($value['type'] == 'united') {
+                $maked_data = $this->makeUnitedTicketData($value);
+
+                unset($maked_data['museum_ids']);
+                if ($maked_data) {
+                    $row = $this->updateOrCreateUnitedTickets($maked_data);
+                } else {
+                    $row = ['error' => 'ticket_not_available'];
+                    break;
+                }
+            }
       }
     }
 
     return $row;
   }
 
-  public function getProduct($id)
+  public function getProduct($id, $quantity)
   {
-    return Product::where(['id' => $id, 'status' => 1])->first();
+    return Product::where(['id' => $id, 'status' => 1])->where('quantity', '>', $quantity)->first();
   }
 
   public function getEvent($id)
@@ -75,18 +104,18 @@ trait CartStoreTrait
 
   public function getEventConfig($id)
   {
-    return EventConfig::where(['id' => $id, 'status' => 1])->first();
+    return EventConfig::where(['id' => $id, 'status' => 1])->whereColumn('visitors_quantity_limitation', '>', 'visitors_quantity')->first();
   }
 
   public function updateOrCreateProduct($data)
   {
-    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'product_id' => $data['product_id']], $data);
+    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'item_relation_id' => $data['item_relation_id']], $data);
   }
 
   public function updateOrCreateEvent($data)
   {
 
-    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'event_config_id' => $data['event_config_id']], $data);
+    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'item_relation_id' => $data['item_relation_id']], $data);
   }
 
 
@@ -109,7 +138,7 @@ trait CartStoreTrait
 
   public function updateOrCreateStandart($data)
   {
-    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'museum_id' => $data['museum_id'], 'type' => $data['type']], $data);
+    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'item_relation_id' => $data['item_relation_id'], 'type' => $data['type']], $data);
   }
 
   public function getStandartTicket($id)
@@ -123,12 +152,17 @@ trait CartStoreTrait
   }
 
 
-  public function makeProductData($data, $user)
+  public function makeProductData($data)
   {
-    $product = $this->getProduct($data['product_id']);
+    $product = $this->getProduct($data['product_id'], $data['quantity']);
+
+    if (!$product) {
+      return false;
+    }
+
     $data['museum_id'] = $product->museum->id;
 
-    $hasProduct = $user->carts()->where('product_id', $data['product_id'])->first();
+    $hasProduct = $this->getAuthUser()->carts()->where('item_relation_id', $data['product_id'])->first();
 
     if ($hasProduct) {
       $quantity = $data['quantity'] + $hasProduct->quantity;
@@ -140,11 +174,12 @@ trait CartStoreTrait
 
     $data['quantity'] = $quantity;
     $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['product_id'];
 
     return $data;
   }
 
-  public function makeEventData($data, $user)
+  public function makeEventData($data)
   {
 
     $event_config = $this->getEventConfig($data['id']);
@@ -157,8 +192,14 @@ trait CartStoreTrait
       return false;
     }
 
+    $remainder = $event_config->visitors_quantity_limitation - $event_config->visitors_quantity;
+
+    if ($data['quantity'] > $remainder) {
+      return false;
+    }
+
     $data['museum_id'] = $event_config ? $event_config->event->museum->id : false;
-    $hasEvent = $user->carts()->where('event_config_id', $data['id'])->first();
+    $hasEvent = $this->getAuthUser()->carts()->where('item_relation_id', $data['id'])->first();
 
     if ($hasEvent) {
       $quantity = $data['quantity'] + $hasEvent->quantity;
@@ -170,14 +211,14 @@ trait CartStoreTrait
 
     $data['quantity'] = $quantity;
     $data['total_price'] = $total_price;
-    $data['event_config_id'] = $data['id'];
+    $data['item_relation_id'] = $data['id'];
 
 
     return $data;
   }
 
 
-  public function makeTicketData($data, $user)
+  public function makeTicketData($data)
   {
     $ticket = $data['type'] == 'subscription' ? $this->getSubscriptionTicket($data['id']) : $this->getStandartTicket($data['id']);
 
@@ -187,7 +228,7 @@ trait CartStoreTrait
 
     $data['museum_id'] = $ticket ? $ticket->museum->id : false;
 
-    $hasRow = $user->carts()->where(['museum_id' => $ticket->museum->id, 'type' => $data['type']])->first();
+    $hasRow = $this->getAuthUser()->carts()->where(['item_relation_id' => $data['id'], 'type' => $data['type']])->first();
 
     if ($hasRow) {
 
@@ -202,11 +243,12 @@ trait CartStoreTrait
 
     $data['quantity'] = $quantity;
     $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
 
     return $data;
   }
 
-  public function makeUnitedTicketData($data, $user)
+  public function makeUnitedTicketData($data)
   {
 
     $min_museum_quantity = TicketUnitedSetting::first()->min_museum_quantity;
