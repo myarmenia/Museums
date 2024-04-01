@@ -19,12 +19,21 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
 <script>
+<<<<<<< HEAD
       $( '.select-2' ).select2( {
     theme: "bootstrap-5",
     width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
     placeholder: $( this ).data( 'placeholder' ),
     closeOnSelect: false,
 } );
+=======
+      $( '.select-2').select2( {
+          theme: "bootstrap-5",
+          width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+          placeholder: $( this ).data( 'placeholder' ),
+          closeOnSelect: false,
+      } );
+>>>>>>> b7164eada7e1e5e6e819c41c3ac50b8d1d39b173
 </script>
 
 @endsection
@@ -57,8 +66,12 @@
 
                         <div class="col-2">
                             {{-- <select id="defaultSelect" name="museum_id" class="form-select" value="{{ request()->input('type') }}" > --}}
+<<<<<<< HEAD
                               <select class="form-select select-2" id="multiple-select-museum" data-placeholder="Թանգարան" multiple>
                                     {{-- <option value="" disabled selected>Թանգարան</option> --}}
+=======
+                              <select class="form-select select-2" id="multiple-select-museum" data-placeholder="Թանգարան" name="museum_id" multiple>
+>>>>>>> b7164eada7e1e5e6e819c41c3ac50b8d1d39b173
                                     @foreach ($museums as $museum)
                                         <option value="{{$museum->id}}" {{ request()->input('museum_id') == $museum->id ? 'selected' : '' }}>{{$museum->translationsForAdmin->name}}</option>
                                     @endforeach
@@ -66,7 +79,12 @@
                             </select>
                         </div>
                         <div class="col-2">
+<<<<<<< HEAD
                             <select id="multiple-select-type" name="type" class="form-select select-2" value="{{ request()->input('type') ?? ''}}" data-placeholder="Հաշվետվության տեսակ">
+=======
+                            <select id="multiple-select-type" name="type" class="form-select select-2" data-placeholder="Հաշվետվության տեսակ" value="{{ request()->input('type') ?? ''}}" >
+                                {{-- <option disabled selected>Հաշվետվության տեսակ</option> --}}
+>>>>>>> b7164eada7e1e5e6e819c41c3ac50b8d1d39b173
                                 <option value="financial" >Ֆինասական</option>
                                 <option value="quantitative" >Քանակական</option>
                                 <option value="fin_quant" >Քանակ/Ֆին</option>

@@ -81,11 +81,16 @@ class NewsService
 
       if($news){
           if(isset($request['photo'])){
-            $image = Image::where('imageable_id',$id)->first();
-            if(Storage::exists($image->path)){
-              Storage::delete($image->path);
-              $image->delete();
-            }
+            $image = Image::where('imageable_id',$id)->get();
+
+              foreach( $image as $item){
+                   if(Storage::exists($item->path)){
+                     Storage::delete($item->path);
+                   }
+
+                $item->delete();
+              }
+            
             $path = FileUploadService::upload($request['photo'], 'news/'.$news->id);
             $photoData = [
                 'path' => $path,
@@ -103,7 +108,7 @@ class NewsService
           $newstranslate->update($lang);
 
         }
-        
+
           session(['success' => 'Գործողությունը հաջողությամբ իրականացվեց']);
           return true;
       }
