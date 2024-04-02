@@ -125,7 +125,8 @@ $(function(){
           if(data.message){
 
            $('.btn-outline-danger').css({'background-color':'white','color':'red'})
-         
+           $that.find('.update_text').html('Թարմացումը բարեհաջող կատարվեց')
+
 
           }
 
