@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('ticket_qrs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('museum_id');
+            $table->unsignedBigInteger('museum_id')->nullable();
             $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
 
             $table->unsignedBigInteger('purchased_item_id');
