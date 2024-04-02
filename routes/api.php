@@ -24,6 +24,7 @@ use App\Http\Controllers\API\SendOrderController;
 use App\Http\Controllers\API\TestController;
 use App\Http\Controllers\API\Tickets\SingleMuseumEventsTicketsController;
 use App\Http\Controllers\API\Tickets\TicketsController;
+use App\Http\Controllers\API\User\DeleteUserController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
@@ -80,6 +81,10 @@ Route::group(['middleware' => ['api']], function ($router) {
           Route::get('item/{id}/delete', DeleteItemController::class);
           Route::get('items', ItemsController::class);
 
+        });
+
+        Route::group(['prefix' => 'mobile'], function ($router) {
+          Route::get('delete-user', DeleteUserController::class);
         });
 
     });
