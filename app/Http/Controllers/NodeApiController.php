@@ -10,7 +10,7 @@ class NodeApiController extends Controller
     use QrTokenTrait;
     public function test()
     {
-        $resp = $this->getTokenQr([]);
+        $resp = $this->getTokenQr(5);
         dd($resp);
 
     }
