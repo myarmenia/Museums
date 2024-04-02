@@ -21,7 +21,6 @@ class ProductListController extends Controller
 	}
 
     public function index(Request $request){
-
       $product_category = ProductCategory::all();
       $museums = Museum::all();
 
