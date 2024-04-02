@@ -1,43 +1,83 @@
 <?php
 declare(strict_types=1);
+
 namespace App\Traits\NodeApi;
+
+use App\Models\PurchasedItem;
 use App\Models\TicketQr;
+use Illuminate\Support\Facades\DB;
 use Http;
 
 trait QrTokenTrait
 {
-    public function getTokenQr(array $purchases): bool
+    public function getTokenQr(int $purchaseId): bool|array
     {
-        $url = env('NODE_API_URL').'getQr';
+        $url = env('NODE_API_URL') . 'getQr';
 
-        foreach ($purchases as $key => $item) {
-            $quantity = $item->quantity;
+        $allData = [];
 
-            for ($i=0; $i < $quantity; $i++) { 
-                $data = $this->getReqQrToken($url);
+        try {
+            DB::beginTransaction();
+            $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->where('type', '!=', 'product')->get();
 
-                $data = [
-                    'museum_id' => $item[$i]->museum_id,
-                    'purchased_item_id' => $item[$i]->purchased_item_id,
-                    'item_relation_id' => $item[$i]->item_relation_id,
-                    'token' => $data['token'],
-                    'path' => $data['path'],
-                    'type' => $item[$i]->type,
-                    'price' => $item[$i]->total_price,
-                ];
-                
-                TicketQr::create($data);
-
+            $purchasesKeys = [];
+            foreach ($allPurchases as $key => $item) {
+                $purchasesKeys[$item->type] = array_key_exists($item->type, $purchasesKeys)
+                    ? $purchasesKeys[$item->type] + $item->quantity
+                    : $item->quantity;
             }
-        }   
-        
-        return true;
+    
+            $data = $this->getReqQrToken($url, $purchasesKeys);
+    
+            foreach ($allPurchases as $key => $item) {
+                $quantity = $item->quantity;
+    
+                for ($i = 0; $i < $quantity; $i++) {
+                    $type = $item->type;
+                    $token = $data[$type][0]['unique_token'];
+                    $path = $data[$type][0]['qr_path'];
+    
+                    $newData = [
+                        'museum_id' => $item->museum_id,
+                        'purchased_item_id' => $item->purchase_id,
+                        'item_relation_id' => $item->item_relation_id,
+                        'token' => $token,
+                        'path' => $path,
+                        'type' => $type,
+                        'price' => $item->total_price,
+                    ];
+    
+                    $allData[] = $newData;
+                    array_shift($data[$type]);
+                }
+            }
+    
+            $insert = TicketQr::insert($allData);
+
+            if (!$insert) {
+                DB::rollBack();
+                return false;
+            }
+    
+            DB::commit();
+
+            return TicketQr::where('purchased_item_id', $purchaseId)->get()->pluck('id')->toArray();
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return false;
+        } catch (\Error $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return false;
+        }
 
     }
 
-    public function getReqQrToken(string $url): array
+    public function getReqQrToken(string $url, array $data): array
     {
-        $req = Http::get($url);
+        $req = Http::post($url, $data);
         $response = $req->getBody()->getContents();
         $response = json_decode($response, true);
 

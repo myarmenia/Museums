@@ -207,11 +207,19 @@ function generateToken()
   return md5(rand(1, 8) . microtime());
 }
 
-if (!function_exists('getCountryId')) {
+if (!function_exists('getCountry')) {
     function getCountry($key)
     {
       return Country::where('key', $key)->first();
     }
+
+}
+
+if (!function_exists('getAllCountries')) {
+  function getAllCountries()
+  {
+    return Country::all();
+  }
 
 }
 

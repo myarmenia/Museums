@@ -53,9 +53,7 @@
             <div>
                 <form action="{{route('logs')}}" method="get" class="row g-3 mt-2" style="display: flex">
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
-
-
-                        <div class="col-2">
+                       <div class="col-2">
                             {{-- <select id="defaultSelect" name="museum_id" class="form-select" value="{{ request()->input('type') }}" > --}}
                               <select class="form-select select-2" id="multiple-select-museum" data-placeholder="Թանգարան" name="museum_id" multiple>
                                     @foreach ($museums as $museum)
@@ -66,7 +64,7 @@
                         </div>
                         <div class="col-2">
                             <select id="multiple-select-type" name="type" class="form-select select-2" data-placeholder="Հաշվետվության տեսակ" value="{{ request()->input('type') ?? ''}}" >
-                                {{-- <option disabled selected>Հաշվետվության տեսակ</option> --}}
+                                <option disabled selected>Հաշվետվության տեսակ</option>
                                 <option value="financial" >Ֆինասական</option>
                                 <option value="quantitative" >Քանակական</option>
                                 <option value="fin_quant" >Քանակ/Ֆին</option>
@@ -74,22 +72,75 @@
                         </div>
 
                         <div class="col-2">
-                            <select id="multiple-select-time" name="time" class="form-select select-2" value="{{ request()->input('time') ?? ''}}"  data-placeholder="Ժամանակահատված" multiple>
-                                <option value="first_trimester" selected>1 եռամսյակ</option>
+                            <select id="multiple-select-payment_method" name="payment_method" class="form-select select-2" data-placeholder="Վճարման եղանակ" value="{{ request()->input('payment_method') ?? ''}}" >
+                                <option disabled selected>Վճարման եղանակ</option>
+                                <option value="online" >Առցանց</option>
+                                <option value="cash_box" >Դրամարկղ</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-1">
+                            <select id="multiple-select-gender" name="gender" class="form-select select-2" data-placeholder="Սեռ" value="{{ request()->input('gender') ?? ''}}" >
+                                <option disabled selected>Սեռ</option>
+                                <option value="male" >Արական</option>
+                                <option value="female" >Իգական</option>
+                                <option value="unknown" >Անհայտ</option>
+                            </select>
+                        </div>
+
+                        <div class="col-2">
+                            <select id="multiple-select-age" name="age" class="form-select select-2" data-placeholder="Տարիք" value="{{ request()->input('age') ?? ''}}" >
+                                <option disabled selected>Տարիք</option>
+                                <option value="0-12" >մինչև 12</option>
+                                <option value="13-18" >13 - 18</option>
+                                <option value="19-60" >19 - 60</option>
+                                <option value="61" >61 և ավել</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-2">
+                            <select id="multiple-select-country" name="country_id" class="form-select select-2" data-placeholder="Երկիր" value="{{ request()->input('country_id') ?? ''}}" >
+                                <option disabled selected>Երկիր</option>
+                                @foreach (getAllCountries() as $country)
+                                    <option value="{{$country->id}}" {{ request()->input('country_id') == $country->id ? 'selected' : '' }}>{{$country->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
+{{-- <div class="col-2 d-flex">
+                        <div class="">
+                          <label for="datefrom">datefrom</label>
+                            <input type="date" class="form-control" id="datefrom" placeholder="Ստեղծման ամսաթիվ" name="from_created_at" value="{{ request()->input('from_created_at') }}">
+                        </div>
+
+                        <div class="">
+                          <label for="dateto">dateto</label>
+
+                            <input type="date" class="form-control" id="dateto" placeholder="Ստեղծման ամսաթիվ" name="to_created_at" value="{{ request()->input('to_created_at') }}">
+                        </div>
+</div> --}}
+                        <div class="col-2">
+                            <select id="multiple-select-time" name="time" class="form-select select-2" value="{{ request()->input('time') ?? ''}}" data-placeholder="Ժամանակահատված" multiple>
+                                <option value="first_trimester" >1 եռամսյակ</option>
                                 <option value="second_trimester" >2 եռամսյակ</option>
                                 <option value="third_trimester" >3 եռամսյակ</option>
                                 <option value="fourth_trimester" >4 եռամսյակ</option>
                                 <option value="first_semester" >1 կիսամյակ</option>
-                                <option value="second_semester" >2 կիսամյակ</option>
+                                <option value="second_semester">2 կիսամյակ</option>
                                 <option value="per year" >տարեկան</option>
+
                             </select>
                         </div>
-                        <div class="col-6 d-flex justify-content-between">
-                            <button class="btn btn-primary col-2">Որոնել</button>
-                            <button class="btn btn-primary col-2">Համեմատել</button>
-                            <button class="btn btn-primary col-2">Արտահանել CSV</button>
-                            <a class="btn btn-primary" href="{{ route('logs') }}">Չեղարկել</a>
-                        </div>
+
+
+
+                        <button class="btn btn-primary col-1 search">Որոնել</button>
+                        <button class="btn btn-primary col-1 compare" >Համեմատել</button>
+                        <button class="btn btn-primary col-2 download_csv">Արտահանել CSV </button>
+                        <a class="btn btn-primary" href="{{ route('logs') }}">Չեղարկել</a>
                     </div>
                 </form>
             </div>
