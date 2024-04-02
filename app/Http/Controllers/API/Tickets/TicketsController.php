@@ -19,6 +19,7 @@ class TicketsController extends BaseController
         $params = null;
 
         if($request->type == 'united'){
+
             $data = UnitedTicketsResource::collection($museums);
             $data = json_decode(json_encode($data));
 
