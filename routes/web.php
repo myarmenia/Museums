@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\Events\EventStoreController;
 use App\Http\Controllers\Admin\Events\EventUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
+use App\Http\Controllers\Admin\Reports\ReportsForSuperAdminController;
 use App\Http\Controllers\Admin\Tickets\GuideServiceController;
 use App\Http\Controllers\Admin\Tickets\ShowTicketsController;
 use App\Http\Controllers\Admin\Tickets\ShowUnitedTicketController;
@@ -156,6 +157,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('change-status', [ChangeStatusController::class, 'change_status'])->name('change_status');
   Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class, 'index'])->name('delete_item');
   Route::get('logs', [LogController::class, 'index'])->name('logs');
+  Route::get('reports', [ReportsForSuperAdminController::class, 'index'])->name('reports');
+
 
 
   Route::group(['prefix' => 'museum'], function () {
@@ -212,10 +215,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/create-educational', [CashierController::class, 'createEducational'])->name('cashier.add.educational');
     Route::get('/products', [CashierController::class, 'getProduct'])->name('cashier.product');
     Route::post('/sale-product', [CashierController::class, 'saleProduct'])->name('cashier.add.product');
-    
-    
+
+
     // Route::get('/create', [CashierController::class, 'create'])->name('cashier.add');
-    
+
   });
 
   Route::group(['prefix' => 'educational-programs'], function () {

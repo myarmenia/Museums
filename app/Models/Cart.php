@@ -17,10 +17,10 @@ class Cart extends Model
     return $this->belongsTo(User::class, 'user_id');
   }
 
-  public function ticket_types()
-  {
-    return $this->belongsTo(TicketType::class, 'ticket_type_id');
-  }
+  // public function ticket_types()
+  // {
+  //   return $this->belongsTo(TicketType::class, 'ticket_type_id');
+  // }
 
   public function museum()
   {
@@ -29,17 +29,22 @@ class Cart extends Model
 
   public function product()
   {
-    return $this->belongsTo(Product::class, 'product_id');
+    // return $this->belongsTo(Product::class, 'product_id');
+    return $this->belongsTo(Product::class, 'item_relation_id');
+
   }
 
   public function cart_united_tickets()
   {
     return $this->hasMany(CartUnitedTickets::class);
+
   }
 
   public function event_config()
   {
-    return $this->belongsTo(EventConfig::class, 'event_config_id');
+    // return $this->belongsTo(EventConfig::class, 'event_config_id');
+    return $this->belongsTo(EventConfig::class, 'item_relation_id');
+
   }
 
 
