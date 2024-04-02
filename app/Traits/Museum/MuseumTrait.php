@@ -14,7 +14,7 @@ trait MuseumTrait
         $request['status'] = 1;
       }
 
-      $data = Museum::filter($request->all())->get();
+      $data = Museum::filter($request->all())->has('standart_tickets')->get();
       return $data;
 
   }
