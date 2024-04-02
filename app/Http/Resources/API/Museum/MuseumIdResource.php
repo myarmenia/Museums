@@ -25,6 +25,8 @@ class MuseumIdResource extends JsonResource
         $photos = $this->images->where('main', 0)->pluck('path')->map(function (string $path) {
             return route('get-file', ['path' => $path]);
         });
+        $guide =$this->guide ? ['am' => $this->guide->price_am, 'other' => $this->guide->price_other]: null;
+
 
         return [
             'id' => $this->id,
@@ -36,6 +38,7 @@ class MuseumIdResource extends JsonResource
             'director' => $translations->director_name,
             'phones' => $phones,
             'links' => $links,
+            'guide' => $guide,
             'photos' => $photos,
             'tickets' => new TicketResource($this->standart_tickets),
             'branches' => MuseumBranchesResource::collection($this->museum_branches),
