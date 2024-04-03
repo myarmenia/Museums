@@ -242,7 +242,6 @@ Route::group(['middleware' => ['auth']], function () {
   });
 
 
-
   Route::group(['prefix' => 'banner'], function () {
     Route::get('/list', [BannerListController::class, 'index'])->name('banner_list');
     Route::get('/create', [BannerCreateController::class, 'create'])->name('banner_create');

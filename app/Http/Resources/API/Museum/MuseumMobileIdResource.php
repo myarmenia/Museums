@@ -26,6 +26,7 @@ class MuseumMobileIdResource extends JsonResource
             return route('get-file', ['path' => $path]);
         });
         $request['type'] = 'standart';
+        $guide =$this->guide ? ['am' => $this->guide->price_am, 'other' => $this->guide->price_other]: null;
 
         return [
             'id' => $this->id,
@@ -37,6 +38,7 @@ class MuseumMobileIdResource extends JsonResource
             'director' => $translations->director_name,
             'phones' => $phones,
             'links' => $links,
+            'guide' => $guide,
             'photos' => $photos,
             'tickets' => new TicketResource($this->standart_tickets),
             'events' => MuseumEventResource::collection($this->events),
