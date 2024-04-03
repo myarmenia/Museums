@@ -36,26 +36,6 @@
       "url": "chats"
     },
     {
-      "name": "Դրամարկղ",
-      "icon": "menu-icon tf-icons bx bx-wallet",
-      "slug": "cashier",
-      "roles": ["museum_admin", "cashier"],
-      "submenu": [
-        {
-          "url": "cashier/tickets",
-          "name": "Տոմսեր",
-          "slug": "cashier-tickets",
-          "target": ""
-        },
-        {
-          "url": "cashier/products",
-          "name": "Ապրանքներ",
-          "slug": "cashier-products",
-          "target": ""
-        }
-      ]
-    },
-    {
       "name": "Կորպորատիվ վաճառք",
       "icon": "menu-icon tf-icons bx bx-command",
       "slug": "corporative",
