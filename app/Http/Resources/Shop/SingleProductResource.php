@@ -23,6 +23,7 @@ class SingleProductResource extends JsonResource
           'image' => isset($this->images[0])?route('get-file',['path'=>$this->images[0]->path]):null,
           'name' => $this-> translation(session("languages"))->name,
           'price'=> $this->price,
+          'quantity' => $this->quantity,
           'similar_products'=>SimilarProductResource::collection($this->similar_products($this->museum_id, $this->id))
 
         ];

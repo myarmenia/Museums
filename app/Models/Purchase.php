@@ -11,11 +11,13 @@ class Purchase extends Model
 {
     use HasFactory, ReportFilterTrait;
     protected $guarded = [];
-    protected $defaultFields = ['museum_id', 'type'];
+    protected $defaultFields = ['type'];   //museum_id  can be null
 
     protected $boolFilterFields = ['status'];
     protected $relationFilter = [
-        'users' => ['gender', 'birth_day', 'country_id']
+        'user' => ['gender', 'birth_day', 'country_id'],
+        'person_purchase' => ['gender', 'birth_day', 'country_id'],
+        'purchased_items' => ['museum_id']
     ];
 
     public function purchased_items():HasMany
@@ -31,6 +33,11 @@ class Purchase extends Model
     public function user()
     {
       return $this->belongsTo(User::class, "user_id");
+    }
+
+    public function person_purchase()
+    {
+      return $this->belongsTo(PersonPurchase::class, "person_purchase_id");
     }
 
 }
