@@ -4,27 +4,38 @@ namespace App\Http\Controllers\Admin\Reports;
 
 use App\Http\Controllers\Controller;
 use App\Models\Museum;
+use App\Models\Payment;
+use App\Models\Purchase;
+use App\Traits\Reports\ReportTrait;
 use Illuminate\Http\Request;
 
 class ReportsForSuperAdminController extends Controller
 {
-  public function __construct()
+  use ReportTrait;
+  protected $model;
+  public function __construct(Purchase $model)
   {
       $this->middleware('role:super_admin');
+      $this->model = $model;
+
   }
 
   public function index(Request $request)
   {
 
-    // $data = LogService::logFilter($request->all(), $this->model)
-    //   ->orderBy('id', 'DESC')
-    //   ->paginate(10)->withQueryString();
-
+    
+    $data = $this->report($request->all(), $this->model);
+    dd($data);
+    // $data = Purchase::report($request->all())
+    //   ->purchased_items()->groupBy('museum_id', 'type')
+    //       ->select('museum_id',  \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
+    //       // ->get();
+    //   ->withQueryString();
+    // dd($request->all());
     $museums = Museum::all();
-    return view("content.reports.super-admin", compact('museums'));
+    // return view("content.reports.super-admin", compact('museums'));
 
-    // return view("content.logs.index", compact('data'))
-    //   ->with('i', ($request->input('page', 1) - 1) * 10);
+    return view("content.reports.super-admin", compact('data', 'museums'));
 
   }
 }
