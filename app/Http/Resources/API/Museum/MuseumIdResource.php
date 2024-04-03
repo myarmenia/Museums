@@ -3,6 +3,7 @@
 namespace App\Http\Resources\API\Museum;
 
 use App\Http\Resources\API\Tickets\TicketResource;
+use App\Http\Resources\API\Tickets\WebTicketResource;
 use App\Http\Resources\MuseumBranchesResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,8 +17,6 @@ class MuseumIdResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $request['type'] = 'standart';
-
         $translations = $this->translations[0];
         $mainPhotoPath = $this->images->where('main', 1)->first()->path;
         $phones = $this->phones->pluck('number')->toArray();
@@ -40,7 +39,7 @@ class MuseumIdResource extends JsonResource
             'links' => $links,
             'guide' => $guide,
             'photos' => $photos,
-            'tickets' => new TicketResource($this->standart_tickets),
+            'tickets' => new WebTicketResource($this),
             'branches' => MuseumBranchesResource::collection($this->museum_branches),
             'main_photo'=> $mainPhotoPath ? route('get-file', ['path' => $mainPhotoPath]) : ''
         ];
