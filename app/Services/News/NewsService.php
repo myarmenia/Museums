@@ -81,16 +81,13 @@ class NewsService
 
       if($news){
           if(isset($request['photo'])){
-            $image = Image::where('imageable_id',$id)->get();
-
-              foreach( $image as $item){
+              foreach( $news->images as $item){
                    if(Storage::exists($item->path)){
                      Storage::delete($item->path);
                    }
-
                 $item->delete();
               }
-            
+
             $path = FileUploadService::upload($request['photo'], 'news/'.$news->id);
             $photoData = [
                 'path' => $path,
