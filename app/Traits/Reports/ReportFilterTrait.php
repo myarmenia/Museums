@@ -69,8 +69,13 @@ trait ReportFilterTrait
       if (isset($relationFilter) && $this->getKeyFromValue($field, $relationFilter)) {
           $relationModel = $this->getKeyFromValue($field, $relationFilter);
 
-          $builder->whereHas($relationModel, function ($query) use ($filters) {
-            $query->filter($filters);
+            $keys = array_keys($filters);
+            $values = array_values($filters);
+
+            $new_filters = array($field => $filters[$field]);
+
+          $builder->whereHas($relationModel, function ($query) use ($new_filters) {
+            $query->reportFilter($new_filters);
           });
 
       }
