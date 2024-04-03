@@ -37,7 +37,7 @@ trait PurchaseTrait
 
     if (isset($data['person']) && count($data['person']) > 0) {
 
-      $country_id = getCountry($data['person']['country_id'])->id;
+      $country_id = isset($data['person']['country_id']) ? getCountry($data['person']['country_id'])->id : null;
       $data['person']['country_id'] = $country_id;
       $person = $this->createPerson($data['person']);
       $purchase_data['email'] = $person->email;
@@ -57,7 +57,12 @@ trait PurchaseTrait
       return $item;
     }
 
-    $museum_id = $item && $item->museum_id != null ? $item->museum_id : null;    // museum_id ete cartic lini gnum@ petq e toghne null
+    $museum_id = $item && $item->museum_id != null ? $item->museum_id : null;
+
+    if(isset($data['request_type']) && $data['request_type'] == 'cart'){
+      $museum_id = null;           // museum_id ete cartic lini gnum@ petq e toghne null
+    }
+
     $prcase_items_count = $purchase->purchased_items->count();
 
     if ($prcase_items_count == 0) {
@@ -227,7 +232,7 @@ trait PurchaseTrait
         'price' => $discont_price
       ];
     }
-    
+
     $data['total_price'] = $total_price * $data['quantity'];
 
     return $data;
