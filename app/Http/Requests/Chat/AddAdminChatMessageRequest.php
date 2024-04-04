@@ -17,6 +17,8 @@ class AddAdminChatMessageRequest extends FormRequest
     {
         return [  
             'email' => 'required|email',    
+            'name' => 'required|string',    
+            'phone' => 'required|string',    
             'text' => 'required|string',
         ];
     }

@@ -47,6 +47,25 @@ trait PurchaseTrait
     $purchase_data['type'] = $data['purchase_type'];
     $purchase_data['amount'] = 0;
 
+
+    // ======== when quantity = 0 ================
+    $find_quantity_0 = array_filter($data['items'], function ($value) {
+      return $value['quantity'] == 0;
+    });
+
+
+    if (count($find_quantity_0) > 0) {
+      return ['error' => 'system_error'];
+    }
+    // =============================================
+
+
+    // ======== when selected anavalible id from museum ================
+    if (!$this->chetAllMuseumsTikets($data['items'])) {
+      return ['error' => 'system_error'];
+    }
+    // ========================================================
+
     $purchase = Purchase::create($purchase_data);
     $data['purchase_id'] = $purchase->id;
 
@@ -54,12 +73,13 @@ trait PurchaseTrait
 
 
     if (isset($item['error'])) {
-      return $item;
+        $purchase->delete();
+        return $item;
     }
 
     $museum_id = $item && $item->museum_id != null ? $item->museum_id : null;
 
-    if(isset($data['request_type']) && $data['request_type'] == 'cart'){
+    if (isset($data['request_type']) && $data['request_type'] == 'cart') {
       $museum_id = null;           // museum_id ete cartic lini gnum@ petq e toghne null
     }
 
@@ -197,7 +217,7 @@ trait PurchaseTrait
 
     $remainder = $event_config->visitors_quantity_limitation - $event_config->visitors_quantity;
 
-    if($data['quantity'] > $remainder){
+    if ($data['quantity'] > $remainder) {
       return false;
     }
 
@@ -215,7 +235,7 @@ trait PurchaseTrait
   public function makeUnitedTicketData($data)
   {
 
-    $min_museum_quantity = TicketUnitedSetting::first()->min_museum_quantity;
+    $min_museum_quantity = unitedTicketSettings()->min_museum_quantity;
     if ($min_museum_quantity > count($data['museum_ids'])) {
       return false;
     }
@@ -285,5 +305,32 @@ trait PurchaseTrait
     }
 
     return $purchased_item;
+  }
+
+  public function chetAllMuseumsTikets($data)
+  {
+    $data = array_filter($data, function ($value) {
+      return $value['type'] == 'united';
+    });
+
+    $min_museum_quantity = unitedTicketSettings()->min_museum_quantity;
+
+    if (count($data) > 0) {
+      $u_museum_ids = Ticket::pluck('museum_id')->toArray();
+
+      foreach ($data as $u => $u_array) {
+        if ($min_museum_quantity > count($u_array['museum_ids'])) {
+          return false;
+        }
+        $difference = array_diff($u_array['museum_ids'], $u_museum_ids);
+        if (!empty($difference)) {
+          return false;
+        }
+
+      }
+    }
+
+    return true;
+
   }
 }
