@@ -147,6 +147,21 @@ trait PurchaseTrait
 
       }
 
+      if ($value['type'] == 'guide_am' || $value['type'] == 'guide_other' ) {
+
+        $maked_data = $this->makeTicketData($value);
+        unset($maked_data['id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+
       if ($value['type'] == 'united') {
 
         $maked_data = $this->makeUnitedTicketData($value);
