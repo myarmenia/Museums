@@ -5,9 +5,7 @@ $(function () {
         console.log(inputValue)
       
         if (!/^[1-9][0-9]*$/.test(inputValue)) {
-          console.log(inputValue);
           $(this).val(inputValue.replace(/[^1-9]/g, ''));
-          console.log($(this).val());
       }
     });
 

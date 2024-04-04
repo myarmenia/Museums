@@ -13,13 +13,13 @@
 @section('content')
     @include('includes.alert')
     <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Դրամարկղ /</span> Ստեղծել նոր տոմս
+        <span class="text-muted fw-light">Դրամարկղ /</span> Տոմսերի վաճառք
     </h4>
     <div class="card">
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Ստեղծել նոր տոմս</h5>
+                <h5 class="card-header">Տոմսերի վաճառք</h5>
             </div>
         </div>
         <div class="card-body">
@@ -119,7 +119,7 @@
                         </div>
                         <div class="mt-3 row justify-content-end">
                             <div class="col-sm-10 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary">Պահպանել</button>
+                                <button type="submit" class="btn btn-primary">Տպել</button>
                             </div>
                         </div>
                     </form>
@@ -165,7 +165,7 @@
                         </div>
                         <div class="mt-3 row justify-content-end">
                             <div class="col-sm-10 d-flex justify-content-end">
-                                <button id='educational-button' type="submit" class="btn btn-primary">Պահպանել</button>
+                                <button id='educational-button' type="submit" class="btn btn-primary">Տպել</button>
                             </div>
                         </div>
                     </form>
@@ -197,7 +197,7 @@
                         </div>
                         <div id="event-save" class="mt-3 row justify-content-end d-none">
                             <div class="col-sm-10 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary">Պահպանել</button>
+                                <button type="submit" class="btn btn-primary">Տպել</button>
                             </div>
                         </div>
                     </form>
@@ -227,7 +227,7 @@
 
                         <div class="mt-3 row justify-content-end">
                             <div class="col-sm-10 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary">Պահպանել</button>
+                                <button type="submit" class="btn btn-primary">Տպել</button>
                             </div>
                         </div>
                     </form>
