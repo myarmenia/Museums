@@ -15,7 +15,7 @@ trait ReportTrait
 
       $purchase = $model
           ->reportFilter($data)->pluck('id');
-$report = PurchasedItem::whereIn('purchase_id', $purchase)
+      $report = PurchasedItem::whereIn('purchase_id', $purchase)
           ->groupBy('museum_id', 'type')
           ->select('museum_id',  \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
           ->get();
