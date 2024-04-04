@@ -41,12 +41,12 @@ trait FilterTrait {
               $builder->where($field, $value);
           }
 
-          if ($field == "from_created_at") {
+          if ($field == "from_created_at" && $value != null) {
 
             $builder->whereDate('created_at', '>=', $value);
 
           }
-          if ($field == "to_created_at") {
+          if ($field == "to_created_at" && $value != null) {
 
             $builder->whereDate('created_at', '<=', $value);
 

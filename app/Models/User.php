@@ -32,7 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 
   protected $hidden = ['password', 'google_id'];
 
-
+  protected $defaultFields = ['gender', 'birth_day', 'country_id'];
   public function getJWTIdentifier()
   {
     return $this->getKey();
@@ -52,7 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     return $this->hasMany(Cart::class);
   }
 
-  
+
   public function museum(){
     return $this->hasOne(Museum::class);
   }

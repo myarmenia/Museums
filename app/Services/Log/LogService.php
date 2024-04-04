@@ -32,7 +32,7 @@ class LogService
   }
 
 
-  
+
   public static function logFilter(array $data, $model)
   {
       $filteredData  = $model->filter($data);
