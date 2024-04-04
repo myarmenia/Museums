@@ -15,6 +15,8 @@ class UnitedTicketsResource extends JsonResource
     public function toArray(Request $request): array
     {
 
+        $mainPhotoPath = $this->images->where('main', 1)->first()->path;
+
         $tickets = [
           'price' => $this->united_ticket_price(),
           'type' => 'united',
@@ -26,6 +28,7 @@ class UnitedTicketsResource extends JsonResource
           'id' => $this->id,
           'region_name' => $this->region->name,
           'name' => $this->translation(session("languages"))->name,
+          'image' => $mainPhotoPath ? route('get-file', ['path' => $mainPhotoPath]) : null,
           'tickets' => [$tickets]
 
         ];
