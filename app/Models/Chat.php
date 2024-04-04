@@ -15,6 +15,8 @@ class Chat extends Model
         'visitor_id',
         'museum_id',
         'email',
+        'visitor_name',
+        'visitor_phone',
         'title',
         'education_program_type',
         'read',

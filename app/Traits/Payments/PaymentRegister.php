@@ -26,15 +26,17 @@ trait PaymentRegister
 
       foreach ($data_items as $key => $item) {
 
-          $item_params = new stdClass();
-          $item_params->amount = $item->total_price;
-          // $item_params->account = $item->museum->account_number;
-          $item_params->account = "900018001322";
-          $item_params->beneficiary_name = $item->museum->translationsForAdmin->name;
-          $item_params->notice = $this->getNotice($item->type);
-          $item_params->description = "Վաճառք";
+          if($item->total_price > 0){
+              $item_params = new stdClass();
+              $item_params->amount = $item->total_price;
+              // $item_params->account = $item->museum->account_number;
+              $item_params->account = "900018001322";
+              $item_params->beneficiary_name = $item->museum->translationsForAdmin->name;
+              $item_params->notice = $this->getNotice($item->type);
+              $item_params->description = "Վաճառք";
 
-          array_push($payments, $item_params);
+              array_push($payments, $item_params);
+          }
       }
 
       if(count( $data_united_items) > 0){
@@ -53,7 +55,7 @@ trait PaymentRegister
             }
       }
 
-
+    
       $client = new Client(['verify' => false]);
 
 
@@ -70,12 +72,11 @@ trait PaymentRegister
       ]);
 
 
-
         if ($response->getStatusCode() == 200) { // 200 OK
 
               $response_d = $response->getBody()->getContents();
               $response_data = json_decode($response_d);
-
+// dd($response_data);
               if($response_data->status == 'OK'){
 
                   $order_id = $response_data->data->order_number;

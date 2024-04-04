@@ -55,6 +55,11 @@ class ChatRepository implements ChatInterface
           return Chat::create($data);
      }
 
+     public function updateChat($data, $id)
+     {
+          return Chat::where('id', $id)->update($data);
+     }
+
      public function getMuseumMessage($museumId, $userId)
      {
           return Chat::where('visitor_id', $userId)->where('museum_id', $museumId)->with([
