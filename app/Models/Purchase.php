@@ -2,14 +2,23 @@
 
 namespace App\Models;
 
+use App\Traits\Reports\ReportFilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Purchase extends Model
 {
-    use HasFactory;
+    use HasFactory, ReportFilterTrait;
     protected $guarded = [];
+    protected $defaultFields = ['type'];   //museum_id  can be null
+
+    protected $boolFilterFields = ['status'];
+    protected $relationFilter = [
+        'user' => ['gender', 'birth_day', 'country_id'],
+        'person_purchase' => ['gender', 'birth_day', 'country_id'],
+        'purchased_items' => ['museum_id']
+    ];
 
     public function purchased_items():HasMany
     {
@@ -24,6 +33,11 @@ class Purchase extends Model
     public function user()
     {
       return $this->belongsTo(User::class, "user_id");
+    }
+
+    public function person_purchase()
+    {
+      return $this->belongsTo(PersonPurchase::class, "person_purchase_id");
     }
 
 }

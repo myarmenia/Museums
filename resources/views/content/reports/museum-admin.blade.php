@@ -2,22 +2,30 @@
 
  @section('title', 'Account settings - Account')
 @section('page-script')
+
+
     <script src="{{ asset('assets/js/change-status.js') }}"></script>
     <script src="{{ asset('assets/js/delete-item.js') }}"></script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+<!-- Styles -->
+{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" /> --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<!-- Or for RTL support -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
 
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
-    <script>
-          $( '.select-2').select2( {
-              theme: "bootstrap-5",
-              width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-              placeholder: $( this ).data( 'placeholder' ),
-              closeOnSelect: false,
-          } );
-    </script>
+<!-- Scripts -->
+{{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
+<script>
+      $( '.select-2').select2( {
+          theme: "bootstrap-5",
+          width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+          placeholder: $( this ).data( 'placeholder' ),
+          closeOnSelect: false,
+      } );
+</script>
 
 @endsection
 
@@ -43,7 +51,7 @@
         <div class="card-body">
 
             <div>
-                <form action="{{route('reports')}}" method="get" class="row g-3 mt-2" style="display: flex">
+                <form action="{{route('logs')}}" method="get" class="row g-3 mt-2" style="display: flex">
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
                        <div class="col-2">
                             {{-- <select id="defaultSelect" name="museum_id" class="form-select" value="{{ request()->input('type') }}" > --}}
@@ -139,37 +147,34 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Թանգարան</th>
-                            <th>Ստանդարտ տ․</th>
-                            <th>Զեղչված տ․</th>
-                            <th>Անվճար տ․</th>
-                            <th>Միասնական տ․</th>
-                            <th>Աբոնեմենտ</th>
-                            <th>Միջողառման տ․</th>
-                            <th>Կորպորատիվ</th>
-                            <th>Կրթական ծրագիր</th>
-                            <th>Էքսկուրսիա</th>
+                            <th>Օգտագործող</th>
+                            <th>Դեր</th>
+                            <th>Գործ․ տեսակ</th>
+                            <th>Գործ․ օբյեկտ</th>
+                            <th>Տվյալներ</th>
                             <th>Ամսաթիվ</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($data as $key => $report)
+                        {{-- @foreach ($data as $key => $log) --}}
 
-                            <tr>
-                                <td>{{ ++$key }}</td>
-                                <td>{{ $report->museum->translationsForAdmin->name }}</td>
+                            {{-- <tr>
+                                <td>{{ ++$i }}</td>
+                                <td>{{ $log->user->name }} {{ $log->user->surname }}</td>
                                 <td>{{ __("roles.".$log->user->roles[0]->name) }}</td>
                                 <td>{{ __("logs.$log->type") }}</td>
                                 <td>{{ __("db_table.$log->tb_name") }}</td>
                                 <td>{{ $log->data }}</td>
                                 <td>{{ $log->created_at->format('d-m-Y')}}</td>
 
-                            </tr>
-                        @endforeach --}}
+                            </tr> --}}
+                        {{-- @endforeach --}}
                     </tbody>
                 </table>
             </div>
-
+            <div class="demo-inline-spacing">
+                {{-- {{ $data->links() }} --}}
+            </div>
         </div>
     </div>
 
@@ -180,3 +185,6 @@
 </section>
 
 @endsection
+
+
+{{-- <x-modal-delete></x-modal-delete> --}}
