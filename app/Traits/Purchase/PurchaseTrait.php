@@ -46,7 +46,7 @@ trait PurchaseTrait
 
     $purchase_data['type'] = $data['purchase_type'];
     $purchase_data['amount'] = 0;
-
+    $purchase_data['status'] = $data['status'];
 
     // ======== when quantity = 0 ================
     $find_quantity_0 = array_filter($data['items'], function ($value) {

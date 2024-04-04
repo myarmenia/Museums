@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Cashier\CashierEventRequest;
 use App\Models\ProductCategory;
 use App\Services\Cashier\CashierService;
+use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
 
 class CashierController extends Controller
 {
+   use PurchaseTrait;
    public $cashierService;
 
    public function __construct(CashierService $cashierService)
@@ -25,7 +27,30 @@ class CashierController extends Controller
 
    public function createTicket(Request $request)
    {
-      dd($request->all());
+      $data['purchase_type'] = 'offline';
+      $data['status'] = 1;
+      $data['items'] =  [
+         [
+             "type"=>"standart", 
+             "id"=> 1,            
+             "quantity"=> 4
+         ],
+         [
+             "type"=>"discount", 
+             "id"=> 1,            
+             "quantity"=> 3
+         ],
+         [
+            "type"=>"free", 
+            "id"=> 1,            
+            "quantity"=> 3
+         ],
+
+      ];
+
+      $k =  $this->purchase($data);
+
+      dd($k);
    }
 
    public function checkCoupon(Request $request)

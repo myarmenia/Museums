@@ -1,4 +1,14 @@
 $(function () {
+
+    $('.form-control').on('input', function() {
+        var inputValue = $(this).val();
+        console.log(inputValue)
+      
+        if (!/^[1-9][0-9]*$/.test(inputValue)) {
+          $(this).val(inputValue.replace(/[^1-9]/g, ''));
+      }
+    });
+
   $('#standard-ticket').on('input', function () {
     let ticketCount = $('#standard-ticket').val();
     if (ticketCount > 0) {
