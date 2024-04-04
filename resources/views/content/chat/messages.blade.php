@@ -37,8 +37,7 @@
             <div class="card card-bordered">
                 <div class="card-header">
                     @if (!$data->visitor)
-                        <h4 class="card-title"><strong>Այս հաղորդագրությունը ուղարկվել է չգրանցված օգտատերի կողմից դրա համար
-                                պատասխանը կուղարկվի նրա էլ․ հասցեին</strong></h4>
+                        <h4 class="card-title"><strong>Այս հաղորդագրությունը ուղարկվել է չգրանցված այցելուի կողմից, այդ պատճառով պատասխանը կուղարկվի նրա էլ․ հասցեին</strong></h4>
                     @endif
                 </div>
 
