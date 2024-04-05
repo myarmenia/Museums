@@ -1,13 +1,11 @@
 $(function () {
 
-    $('.form-control').on('input', function() {
-        var inputValue = $(this).val();
-        console.log(inputValue)
-      
-        if (!/^[1-9][0-9]*$/.test(inputValue)) {
-          $(this).val(inputValue.replace(/[^1-9]/g, ''));
-      }
-    });
+  $('.form-control-validate').on('input', function() {
+      var inputValue = $(this).val();
+      if (!/^[1-9][0-9]*$/.test(inputValue)) {
+        $(this).val(inputValue.replace(/[^1-9]/g, ''));
+    }
+  });
 
   $('#standard-ticket').on('input', function () {
     let ticketCount = $('#standard-ticket').val();
@@ -153,10 +151,13 @@ $(function () {
           $('#corporative-name').text(data.data.companyName);
           $('#count-corporative-ticket').text(data.data.availableTickets);
           $('#corporative-sale').attr('style', 'display: block !important');
+          $('#corporative-coupon-not-found').attr('style', 'display: none !important;');
         }
         else {
-          message = 'Սխալ է տեղի ունեցել։'
-          type = 'danger'
+          message = data.message
+          $('#corporative-coupon-not-found').attr('style', 'display: block !important; color:red;');
+          $('#corporative-coupon-not-found').text(message);
+          $('#corporative-sale').attr('style', 'display: none !important');
         }
       }
     });
@@ -164,52 +165,59 @@ $(function () {
 
   $('#event-select').on('input', function () {
     let selectedId = $('#event-select').val();
-    $.ajax({
-      type: "GET",
-      url: '/cashier/get-event-details/' + selectedId,
-      cache: false,
-      success: function (data) {
-        $('#event-total').attr('style', 'display: none !important ');
-        $('#event-save').attr('style', 'display: none !important');
-        $('#event-config').text('');
-        $('#event-total-count').text(0);
-        $('#event-total-price').text(0);
-        let html = ``;
-        if (data.event_configs.length) {
-          $('#event-total').attr('style', 'display: block !important; display:flex !important; justify-content: end !important');
-          $('#event-save').attr('style', 'display: block !important; display:flex !important; margin-top: 1rem !important; justify-content: flex-end !important;');
-          
-           html = `<table class="table cashier-table">
-                      <thead>
-                        <tr>
-                            <th>Օր</th>
-                            <th>Սկիզբ</th>
-                            <th>Վերջ</th>
-                            <th>Հասանելի տեղեր</th>
-                            <th>Քանակ</th>
-                            <th>Արժեք</th>
-                        </tr>
-                      </thead>
-                      <tbody class="table-border-bottom-0">`;
-
-          data.event_configs.map(element => {
-            html += `<tr class='table-default'>
-                          <td>${element.day}</td>
-                          <td>${element.start_time}</td>
-                          <td>${element.end_time}</td>
-                          <td>${element.visitors_quantity_limitation - element.visitors_quantity} մարդ</td>
-                          <td><input type="number" min="0" class="form-control" onwheel="return false;" price="${element['price']}"
-                            id="event_${element['id']}" name="event[${element['id']}]"></td>
-                          <td id = 'event-ticket-price_${element['id']}'>0</td>
-                      </tr>`;
-          });
-
-        } else {
-          html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
+    if(selectedId){
+      $.ajax({
+        type: "GET",
+        url: '/cashier/get-event-details/' + selectedId,
+        cache: false,
+        success: function (data) {
+          $('#event-total').attr('style', 'display: none !important ');
+          $('#event-save').attr('style', 'display: none !important');
+          $('#event-config').text('');
+          $('#event-total-count').text(0);
+          $('#event-total-price').text(0);
+          let html = ``;
+          console.log(data, 7788)
+          if (data.event_configs.length) {
+            $('#event-total').attr('style', 'display: block !important; display:flex !important; justify-content: end !important');
+            $('#event-save').attr('style', 'display: block !important; display:flex !important; margin-top: 1rem !important; justify-content: flex-end !important;');
+            
+             html = `<table class="table cashier-table">
+                        <thead>
+                          <tr>
+                              <th>Օր</th>
+                              <th>Սկիզբ</th>
+                              <th>Վերջ</th>
+                              <th>Հասանելի տեղեր</th>
+                              <th>Քանակ</th>
+                              <th>Արժեք</th>
+                          </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">`;
+  
+            data.event_configs.map(element => {
+              html += `<tr class='table-default'>
+                            <td>${element.day}</td>
+                            <td>${element.start_time}</td>
+                            <td>${element.end_time}</td>
+                            <td>${element.visitors_quantity_limitation - element.visitors_quantity} մարդ</td>
+                            <td><input type="number" min="0" class="form-control" onwheel="return false;" price="${element['price']}"
+                              id="event_${element['id']}" name="event[${element['id']}]"></td>
+                            <td id = 'event-ticket-price_${element['id']}'>0</td>
+                        </tr>`;
+            });
+  
+          } else {
+            html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
+          }
+          $('#event-config').html(html);
         }
-        $('#event-config').append(html);
-      }
-    });
+      });
+    } else {
+      html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
+      $('#event-config').html(html);
+    }
+   
   });
 
 
