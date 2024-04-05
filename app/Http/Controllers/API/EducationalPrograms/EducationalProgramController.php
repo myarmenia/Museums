@@ -13,6 +13,7 @@ class EducationalProgramController extends BaseController
     use EducationalProgram;
     public function __invoke($id)
     {
+
         $educational_program = $this->getSingleMuseumEducationalProgramsForAPI($id);
 
         return $this->sendResponse(EducationalProgramsResource::collection($educational_program), 'success');
