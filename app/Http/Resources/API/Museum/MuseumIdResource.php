@@ -37,6 +37,7 @@ class MuseumIdResource extends JsonResource
             'director' => $translations->director_name,
             'phones' => $phones,
             'links' => $links,
+            'email' => $this->email,
             'guide' => $guide,
             'photos' => $photos,
             'tickets' => new WebTicketResource($this),
