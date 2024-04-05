@@ -32,7 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 
   protected $hidden = ['password', 'google_id'];
 
-  protected $defaultFields = ['gender', 'birth_day', 'country_id'];
+  protected $defaultFields = ['gender', 'country_id'];
   public function getJWTIdentifier()
   {
     return $this->getKey();
