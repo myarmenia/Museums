@@ -23,9 +23,9 @@ class ReportsForSuperAdminController extends Controller
   public function index(Request $request)
   {
 
-    
+// dd($request->all());
     $data = $this->report($request->all(), $this->model);
-    dd($data);
+    // dd($data);
     // $data = Purchase::report($request->all())
     //   ->purchased_items()->groupBy('museum_id', 'type')
     //       ->select('museum_id',  \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))

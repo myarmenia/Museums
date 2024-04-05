@@ -9,5 +9,6 @@ class PersonPurchase extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $defaultFields = ['gender', 'country_id'];
 
 }

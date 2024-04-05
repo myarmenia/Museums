@@ -47,7 +47,7 @@
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
                        <div class="col-2">
                             {{-- <select id="defaultSelect" name="museum_id" class="form-select" value="{{ request()->input('type') }}" > --}}
-                              <select class="form-select select-2" id="multiple-select-museum" data-placeholder="Թանգարան" name="museum_id" multiple>
+                              <select class="form-select select-2" id="multiple-select-museum" data-placeholder="Թանգարան" name="museum_id[]" multiple>
                                     @foreach ($museums as $museum)
                                         <option value="{{$museum->id}}" {{ request()->input('museum_id') == $museum->id ? 'selected' : '' }}>{{$museum->translationsForAdmin->name}}</option>
                                     @endforeach
