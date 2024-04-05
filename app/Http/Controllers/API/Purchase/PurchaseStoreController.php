@@ -43,7 +43,7 @@ class PurchaseStoreController extends BaseController
       }
       // ======================================================
 
-      
+
 
       $redirect_url = $this->register($purchase);
 
