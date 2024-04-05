@@ -15,11 +15,16 @@ class EventsListViaTicketsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+        $configs = $this->event_configs;
+        $configs = isset($request->start_date) ? $configs->where('day', '>=', $request->start_date) : $configs;
+        $configs = isset($request->end_date) ? $configs->where('day', '<=', $request->end_date) : $configs;
+
         return [
           'id' => $this->id,
           'museum_id' => $this->museum_id,
           'name' => $this->translation(session('languages'))->name,
-          'event_configs' => EventConfigResource::collection($this->event_configs)
+          'event_configs' => EventConfigResource::collection($configs)
 
         ];
     }
