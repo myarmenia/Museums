@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreign('person_purchase_id')->references('id')->on('person_purchases')->onUpdate('cascade')->onDelete('cascade');
 
             $table->string('email');
+            $table->integer('age')->nullable();
+
             $table->string('type');    //online or offline
             $table->integer('amount');
             $table->boolean('status')->default(0);

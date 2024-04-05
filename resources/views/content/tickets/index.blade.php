@@ -3,6 +3,7 @@
     <script src="{{ asset('assets/js/admin/ticket/index.js') }}"></script>
 @endsection
 @section('content')
+  @include('includes.alert')
   <div class="message">
     @if (!museumAccessId())
         <div class="alert alert-danger"> Նախ ստեղծեք թանգարան </div>

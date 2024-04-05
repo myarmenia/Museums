@@ -6,6 +6,7 @@ use App\Models\Museum;
 use App\Models\MuseumStaff;
 use App\Models\TicketType;
 use App\Models\TicketUnitedSetting;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
@@ -222,6 +223,22 @@ if (!function_exists('getAllCountries')) {
   }
 
 }
+
+
+if (!function_exists('getAge')) {
+    function getAge($birthdate)
+    {
+        $birthdate = Carbon::parse($birthdate);
+
+        $currentDate = Carbon::now();
+
+        $age = $birthdate->diffInYears($currentDate);
+
+        return $age;
+    }
+
+}
+
 
 
 

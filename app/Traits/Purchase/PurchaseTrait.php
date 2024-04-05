@@ -3,6 +3,7 @@ namespace App\Traits\Purchase;
 
 use App\Models\Event;
 use App\Models\EventConfig;
+use App\Models\GuideService;
 use App\Models\Museum;
 use App\Models\Product;
 use App\Models\Purchase;
@@ -26,6 +27,8 @@ trait PurchaseTrait
 
       $purchase_data['user_id'] = $user->id;
       $purchase_data['email'] = $user->email;
+      $purchase_data['age'] = $user->birth_date ? getAge($user->birth_date) : null;
+
     }
 
     if (Auth::user() != null) {
@@ -41,12 +44,13 @@ trait PurchaseTrait
       $data['person']['country_id'] = $country_id;
       $person = $this->createPerson($data['person']);
       $purchase_data['email'] = $person->email;
+      $purchase_data['age'] = $person->age;
       $purchase_data['person_purchase_id'] = $person->id;
     }
 
     $purchase_data['type'] = $data['purchase_type'];
     $purchase_data['amount'] = 0;
-
+    $purchase_data['status'] = isset($data['status']) ? $data['status'] : 0;
 
     // ======== when quantity = 0 ================
     $find_quantity_0 = array_filter($data['items'], function ($value) {
@@ -147,6 +151,21 @@ trait PurchaseTrait
 
       }
 
+      if ($value['type'] == 'guide_am' || $value['type'] == 'guide_other' ) {
+
+        $maked_data = $this->makeGuideData($value);
+        unset($maked_data['id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+
       if ($value['type'] == 'united') {
 
         $maked_data = $this->makeUnitedTicketData($value);
@@ -202,6 +221,27 @@ trait PurchaseTrait
 
     return $data;
   }
+
+  public function makeGuideData($data)
+  {
+    $type = $data['type'] == 'guide_am' ? 'price_am' : 'price_other';
+    $guide = $this->getGuide($data['id']);
+
+    if (!$guide) {
+      return false;
+    }
+
+    $data['museum_id'] = $guide ? $guide->museum->id : false;
+
+    $total_price = $guide[$type] * $data['quantity'];
+
+    $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
+
+    return $data;
+  }
+
+
   public function makeEventData($data)
   {
 
@@ -288,6 +328,11 @@ trait PurchaseTrait
   public function addItemInPurchasedItem($data)
   {
     return PurchasedItem::create($data);
+  }
+
+  public function getGuide($id)
+  {
+    return GuideService::where('id', $id)->first();
   }
 
   public function createUnitedTickets($data)
