@@ -17,7 +17,7 @@ class HeaderEventController extends BaseController
     public function index(Request $request)
     {
 
-      $event=Event::latest()->where('status',1)->take(8)->get();
+      $event=Event::latest()->where('status',1)->take(6)->get();
 
       return $this->sendResponse(EventListResource::collection($event),'success');
 
