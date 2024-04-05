@@ -11,6 +11,7 @@ use App\Http\Controllers\API\Banner\BannerCantroller;
 use App\Http\Controllers\API\EducationalPrograms\EducationalProgramController;
 use App\Http\Controllers\API\Events\EventController;
 use App\Http\Controllers\API\Events\EventsListController;
+use App\Http\Controllers\API\Events\HeaderEventController;
 use App\Http\Controllers\API\Events\SingleEventController;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\ForgotPasswordController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
 use App\Http\Controllers\API\Museum\SinggleMuseumEventsController;
 use App\Http\Controllers\API\Museum\SingleMuseumEventsController;
+use App\Http\Controllers\API\Museum\SingleMuseumProductController;
 use App\Http\Controllers\API\MuseumListController;
 use App\Http\Controllers\API\Notification\AllNotificationController;
 use App\Http\Controllers\API\Notification\ReadNotificationController;
@@ -116,6 +118,7 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::group(['prefix' => 'mobile'], function ($router) {
           Route::get('get-museum/{id}', [MuseumController::class, 'getMobileMuseumById']);
         });
+        Route::get('/{museum_id}/products',[SingleMuseumProductController::class,'index']);
     });
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);
@@ -173,12 +176,14 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     Route::group(['prefix' => 'purchase'], function ($router) {
       Route::post('store', PurchaseStoreController::class)->name('purchase_store');
-     
+
 
     });
 
     Route::get('payment-result', PaymentResultController::class);
-
+    Route::group(['prefix' => 'header'], function ($router) {
+      Route::get('event-list', [HeaderEventController::class,'index']);
+    });
 
   });
   Route::get('test-museum',[TestController::class, 'test']);
