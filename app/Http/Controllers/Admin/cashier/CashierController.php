@@ -21,8 +21,14 @@ class CashierController extends Controller
 
    public function index(Request $request)
    {
-      $data = $this->cashierService->getAllData();
-      return view('content.cashier.create', compact('data'));
+      $allData = $this->cashierService->getAllData();
+
+      if($allData['success']) {
+         $data = $allData['data'];
+         return view('content.cashier.create', compact('data'));
+      }
+
+      return redirect()->route('tickets_show');
    }
 
    public function createTicket(Request $request)
@@ -88,7 +94,7 @@ class CashierController extends Controller
       dd($request->all());
    }
 
-   public function getProduct(Request $request)
+   public function getMuseumProduct(Request $request)
    {
       $product_category = ProductCategory::all();
       $data = $this->cashierService->getProduct($request->all());
