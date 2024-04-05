@@ -27,6 +27,8 @@ trait PurchaseTrait
 
       $purchase_data['user_id'] = $user->id;
       $purchase_data['email'] = $user->email;
+      $purchase_data['age'] = $user->birth_date ? getAge($user->birth_date) : null;
+
     }
 
     if (Auth::user() != null) {
@@ -42,6 +44,7 @@ trait PurchaseTrait
       $data['person']['country_id'] = $country_id;
       $person = $this->createPerson($data['person']);
       $purchase_data['email'] = $person->email;
+      $purchase_data['age'] = $person->age;
       $purchase_data['person_purchase_id'] = $person->id;
     }
 
