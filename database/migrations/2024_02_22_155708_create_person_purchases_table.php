@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone')->nullable();
             $table->string('gender')->nullable();
-            $table->date('birth_date')->nullable();
+            $table->integer('age')->nullable();
             $table->bigInteger('country_id')->unsigned()->nullable();
             $table->foreign('country_id')->references('id')->on('countries')->onUpdate('cascade')->nullable();
             $table->timestamps();

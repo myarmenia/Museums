@@ -32,7 +32,13 @@ class CashierService
             $query->orderBy('id', 'DESC')->where('status', 1)->get();
         },])->find($museumId);
 
-        $ticketPrice = Ticket::where('museum_id', $museumId)->first()->price;
+        if(!$ticketPrice = Ticket::where('museum_id', $museumId)->first()){
+            session(['errorMessage' => 'Նախ ստեղծեք տոմս']);
+            return ['success' => false, 'error' => "dontTicket"];
+        };
+
+        $ticketPrice = $ticketPrice->price;
+
         $ticketType = ticketType('discount');
 
         $data['ticket'] = [
@@ -46,23 +52,17 @@ class CashierService
         }
         
         $data['educational'] = $this->customEducationalResource($museum->educational_programs);
-
         if($museum->aboniment){
             $data['aboniment'] = [
                 'price' => $museum->aboniment->price
             ];
         }
 
-        if($museum->events){
+        if($museum->events->count()){
             $data['events'] = $museum->events;
         }
 
-        if($museum->products){
-            $data['products'] = $museum->products;
-        }
-
-
-        return $data;
+        return ['success' => true, 'data' => $data];
     }
 
     public function customEducationalResource($data)
