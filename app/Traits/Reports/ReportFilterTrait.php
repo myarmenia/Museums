@@ -54,6 +54,24 @@ trait ReportFilterTrait
                 }
             }
 
+            if (isset($relationFilter) && $this->getKeyFromValue($field, $relationFilter)) {
+              $relationModel = $this->getKeyFromValue($field, $relationFilter);
+
+                $keys = array_keys($filters);
+                $values = array_values($filters);
+
+                $new_filters = array($field => $filters[$field]);
+// dump($relationModel);
+
+foreach ($relationModel as $i => $p) {
+  dump($p);
+  $builder->whereHas($p, function ($query) use ($new_filters) {
+    $query->reportFilter($new_filters);
+  });
+}
+
+
+          }
 
       }
 
@@ -66,19 +84,7 @@ trait ReportFilterTrait
       // }
 
 
-      if (isset($relationFilter) && $this->getKeyFromValue($field, $relationFilter)) {
-          $relationModel = $this->getKeyFromValue($field, $relationFilter);
 
-            $keys = array_keys($filters);
-            $values = array_values($filters);
-
-            $new_filters = array($field => $filters[$field]);
-
-          $builder->whereHas($relationModel, function ($query) use ($new_filters) {
-            $query->reportFilter($new_filters);
-          });
-
-      }
 
 
     }
@@ -88,14 +94,27 @@ trait ReportFilterTrait
 
   }
 
-  public function getKeyFromValue($needle, $haystack)
-  {
-    $collection = new Collection($haystack);
+  // public function getKeyFromValue($needle, $haystack)
+  // {
+  //   $collection = new Collection($haystack);
 
-    return $collection->search(function ($values) use ($needle) {
-      return in_array($needle, $values);
-    });
-  }
+  //   return $collection->search(function ($values) use ($needle) {
+
+  //     return in_array($needle, $values);
+  //   });
+  // }
+
+
+  function getKeyFromValue($needle, $haystack) {
+    $keys = [];
+    foreach ($haystack as $key => $valueArray) {
+        if (in_array($needle, $valueArray)) {
+            $keys[] = $key;
+        }
+    }
+
+    return $keys;
+}
 
 
 }

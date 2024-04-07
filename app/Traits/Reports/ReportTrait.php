@@ -15,23 +15,24 @@ trait ReportTrait
   {
 
     $purchase = $model
-      ->reportFilter($data)->pluck('id');
+      ->reportFilter($data);
 // dd($purchase);
 
-    $report = PurchasedItem::whereIn('purchase_id', $purchase)
+    $report = $purchase
+    //  PurchasedItem::whereIn('purchase_id', $purchase)
       ->groupBy('museum_id', 'type')
       ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
       ->get();
 
-    $purchased_item_id = PurchasedItem::whereIn('purchase_id', $purchase)->pluck('id');
-
-    // $united = PurchaseUnitedTickets::whereIn('purchased_item_id', $purchased_item_id)->groupBy('museum_id')
-    //   ->select('museum_id', \DB::raw('SUM(price) as total_price'))
-    //   ->get();
-    $united = PurchaseUnitedTickets::groupBy('museum_id')
+    // $purchased_item_id = $purchase->get()->pluck('id');
+// dd(PurchaseUnitedTickets::whereIn('purchased_item_id', $purchased_item_id)->whereIn('museum_id',[2])->get());
+    $united = PurchaseUnitedTickets::reportFilter($data)->groupBy('museum_id')
       ->select('museum_id', \DB::raw('SUM(price) as total_price'))
       ->get();
-    dd($united);
+    // $united = PurchaseUnitedTickets::groupBy('museum_id')
+    //   ->select('museum_id', \DB::raw('SUM(price) as total_price'))
+    //   ->get();
+    dd($purchase->get());
     // dd(array_merge($report->toArray(), $united->toArray()));
     // $groupedData = $this->groupByMuseumId($report->toArray());
 

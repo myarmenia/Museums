@@ -35,7 +35,7 @@ class PurchaseStoreController extends BaseController
           return $this->sendError(__('messages.' . $purchase['error']));
       }
 
-
+dd(22);
       // ============ maount = 0 =========================
       if($purchase->amount == 0){
           $proces = $this->withoutPayment($purchase);
