@@ -19,11 +19,13 @@ trait PaymentRegister
           ->select('museum_id',  \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
           ->get();
 
+      $data_purchased_item = $data->purchased_items->where('type', 'united');
+
       $data_united_items_ids = $data->purchased_items->where('type', 'united')->pluck('id');
       $data_united_items = PurchaseUnitedTickets::whereIn('purchased_item_id', $data_united_items_ids)->groupBy('museum_id')
         ->select('museum_id', \DB::raw('SUM(price) as total_price'))
         ->get();
-
+    dd($data_united_items);
       foreach ($data_items as $key => $item) {
 
           if($item->total_price > 0){
@@ -41,7 +43,7 @@ trait PaymentRegister
 
       if(count( $data_united_items) > 0){
             foreach ($data_united_items as $k => $united_item) {
-
+// dd($united_item);
                 $item_params = new stdClass();
                 $item_params->amount = $united_item->total_price;
                 // $item_params->account = $united_item->museum->account_number;
@@ -55,7 +57,7 @@ trait PaymentRegister
             }
       }
 
-    
+
       $client = new Client(['verify' => false]);
 
 

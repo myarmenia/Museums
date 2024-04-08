@@ -24,6 +24,7 @@ trait ReportFilterTrait
     $filterFieldsInRelation = isset($this->filterFieldsInRelation) ? $this->filterFieldsInRelation : false;
     $hasRelation = isset($this->hasRelation) ? $this->hasRelation : false;  //  relation name array
 
+
     foreach ($filters as $field => $value) {
       if($value != null){
 
@@ -45,36 +46,66 @@ trait ReportFilterTrait
             }
 
             if (isset($defaultFields) && in_array($field, $defaultFields)) {
+
+
+
                 if (is_array($value)) {
+                  dump($field, $value);
                     $builder->whereIn($field, $value);
+
                 }
                 else{
                     $builder->where($field, $value);
 
                 }
+
+                // if ($tableName == 'purchased_items') {
+                //   $builder->orWhere('type', 'united');
+                // }
+
+
+
             }
 
-            if (isset($relationFilter) && $this->getKeyFromValue($field, $relationFilter)) {
+
+
+
+        if (isset($relationFilter) && $this->getKeyFromValue($field, $relationFilter)) {
               $relationModel = $this->getKeyFromValue($field, $relationFilter);
 
                 $keys = array_keys($filters);
                 $values = array_values($filters);
 
                 $new_filters = array($field => $filters[$field]);
-// dump($relationModel);
+              dump($relationModel);
+              if(count($relationModel) > 1){
+                  foreach ($relationModel as $i => $p) {
+                    // dump($p);
+                    if($i == 0){
 
-foreach ($relationModel as $i => $p) {
-  dump($p);
-  $builder->whereHas($p, function ($query) use ($new_filters) {
-    $query->reportFilter($new_filters);
-  });
-}
+                        $builder->whereHas($p, function ($query) use ($new_filters) {
+                          $query->reportFilter($new_filters);
+                        });
+                    }
+                    else{
+                        $builder->orWhereHas($p, function ($query) use ($new_filters) {
+                          $query->reportFilter($new_filters);
+                        });
+                    }
+
+                  }
+              }
+              else{
+                  $builder->whereHas($relationModel[0], function ($query) use ($new_filters) {
+                    $query->reportFilter($new_filters);
+                  });
+              }
 
 
-          }
+
+            }
 
       }
-
 
 
 

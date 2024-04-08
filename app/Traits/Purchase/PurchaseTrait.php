@@ -172,6 +172,7 @@ trait PurchaseTrait
 
         if ($maked_data) {
           $row = $this->createUnitedTickets($maked_data);
+        
         } else {
           $row = ['error' => 'ticket_not_available'];
           break;

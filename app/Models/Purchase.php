@@ -15,10 +15,11 @@ class Purchase extends Model
 
     protected $boolFilterFields = ['status'];
     protected $relationFilter = [
-        'person_purchase' => ['gender', 'country_id'],
-        // 'user' => ['gender', 'country_id'],
 
-        // 'purchased_items' => ['museum_id'],
+    'person_purchase' => ['gender', 'country_id'],
+    'user' => ['gender', 'country_id'],
+
+    // 'purchased_items' => ['museum_id'],
 
     ];
 
