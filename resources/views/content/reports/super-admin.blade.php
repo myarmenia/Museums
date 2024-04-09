@@ -67,7 +67,7 @@
                             <select id="multiple-select-type" name="type" class="form-select select-2" data-placeholder="Վճարման եղանակ" value="{{ request()->input('type') ?? ''}}" >
                                 <option disabled selected>Վճարման եղանակ</option>
                                 <option value="online" >Առցանց</option>
-                                <option value="cash_box" >Դրամարկղ</option>
+                                <option value="offline" >Դրամարկղ</option>
 
                             </select>
                         </div>
