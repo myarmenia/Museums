@@ -22,9 +22,8 @@ trait ReportFilterTrait
     $defaultFields = $this->defaultFields;
     $relationFilter = $this->relationFilter;
     $filterDateRangeFields = $this->filterDateRangeFields;
-    $filterFieldsInRelation = isset($this->filterFieldsInRelation) ? $this->filterFieldsInRelation : false;
-    $hasRelation = isset($this->hasRelation) ? $this->hasRelation : false;  //  relation name array
-
+    $filterAgeRangeFields = $this->filterAgeRangeFields;
+    
 
     foreach ($filters as $field => $value) {
       if($value != null){
@@ -62,6 +61,18 @@ trait ReportFilterTrait
               }
             }
 
+            if (isset($filterAgeRangeFields) && in_array($field, $filterAgeRangeFields)) {
+
+              if ($field == "start_age") {
+                $builder->where('age', '>=', $value);
+
+              }
+              if ($field == "end_age") {
+                $builder->where('age', '<=', $value);
+
+              }
+            }
+
 
             if (isset($defaultFields) && in_array($field, $defaultFields) ) {
 
@@ -92,7 +103,7 @@ trait ReportFilterTrait
                 $values = array_values($filters);
 
                 $new_filters = array($field => $filters[$field]);
-           
+
               if(count($relationModel) > 1){
                   foreach ($relationModel as $i => $p) {
                     // dump($p);
