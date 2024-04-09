@@ -106,6 +106,18 @@
       ]
     },
 
+    {
+      "url": "reports",
+      "name": "Հաշվետվություն",
+      "icon": "menu-icon tf-icons bx bxs-report",
+      "slug": "reports",
+      "roles": [
+        "super_admin",
+        "general_manager",
+        "chief_accountant"
+      ]
+    },
+
 
 
 

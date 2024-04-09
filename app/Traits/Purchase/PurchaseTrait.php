@@ -275,7 +275,8 @@ trait PurchaseTrait
     $data['museum_id'] = $guide ? $guide->museum->id : false;
 
     $total_price = $guide[$type] * $data['quantity'];
-
+    
+    $data['type'] = 'guide';
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
 
@@ -283,7 +284,7 @@ trait PurchaseTrait
   }
 
   public function makeEducationalData($data){
-    
+
     $educational_program = $this->getEducationalProgram($data['id']);
 
     if (!$educational_program) {
