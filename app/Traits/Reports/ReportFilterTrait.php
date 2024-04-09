@@ -21,12 +21,17 @@ trait ReportFilterTrait
     $filterFields = isset($this->filterFields) ? $this->filterFields : false;
     $defaultFields = $this->defaultFields;
     $relationFilter = $this->relationFilter;
+    $filterDateRangeFields = $this->filterDateRangeFields;
     $filterFieldsInRelation = isset($this->filterFieldsInRelation) ? $this->filterFieldsInRelation : false;
     $hasRelation = isset($this->hasRelation) ? $this->hasRelation : false;  //  relation name array
 
 
     foreach ($filters as $field => $value) {
       if($value != null){
+
+            if($field == 'gender' && $value == 'unknown'){
+              $value = null;
+            }
 
             if (isset($this->boolFilterFields) && in_array($field, $this->boolFilterFields)) {
               $builder->where($field, (bool) $value);
@@ -45,18 +50,28 @@ trait ReportFilterTrait
 
             }
 
-            if (isset($defaultFields) && in_array($field, $defaultFields)) {
+            if (isset ($filterDateRangeFields) && in_array($field, $filterDateRangeFields)) {
+
+              if ($field == "start_date") {
+                $builder->whereDate('created_at', '>=', $value);
+
+              }
+              if ($field == "end_date") {
+                $builder->whereDate('created_at', '<=', $value);
+
+              }
+            }
+
+
+            if (isset($defaultFields) && in_array($field, $defaultFields) ) {
 
 
 
                 if (is_array($value)) {
-                  dump($field, $value);
                     $builder->whereIn($field, $value);
-
                 }
                 else{
                     $builder->where($field, $value);
-
                 }
 
                 // if ($tableName == 'purchased_items') {
@@ -77,7 +92,7 @@ trait ReportFilterTrait
                 $values = array_values($filters);
 
                 $new_filters = array($field => $filters[$field]);
-              dump($relationModel);
+           
               if(count($relationModel) > 1){
                   foreach ($relationModel as $i => $p) {
                     // dump($p);

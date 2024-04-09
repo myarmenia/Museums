@@ -10,12 +10,12 @@ class PurchasedItem extends Model
 {
     use HasFactory, ReportFilterTrait;
     protected $guarded = [];
-    protected $defaultFields = ['museum_id'];
+    // protected $defaultFields = ['museum_id'];
 
     protected $relationFilter = [
       // 'user' => ['gender', 'country_id'],
       // 'person_purchase' => ['gender', 'country_id'],
-      'purchase' => ['age','status','type','gender', 'country_id'],
+      'purchase' => ['age','status','type','gender', 'country_id', 'start_date', 'end_date'],
 
     ];
 

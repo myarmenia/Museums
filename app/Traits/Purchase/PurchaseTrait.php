@@ -172,7 +172,7 @@ trait PurchaseTrait
 
         if ($maked_data) {
           $row = $this->createUnitedTickets($maked_data);
-        
+
         } else {
           $row = ['error' => 'ticket_not_available'];
           break;
@@ -288,9 +288,12 @@ trait PurchaseTrait
       $price = $museum->standart_tickets ? $museum->standart_tickets->price : 0;
       $discont_price = $price - ($price * $coefficient);
       $total_price += $discont_price;
+      $single_museum_total_price = $data['quantity'] * $discont_price;
       $data['united'][$key] = [
         'museum_id' => $museum->id,
-        'price' => $discont_price
+        'price' => $discont_price,
+        'quantity' => $data['quantity'],
+        'total_price' => $single_museum_total_price
       ];
     }
 

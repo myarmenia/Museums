@@ -14,6 +14,9 @@ class Purchase extends Model
     protected $defaultFields = ['type', 'age'];   //museum_id  can be null
 
     protected $boolFilterFields = ['status'];
+    
+    protected $filterDateRangeFields = ['start_date', 'end_date'];
+
     protected $relationFilter = [
 
     'person_purchase' => ['gender', 'country_id'],

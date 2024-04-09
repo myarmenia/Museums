@@ -13,19 +13,34 @@ trait ReportTrait
 
   public function report($data, $model)
   {
+      if(isset($data['time'])){
+        $get_report_times = getReportTimes();
 
-// dd($data['museum_id']);
+        $data['start_date'] = $get_report_times[$data['time']]['start_date'];
+        $data['end_date'] = $get_report_times[$data['time']]['end_date'];
+
+      }
+
     $purchase = $model
       ->reportFilter($data);
 // dd($purchase->pluck('id'));
-// dd($purchase->get());
-
 
     $purchased_item_id = $purchase->where('type', 'united')->pluck('id');
+      // dd($purchased_item_id);
+// dd($purchase->get());
+
+    // $purchased_item_id = $purchase->where('type', 'united')->pluck('id');
 // dd( $purchased_item_id);
-    $report = $model
-      ->reportFilter($data)
-    //  PurchasedItem::whereIn('purchase_id', $purchase)
+    // $report = $model
+    //   ->reportFilter($data)->where('type', '!=', 'united')
+    $report =  $model
+      ->reportFilter($data)->where('type', '!=', 'united');
+
+      if(isset($data['museum_id']) && !empty($data['museum_id'])){
+        $report =  $report->whereIn('museum_id', $data['museum_id']);
+      }
+
+      $report =  $report
       ->groupBy('museum_id', 'type')
       ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
       ->get();
@@ -38,8 +53,19 @@ $united =[];
 
 // if(count($purchased_item_id) > 0){
 // dd(PurchaseUnitedTickets::reportFilter($data)->get());
-      $united = PurchaseUnitedTickets::reportFilter($data)->groupBy('museum_id')
-        ->select('museum_id', \DB::raw('SUM(price) as total_price'))
+      // $united = PurchaseUnitedTickets::reportFilter($data)->groupBy('museum_id')
+      //   ->select('museum_id', \DB::raw('SUM(price) as total_price'))
+      //   ->get();
+
+
+
+      $united = PurchaseUnitedTickets::whereIn('purchased_item_id', $purchased_item_id);
+        if(isset($data['museum_id']) && !empty($data['museum_id'])){
+          $united =  $united->whereIn('museum_id', $data['museum_id']);
+        }
+
+        $united = $united->groupBy('museum_id')
+        ->select('museum_id', \DB::raw('SUM(total_price) as total_price'))
         ->get();
         $united = $united->toArray();
 
@@ -56,7 +82,7 @@ $united =[];
     // $groupedData = $this->groupByMuseumId($report->toArray());
 
     $groupedData = $this->groupByMuseumId(array_merge($report->toArray(), $united));
-    dd($groupedData);
+    // dd($groupedData);
     return $groupedData;
     // return array_merge($report->toArray(), $united->toArray());
 

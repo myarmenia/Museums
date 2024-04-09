@@ -13,7 +13,7 @@ class PurchaseUnitedTickets extends Model
   protected $guarded = [];
   protected $table = 'purchase_united_tickets';
 
-  protected $defaultFields = ['museum_id'];
+  // protected $defaultFields = ['museum_id'];
   protected $relationFilter = [
     'purchased_item' => ['age', 'gender', 'country_id'],
   ];

@@ -55,7 +55,7 @@
                             </select>
                         </div>
                         <div class="col-2">
-                            <select id="multiple-select-type" name="type" class="form-select select-2" data-placeholder="Հաշվետվության տեսակ" value="{{ request()->input('type') ?? ''}}" >
+                            <select id="multiple-select-report_type" name="report_type" class="form-select select-2" data-placeholder="Հաշվետվության տեսակ" value="{{ request()->input('report_type') ?? ''}}" >
                                 <option disabled selected>Հաշվետվության տեսակ</option>
                                 <option value="financial" >Ֆինասական</option>
                                 <option value="quantitative" >Քանակական</option>
@@ -64,7 +64,7 @@
                         </div>
 
                         <div class="col-2">
-                            <select id="multiple-select-payment_method" name="payment_method" class="form-select select-2" data-placeholder="Վճարման եղանակ" value="{{ request()->input('payment_method') ?? ''}}" >
+                            <select id="multiple-select-type" name="type" class="form-select select-2" data-placeholder="Վճարման եղանակ" value="{{ request()->input('type') ?? ''}}" >
                                 <option disabled selected>Վճարման եղանակ</option>
                                 <option value="online" >Առցանց</option>
                                 <option value="cash_box" >Դրամարկղ</option>
