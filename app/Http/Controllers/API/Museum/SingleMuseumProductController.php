@@ -35,7 +35,17 @@ class SingleMuseumProductController extends BaseController
 
       $data = $data
 
-      ->orderBy('id', 'DESC')->paginate(10)->withQueryString();
+      ->orderBy('id', 'DESC')->paginate(12)->withQueryString();
+// total count product via filter
+      $total = $this->model
+      ->filter($request->all());
+
+$total=$total->where('museum_id',$request->museum_id);
+
+$total = $total->get();
+
+
+
       $museum_branches = MuseumBranch::where(['museum_id'=>$request->museum_id,'status'=>1])->get();
       $product_category = ProductCategory::all();
 
@@ -43,7 +53,7 @@ class SingleMuseumProductController extends BaseController
       $product_option['products_category'] =ProductCategoryListResource::collection($product_category);
       $product_option['museum_branches'] = MuseumBranchResource::collection($museum_branches);
 
-      return  $this->sendResponse(new ProductsOptionsResource($product_option),'success',['page_count' => $data->lastPage()]);
+      return  $this->sendResponse(new ProductsOptionsResource($product_option),'success',['page_count' => $data->lastPage(),'total_count'=>count($total)]);
 
   }
 }
