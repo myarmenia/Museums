@@ -224,7 +224,15 @@ class AuthService
 
         $user = auth('api')->user()->update($data);
 
+        if($user){
+            $updatedUser = auth('api')->user();
+            $updatedUser['card_count'] = $updatedUser->carts()->get()->count(); 
+            return $updatedUser;
+        }
+
         return $user;
+
+        
     }
 
 }

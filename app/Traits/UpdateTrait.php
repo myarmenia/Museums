@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\EventConfig;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\ProductTranslation;
@@ -40,6 +41,7 @@ trait UpdateTrait
 
             $item->item_translations()->where([$relation_foreign_key => $id, 'lang' => $key])->update($lang);
           }
+
         }
 
         if (isset($request['photo'])) {
@@ -61,6 +63,11 @@ trait UpdateTrait
           ];
 
           $item->images()->create($photoData);
+
+        }
+
+        if($className=="App\Models\Event"){
+          $item_config=self::update_config($item);
         }
 
         LogService::store($request->all(), Auth::id(), $table_name, 'update');
@@ -70,6 +77,16 @@ trait UpdateTrait
     } else {
 
       return false;
+    }
+  }
+  public function update_config($item){
+    // dd($item);
+    $event_config=EventConfig::where('event_id',$item->id)->get();
+    foreach($event_config as $conf){
+      $conf->visitors_quantity_limitation=$item->visitors_quantity_limitation;
+      $conf->price=$item->price;
+      $conf->save();
+
     }
   }
 }
