@@ -229,15 +229,32 @@ if (!function_exists('getAge')) {
     function getAge($birthdate)
     {
         $birthdate = Carbon::parse($birthdate);
-
         $currentDate = Carbon::now();
-
         $age = $birthdate->diffInYears($currentDate);
 
         return $age;
     }
 
 }
+
+if (!function_exists('getReportTimes')) {
+  function getReportTimes()
+  {
+    $currentDate = Carbon::now();
+    
+    return [
+          "first_trimester" => ['start_date' => $currentDate->startOfYear()->format('Y-m-d'), 'end_date' => $currentDate->startOfYear()->addMonths(3)->subDay()->format('Y-m-d')],
+          "second_trimester" => ['start_date' => $currentDate->startOfYear()->addMonths(3)->format('Y-m-d'), 'end_date' => $currentDate->startOfYear()->addMonths(6)->subDay()->format('Y-m-d')],
+          "third_trimester" => ['start_date' => $currentDate->startOfYear()->addMonths(6)->format('Y-m-d'), 'end_date' => $currentDate->startOfYear()->addMonths(9)->subDay()->format('Y-m-d')],
+          "fourth_trimester" => ['start_date' => $currentDate->startOfYear()->addMonths(9)->format('Y-m-d'), 'end_date' => $currentDate->endOfYear()->format('Y-m-d')],
+          "first_semester" => ['start_date' => $currentDate->startOfYear()->format('Y-m-d'), 'end_date' => $currentDate->startOfYear()->addMonths(6)->subDay()->format('Y-m-d')],
+          "second_semester" => ['start_date' => $currentDate->startOfYear()->addMonths(6)->format('Y-m-d'), 'end_date' => $currentDate->endOfYear()->format('Y-m-d')],
+          "per_year" => ['start_date' => $currentDate->startOfYear()->format('Y-m-d'), 'end_date' => $currentDate->endOfYear()->format('Y-m-d')],
+    ];
+  }
+
+}
+
 
 
 
