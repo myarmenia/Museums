@@ -43,6 +43,11 @@ use App\Http\Controllers\Admin\Product\ProductListController;
 use App\Http\Controllers\Admin\Product\ProductStoreController;
 use App\Http\Controllers\Admin\Product\ProductUpdateController;
 use App\Http\Controllers\Admin\cashier\CashierController;
+use App\Http\Controllers\cashier\BuyTicketController;
+use App\Http\Controllers\cashier\CorporativeTicket;
+use App\Http\Controllers\cashier\EducationalTicket;
+use App\Http\Controllers\cashier\EventTicket;
+use App\Http\Controllers\cashier\SubscriptionTicket;
 use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\Corporative\CorporativeSaleController;
 use App\Http\Controllers\museum\MuseumController;
@@ -211,8 +216,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/check-coupon', [CashierController::class, 'checkCoupon'])->name('cashier.check.coupon');
     Route::post('/corporative-ticket', [CashierController::class, 'corporativeTicket'])->name('cashier.buy.corporative');
     Route::get('/get-event-details/{id}', [CashierController::class, 'getEventDetails'])->name('cashier.eveent.details');
-    Route::post('/create-ticket', [CashierController::class, 'createTicket'])->name('cashier.add.ticket');
-    Route::post('/create-educational', [CashierController::class, 'createEducational'])->name('cashier.add.educational');
+    Route::post('/create-ticket', BuyTicketController::class)->name('cashier.add.ticket');
+    Route::post('/create-educational', EducationalTicket::class)->name('cashier.add.educational');
+    Route::post('/create-event', EventTicket::class)->name('cashier.add.event');
+    Route::post('/create-subscription', SubscriptionTicket::class)->name('cashier.add.subscription');
+    Route::post('/create-corporative', CorporativeTicket::class)->name('cashier.add.corporative');
     Route::get('/products', [CashierController::class, 'getMuseumProduct'])->name('cashier.product');
     Route::post('/sale-product', [CashierController::class, 'saleProduct'])->name('cashier.add.product');
 
