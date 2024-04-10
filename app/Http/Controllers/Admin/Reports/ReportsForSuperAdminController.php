@@ -7,34 +7,28 @@ use App\Models\Museum;
 use App\Models\Payment;
 use App\Models\Purchase;
 use App\Models\PurchasedItem;
+use App\Traits\Reports\CheckReportType;
 use App\Traits\Reports\ReportTrait;
 use Illuminate\Http\Request;
 
 class ReportsForSuperAdminController extends Controller
 {
-  use ReportTrait;
+  use ReportTrait, CheckReportType;
   protected $model;
   public function __construct(PurchasedItem $model)
   {
-      $this->middleware('role:super_admin');
+      $this->middleware('role:super_admin|general_manager|chief_accountant');
       $this->model = $model;
 
   }
 
-  public function index(Request $request)
+  public function index(Request $request, $request_report_type)
   {
 
-// dd($request->all());
-    $data = $this->report($request->all(), $this->model);
-    // dd($data);
-    // $data = Purchase::report($request->all())
-    //   ->purchased_items()->groupBy('museum_id', 'type')
-    //       ->select('museum_id',  \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
-    //       // ->get();
-    //   ->withQueryString();
-    // dd($request->all());
+
+    $data = $this->report($request->all(), $this->model, $request_report_type);
+// dd($data);
     $museums = Museum::all();
-    // return view("content.reports.super-admin", compact('museums'));
 
     return view("content.reports.super-admin", compact('data', 'museums'));
 

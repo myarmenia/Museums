@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class CashierController extends Controller
 {
-   use PurchaseTrait;
    public $cashierService;
 
    public function __construct(CashierService $cashierService)
@@ -29,34 +28,6 @@ class CashierController extends Controller
       }
 
       return redirect()->route('tickets_show');
-   }
-
-   public function createTicket(Request $request)
-   {
-      $data['purchase_type'] = 'offline';
-      $data['status'] = 1;
-      $data['items'] =  [
-         [
-             "type"=>"standart", 
-             "id"=> 1,            
-             "quantity"=> 4
-         ],
-         [
-             "type"=>"discount", 
-             "id"=> 1,            
-             "quantity"=> 3
-         ],
-         [
-            "type"=>"free", 
-            "id"=> 1,            
-            "quantity"=> 3
-         ],
-
-      ];
-
-      $k =  $this->purchase($data);
-
-      dd($k);
    }
 
    public function checkCoupon(Request $request)

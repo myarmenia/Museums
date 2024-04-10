@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits\Purchase;
 
+use App\Models\CorporativeSale;
 use App\Models\EducationalProgram;
 use App\Models\Event;
 use App\Models\EventConfig;
@@ -66,7 +67,7 @@ trait PurchaseTrait
 
 
     // ======== when selected anavalible id from museum ================
-    if (!$this->chetAllMuseumsTikets($data['items'])) {
+    if (!$this->getAllMuseumsTikets($data['items'])) {
       return ['error' => 'system_error'];
     }
     // ========================================================
@@ -201,6 +202,24 @@ trait PurchaseTrait
       }
       // ==============================================================
 
+      //  ===================== corporative ================================
+
+      if ($value['type'] == 'corporative') {
+
+        $maked_data = $this->makeCorporativeData($value);
+        unset($maked_data['id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+      // ==============================================================
+
       //  ===================== united ================================
 
       if ($value['type'] == 'united') {
@@ -276,6 +295,7 @@ trait PurchaseTrait
 
     $total_price = $guide[$type] * $data['quantity'];
 
+    $data['type'] = 'guide';
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
 
@@ -283,7 +303,7 @@ trait PurchaseTrait
   }
 
   public function makeEducationalData($data){
-    
+
     $educational_program = $this->getEducationalProgram($data['id']);
 
     if (!$educational_program) {
@@ -293,6 +313,24 @@ trait PurchaseTrait
     $data['museum_id'] = $educational_program ? $educational_program->museum->id : false;
 
     $total_price = $educational_program->price * $data['quantity'];
+
+    $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
+
+    return $data;
+
+  }
+
+  public function makeCorporativeData($data){
+    $corporative = $this->getCorporative($data['id']);
+
+    if (!$corporative) {
+      return false;
+    }
+
+    $data['museum_id'] = $corporative ? $corporative->museum->id : false;
+
+    $total_price = $corporative->price * $data['quantity'];
 
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
@@ -402,6 +440,11 @@ trait PurchaseTrait
     return EducationalProgram::where(['id' => $id, 'status' => 1])->first();
   }
 
+  public function getCorporative($id)
+  {
+    return CorporativeSale::where('id', $id)->first();
+  }
+
   public function createUnitedTickets($data)
   {
 
@@ -419,15 +462,20 @@ trait PurchaseTrait
     return $purchased_item;
   }
 
-  public function chetAllMuseumsTikets($data)
+  public function getAllMuseumsTikets($data)
   {
     $data = array_filter($data, function ($value) {
       return $value['type'] == 'united';
     });
-
-    $min_museum_quantity = unitedTicketSettings()->min_museum_quantity;
+     
 
     if (count($data) > 0) {
+
+      if(!unitedTicketSettings()){
+        return false;
+      }
+      $min_museum_quantity = unitedTicketSettings()->min_museum_quantity;
+
       $u_museum_ids = Ticket::pluck('museum_id')->toArray();
 
       foreach ($data as $u => $u_array) {

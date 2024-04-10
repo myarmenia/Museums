@@ -11,80 +11,131 @@ use Illuminate\Support\Collection;
 trait ReportTrait
 {
 
-  public function report($data, $model)
+  public function generateReport($data, $model)
   {
-      if(isset($data['time'])){
+
+      $data = array_filter($data, function ($value) {
+          return $value !== null && $value !== 'null';
+      });
+
+
+      if(!isset($data['report_type'])){
+          $data['report_type'] = 'fin_quant';
+      }
+
+      if(!isset($data['time']) && empty($data['from_created_at']) && empty($data['to_created_at'])){
+        $data['time'][] = 'per_year';
+      }
+
+
+      if (isset($data['time']) && count($data['time']) == 1) {
         $get_report_times = getReportTimes();
 
-        $data['start_date'] = $get_report_times[$data['time']]['start_date'];
-        $data['end_date'] = $get_report_times[$data['time']]['end_date'];
+      // dd($get_report_times[$data['time'][0]]['start_date']);
+
+        $data['start_date'] = $get_report_times[$data['time'][0]]['start_date'];
+        $data['end_date'] = $get_report_times[$data['time'][0]]['end_date'];
+      }
+
+      if(isset($data['age'])){
+          $get_age_ranges = getAgeRanges();
+
+          $data['start_age'] = $get_age_ranges[$data['age']]['start_age'];
+          $data['end_age'] = $get_age_ranges[$data['age']]['end_age'];
 
       }
 
-    $purchase = $model
-      ->reportFilter($data);
-// dd($purchase->pluck('id'));
+      $purchase = $model->reportFilter($data);
+      $purchased_item_id = $purchase->where('type', 'united')->pluck('id');
+        // dd($purchased_item_id);
 
-    $purchased_item_id = $purchase->where('type', 'united')->pluck('id');
-      // dd($purchased_item_id);
-// dd($purchase->get());
+      $report =  $model->reportFilter($data)->where('type', '!=', 'united');
 
-    // $purchased_item_id = $purchase->where('type', 'united')->pluck('id');
-// dd( $purchased_item_id);
-    // $report = $model
-    //   ->reportFilter($data)->where('type', '!=', 'united')
-    $report =  $model
-      ->reportFilter($data)->where('type', '!=', 'united');
-
-      if(isset($data['museum_id']) && !empty($data['museum_id'])){
-        $report =  $report->whereIn('museum_id', $data['museum_id']);
-      }
-
-      $report =  $report
-      ->groupBy('museum_id', 'type')
-      ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
-      ->get();
-    // dd($purchase->pluck('id'));
-// dd(PurchaseUnitedTickets::whereIn('purchased_item_id', $purchased_item_id)->whereIn('museum_id',[2])->get());
-
-$united =[];
-
-    // dd( $purchased_item_id);
-
-// if(count($purchased_item_id) > 0){
-// dd(PurchaseUnitedTickets::reportFilter($data)->get());
-      // $united = PurchaseUnitedTickets::reportFilter($data)->groupBy('museum_id')
-      //   ->select('museum_id', \DB::raw('SUM(price) as total_price'))
-      //   ->get();
-
-
-
-      $united = PurchaseUnitedTickets::whereIn('purchased_item_id', $purchased_item_id);
         if(isset($data['museum_id']) && !empty($data['museum_id'])){
-          $united =  $united->whereIn('museum_id', $data['museum_id']);
+          $report =  $report->whereIn('museum_id', $data['museum_id']);
         }
 
-        $united = $united->groupBy('museum_id')
+
+      $united =[];
+      $united = PurchaseUnitedTickets::whereIn('purchased_item_id', $purchased_item_id);
+
+      if(isset($data['museum_id']) && !empty($data['museum_id'])){
+        $united =  $united->whereIn('museum_id', $data['museum_id']);
+      }
+
+
+
+      if($data['report_type'] == 'fin_quant'){
+
+          $groupedData = $this->report_fin_quant($report, $united);
+      }
+
+      if ($data['report_type'] == 'financial') {
+
+          $groupedData = $this->report_financial($report, $united);
+      }
+
+      if ($data['report_type'] == 'quantitative') {
+
+        $groupedData = $this->report_quantitative($report, $united);
+      }
+
+      // dd($groupedData);
+      return $groupedData;
+
+  }
+
+
+  public function report_financial($report, $united){
+      $report = $report
+        ->groupBy('museum_id', 'type')
+        ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
+        ->get();
+
+      $united = $united->groupBy('museum_id')
         ->select('museum_id', \DB::raw('SUM(total_price) as total_price'))
         ->get();
-        $united = $united->toArray();
 
-// }
-    // dd($united);
-    // $united = PurchaseUnitedTickets::reportFilter($data)->groupBy('museum_id')
-    //   ->select('museum_id', \DB::raw('SUM(price) as total_price'))
-    //   ->get();
-    // $united = PurchaseUnitedTickets::groupBy('museum_id')
-    //   ->select('museum_id', \DB::raw('SUM(price) as total_price'))
-    //   ->get();
-    // dd($united);
-    // dd(array_merge($report->toArray(), $united->toArray()));
-    // $groupedData = $this->groupByMuseumId($report->toArray());
+      $report = $report->toArray();
+      $united = $united->toArray();
 
-    $groupedData = $this->groupByMuseumId(array_merge($report->toArray(), $united));
-    // dd($groupedData);
-    return $groupedData;
-    // return array_merge($report->toArray(), $united->toArray());
+      return $this->groupByMuseumId(array_merge($report, $united));
+
+  }
+
+  public function report_fin_quant($report, $united)
+  {
+      $report = $report
+        ->groupBy('museum_id', 'type')
+        ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'), \DB::raw('SUM(quantity) as quantity'))
+        ->get();
+
+      $united = $united->groupBy('museum_id')
+        ->select('museum_id', \DB::raw('SUM(total_price) as total_price'), \DB::raw('SUM(quantity) as quantity'))
+        ->get();
+
+      $report = $report->toArray();
+      $united = $united->toArray();
+
+      return $this->groupByMuseumId(array_merge($report, $united));
+
+  }
+
+  public function report_quantitative($report, $united)
+  {
+      $report = $report
+        ->groupBy('museum_id', 'type')
+        ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(quantity) as quantity'))
+        ->get();
+
+      $united = $united->groupBy('museum_id')
+        ->select('museum_id', \DB::raw('SUM(quantity) as quantity'))
+        ->get();
+
+      $report = $report->toArray();
+      $united = $united->toArray();
+
+      return $this->groupByMuseumId(array_merge($report, $united));
 
   }
 
@@ -99,7 +150,17 @@ $united =[];
 
           }
           $type = isset ($item['type']) ? $item['type'] : 'united';
-          $carry[$museumId][$type] = $item['total_price'];
+
+          if(isset ($item['quantity'])){
+              $carry[$museumId][$type]['quantity'] = $item['quantity'];
+          }
+
+          if (isset ($item['total_price'])) {
+              $carry[$museumId][$type]['total_price'] = $item['total_price'];
+          }
+
+          $carry[$museumId]['museum_id'] = $item['museum_id'];
+
       }
 
       return $carry;

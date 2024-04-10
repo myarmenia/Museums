@@ -26,7 +26,7 @@ class MuseumMobileIdResource extends JsonResource
             return route('get-file', ['path' => $path]);
         });
         $request['type'] = 'standart';
-        $guide =$this->guide ? ['am' => $this->guide->price_am, 'other' => $this->guide->price_other]: null;
+        $guide =$this->guide ? ['price_am' => $this->guide->price_am, 'price_other' => $this->guide->price_other]: null;
 
         return [
             'id' => $this->id,

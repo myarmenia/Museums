@@ -73,21 +73,21 @@
                                         <td>Ստանդարտ</td>
                                         <td><input type="number" min="0" class="form-control form-control-validate"
                                                 onwheel="return false;" price="<?= $data['ticket']['price'] ?>"
-                                                id="standard-ticket" name="standard-ticket"
-                                                value="{{ old('standard-ticket') }}"></td>
+                                                id="standart" name="standart"
+                                                value="{{ old('standart') }}"></td>
                                         <td id = 'standard-ticket-price'>0</td>
                                     </tr>
                                     <tr class='table-default'>
                                         <td>Զեղչված</td>
                                         <td><input type="number" min="0" class="form-control form-control-validate"
                                                 onwheel="return false;" price="<?= $data['ticket']['sale'] ?>"
-                                                id="sale-ticket" name="sale-ticket" value="{{ old('sale-ticket') }}"></td>
-                                        <td id = 'sale-ticket-price'>0</td>
+                                                id="discount" name="discount" value="{{ old('discount') }}"></td>
+                                        <td id = 'discount-price'>0</td>
                                     </tr>
                                     <tr class='table-default'>
                                         <td>Անվճար</td>
-                                        <td><input type="number" min="0" class="form-control form-control-validate" id="free-ticket"
-                                                onwheel="return false;" name="free-ticket" value="{{ old('free-ticket') }}">
+                                        <td><input type="number" min="0" class="form-control form-control-validate" id="free"
+                                                onwheel="return false;" name="free" value="{{ old('free') }}">
                                         </td>
                                         <td>0</td>
                                     </tr>
@@ -99,17 +99,17 @@
                                             <td>Էքսկուրսավար(հայերեն)</td>
                                             <td><input type="number" onwheel="return false;"
                                                     price="<?= $data['ticket']['guid-arm'] ?>" min="0"
-                                                    class="form-control form-control-validate" id="git-arm" name="git-arm"
-                                                    value="{{ old('git-arm') }}"></td>
-                                            <td id = 'git-arm-price'>0</td>
+                                                    class="form-control form-control-validate" id="guide_am" name="guide_am"
+                                                    value="{{ old('guide_am') }}"></td>
+                                            <td id = 'guide_am-price'>0</td>
                                         </tr>
                                         <tr class='table-default'>
                                             <td>Էքսկուրսավար(այլ)</td>
                                             <td><input type="number" onwheel="return false;"
                                                     price="<?= $data['ticket']['guid-other'] ?>" min="0"
-                                                    class="form-control form-control-validate" id="git-other" name="git-other"
-                                                    value="{{ old('git-other') }}"></td>
-                                            <td id = 'git-other-price'>0</td>
+                                                    class="form-control form-control-validate" id="guide_other" name="guide_other"
+                                                    value="{{ old('guide_other') }}"></td>
+                                            <td id = 'guide_other-price'>0</td>
                                         </tr>
                                     </tbody>
                                 @endif
@@ -196,7 +196,7 @@
                 @endif
                 @if (array_key_exists('events', $data))
                     <div class="tab-pane fade" id="navs-top-event" role="tabpanel">
-                        <form action="{{ route('cashier.add.ticket') }}" method="post">
+                        <form action="{{ route('cashier.add.event') }}" method="post">
                             <div class="table-responsive text-nowrap">
                                 <select id="event-select" name="event" class="form-select">
                                     <option value="">Ընտրեք միջոցառումը</option>
@@ -231,7 +231,7 @@
                 @endif
                 @if (array_key_exists('aboniment', $data))
                     <div class="tab-pane fade" id="navs-top-aboniment" role="tabpanel">
-                        <form action="{{ route('cashier.add.ticket') }}" method="post">
+                        <form action="{{ route('cashier.add.subscription') }}" method="post">
                             <div class="table-responsive text-nowrap">
                                 <table class="table cashier-table">
                                     <thead>
@@ -246,7 +246,7 @@
                                             <td>Աբոնեմենտ</td>
                                             <td><input type="number" min="0" class="form-control form-control-validate"
                                                     onwheel="return false;" price="<?= $data['aboniment']['price'] ?>"
-                                                    id="aboniment-ticket" name="aboniment-ticket"
+                                                    id="aboniment-ticket" name="aboniment-ticket" max="10"
                                                     value="{{ old('aboniment-ticket') }}"></td>
                                             <td id = 'aboniment-ticket-price'>0</td>
                                         </tr>
@@ -263,7 +263,7 @@
                     </div>
                 @endif
                 <div class="tab-pane fade" id="navs-top-corporative" role="tabpanel">
-                    <form action="{{ route('cashier.buy.corporative') }}" method="post">
+                    <form action="{{ route('cashier.add.corporative') }}" method="post">
                         <div class="table-responsive text-nowrap">
                             <div class="d-flex">
                                 <input type="text" class="form-control" id="corporative-coupon-input"

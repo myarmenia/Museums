@@ -1,16 +1,28 @@
+
+
 $(function () {
 
-  $('.form-control-validate').on('input', function() {
+
+
+    $(document).on('input', '.form-control-validate', function() {
       var inputValue = $(this).val();
       if (!/^[1-9][0-9]*$/.test(inputValue)) {
         $(this).val(inputValue.replace(/[^1-9]/g, ''));
-    }
-  });
+      }
+    });
 
-  $('#standard-ticket').on('input', function () {
-    let ticketCount = $('#standard-ticket').val();
+
+  // $('.form-control-validate').on('input', function() {
+  //     var inputValue = $(this).val();
+  //     if (!/^[1-9][0-9]*$/.test(inputValue)) {
+  //       $(this).val(inputValue.replace(/[^1-9]/g, ''));
+  //   }
+  // });
+
+  $('#standart').on('input', function () {
+    let ticketCount = $('#standart').val();
     if (ticketCount > 0) {
-      let priceTicket = $('#standard-ticket').attr('price');
+      let priceTicket = $('#standart').attr('price');
       let readyPrice = priceTicket * ticketCount;
       $('#standard-ticket-price').text(readyPrice);
     } else {
@@ -19,59 +31,59 @@ $(function () {
 
   });
 
-  $('#sale-ticket').on('input', function () {
-    let ticketCount = $('#sale-ticket').val();
+  $('#discount').on('input', function () {
+    let ticketCount = $('#discount').val();
     if (ticketCount > 0) {
-      let priceTicket = $('#sale-ticket').attr('price');
+      let priceTicket = $('#discount').attr('price');
       let readyPrice = priceTicket * ticketCount;
-      $('#sale-ticket-price').text(readyPrice);
+      $('#discount-price').text(readyPrice);
     } else {
-      $('#sale-ticket-price').text(0);
+      $('#discount-price').text(0);
     }
   });
 
-  $('#git-arm').on('input', function () {
-    let ticketCount = $('#git-arm').val();
+  $('#guide_am').on('input', function () {
+    let ticketCount = $('#guide_am').val();
     if (ticketCount > 0) {
-      let priceTicket = $('#git-arm').attr('price');
+      let priceTicket = $('#guide_am').attr('price');
       let readyPrice = priceTicket * ticketCount;
-      $('#git-arm-price').text(readyPrice);
+      $('#guide_am-price').text(readyPrice);
     } else {
-      $('#git-arm-price').text(0);
+      $('#guide_am-price').text(0);
     }
   });
 
-  $('#git-other').on('input', function () {
-    let ticketCount = $('#git-other').val();
+  $('#guide_other').on('input', function () {
+    let ticketCount = $('#guide_other').val();
     if (ticketCount > 0) {
-      let priceTicket = $('#git-other').attr('price');
+      let priceTicket = $('#guide_other').attr('price');
       let readyPrice = priceTicket * ticketCount;
-      $('#git-other-price').text(readyPrice);
+      $('#guide_other-price').text(readyPrice);
     } else {
-      $('#git-other-price').text(0);
+      $('#guide_other-price').text(0);
     }
   });
 
-  $('#standard-ticket, #sale-ticket, #free-ticket').on('input', function () {
-    let parseStandard = parseInt($('#standard-ticket').val()) || 0;
-    let parseSale = parseInt($('#sale-ticket').val()) || 0;
-    let parseFree = parseInt($('#free-ticket').val()) || 0;
+  $('#standart, #discount, #free').on('input', function () {
+    let parseStandard = parseInt($('#standart').val()) || 0;
+    let parseSale = parseInt($('#discount').val()) || 0;
+    let parseFree = parseInt($('#free').val()) || 0;
 
     let total = parseStandard + parseSale + parseFree;
     $('#ticket-total-count').text(total);
 
   })
 
-  $('#git-arm, #git-other').on('input', function () {
-    let gitArm = parseInt($('#git-arm').val()) || 0;
-    let gitOther = parseInt($('#git-other').val()) || 0;
+  $('#guide_am, #guide_other').on('input', function () {
+    let gitArm = parseInt($('#guide_am').val()) || 0;
+    let gitOther = parseInt($('#guide_other').val()) || 0;
 
     let total = gitArm + gitOther;
     $('#git-total-count').text(total);
   })
 
-  $('#standard-ticket, #sale-ticket, #free-ticket, #git-arm, #git-other').on('input', function () {
-    $('#ticket-total-price').text(parseInt($('#standard-ticket-price').text()) + parseInt($('#sale-ticket-price').text()) + parseInt($('#git-arm-price').text()) + parseInt($('#git-other-price').text()));
+  $('#standart, #discount, #free, #guide_am, #guide_other').on('input', function () {
+    $('#ticket-total-price').text(parseInt($('#standard-ticket-price').text()) + parseInt($('#discount-price').text()) + parseInt($('#guide_am-price').text()) + parseInt($('#guide_other-price').text()));
   })
 
   let mistakeQuantity = [];
@@ -92,7 +104,6 @@ $(function () {
        mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
        $('#educational-button').prop('disabled', false);
     }
-    console.log(mistakeQuantity)
 
     if (ticketCount > 0) {    
       let priceTicket = $(this).attr('price');
@@ -177,7 +188,6 @@ $(function () {
           $('#event-total-count').text(0);
           $('#event-total-price').text(0);
           let html = ``;
-          console.log(data, 7788)
           if (data.event_configs.length) {
             $('#event-total').attr('style', 'display: block !important; display:flex !important; justify-content: end !important');
             $('#event-save').attr('style', 'display: block !important; display:flex !important; margin-top: 1rem !important; justify-content: flex-end !important;');
@@ -201,12 +211,11 @@ $(function () {
                             <td>${element.start_time}</td>
                             <td>${element.end_time}</td>
                             <td>${element.visitors_quantity_limitation - element.visitors_quantity} մարդ</td>
-                            <td><input type="number" min="0" class="form-control" onwheel="return false;" price="${element['price']}"
+                            <td><input type="number" min="0" class="form-control form-control-validate" onwheel="return false;" price="${element['price']}"
                               id="event_${element['id']}" name="event[${element['id']}]"></td>
                             <td id = 'event-ticket-price_${element['id']}'>0</td>
                         </tr>`;
             });
-  
           } else {
             html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
           }
@@ -224,7 +233,6 @@ $(function () {
   $(document).on('input', 'input[name^="event"]', function () { 
     let ticketCount = $(this).val();
     let eventId = $(this).attr('name').match(/\[(\d+)\]/)[1];
-    console.log(this,eventId, "this")
     if (ticketCount > 0) {
       let priceTicket = $(this).attr('price');
       let readyPrice = priceTicket * ticketCount;
