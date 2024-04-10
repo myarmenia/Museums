@@ -16,10 +16,15 @@ trait QrTokenTrait
 
         $allData = [];
 
+        $unusedTypes = [
+            'product',
+            'guide_am',
+            'guide_other',
+        ];
+
         try {
             DB::beginTransaction();
-            $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->where('type', '!=', 'product')->get();
-
+            $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->whereNotIn('type', $unusedTypes)->get();
             $purchasesKeys = [];
             foreach ($allPurchases as $key => $item) {
                 $purchasesKeys[$item->type] = array_key_exists($item->type, $purchasesKeys)
@@ -31,12 +36,13 @@ trait QrTokenTrait
     
             foreach ($allPurchases as $key => $item) {
                 $quantity = $item->quantity;
-    
+                $priceOneTicket = (int) $item->total_price / (int) $item->quantity;
+                
                 for ($i = 0; $i < $quantity; $i++) {
                     $type = $item->type;
                     $token = $data[$type][0]['unique_token'];
                     $path = $data[$type][0]['qr_path'];
-    
+
                     $newData = [
                         'museum_id' => $item->museum_id,
                         'purchased_item_id' => $item->purchase_id,
@@ -44,14 +50,13 @@ trait QrTokenTrait
                         'token' => $token,
                         'path' => $path,
                         'type' => $type,
-                        'price' => $item->total_price,
+                        'price' => $priceOneTicket,
                     ];
     
                     $allData[] = $newData;
                     array_shift($data[$type]);
                 }
             }
-    
             $insert = TicketQr::insert($allData);
 
             if (!$insert) {
