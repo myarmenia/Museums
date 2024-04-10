@@ -107,7 +107,7 @@
     },
 
     {
-      "url": "reports",
+      "url": "reports/report",
       "name": "Հաշվետվություն",
       "icon": "menu-icon tf-icons bx bxs-report",
       "slug": "reports",
