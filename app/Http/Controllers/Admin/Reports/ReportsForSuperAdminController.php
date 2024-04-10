@@ -7,12 +7,13 @@ use App\Models\Museum;
 use App\Models\Payment;
 use App\Models\Purchase;
 use App\Models\PurchasedItem;
+use App\Traits\Reports\CheckReportType;
 use App\Traits\Reports\ReportTrait;
 use Illuminate\Http\Request;
 
 class ReportsForSuperAdminController extends Controller
 {
-  use ReportTrait;
+  use ReportTrait, CheckReportType;
   protected $model;
   public function __construct(PurchasedItem $model)
   {
@@ -21,12 +22,12 @@ class ReportsForSuperAdminController extends Controller
 
   }
 
-  public function index(Request $request)
+  public function index(Request $request, $request_report_type)
   {
 
-// dd($request->all());
-    $data = $this->report($request->all(), $this->model);
 
+    $data = $this->report($request->all(), $this->model, $request_report_type);
+// dd($data);
     $museums = Museum::all();
 
     return view("content.reports.super-admin", compact('data', 'museums'));
