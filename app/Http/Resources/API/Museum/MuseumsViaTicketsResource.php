@@ -26,6 +26,8 @@ class MuseumsViaTicketsResource extends JsonResource
       'id' => $this->id,
       'region_name' => $this->region->name,
       'name' => $this->translation(session("languages"))->name,
+      'price_am' => $this->guide ? $this->guide->price_am : null,
+      'price_other' => $this->guide ? $this->guide->price_other : null,
       'tickets' => $tickets
 
     ];

@@ -229,15 +229,71 @@ if (!function_exists('getAge')) {
     function getAge($birthdate)
     {
         $birthdate = Carbon::parse($birthdate);
-
         $currentDate = Carbon::now();
-
         $age = $birthdate->diffInYears($currentDate);
 
         return $age;
     }
 
 }
+
+if (!function_exists('getReportTimes')) {
+  function getReportTimes()
+  {
+    $currentDate = Carbon::now();
+
+    return [
+          "first_trimester" => ['start_date' => $currentDate->startOfYear()->format('Y-m-d'), 'end_date' => $currentDate->startOfYear()->addMonths(3)->subDay()->format('Y-m-d')],
+          "second_trimester" => ['start_date' => $currentDate->startOfYear()->addMonths(3)->format('Y-m-d'), 'end_date' => $currentDate->startOfYear()->addMonths(6)->subDay()->format('Y-m-d')],
+          "third_trimester" => ['start_date' => $currentDate->startOfYear()->addMonths(6)->format('Y-m-d'), 'end_date' => $currentDate->startOfYear()->addMonths(9)->subDay()->format('Y-m-d')],
+          "fourth_trimester" => ['start_date' => $currentDate->startOfYear()->addMonths(9)->format('Y-m-d'), 'end_date' => $currentDate->endOfYear()->format('Y-m-d')],
+          "first_semester" => ['start_date' => $currentDate->startOfYear()->format('Y-m-d'), 'end_date' => $currentDate->startOfYear()->addMonths(6)->subDay()->format('Y-m-d')],
+          "second_semester" => ['start_date' => $currentDate->startOfYear()->addMonths(6)->format('Y-m-d'), 'end_date' => $currentDate->endOfYear()->format('Y-m-d')],
+          "per_year" => ['start_date' => $currentDate->startOfYear()->format('Y-m-d'), 'end_date' => $currentDate->endOfYear()->format('Y-m-d')],
+    ];
+  }
+
+}
+
+if (!function_exists('getReportTimesForAdmin')) {
+  function getReportTimesForAdmin()
+  {
+
+    return [
+        "first_trimester" => '1 եռամսյակ',
+        "second_trimester" => '2 եռամսյակ',
+        "third_trimester" => '3 եռամսյակ',
+        "fourth_trimester" => '4 եռամսյակ',
+        "first_semester" => '1 կիսամյակ',
+        "second_semester" => '2 կիսամյակ',
+        "per_year" => 'տարեկան',
+      ];
+  }
+
+}
+
+if (!function_exists('getAgeRanges')) {
+  function getAgeRanges()
+  {
+
+    return [
+      "junior" => ['start_age' => 0, 'end_age' => 18],
+      "young" => ['start_age' => 19, 'end_age' => 60],
+      "old" => ['start_age' => 61, 'end_age' => 100],
+
+    ];
+  }
+
+}
+
+if (!function_exists('getMuseum')) {
+  function getMuseum($id)
+  {
+    return Museum::find($id);
+  }
+
+}
+
 
 
 

@@ -10,11 +10,20 @@ class PurchasedItem extends Model
 {
     use HasFactory, ReportFilterTrait;
     protected $guarded = [];
-    protected $defaultFields = ['museum_id'];
+    // protected $defaultFields = ['museum_id'];
+
+    protected $relationFilter = [
+      'purchase' => ['status','type', 'gender', 'country_id', 'start_date', 'end_date', 'start_age', 'end_age'],
+    ];
 
     public function museum()
     {
       return $this->belongsTo(Museum::class, "museum_id");
+    }
+
+    public function purchase()
+    {
+      return $this->belongsTo(Purchase::class, "purchase_id");
     }
 
     public function purchase_united_tickets()
