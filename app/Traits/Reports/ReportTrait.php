@@ -11,15 +11,15 @@ use Illuminate\Support\Collection;
 trait ReportTrait
 {
 
-  public function report($data, $model)
+  public function generateReport($data, $model)
   {
 
-    $data = array_filter($data, function ($value) {
-      return $value !== null && $value !== 'null';
-    });
+      $data = array_filter($data, function ($value) {
+          return $value !== null && $value !== 'null';
+      });
 
 
-    if(!isset($data['report_type'])){
+      if(!isset($data['report_type'])){
           $data['report_type'] = 'fin_quant';
       }
 
@@ -158,6 +158,8 @@ trait ReportTrait
           if (isset ($item['total_price'])) {
               $carry[$museumId][$type]['total_price'] = $item['total_price'];
           }
+
+          $carry[$museumId]['museum_id'] = $item['museum_id'];
 
       }
 

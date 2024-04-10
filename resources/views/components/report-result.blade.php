@@ -12,15 +12,19 @@
               <th>Կորպորատիվ</th>
               <th>Կրթական ծրագիր</th>
               <th>Էքսկուրսիա</th>
+              @if (request()->request_report_type == 'compare')
+                <th>Ամսաթիվ</th>
+              @endif
           </tr>
       </thead>
       <tbody>
         @php $i = 0 @endphp
           @foreach ($data as $museum_id => $report)
+
           @if (request()->input('report_type') == 'fin_quant' || request()->input('report_type') == null)
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ getMuseum($museum_id)->translationsForAdmin->name }}</td>
+                    <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
                     <td>{{ !empty($report['standart']) ? $report['standart']['total_price'] .' / '. $report['standart']['quantity'] : ' - ' }}</td>
                     <td>{{ !empty($report['discount']) ? $report['discount']['total_price'] .' / '. $report['discount']['quantity'] : ' - '  }}</td>
                     <td>{{ !empty($report['free']) ? $report['free']['total_price'] .' / '. $report['free']['quantity'] : ' - '  }}</td>
@@ -30,12 +34,14 @@
                     <td>{{ !empty($report['corporative']) ? $report['corporative']['total_price'] .' / '. $report['corporative']['quantity'] : ' - '}}</td>
                     <td>{{ !empty($report['educational']) ? $report['educational']['total_price'] .' / '. $report['educational']['quantity'] : ' - '}}</td>
                     <td>{{ !empty($report['guide']) ? $report['guide']['total_price'] .' / '. $report['guide']['quantity'] : ' - '}}</td>
-
+                    @if (request()->request_report_type == 'compare')
+                      <td>{{ !empty($report['start_date']) ? date('d.m.Y', strtotime($report['start_date'])) .' - '. date('d.m.Y', strtotime($report['end_date'])) : ' - '}}</td>
+                    @endif
                 </tr>
             @elseif(request()->input('report_type') == 'financial')
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ getMuseum($museum_id)->translationsForAdmin->name }}</td>
+                    <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
                     <td>{{ !empty($report['standart']) ? $report['standart']['total_price'] : ' - ' }}</td>
                     <td>{{ !empty($report['discount']) ? $report['discount']['total_price'] : ' - '  }}</td>
                     <td>{{ !empty($report['free']) ? $report['free']['total_price'] : ' - '  }}</td>
@@ -45,12 +51,14 @@
                     <td>{{ !empty($report['corporative']) ? $report['corporative']['total_price'] : ' - '}}</td>
                     <td>{{ !empty($report['educational']) ? $report['educational']['total_price'] : ' - '}}</td>
                     <td>{{ !empty($report['guide']) ? $report['guide']['total_price'] : ' - '}}</td>
-
+                    @if (request()->request_report_type == 'compare')
+                      <td>{{ !empty($report['start_date']) ? date('d.m.Y', strtotime($report['start_date'])) .' - '. date('d.m.Y', strtotime($report['end_date'])) : ' - '}}</td>
+                    @endif
                 </tr>
             @else
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ getMuseum($museum_id)->translationsForAdmin->name }}</td>
+                    <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
                     <td>{{ !empty($report['standart']) ? $report['standart']['quantity'] : ' - ' }}</td>
                     <td>{{ !empty($report['discount']) ? $report['discount']['quantity'] : ' - '  }}</td>
                     <td>{{ !empty($report['free']) ? $report['free']['quantity'] : ' - '  }}</td>
@@ -60,7 +68,9 @@
                     <td>{{ !empty($report['corporative']) ? $report['corporative']['quantity'] : ' - '}}</td>
                     <td>{{ !empty($report['educational']) ? $report['educational']['quantity'] : ' - '}}</td>
                     <td>{{ !empty($report['guide']) ? $report['guide']['quantity'] : ' - '}}</td>
-
+                    @if (request()->request_report_type == 'compare')
+                      <td>{{ !empty($report['start_date']) ? date('d.m.Y', strtotime($report['start_date'])) .' - '. date('d.m.Y', strtotime($report['end_date'])) : ' - '}}</td>
+                    @endif
                 </tr>
           @endif
 
