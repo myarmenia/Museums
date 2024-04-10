@@ -67,7 +67,7 @@ trait PurchaseTrait
 
 
     // ======== when selected anavalible id from museum ================
-    if (!$this->chetAllMuseumsTikets($data['items'])) {
+    if (!$this->getAllMuseumsTikets($data['items'])) {
       return ['error' => 'system_error'];
     }
     // ========================================================
@@ -462,15 +462,20 @@ trait PurchaseTrait
     return $purchased_item;
   }
 
-  public function chetAllMuseumsTikets($data)
+  public function getAllMuseumsTikets($data)
   {
     $data = array_filter($data, function ($value) {
       return $value['type'] == 'united';
     });
-
-    $min_museum_quantity = unitedTicketSettings()->min_museum_quantity;
+     
 
     if (count($data) > 0) {
+
+      if(!unitedTicketSettings()){
+        return false;
+      }
+      $min_museum_quantity = unitedTicketSettings()->min_museum_quantity;
+
       $u_museum_ids = Ticket::pluck('museum_id')->toArray();
 
       foreach ($data as $u => $u_array) {
