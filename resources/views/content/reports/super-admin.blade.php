@@ -28,16 +28,15 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="javascript:void(0);">Լոգավորում</a>
+                    <a href="javascript:void(0);">Հաշվետվություն</a>
                 </li>
-                <li class="breadcrumb-item active">Ցանկ</li>
             </ol>
         </nav>
     </h4>
     <div class="card">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Գործողությունների ցանկ</h5>
+                <h5 class="card-header">Հաշվետվություն</h5>
             </div>
 
         </div>
@@ -48,6 +47,7 @@
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
                        <div class="col-2">
                             <select class="form-select select-2 multiselect" id="multiple-select-museum" data-placeholder="Թանգարան" name="museum_id[]" multiple>
+                                  <option value="all" {{ in_array('all', (array)request()->input('museum_id')) ? 'selected' : '' }}>Բոլորը</option>
                                   @foreach ($museums as $museum)
                                       <option value="{{$museum->id}}" {{ in_array($museum->id, (array)request()->input('museum_id')) ? 'selected' : '' }}>{{$museum->translationsForAdmin->name}}</option>
                                   @endforeach

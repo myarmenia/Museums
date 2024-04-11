@@ -10,7 +10,10 @@ trait CheckReportType
     // dd($data['time']);
 
     $get_report_times = getReportTimes();
+if(isset($data['museum_id']) && in_array('all', $data['museum_id'])){
 
+  unset($data['museum_id']);
+}
     if (isset($data['time']) && count($data['time']) == 1) {
       // $get_report_times = getReportTimes();
 
@@ -29,7 +32,7 @@ trait CheckReportType
           $data['end_date'] = $get_report_times[$time]['end_date'];
 
           $compare_data = $this->generateReport($data, $model);
-          
+
           $compare_data = array_values(array_filter(array_values($compare_data)));
 
           $compare_data[0]['start_date'] = $get_report_times[$time]['start_date'];

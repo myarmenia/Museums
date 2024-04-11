@@ -2,7 +2,9 @@
       <thead>
           <tr>
               <th>No</th>
-              <th>Թանգարան</th>
+              @if (request()->routeIs('reports'))
+                <th>Թանգարան</th>
+              @endif
               <th>Ստանդարտ տ․</th>
               <th>Զեղչված տ․</th>
               <th>Անվճար տ․</th>
@@ -24,7 +26,9 @@
           @if (request()->input('report_type') == 'fin_quant' || request()->input('report_type') == null)
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
+                    @if (request()->routeIs('reports'))
+                        <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
+                    @endif
                     <td>{{ !empty($report['standart']) ? $report['standart']['total_price'] .' / '. $report['standart']['quantity'] : ' - ' }}</td>
                     <td>{{ !empty($report['discount']) ? $report['discount']['total_price'] .' / '. $report['discount']['quantity'] : ' - '  }}</td>
                     <td>{{ !empty($report['free']) ? $report['free']['total_price'] .' / '. $report['free']['quantity'] : ' - '  }}</td>
@@ -41,7 +45,9 @@
             @elseif(request()->input('report_type') == 'financial')
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
+                    @if (request()->routeIs('reports'))
+                        <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
+                    @endif
                     <td>{{ !empty($report['standart']) ? $report['standart']['total_price'] : ' - ' }}</td>
                     <td>{{ !empty($report['discount']) ? $report['discount']['total_price'] : ' - '  }}</td>
                     <td>{{ !empty($report['free']) ? $report['free']['total_price'] : ' - '  }}</td>
@@ -58,7 +64,9 @@
             @else
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
+                    @if (request()->routeIs('reports'))
+                        <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
+                    @endif
                     <td>{{ !empty($report['standart']) ? $report['standart']['quantity'] : ' - ' }}</td>
                     <td>{{ !empty($report['discount']) ? $report['discount']['quantity'] : ' - '  }}</td>
                     <td>{{ !empty($report['free']) ? $report['free']['quantity'] : ' - '  }}</td>

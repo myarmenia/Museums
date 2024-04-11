@@ -135,6 +135,18 @@
         "museum_admin",
         "manager"
       ]
+    },
+
+    {
+      "url": "museum/reports/report",
+      "name": "Հաշվետվություն",
+      "icon": "menu-icon tf-icons bx bxs-report",
+      "slug": "museum_reports",
+      "roles": [
+        "museum_admin",
+        "manager",
+        "accountant"
+      ]
     }
 
   ]
