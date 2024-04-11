@@ -11,31 +11,36 @@ trait UpdateItemQuantityTrait
   public function updateItemQuantity($purchase_id)
   {
 
-      $array_types = ['product', 'event', 'corporative'];
+    $array_types = ['product', 'event', 'corporative'];
 
-      $purchase = Purchase::find($purchase_id);
-      $items = $purchase->purchased_items->whereIn('type', $array_types)->get();
-      if(count( $items) > 0){
-            switch ($items->type) {
-              case 'product':
-                $this->updateProductQuantity($items);
-                break;
-              case 'event':
-                $this->updateEventConfigeQuantity($items);
-                break;
-              case 'corporative':
-                $this->updateCorporativeQuantity($items);
-                break;
+    $purchase = Purchase::find($purchase_id);
+    $items = $purchase->purchased_items->whereIn('type', $array_types)->toArray();
 
-            }
+    if (count($items) > 0) {
+      foreach ($items as $i => $item) {
+        switch ($item['type']) {
+          case 'standart':
+            $this->updateProductQuantity($item);
+            break;
+          case 'event':
+            $this->updateEventConfigeQuantity($item);
+            break;
+          case 'corporative':
+            $this->updateCorporativeQuantity($item);
+            break;
+
+        }
       }
+    }
+
   }
 
-  public function updateProductQuantity($item){
+  public function updateProductQuantity($item)
+  {
 
-      $product = Product::find($item->item_relation_id);
-      $quantity = $product->quantity - $item->quantity;
-      $product->update(['quantity' => $quantity]);
+    $product = Product::find($item->item_relation_id);
+    $quantity = $product->quantity - $item->quantity;
+    $product->update(['quantity' => $quantity]);
   }
 
 
