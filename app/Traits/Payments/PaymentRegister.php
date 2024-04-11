@@ -85,6 +85,7 @@ trait PaymentRegister
                   $order = [
                     'purchase_id' => $data->id,
                     'payment_order_id' => $order_id,
+                    'amount' => $data->amount,
                     'payment_result' => 'new',
                     'guard_name' => request()->request_name,
                     'guard_type' => request()->request_type
