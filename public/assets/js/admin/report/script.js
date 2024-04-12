@@ -21,10 +21,13 @@ $(function () {
   }
 })
 
-$('.multiselect, #datefrom').on('change', function(){
+$('.selectdate').on('change', function(){
+  console.log($(this).attr('id'));
 
-    if ($(this).attr('id') == 'datefrom'){
-      $("#multiple-select-time").val(null).trigger("change")
+    if ($(this).attr('id') == 'datefrom' || $(this).attr('id') == 'dateto'){
+        $("#multiple-select-time").val([])
+        $('#multiple-select-time').parent().find('.select2-selection__rendered').html('')
+
     }
 
     if ($(this).attr('id') == 'multiple-select-time') {
@@ -32,6 +35,18 @@ $('.multiselect, #datefrom').on('change', function(){
         $('#dateto').val('')
 
     }
+
+
+    if ($(this).attr('id') == 'multiple-select-museum') {
+      var selectedOption = $(this).find(":selected").val();
+
+      if (selectedOption == 'all'){
+        $("#multiple-select-museum").find('option:not(:first-child)').prop("selected", false)
+        $("#multiple-select-museum").find('option:not(:first-child)').val([])
+      }
+
+    }
+
 
     let museums_sel = $('#multiple-select-museum').val()
     let time_sel = $('#multiple-select-time').val()
@@ -55,38 +70,7 @@ $('.multiselect, #datefrom').on('change', function(){
     }
 
 })
-// $("#multiple-select-museum").find('option:first-child').prop("selected", true).trigger("change");
 
-// $("#multiple-select-museum").each(function () {
-//   if($(this).val('all')){
-//     console.log(544444);
-//     $("#multiple-select-museum").find('option:not(:first-child)').prop("selected", true).trigger("change")
-//   }
-//   // $(this).prop("selected", true);
-//   // $("#multiple-select-museum").trigger({
-//   //   type: 'select2:select',
-//   //   params: {
-//   //     data: $(this).val()
-//   //   }
-//   // });
-// });
-// $("#multiple-select-museum").find('option:not(:first-child)').prop("selected", true).trigger("change");
-
-$('#multiple-select-museum').on('change', function(){
-  console.log(7777);
-    if ($(this).val('all')) {
-      console.log(544444);
-      $("#multiple-select-museum").find('option:not(:first-child)').prop("selected", false).trigger("change")
-      $("#multiple-select-museum").find('option:first-child').prop("selected", true).trigger("change");
-
-    }
-    else{
-      $("#multiple-select-museum").find('option:first-child').prop("selected", false).trigger("change");
-      $("#multiple-select-museum").find('option:not(:first-child)').prop("selected", true).trigger("change")
-
-
-    }
-})
 
 $('.compare').on('click', function(){
   $('#form').attr('action', '/reports/compare')

@@ -22,14 +22,16 @@ $(function () {
   }
 })
 
-$('.multiselect, #datefrom').on('change', function () {
+$('.selectdate').on('change', function () {
 
-  if ($(this).attr('id') == 'datefrom') {
-   
-    $("#multiple-select-time").val(null).trigger("change")
+  if ($(this).attr('id') == 'datefrom' || $(this).attr('id') == 'dateto') {
+
+    $("#multiple-select-time").val([])
+    $('#multiple-select-time').parent().find('.select2-selection__rendered').html('')
   }
 
   if ($(this).attr('id') == 'multiple-select-time') {
+
     $('#datefrom').val('')
     $('#dateto').val('')
 
