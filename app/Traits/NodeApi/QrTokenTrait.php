@@ -31,9 +31,8 @@ trait QrTokenTrait
                     ? $purchasesKeys[$item->type] + $item->quantity
                     : $item->quantity;
             }
-    
             $data = $this->getReqQrToken($url, $purchasesKeys);
-    
+            $addedItemsToken = [];
             foreach ($allPurchases as $key => $item) {
                 $quantity = $item->quantity;
                 $priceOneTicket = (int) $item->total_price / (int) $item->quantity;
@@ -45,14 +44,14 @@ trait QrTokenTrait
 
                     $newData = [
                         'museum_id' => $item->museum_id,
-                        'purchased_item_id' => $item->purchase_id,
+                        'purchased_item_id' => $item->id,
                         'item_relation_id' => $item->item_relation_id,
                         'token' => $token,
                         'path' => $path,
                         'type' => $type,
                         'price' => $priceOneTicket,
                     ];
-    
+                    $addedItemsToken[]=$token;
                     $allData[] = $newData;
                     array_shift($data[$type]);
                 }
@@ -63,10 +62,8 @@ trait QrTokenTrait
                 DB::rollBack();
                 return false;
             }
-    
             DB::commit();
-
-            return TicketQr::where('purchased_item_id', $purchaseId)->get()->pluck('id')->toArray();
+            return TicketQr::whereIn('token', $addedItemsToken)->get()->pluck('id')->toArray();
             
         } catch (\Exception $e) {
             DB::rollBack();

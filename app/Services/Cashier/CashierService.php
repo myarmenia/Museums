@@ -6,10 +6,12 @@ use App\Models\Event;
 use App\Models\Museum;
 use App\Models\Product;
 use App\Models\Ticket;
+use App\Traits\Purchase\PurchaseTrait;
 use Carbon\Carbon;
 
 class CashierService 
 {
+    use PurchaseTrait;
     // protected $chatRepository;
     // public function __construct(ChatRepository $chatRepository)
     // {
@@ -94,7 +96,7 @@ class CashierService
     {
         $museumId = museumAccessId();
        
-        $corporative = $this->getCorporative($museumId, $data['coupon']);
+        $corporative = $this->getMuseumCorporative($museumId, $data['coupon']);
         if($corporative){
             return ['success' => true, 'data' => [
                 'companyName' => $corporative->name,
@@ -106,39 +108,7 @@ class CashierService
 
     }
 
-    public function corporativeTicket($data)
-    {
-        $museumId = museumAccessId();
-        $coupon = $data['corporative-ticket'];
-
-        $corporative = $this->getCorporative($museumId, $coupon);
-        if($corporative){
-            $countBuyTicket = $data['buy-ticket'];
-            CorporativeVisitorCount::create([
-                'corporative_id' => $corporative->id,
-                'count' => $countBuyTicket
-            ]);
-
-            $existVisitorCount = $corporative->visitors_count;
-
-            $corporative->update([
-                'visitors_count' => $existVisitorCount + $countBuyTicket
-            ]);
-
-
-
-            dd("avelacnel email uxarkumy ev vajarman logikan ");
-
-            // return ['success' => true, 'data' => [
-            //     'companyName' => $corporative->name,
-            //     'availableTickets' => $corporative->tickets_count - $corporative->visitors_count
-            // ]];
-        }
-
-        dd($data);
-    }
-
-    public function getCorporative($museumId, $coupon)
+    public function getMuseumCorporative($museumId, $coupon)
     {
         $dateNow = Carbon::now()->format('Y-m-d');
 
@@ -158,11 +128,11 @@ class CashierService
         return false;
     }
 
-    public function getProduct($data)
+    public function getMuseumProduct($data)
     {
         $museumId = museumAccessId();
 
-        return Product::with('images')->where(['museum_id'=>$museumId, 'status'=>1])->filter($data)->orderBy('id', 'DESC')->paginate(10)->withQueryString();
+        return Product::with('images')->where(['museum_id'=>$museumId, 'status' => 1])->where('quantity', '>', 0)->filter($data)->orderBy('id', 'DESC')->paginate(10)->withQueryString();
     }
 
    

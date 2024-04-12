@@ -18,9 +18,11 @@ use Illuminate\Support\Facades\Auth;
 
 trait PurchaseTrait
 {
+  private $typeAtTimeOfSale = 'online';
+
   public function purchase($data)
   {
-
+    $this->typeAtTimeOfSale = $data['purchase_type'];
     $museum_id = null;
     $purchase_data = [];
 
@@ -401,7 +403,13 @@ trait PurchaseTrait
 
   public function getProduct($id, $quantity)
   {
-    return Product::where(['id' => $id, 'status' => 1])->where('quantity', '>', $quantity)->first();
+    $product = Product::where(['id' => $id, 'status' => 1]);
+
+    if($this->typeAtTimeOfSale == 'offline'){
+     return $product->first();
+    }
+
+    return $product->where('quantity', '>', $quantity)->first();
   }
 
   public function getEvent($id)
