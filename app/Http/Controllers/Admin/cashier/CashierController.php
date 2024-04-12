@@ -37,13 +37,6 @@ class CashierController extends Controller
       return response()->json($checkedData);
    }
 
-   public function corporativeTicket(Request $request)
-   {
-      $buyTicket = $this->cashierService->corporativeTicket($request->all());
-
-      dd($request->all());
-   }
-
    public function getEventDetails($id)
    {
       $event = $this->cashierService->getEventDetails($id);
@@ -60,15 +53,10 @@ class CashierController extends Controller
       dd($request->all());
    }
 
-   public function saleProduct(Request $request)
-   {
-      dd($request->all());
-   }
-
    public function getMuseumProduct(Request $request)
    {
       $product_category = ProductCategory::all();
-      $data = $this->cashierService->getProduct($request->all());
+      $data = $this->cashierService->getMuseumProduct($request->all());
 
       return view('content.cashier.product', [
          'data' => $data,
