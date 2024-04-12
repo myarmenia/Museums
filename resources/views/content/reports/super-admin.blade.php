@@ -28,16 +28,15 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="javascript:void(0);">Լոգավորում</a>
+                    <a href="javascript:void(0);">Հաշվետվություն</a>
                 </li>
-                <li class="breadcrumb-item active">Ցանկ</li>
             </ol>
         </nav>
     </h4>
     <div class="card">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Գործողությունների ցանկ</h5>
+                <h5 class="card-header">Հաշվետվություն</h5>
             </div>
 
         </div>
@@ -47,9 +46,10 @@
                 <form action="{{route('reports', 'report')}}" method="get" class="row g-3 mt-2" style="display: flex" id="form">
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
                        <div class="col-2">
-                            <select class="form-select select-2 multiselect" id="multiple-select-museum" data-placeholder="Թանգարան" name="museum_id[]" multiple>
-                                  @foreach ($museums as $museum)
-                                      <option value="{{$museum->id}}" {{ in_array($museum->id, (array)request()->input('museum_id')) ? 'selected' : '' }}>{{$museum->translationsForAdmin->name}}</option>
+                            <select class="form-select select-2 multiselect selectdate" id="multiple-select-museum" data-placeholder="Թանգարան" name="museum_id[]" multiple>
+                                  <option value="all" id="all_museums" {{ in_array('all', (array)request()->input('museum_id')) ? 'selected' : '' }}>Բոլորը</option>
+                                  @foreach ($museums as $k => $museum)
+                                      <option  value="{{$museum->id}}" {{ in_array($museum->id, (array)request()->input('museum_id')) ? 'selected' : '' }}>{{$museum->translationsForAdmin->name}}</option>
                                   @endforeach
 
                             </select>
@@ -107,16 +107,16 @@
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
 
                         <div class="col-2">
-                            <input type="date" title="Սկիզբ" class="form-control" id="datefrom" placeholder="Ստեղծման ամսաթիվ" name="from_created_at" value="{{ request()->input('from_created_at') }}" max="{{date('Y-m-d')}}">
+                            <input type="date" title="Սկիզբ" class="form-control selectdate" id="datefrom" placeholder="Ստեղծման ամսաթիվ" name="from_created_at" value="{{ request()->input('from_created_at') }}" max="{{date('Y-m-d')}}">
                         </div>
 
                         <div class="col-2">
 
-                            <input type="date" title="Ավարտ" class="form-control" id="dateto" placeholder="Ստեղծման ամսաթիվ" name="to_created_at" value="{{ request()->input('to_created_at') }}" max="{{date('Y-m-d')}}">
+                            <input type="date" title="Ավարտ" class="form-control selectdate" id="dateto" placeholder="Ստեղծման ամսաթիվ" name="to_created_at" value="{{ request()->input('to_created_at') }}" max="{{date('Y-m-d')}}">
                         </div>
 
                         <div class="col-2">
-                            <select id="multiple-select-time" name="time[]" class="form-select select-2 multiselect" data-placeholder="Ժամանակահատված" multiple>
+                            <select id="multiple-select-time" name="time[]" class="form-select select-2 multiselect selectdate" data-placeholder="Ժամանակահատված" multiple>
 
                               @foreach (getReportTimesForAdmin() as $t => $time)
                                     <option value="{{$t}}" {{ in_array($t, (array)request()->input('time')) ? 'selected' : (count((array)request()->input('time')) == 0 && $t == 'per_year' ? 'selected' : '') }}>{{ $time }}</option>

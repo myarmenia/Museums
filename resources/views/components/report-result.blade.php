@@ -2,7 +2,9 @@
       <thead>
           <tr>
               <th>No</th>
-              <th>Թանգարան</th>
+              @if (request()->routeIs('reports'))
+                <th>Թանգարան</th>
+              @endif
               <th>Ստանդարտ տ․</th>
               <th>Զեղչված տ․</th>
               <th>Անվճար տ․</th>
@@ -17,23 +19,31 @@
               @endif
           </tr>
       </thead>
+      @php
+
+      @endphp
       <tbody>
-        @php $i = 0 @endphp
+          @php $i = 0; $all_report_types = reportTypes(); @endphp
           @foreach ($data as $museum_id => $report)
 
-          @if (request()->input('report_type') == 'fin_quant' || request()->input('report_type') == null)
+            @if (request()->input('report_type') == 'fin_quant' || request()->input('report_type') == null)
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
-                    <td>{{ !empty($report['standart']) ? $report['standart']['total_price'] .' / '. $report['standart']['quantity'] : ' - ' }}</td>
-                    <td>{{ !empty($report['discount']) ? $report['discount']['total_price'] .' / '. $report['discount']['quantity'] : ' - '  }}</td>
+                    @if (request()->routeIs('reports'))
+                        <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
+                    @endif
+
+                    @foreach ($all_report_types as $type)
+                        <td>{{ !empty($report[$type]) ? $report[$type]['total_price'] .' / '. $report[$type]['quantity'] : ' - ' }}</td>
+                    @endforeach
+                    {{-- <td>{{ !empty($report['discount']) ? $report['discount']['total_price'] .' / '. $report['discount']['quantity'] : ' - '  }}</td>
                     <td>{{ !empty($report['free']) ? $report['free']['total_price'] .' / '. $report['free']['quantity'] : ' - '  }}</td>
                     <td>{{ !empty($report['united']) ? $report['united']['total_price'] .' / '. $report['united']['quantity'] : ' - ' }}</td>
                     <td>{{ !empty($report['subscription']) ? $report['subscription']['total_price'] .' / '. $report['subscription']['quantity'] : ' - '}}</td>
                     <td>{{ !empty($report['event']) ? $report['event']['total_price'] .' / '. $report['event']['quantity'] : ' - '}}</td>
                     <td>{{ !empty($report['corporative']) ? $report['corporative']['total_price'] .' / '. $report['corporative']['quantity'] : ' - '}}</td>
                     <td>{{ !empty($report['educational']) ? $report['educational']['total_price'] .' / '. $report['educational']['quantity'] : ' - '}}</td>
-                    <td>{{ !empty($report['guide']) ? $report['guide']['total_price'] .' / '. $report['guide']['quantity'] : ' - '}}</td>
+                    <td>{{ !empty($report['guide']) ? $report['guide']['total_price'] .' / '. $report['guide']['quantity'] : ' - '}}</td> --}}
                     @if (request()->request_report_type == 'compare')
                       <td>{{ !empty($report['start_date']) ? date('d.m.Y', strtotime($report['start_date'])) .' - '. date('d.m.Y', strtotime($report['end_date'])) : ' - '}}</td>
                     @endif
@@ -41,16 +51,14 @@
             @elseif(request()->input('report_type') == 'financial')
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
-                    <td>{{ !empty($report['standart']) ? $report['standart']['total_price'] : ' - ' }}</td>
-                    <td>{{ !empty($report['discount']) ? $report['discount']['total_price'] : ' - '  }}</td>
-                    <td>{{ !empty($report['free']) ? $report['free']['total_price'] : ' - '  }}</td>
-                    <td>{{ !empty($report['united']) ? $report['united']['total_price'] : ' - ' }}</td>
-                    <td>{{ !empty($report['subscription']) ? $report['subscription']['total_price'] : ' - '}}</td>
-                    <td>{{ !empty($report['event']) ? $report['event']['total_price'] : ' - '}}</td>
-                    <td>{{ !empty($report['corporative']) ? $report['corporative']['total_price'] : ' - '}}</td>
-                    <td>{{ !empty($report['educational']) ? $report['educational']['total_price'] : ' - '}}</td>
-                    <td>{{ !empty($report['guide']) ? $report['guide']['total_price'] : ' - '}}</td>
+                    @if (request()->routeIs('reports'))
+                        <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
+                    @endif
+
+                    @foreach ($all_report_types as $type)
+                        <td>{{ !empty($report[$type]) ? $report[$type]['total_price'] : ' - ' }}</td>
+                    @endforeach
+
                     @if (request()->request_report_type == 'compare')
                       <td>{{ !empty($report['start_date']) ? date('d.m.Y', strtotime($report['start_date'])) .' - '. date('d.m.Y', strtotime($report['end_date'])) : ' - '}}</td>
                     @endif
@@ -58,16 +66,14 @@
             @else
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
-                    <td>{{ !empty($report['standart']) ? $report['standart']['quantity'] : ' - ' }}</td>
-                    <td>{{ !empty($report['discount']) ? $report['discount']['quantity'] : ' - '  }}</td>
-                    <td>{{ !empty($report['free']) ? $report['free']['quantity'] : ' - '  }}</td>
-                    <td>{{ !empty($report['united']) ? $report['united']['quantity'] : ' - ' }}</td>
-                    <td>{{ !empty($report['subscription']) ? $report['subscription']['quantity'] : ' - '}}</td>
-                    <td>{{ !empty($report['event']) ? $report['event']['quantity'] : ' - '}}</td>
-                    <td>{{ !empty($report['corporative']) ? $report['corporative']['quantity'] : ' - '}}</td>
-                    <td>{{ !empty($report['educational']) ? $report['educational']['quantity'] : ' - '}}</td>
-                    <td>{{ !empty($report['guide']) ? $report['guide']['quantity'] : ' - '}}</td>
+                    @if (request()->routeIs('reports'))
+                        <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
+                    @endif
+                    @foreach ($all_report_types as $type)
+                        <td>{{ !empty($report[$type]) ? $report[$type]['quantity'] : ' - ' }}</td>
+
+                    @endforeach
+
                     @if (request()->request_report_type == 'compare')
                       <td>{{ !empty($report['start_date']) ? date('d.m.Y', strtotime($report['start_date'])) .' - '. date('d.m.Y', strtotime($report['end_date'])) : ' - '}}</td>
                     @endif
@@ -75,5 +81,46 @@
           @endif
 
           @endforeach
+
+
+          {{-- ============================================================== --}}
+          @if (request()->request_report_type != 'compare' && count($data) > 1)
+              @role('super_admin|general_manager|chief_accountant')
+                  @php
+                      $sums = reportResult($data);
+                  @endphp
+                  @if (request()->input('report_type') == 'fin_quant' || request()->input('report_type') == null)
+                      <tr class="table-primary">
+                            <td>Ընդամենը</td>
+                            <td>  - - -  </td>
+                            @foreach ($all_report_types as $type)
+                                <td>{{ !empty($sums[$type]) ? $sums[$type]['total_price'] .' / '. $sums[$type]['quantity'] : ' - ' }}</td>
+
+                            @endforeach
+
+                        </tr>
+                    @elseif(request()->input('report_type') == 'financial')
+                        <tr class="table-primary">
+                            <td>Ընդամենը</td>
+                            <td>  - - -  </td>
+                            @foreach ($all_report_types as $type)
+                                <td>{{ !empty($sums[$type]) ? $sums[$type]['total_price'] : ' - ' }}</td>
+
+                            @endforeach
+
+                        </tr>
+                    @else
+                        <tr class="table-primary">
+                            <td>Ընդամենը</td>
+                            <td>  - - -  </td>
+                            @foreach ($all_report_types as $type)
+                                <td>{{ !empty($sums[$type]) ? $sums[$type]['quantity'] : ' - ' }}</td>
+
+                            @endforeach
+                        
+                        </tr>
+                    @endif
+                @endrole
+          @endif
       </tbody>
 </table>

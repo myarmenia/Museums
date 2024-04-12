@@ -295,6 +295,40 @@ if (!function_exists('getMuseum')) {
 }
 
 
+if (!function_exists('reportResult')) {
+  function reportResult($data)
+  {
+
+      $keys = ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'corporative', 'educational', 'guide'];
+      $sums = [];
+
+      foreach ($data as $array) {
+          foreach ($keys as $key) {
+              if (isset($array[$key]) && is_array($array[$key])) {
+                  foreach ($array[$key] as $subKey => $value) {
+                    if (is_numeric($value)) {
+                        $sums[$key][$subKey] = isset($sums[$key][$subKey]) ? $sums[$key][$subKey] + intval($value) : intval($value);
+                    }
+                  }
+              }
+          }
+      }
+
+      return $sums;
+  }
+
+}
+
+
+if (!function_exists('reportTypes')) {
+  function reportTypes()
+  {
+    return ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'corporative', 'educational', 'guide'];
+  }
+}
+
+
+
 
 
 
