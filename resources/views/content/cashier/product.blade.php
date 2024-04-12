@@ -25,80 +25,86 @@
                 <h4 class="card-header">Ապրանք</h4>
             </div>
         </div>
-        <div class="card-body">
-            <form action="{{ route('cashier.product') }}" method="get" class="row g-3 mt-2" style="display: flex">
-                <div class="d-flex justify-content-end">
-                    <div class="mx-2">
-                        <select id="defaultSelect" name="product_category_id" class="form-select"
-                            value="{{ request()->input('product_category_id') }}">
-                            <option value="">ֆիլտրել ըստ կատեգորիաի</option>
-                            @foreach ($product_category as $item)
-                                @if (request()->input('product_category_id') != null && $item->id == request()->input('product_category_id'))
-                                    <option value="{{ $item->id }}" selected>
-                                        {{ __('product-categories.' . $item->key) }}</option>
-                                @else
-                                    <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}
-                                    </option>
-                                @endif
-                            @endforeach
-                        </select>
+        @if ($data->count())
+            <div class="card-body">
+                <form action="{{ route('cashier.product') }}" method="get" class="row g-3 mt-2" style="display: flex">
+                    <div class="d-flex justify-content-end">
+                        <div class="mx-2">
+                            <select id="defaultSelect" name="product_category_id" class="form-select"
+                                value="{{ request()->input('product_category_id') }}">
+                                <option value="">ֆիլտրել ըստ կատեգորիաի</option>
+                                @foreach ($product_category as $item)
+                                    @if (request()->input('product_category_id') != null && $item->id == request()->input('product_category_id'))
+                                        <option value="{{ $item->id }}" selected>
+                                            {{ __('product-categories.' . $item->key) }}</option>
+                                    @else
+                                        <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">Փնտրել</button>
                     </div>
-                    <button class="btn btn-primary">Փնտրել</button>
-                </div>
-        </div>
-        </form>
-        <form action="{{ route('cashier.add.product') }}" method="post">
+            </div>
+            </form>
+            <form action="{{ route('cashier.add.product') }}" method="post">
 
-        <div class="table-responsive text-nowrap">
-            <table class="table cashier-table">
-                <thead>
-                    <tr>
-                        <th>Անուն</th>
-                        <th>Նկար</th>
-                        <th>Մնացել է</th>
-                        <th>Քանակ</th>
-                        <th>Արժեք</th>
-                    </tr>
-                </thead>
-                <tbody class="table-border-bottom-0">
-                    @foreach ($data as $item)
-                        <tr class='table-default'>
-                            <td>{{ $item->translation('am')->name }}</td>
-                            <td><img width="50" height="50" src="{{ route('get-file', ['path' => $item->images->first()->path]) }}"></img></td>
-                            <td>{{ $item['quantity'] }}</td>
-                            <td><input type="number" min="0" min_quantity={{ $item['min_quantity'] }}
-                                    max_quantity={{ $item['max_quantity'] }} class="form-control" onwheel="return false;"
-                                    price="<?= $item['price'] ?>" id="product_{{ $item['id'] }}"
-                                    name="product[{{ $item['id'] }}]"></td>
-                            <td id = 'product-ticket-price_{{ $item['id'] }}'>0</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <div class="d-flex justify-content-end">
-            <div class="d-flex">
-                <div class="me-3">Ընդհանուր</div>
-                <div class="me-2">
-                    <span id="product-total-count">0</span>
-                    <span>տոմս</span>
+                <div class="table-responsive text-nowrap">
+                    <table class="table cashier-table">
+                        <thead>
+                            <tr>
+                                <th>Անուն</th>
+                                <th>Նկար</th>
+                                <th>Մնացել է</th>
+                                <th>Քանակ</th>
+                                <th>Արժեք</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            @foreach ($data as $item)
+                                <tr class='table-default'>
+                                    <td>{{ $item->translation('am')->name }}</td>
+                                    <td><img width="50" height="50"
+                                            src="{{ route('get-file', ['path' => $item->images->first()->path]) }}"></img>
+                                    </td>
+                                    <td>{{ $item['quantity'] }}</td>
+                                    <td><input type="number" min="0" min_quantity={{ $item['min_quantity'] }}
+                                            max_quantity={{ $item['max_quantity'] }} class="form-control"
+                                            onwheel="return false;" price="<?= $item['price'] ?>"
+                                            id="product_{{ $item['id'] }}" name="product[{{ $item['id'] }}]"></td>
+                                    <td id = 'product-ticket-price_{{ $item['id'] }}'>0</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-                <div class="me-2">
-                    <span id="product-total-price">0</span>
-                    <span>դրամ</span>
+                <div class="d-flex justify-content-end">
+                    <div class="d-flex">
+                        <div class="me-3">Ընդհանուր</div>
+                        <div class="me-2">
+                            <span id="product-total-count">0</span>
+                            <span>տոմս</span>
+                        </div>
+                        <div class="me-2">
+                            <span id="product-total-price">0</span>
+                            <span>դրամ</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="mt-3 row justify-content-end">
-            <div class="col-sm-10 d-flex justify-content-end">
-                <button id='product-button' type="submit" class="btn btn-primary">Պահպանել</button>
-            </div>
-        </div>
-        </form>
+                <div class="mt-3 row justify-content-end">
+                    <div class="col-sm-10 d-flex justify-content-end">
+                        <button id='product-button' type="submit" class="btn btn-primary m-2">Պահպանել</button>
+                    </div>
+                </div>
+            </form>
 
             <div class="demo-inline-spacing">
                 {{ $data->links() }}
             </div>
+        @else
+            <h3 class="mx-4">Ապրանքներ առկա չեն</h3>
+        @endif
     </div>
     </div>
 

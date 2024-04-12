@@ -3,17 +3,21 @@
 namespace App\Http\Controllers\cashier;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendCorporativeEmail;
 use App\Models\CorporativeSale;
+use App\Models\CorporativeVisitorCount;
 use App\Models\PurchasedItem;
-use App\Traits\NodeApi\QrTokenTrait;
+use App\Traits\NodeApi\QrTokenCorporativeTrait;
 use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Mail;
+use Carbon\Carbon;
 
 class CorporativeTicket extends Controller
 {
     use PurchaseTrait;
-    use QrTokenTrait;
+    use QrTokenCorporativeTrait;
 
     public function __invoke(Request $request)
     {
@@ -26,24 +30,36 @@ class CorporativeTicket extends Controller
 
             $corporativeSale = CorporativeSale::where(['museum_id' => $museumId, 'coupon' => $requestData['corporative-ticket']])->first();
 
-            $purchaseItem  = PurchasedItem::where(['museum_id' => $museumId, 'item_relation_id' => $corporativeSale->id, 'type' => 'corporative'])->first();
+            if ($corporativeSale->tickets_count < ($corporativeSale->visitors_count + (int) $requestData['buy-ticket'])) {
+                session(['errorMessage' => 'Տոմսերի քանակը չպետք է գերազանցի կորպորատիվի տոմսի քանակից']);
+                DB::rollBack();
+                return redirect()->back();
+            }
 
-            if($purchaseItem){
+            $purchaseItem = PurchasedItem::where(['museum_id' => $museumId, 'item_relation_id' => $corporativeSale->id, 'type' => 'corporative'])->first();
+
+            if ($purchaseItem) {
                 $purchaseId = $purchaseItem->purchase_id;
-
+                $ticketCount = (int) $requestData['buy-ticket'];
                 if ($purchaseId) {
-                    $addQr = $this->getTokenQr($purchaseId);
-    
+                    $addQr = $this->getTokenQr($purchaseId, $corporativeSale, $ticketCount);
                     if ($addQr) {
-    
+                        $corporativeSale->update(['visitors_count' => $corporativeSale->visitors_count + $ticketCount]);
+                        CorporativeVisitorCount::create(['corporative_id' => $corporativeSale->id, 'count' => $ticketCount]);
+                        $ownerEmail = $corporativeSale->email;
+                        $mailData = [
+                            'date' => Carbon::now()->format('Y-m-d H:i:s'),
+                            'ticketCount' => $ticketCount,
+                            'remainder' => $corporativeSale->tickets_count - $corporativeSale->visitors_count
+                        ];
+                        Mail::send(new SendCorporativeEmail($mailData, $ownerEmail));
                         session(['success' => 'Տոմսերը ավելացված է']);
-    
+
                         DB::commit();
                         return redirect()->back();
                     }
                 }
             }
-           
 
             session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
             DB::rollBack();

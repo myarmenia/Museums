@@ -101,7 +101,7 @@
                                                     price="<?= $data['ticket']['guid-arm'] ?>" min="0"
                                                     class="form-control form-control-validate" id="guide_am" name="guide_am"
                                                     value="{{ old('guide_am') }}"></td>
-                                            <td id = 'guide_am-price'>0</td>
+                                            <td id = 'guide_am_price'>0</td>
                                         </tr>
                                         <tr class='table-default'>
                                             <td>Էքսկուրսավար(այլ)</td>
@@ -109,7 +109,7 @@
                                                     price="<?= $data['ticket']['guid-other'] ?>" min="0"
                                                     class="form-control form-control-validate" id="guide_other" name="guide_other"
                                                     value="{{ old('guide_other') }}"></td>
-                                            <td id = 'guide_other-price'>0</td>
+                                            <td id = 'guide_other_price'>0</td>
                                         </tr>
                                     </tbody>
                                 @endif

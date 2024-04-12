@@ -21,11 +21,13 @@ $(function () {
   }
 })
 
-$('.multiselect, #datefrom').on('change', function(){
+$('.selectdate').on('change', function(){
+  console.log($(this).attr('id'));
 
-    if ($(this).attr('id') == 'datefrom'){
-      $("#multiple-select-time option:selected").remove();
-      $('#multiple-select-time').val('')
+    if ($(this).attr('id') == 'datefrom' || $(this).attr('id') == 'dateto'){
+        $("#multiple-select-time").val([])
+        $('#multiple-select-time').parent().find('.select2-selection__rendered').html('')
+
     }
 
     if ($(this).attr('id') == 'multiple-select-time') {
@@ -33,6 +35,18 @@ $('.multiselect, #datefrom').on('change', function(){
         $('#dateto').val('')
 
     }
+
+
+    if ($(this).attr('id') == 'multiple-select-museum') {
+      var selectedOption = $(this).find(":selected").val();
+
+      if (selectedOption == 'all'){
+        $("#multiple-select-museum").find('option:not(:first-child)').prop("selected", false)
+        $("#multiple-select-museum").find('option:not(:first-child)').val([])
+      }
+
+    }
+
 
     let museums_sel = $('#multiple-select-museum').val()
     let time_sel = $('#multiple-select-time').val()

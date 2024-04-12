@@ -1,23 +1,12 @@
 
 
 $(function () {
-
-
-
     $(document).on('input', '.form-control-validate', function() {
       var inputValue = $(this).val();
       if (!/^[1-9][0-9]*$/.test(inputValue)) {
         $(this).val(inputValue.replace(/[^1-9]/g, ''));
       }
     });
-
-
-  // $('.form-control-validate').on('input', function() {
-  //     var inputValue = $(this).val();
-  //     if (!/^[1-9][0-9]*$/.test(inputValue)) {
-  //       $(this).val(inputValue.replace(/[^1-9]/g, ''));
-  //   }
-  // });
 
   $('#standart').on('input', function () {
     let ticketCount = $('#standart').val();
@@ -47,9 +36,9 @@ $(function () {
     if (ticketCount > 0) {
       let priceTicket = $('#guide_am').attr('price');
       let readyPrice = priceTicket * ticketCount;
-      $('#guide_am-price').text(readyPrice);
+      $('#guide_am_price').text(readyPrice);
     } else {
-      $('#guide_am-price').text(0);
+      $('#guide_am_price').text(0);
     }
   });
 
@@ -58,9 +47,9 @@ $(function () {
     if (ticketCount > 0) {
       let priceTicket = $('#guide_other').attr('price');
       let readyPrice = priceTicket * ticketCount;
-      $('#guide_other-price').text(readyPrice);
+      $('#guide_other_price').text(readyPrice);
     } else {
-      $('#guide_other-price').text(0);
+      $('#guide_other_price').text(0);
     }
   });
 
@@ -83,7 +72,7 @@ $(function () {
   })
 
   $('#standart, #discount, #free, #guide_am, #guide_other').on('input', function () {
-    $('#ticket-total-price').text(parseInt($('#standard-ticket-price').text()) + parseInt($('#discount-price').text()) + parseInt($('#guide_am-price').text()) + parseInt($('#guide_other-price').text()));
+    $('#ticket-total-price').text(parseInt($('#standard-ticket-price').text()) + parseInt($('#discount-price').text()) + parseInt($('#guide_am_price').text() || 0) + parseInt($('#guide_other_price').text() || 0));
   })
 
   let mistakeQuantity = [];

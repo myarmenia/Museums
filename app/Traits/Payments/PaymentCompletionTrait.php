@@ -35,7 +35,7 @@ trait PaymentCompletionTrait
 
         echo $payment->guard_name == 'mobile' ?
                   "<script type='text/javascript'>
-                      window.location = 'museums://TicketCongrats/" . $response . "'
+                      window.location = 'museums://TicketCongrats'
                   </script>" :
                   "<script type='text/javascript'>
                       window.location = 'web://museum/". $response ."'

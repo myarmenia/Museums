@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\Events\EventStoreController;
 use App\Http\Controllers\Admin\Events\EventUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
+use App\Http\Controllers\Admin\Reports\ReportsForMuseumAdminController;
 use App\Http\Controllers\Admin\Reports\ReportsForSuperAdminController;
 use App\Http\Controllers\Admin\Tickets\GuideServiceController;
 use App\Http\Controllers\Admin\Tickets\ShowTicketsController;
@@ -43,6 +44,7 @@ use App\Http\Controllers\Admin\Product\ProductListController;
 use App\Http\Controllers\Admin\Product\ProductStoreController;
 use App\Http\Controllers\Admin\Product\ProductUpdateController;
 use App\Http\Controllers\Admin\cashier\CashierController;
+use App\Http\Controllers\cashier\BuyProduct;
 use App\Http\Controllers\cashier\BuyTicketController;
 use App\Http\Controllers\cashier\CorporativeTicket;
 use App\Http\Controllers\cashier\EducationalTicket;
@@ -163,7 +165,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class, 'index'])->name('delete_item');
   Route::get('logs', [LogController::class, 'index'])->name('logs');
   Route::get('reports/{request_report_type}', [ReportsForSuperAdminController::class, 'index'])->name('reports');
-  Route::get('reports/{request_report_type}', [ReportsForSuperAdminController::class, 'index'])->name('reports');
+  Route::get('museum/reports/{request_report_type}', [ReportsForMuseumAdminController::class, 'index'])->name('museum_reports');
 
 
   Route::group(['prefix' => 'museum'], function () {
@@ -216,13 +218,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/check-coupon', [CashierController::class, 'checkCoupon'])->name('cashier.check.coupon');
     Route::post('/corporative-ticket', [CashierController::class, 'corporativeTicket'])->name('cashier.buy.corporative');
     Route::get('/get-event-details/{id}', [CashierController::class, 'getEventDetails'])->name('cashier.eveent.details');
+    Route::get('/products', [CashierController::class, 'getMuseumProduct'])->name('cashier.product');
     Route::post('/create-ticket', BuyTicketController::class)->name('cashier.add.ticket');
     Route::post('/create-educational', EducationalTicket::class)->name('cashier.add.educational');
     Route::post('/create-event', EventTicket::class)->name('cashier.add.event');
     Route::post('/create-subscription', SubscriptionTicket::class)->name('cashier.add.subscription');
     Route::post('/create-corporative', CorporativeTicket::class)->name('cashier.add.corporative');
-    Route::get('/products', [CashierController::class, 'getMuseumProduct'])->name('cashier.product');
-    Route::post('/sale-product', [CashierController::class, 'saleProduct'])->name('cashier.add.product');
+    Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
 
 
     // Route::get('/create', [CashierController::class, 'create'])->name('cashier.add');
