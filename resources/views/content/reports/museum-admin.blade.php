@@ -128,7 +128,7 @@
                         <button class="btn btn-primary col-2 search">Հաշվետվություն</button>
                         <button class="btn btn-primary col-1 compare" disabled>Համեմատել</button>
                         <button class="btn btn-primary col-2 download_csv" {{ count($data) == 0 ? 'disabled' : ''}}>Արտահանել CSV </button>
-                        <a class="btn btn-primary" href="{{ route('reports', 'report') }}">Չեղարկել</a>
+                        <a class="btn btn-primary" href="{{ route('museum_reports', 'report') }}">Չեղարկել</a>
                     </div>
                 </form>
             </div>

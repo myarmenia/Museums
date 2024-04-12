@@ -307,6 +307,4 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 
-
-
 Route::get('get-file', [FileUploadService::class, 'get_file'])->name('get-file');
