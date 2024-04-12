@@ -6,6 +6,7 @@ use App\Models\CorporativeSale;
 use App\Models\Museum;
 use App\Services\FileUploadService;
 use App\Services\Log\LogService;
+use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -13,6 +14,7 @@ use Mail;
 
 class CorporativeSaleService
 {
+    use PurchaseTrait;
 
     public function createCorporative($data)
     {
@@ -54,11 +56,24 @@ class CorporativeSaleService
 
                 Mail::send(new CorporativeCouponEmail($data['email'], $mailData));
 
+                $dataPurchase['purchase_type'] = 'offline';
+                $dataPurchase['status'] = 1;
+                $dataPurchase['items'][] = [
+                    "type" => 'corporative',
+                    "id" => $corporative->id,
+                    "quantity" => 1
+                ];
+                $this->purchase($dataPurchase);
+
                 unset($mailData);
+
+            } else {
+                session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
+                DB::rollBack();
+                return false;
             }
 
             unset($data['coupon']);
-
             if (array_key_exists('file_path', $data)) {
                 unset($data['file_path']);
                 $data['file'] = $fileOrginalName;
