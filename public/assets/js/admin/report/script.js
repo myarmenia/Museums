@@ -22,15 +22,17 @@ $(function () {
 })
 
 $('.selectdate').on('change', function(){
-  console.log($(this).attr('id'));
 
     if ($(this).attr('id') == 'datefrom' || $(this).attr('id') == 'dateto'){
+      console.log(88);
         $("#multiple-select-time").val([])
         $('#multiple-select-time').parent().find('.select2-selection__rendered').html('')
 
     }
 
     if ($(this).attr('id') == 'multiple-select-time') {
+      console.log(11);
+
         $('#datefrom').val('')
         $('#dateto').val('')
 
@@ -39,6 +41,7 @@ $('.selectdate').on('change', function(){
 
     if ($(this).attr('id') == 'multiple-select-museum') {
       var selectedOption = $(this).find(":selected").val();
+      console.log(99);
 
       if (selectedOption == 'all'){
         $("#multiple-select-museum").find('option:not(:first-child)').prop("selected", false)
