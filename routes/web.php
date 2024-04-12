@@ -163,8 +163,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('change-status', [ChangeStatusController::class, 'change_status'])->name('change_status');
   Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class, 'index'])->name('delete_item');
   Route::get('logs', [LogController::class, 'index'])->name('logs');
-  Route::get('reports', [ReportsForSuperAdminController::class, 'index'])->name('reports');
-
+  Route::get('reports/{request_report_type}', [ReportsForSuperAdminController::class, 'index'])->name('reports');
+  Route::get('reports/{request_report_type}', [ReportsForSuperAdminController::class, 'index'])->name('reports');
 
 
   Route::group(['prefix' => 'museum'], function () {

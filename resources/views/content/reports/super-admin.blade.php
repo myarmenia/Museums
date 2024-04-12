@@ -44,7 +44,7 @@
         <div class="card-body">
 
             <div>
-                <form action="{{route('reports')}}" method="get" class="row g-3 mt-2" style="display: flex">
+                <form action="{{route('reports', 'report')}}" method="get" class="row g-3 mt-2" style="display: flex" id="form">
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
                        <div class="col-2">
                             <select class="form-select select-2 multiselect" id="multiple-select-museum" data-placeholder="Թանգարան" name="museum_id[]" multiple>
@@ -117,8 +117,9 @@
 
                         <div class="col-2">
                             <select id="multiple-select-time" name="time[]" class="form-select select-2 multiselect" data-placeholder="Ժամանակահատված" multiple>
-                                @foreach (getReportTimesForAdmin() as $t => $time)
-                                    <option value="{{$t}}" {{ in_array($t, (array)request()->input('time')) ? 'selected' : ($t == 'per_year' ? 'selected' : '') }}>{{ $time }}</option>
+
+                              @foreach (getReportTimesForAdmin() as $t => $time)
+                                    <option value="{{$t}}" {{ in_array($t, (array)request()->input('time')) ? 'selected' : (count((array)request()->input('time')) == 0 && $t == 'per_year' ? 'selected' : '') }}>{{ $time }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -128,7 +129,7 @@
                         <button class="btn btn-primary col-2 search">Հաշվետվություն</button>
                         <button class="btn btn-primary col-1 compare" disabled>Համեմատել</button>
                         <button class="btn btn-primary col-2 download_csv" {{ count($data) == 0 ? 'disabled' : ''}}>Արտահանել CSV </button>
-                        <a class="btn btn-primary" href="{{ route('reports') }}">Չեղարկել</a>
+                        <a class="btn btn-primary" href="{{ route('reports', 'report') }}">Չեղարկել</a>
                     </div>
                 </form>
             </div>
