@@ -78,6 +78,7 @@
                                 <option value="null" >Բոլորը</option>
                                 <option value="male" {{ request()->input('gender') == 'male' ? 'selected' : '' }}>Արական</option>
                                 <option value="female" {{ request()->input('gender') == 'female' ? 'selected' : '' }}>Իգական</option>
+                                <option value="female" {{ request()->input('gender') == 'other' ? 'selected' : '' }}>Այլ</option>
                                 <option value="unknown" {{ request()->input('gender') == 'unknown' ? 'selected' : '' }}>Անհայտ</option>
                             </select>
                         </div>
@@ -118,7 +119,9 @@
                             <select id="multiple-select-time" name="time[]" class="form-select select-2 multiselect selectdate" data-placeholder="Ժամանակահատված" multiple>
 
                               @foreach (getReportTimesForAdmin() as $t => $time)
-                                    <option value="{{$t}}" {{ in_array($t, (array)request()->input('time')) ? 'selected' : (count((array)request()->input('time')) == 0 && $t == 'per_year' ? 'selected' : '') }}>{{ $time }}</option>
+                                    <option value="{{$t}}" {{ in_array($t, (array)request()->input('time')) ? 'selected' :
+                                    (count((array)request()->input('time')) == 0 &&
+                                     request()->input('from_created_at') == null && request()->input('to_created_at') == null && $t == 'per_year' ? 'selected' : '') }}>{{ $time }}</option>
                                 @endforeach
                             </select>
                         </div>

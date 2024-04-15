@@ -10,10 +10,11 @@ trait CheckReportType
     // dd($data['time']);
 
     $get_report_times = getReportTimes();
-if(isset($data['museum_id']) && in_array('all', $data['museum_id'])){
+    if(isset($data['museum_id']) && in_array('all', $data['museum_id'])){
 
-  unset($data['museum_id']);
-}
+      unset($data['museum_id']);
+    }
+    
     if (isset($data['time']) && count($data['time']) == 1) {
       // $get_report_times = getReportTimes();
 
