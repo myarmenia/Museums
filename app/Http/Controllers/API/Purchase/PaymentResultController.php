@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Purchase;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Controllers\Controller;
+use App\Traits\NodeApi\QrTokenTrait;
 use App\Traits\Payments\CheckPaymentStatusTrait;
 use App\Traits\Payments\PaymentCompletionTrait;
 use App\Traits\Payments\PaymentTrait;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 
 class PaymentResultController extends BaseController
 {
-  use CheckPaymentStatusTrait, PaymentCompletionTrait, PaymentTrait, UpdateItemQuantityTrait;
+  use CheckPaymentStatusTrait, PaymentCompletionTrait, PaymentTrait, UpdateItemQuantityTrait, QrTokenTrait;
     public function __invoke(Request $request)
     {
 
