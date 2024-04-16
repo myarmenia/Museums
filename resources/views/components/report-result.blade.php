@@ -10,10 +10,11 @@
               <th>Անվճար տ․</th>
               <th>Միասնական տ․</th>
               <th>Աբոնեմենտ</th>
-              <th>Միջողառման տ․</th>
+              <th>Միջոցառման տ․</th>
               <th>Կորպորատիվ</th>
               <th>Կրթական ծրագիր</th>
               <th>Էքսկուրսիա</th>
+              <th>Ապրանքներ</th>
               @if (request()->request_report_type == 'compare')
                 <th>Ամսաթիվ</th>
               @endif
@@ -117,7 +118,7 @@
                                 <td>{{ !empty($sums[$type]) ? $sums[$type]['quantity'] : ' - ' }}</td>
 
                             @endforeach
-                        
+
                         </tr>
                     @endif
                 @endrole

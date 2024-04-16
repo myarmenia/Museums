@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\Events\EventStoreController;
 use App\Http\Controllers\Admin\Events\EventUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
+use App\Http\Controllers\Admin\Reports\ExportExcelController;
 use App\Http\Controllers\Admin\Reports\ReportsForMuseumAdminController;
 use App\Http\Controllers\Admin\Reports\ReportsForSuperAdminController;
 use App\Http\Controllers\Admin\Tickets\GuideServiceController;
@@ -166,7 +167,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('logs', [LogController::class, 'index'])->name('logs');
   Route::get('reports/{request_report_type}', [ReportsForSuperAdminController::class, 'index'])->name('reports');
   Route::get('museum/reports/{request_report_type}', [ReportsForMuseumAdminController::class, 'index'])->name('museum_reports');
-
+  Route::get('export-report-excel', [ExportExcelController::class, "export"])->name('export_report_excel');
 
   Route::group(['prefix' => 'museum'], function () {
     Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin');

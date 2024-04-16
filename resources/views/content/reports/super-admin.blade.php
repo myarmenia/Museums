@@ -47,7 +47,7 @@
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
                        <div class="col-2">
                             <select class="form-select select-2 multiselect selectdate" id="multiple-select-museum" data-placeholder="Թանգարան" name="museum_id[]" multiple>
-                                  <option value="all" id="all_museums" {{ in_array('all', (array)request()->input('museum_id')) ? 'selected' : '' }}>Բոլորը</option>
+                                  <option value="all" id="all_museums" {{ in_array('all', (array)request()->input('museum_id')) || count((array)request()->input('museum_id')) == 0 ? 'selected' : '' }}>Բոլորը</option>
                                   @foreach ($museums as $k => $museum)
                                       <option  value="{{$museum->id}}" {{ in_array($museum->id, (array)request()->input('museum_id')) ? 'selected' : '' }}>{{$museum->translationsForAdmin->name}}</option>
                                   @endforeach
@@ -79,6 +79,7 @@
                                 <option value="null" >Բոլորը</option>
                                 <option value="male" {{ request()->input('gender') == 'male' ? 'selected' : '' }}>Արական</option>
                                 <option value="female" {{ request()->input('gender') == 'female' ? 'selected' : '' }}>Իգական</option>
+                                <option value="other" {{ request()->input('gender') == 'other' ? 'selected' : '' }}>Այլ</option>
                                 <option value="unknown" {{ request()->input('gender') == 'unknown' ? 'selected' : '' }}>Անհայտ</option>
                             </select>
                         </div>
@@ -119,7 +120,9 @@
                             <select id="multiple-select-time" name="time[]" class="form-select select-2 multiselect selectdate" data-placeholder="Ժամանակահատված" multiple>
 
                               @foreach (getReportTimesForAdmin() as $t => $time)
-                                    <option value="{{$t}}" {{ in_array($t, (array)request()->input('time')) ? 'selected' : (count((array)request()->input('time')) == 0 && $t == 'per_year' ? 'selected' : '') }}>{{ $time }}</option>
+                                    <option value="{{$t}}" {{ in_array($t, (array)request()->input('time')) ? 'selected' :
+                                          (count((array)request()->input('time')) == 0 &&
+                                          request()->input('from_created_at') == null && request()->input('to_created_at') == null && $t == 'per_year' ? 'selected' : '') }}>{{ $time }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -128,7 +131,10 @@
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
                         <button class="btn btn-primary col-2 search">Հաշվետվություն</button>
                         <button class="btn btn-primary col-1 compare" disabled>Համեմատել</button>
-                        <button class="btn btn-primary col-2 download_csv" {{ count($data) == 0 ? 'disabled' : ''}}>Արտահանել CSV </button>
+                        <a class="btn btn-primary col-2 download_csv" href="{{ route('export_report_excel',  ['request_report_type' => request()->request_report_type == 'compare' ? 'compare' : 'report',
+                                  'report_type' => request()->input('report_type'),
+                                  'data' => $data, 'role_group' => 'admin'])}}" {{ count($data) == 0 ? 'disabled' : ''}}>Արտահանել XLSX</a>
+
                         <a class="btn btn-primary" href="{{ route('reports', 'report') }}">Չեղարկել</a>
                     </div>
                 </form>

@@ -219,7 +219,15 @@ if (!function_exists('getCountry')) {
 if (!function_exists('getAllCountries')) {
   function getAllCountries()
   {
-    return Country::all();
+      $countries = Country::all();
+
+      $key = $countries->where('key', 'am')->first()->id;
+      $newPosition = 0;
+      $countries = $countries->sortBy(function ($country) use ($key, $newPosition) {
+          return $country->getKey() === $key ? $newPosition : $country->getKey();
+      });
+
+      return $countries;
   }
 
 }
@@ -299,7 +307,7 @@ if (!function_exists('reportResult')) {
   function reportResult($data)
   {
 
-      $keys = ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'corporative', 'educational', 'guide'];
+      $keys = ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'corporative', 'educational', 'guide', 'product'];
       $sums = [];
 
       foreach ($data as $array) {
@@ -323,7 +331,7 @@ if (!function_exists('reportResult')) {
 if (!function_exists('reportTypes')) {
   function reportTypes()
   {
-    return ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'corporative', 'educational', 'guide'];
+    return ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'corporative', 'educational', 'guide', 'product'];
   }
 }
 

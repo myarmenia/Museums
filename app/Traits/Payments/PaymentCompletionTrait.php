@@ -1,9 +1,10 @@
 <?php
 namespace App\Traits\Payments;
 
+use App\Mail\SendQRTiketsToUsersEmail;
 use App\Models\Payment;
 use App\Models\Purchase;
-
+use Mail;
 
 trait PaymentCompletionTrait
 {
@@ -16,15 +17,29 @@ trait PaymentCompletionTrait
         if ($payment->group_payment_status == 'success' && $payment->status == 'confirmed') {
             $response = 'OK';
 
+            // =============== update purchase status to 1 ======================
+            $payment->purchase->uptade(['status, 1']);
             $this->updateItemQuantity($payment->purchase_id);
+
+
+            // =============== if transaction from cart, delete cart items ======================
             if($payment->guard_type == 'cart'){
                 $user = $payment->purchase->user;
                 if($user){
                     $user->cart->delete();
                 }
             }
-            // code get QR via $paymant->purchase_id
-            // code send email
+
+            // =============== get QR via $paymant->purchase_id ======================
+            // $generate_qr = $this->getTokenQr($payment->purchase_id);
+            // if($generate_qr){
+
+            //     $email = $payment->purchase->email;
+
+            //     $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
+            // }
+
+
         }
         else{
             $response = 'Diny';
