@@ -24,7 +24,6 @@ class ReportsForSuperAdminController extends Controller
 
   public function index(Request $request, $request_report_type)
   {
-    dd($request->all());
 
     $data = $this->report($request->all(), $this->model, $request_report_type);
 
