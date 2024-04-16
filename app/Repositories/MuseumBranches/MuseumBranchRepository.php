@@ -91,7 +91,7 @@ $museum_branches = MuseumBranch::create([
 
     if($museum_branch){
         if(isset($request['photo'])){
-          $image = Image::where('imageable_id',$id)->first();
+          $image = Image::where(['imageable_id'=>$id,'imageable_type'=>'App\Models\MuseumBranch'])->first();
           if(Storage::exists($image->path)){
             Storage::delete($image->path);
             $image = Image::where('imageable_id',$id)->delete();
@@ -109,7 +109,7 @@ $museum_branches = MuseumBranch::create([
         if($request['link']){
 
           $link = Link::where(['linkable_id'=>$id,'linkable_type'=>'App\Models\MuseumBranch'])->first();
-     
+
           if($link!=null){
             $link->link = $request['link'];
             $link->save();
