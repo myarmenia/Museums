@@ -95,7 +95,7 @@ $museum_branches = MuseumBranch::create([
           if(Storage::exists($image->path)){
             Storage::delete($image->path);
             $image = Image::where('imageable_id',$id)->delete();
-          
+
           }
           $path = FileUploadService::upload($request['photo'], 'museum_branches/'.$id);
           $photoData = [
@@ -106,9 +106,10 @@ $museum_branches = MuseumBranch::create([
           $museum_branch->images()->create($photoData);
         }
 
-        if($request['link']!=null){
+        if($request['link']){
 
-          $link = Link::where('linkable_id',$id)->first();
+          $link = Link::where(['linkable_id'=>$id,'linkable_type'=>'App\Models\MuseumBranch'])->first();
+     
           if($link!=null){
             $link->link = $request['link'];
             $link->save();
