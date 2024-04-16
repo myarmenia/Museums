@@ -92,3 +92,7 @@ $('.selectdate').on('change', function(){
 $('.compare').on('click', function(){
   $('#form').attr('action', '/reports/compare')
 })
+
+// $('.download_csv').on('click', function () {
+//   $('#form').attr('action', '/export-report-excel')
+// })
