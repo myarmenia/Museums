@@ -307,7 +307,7 @@ if (!function_exists('reportResult')) {
   function reportResult($data)
   {
 
-      $keys = ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'corporative', 'educational', 'guide'];
+      $keys = ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'corporative', 'educational', 'guide', 'product'];
       $sums = [];
 
       foreach ($data as $array) {

@@ -79,7 +79,7 @@
                                 <option value="null" >Բոլորը</option>
                                 <option value="male" {{ request()->input('gender') == 'male' ? 'selected' : '' }}>Արական</option>
                                 <option value="female" {{ request()->input('gender') == 'female' ? 'selected' : '' }}>Իգական</option>
-                                <option value="female" {{ request()->input('gender') == 'other' ? 'selected' : '' }}>Այլ</option>
+                                <option value="other" {{ request()->input('gender') == 'other' ? 'selected' : '' }}>Այլ</option>
                                 <option value="unknown" {{ request()->input('gender') == 'unknown' ? 'selected' : '' }}>Անհայտ</option>
                             </select>
                         </div>
@@ -131,8 +131,9 @@
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
                         <button class="btn btn-primary col-2 search">Հաշվետվություն</button>
                         <button class="btn btn-primary col-1 compare" disabled>Համեմատել</button>
-                        {{-- <button class="btn btn-primary col-2 download_csv" {{ count($data) == 0 ? 'disabled' : ''}}>Արտահանել CSV </button> --}}
-                        <a class="btn btn-primary col-2 download_csv" href="{{ route('export_report_excel',  [request()->request_report_type == 'compare' ? 'compare' : 'report'  => $data])}}" {{ count($data) == 0 ? 'disabled' : ''}}>Արտահանել CSV aaaaa</a>
+                        <a class="btn btn-primary col-2 download_csv" href="{{ route('export_report_excel',  ['request_report_type' => request()->request_report_type == 'compare' ? 'compare' : 'report',
+                                  'report_type' => request()->input('report_type'),
+                                  'data' => $data, 'role_group' => 'admin'])}}" {{ count($data) == 0 ? 'disabled' : ''}}>Արտահանել XLSX</a>
 
                         <a class="btn btn-primary" href="{{ route('reports', 'report') }}">Չեղարկել</a>
                     </div>

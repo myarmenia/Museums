@@ -15,7 +15,8 @@ class ExportExcelController extends Controller
 
   public function export(Request $request)
     {
-      $report = $request->report;
-      return Excel::download(new ReportExport($report), 'products6.xlsx');
+
+      return Excel::download(new ReportExport($request), 'products7.xlsx');
+
     }
 }

@@ -24,9 +24,10 @@ class ReportsForSuperAdminController extends Controller
 
   public function index(Request $request, $request_report_type)
   {
-// dd($request->all());
+    dd($request->all());
+
     $data = $this->report($request->all(), $this->model, $request_report_type);
-// dd($data);
+
     $museums = Museum::all();
 
     return view("content.reports.super-admin", compact('data', 'museums'));
