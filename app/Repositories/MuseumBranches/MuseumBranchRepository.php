@@ -94,7 +94,7 @@ $museum_branches = MuseumBranch::create([
           $image = Image::where(['imageable_id'=>$id,'imageable_type'=>'App\Models\MuseumBranch'])->first();
           if(Storage::exists($image->path)){
             Storage::delete($image->path);
-            $image = Image::where('imageable_id',$id)->delete();
+            $image = Image::where(['imageable_id'=>$id,'imageable_type'=>'App\Models\MuseumBranch'])->delete();
 
           }
           $path = FileUploadService::upload($request['photo'], 'museum_branches/'.$id);
