@@ -31,13 +31,13 @@ trait PaymentCompletionTrait
             }
 
             // =============== get QR via $paymant->purchase_id ======================
-            $generate_qr = $this->getTokenQr($payment->purchase_id);
-            if($generate_qr){
+            // $generate_qr = $this->getTokenQr($payment->purchase_id);
+            // if($generate_qr){
 
-                $email = $payment->purchase->email;
+            //     $email = $payment->purchase->email;
 
-                $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
-            }
+            //     $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
+            // }
 
 
         }
