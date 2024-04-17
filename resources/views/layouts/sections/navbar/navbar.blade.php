@@ -49,7 +49,7 @@
             <a class="nav-link dropdown-toggle hide-arrow show" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
               <i class="bx bx-sm bx-{{session()->has('style') && session()->get('style') == 'dark' ? 'moon' : 'sun'}}"></i>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-styles show" data-bs-popper="static">
+            <ul class="dropdown-menu dropdown-menu-end dropdown-styles" data-bs-popper="static">
                 <li>
                   <a class="dropdown-item" href="{{route('change_style', 'light')}}" data-theme="light">
                     <span class="align-middle"><i class="bx bx-sun me-2"></i>Light</span>
@@ -60,7 +60,7 @@
                     <span class="align-middle"><i class="bx bx-moon me-2"></i>Dark</span>
                   </a>
                 </li>
-              
+
             </ul>
         </li>
         <!-- User -->
