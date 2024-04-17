@@ -11,7 +11,7 @@ class ChatRepository implements ChatInterface
 {
      public function getSuperAdminRooms()
      {
-          return Chat::with([
+          return Chat::withTrashed()->with([
                'visitor',
                'messages' => function ($query) {
                     $query->orderBy('id', 'DESC')->first();
@@ -21,12 +21,12 @@ class ChatRepository implements ChatInterface
 
      public function getMuseumRooms($museumId)
      {
-          return Chat::where('museum_id', $museumId)->orderBy('id', 'DESC')->paginate(5);
+          return Chat::withTrashed()->where('museum_id', $museumId)->orderBy('id', 'DESC')->paginate(5);
      }
 
      public function getRoomMessage($id)
      {
-          return Chat::with([
+          return Chat::withTrashed()->with([
                'visitor',
                'messages' => function ($query) {
                     $query->orderBy('id', 'ASC')->get();
