@@ -284,6 +284,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [CorporativeSaleController::class, 'index'])->name('corporative');
     Route::get('/create', [CorporativeSaleController::class, 'create'])->name('corporative.create');
     Route::post('/create', [CorporativeSaleController::class, 'addCorporative'])->name('corporative.add');
+    Route::get('/edit/{id}', [CorporativeSaleController::class, 'edit'])->name('corporative_edit');
+    Route::post('/edit/{id}', [CorporativeSaleController::class, 'update'])->name('corporative.edit');
+    Route::delete('/delete-file/{id}', [CorporativeSaleController::class, 'deleteFile']);
   });
 
 
