@@ -310,6 +310,8 @@ Route::group(['middleware' => ['auth']], function () {
   });
 
   Route::get('change-style/{type}', [ChangeStyleController::class, "change_style"])->name('change_style');
+  Route::get('test-email', [ChangeStyleController::class, "test_email"])->name('test_email');
+
 
 });
 

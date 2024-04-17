@@ -13,8 +13,9 @@ class SendQRTiketsToUsersEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public array $data;
-    public array $email;
+    public $data;
+    public $email;
+    public $logoPath;
 
   /**
    * Create a new message instance.
@@ -23,6 +24,8 @@ class SendQRTiketsToUsersEmail extends Mailable
     {
         $this->data = $data;
         $this->email = $email;
+        $this->logoPath = public_path('assets/img/logos/logo.png');
+
     }
 
     /**
@@ -31,7 +34,7 @@ class SendQRTiketsToUsersEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send Q R Tikets To Users Email',
+            subject: 'Send QR Tikets To Users Email',
         );
     }
 
@@ -41,7 +44,7 @@ class SendQRTiketsToUsersEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'layouts.mail.sen-qr-ticket',
+            view: 'layouts.mail.send-qr-ticket',
         );
     }
 
@@ -52,13 +55,18 @@ class SendQRTiketsToUsersEmail extends Mailable
      */
     public function attachments(): array
     {
+        // return ['logo' => storage_path('/assets/img/logos/logo.png')];
         return [];
     }
 
+
     public function build()
     {
+
+      // $logoPath = public_path('assets/img/logos/logo.png');
           return $this->with([
             'data' => $this->data,
           ])->to($this->email);
+
     }
 }
