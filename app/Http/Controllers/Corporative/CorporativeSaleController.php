@@ -50,4 +50,36 @@ class CorporativeSaleController extends BaseController
 
         return redirect()->route('corporative');
     }
+
+    public function edit(int $id)
+    {
+        $data = $this->corporativeSaleService->getEditItem($id);
+
+        if($data){
+            $havePermission = $this->corporativeSaleService->isMuseumCorporative($data);
+            if($havePermission) {
+                return view('content.corporative.edit', compact('data'));
+            }
+        }
+
+        return redirect()->route('corporative');
+    }
+
+    public function update(CorporativeRequest $request, $id)
+    {
+        $this->corporativeSaleService->updateCorporative($request->all(), $id);
+
+        return redirect()->route('corporative');
+    }
+
+    public function deleteFile(int $id)
+    {
+       $deletedFile =  $this->corporativeSaleService->deleteFile($id);
+
+       if($deletedFile) {
+           return response()->json(['result' => true]);
+       }
+       
+       return response()->json(['result' => false], 403);
+    }
 }
