@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Banner\BannerStoreController;
 use App\Http\Controllers\Admin\Banner\BannerUpdateController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ChangeStatusController;
+use App\Http\Controllers\Admin\ChangeStyleController;
 use App\Http\Controllers\Admin\DeleteItemController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCalendarController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCreateController;
@@ -305,6 +306,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
   });
 
+  Route::get('change-style/{type}', [ChangeStyleController::class, "change_style"])->name('change_style');
 
 });
 
