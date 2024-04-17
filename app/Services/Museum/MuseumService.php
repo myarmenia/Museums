@@ -115,7 +115,7 @@ class MuseumService
                 }
             }
 
-            LogService::store($data, auth()->id(), 'museums', 'store');
+            LogService::store($data, $getCreatedMuseumId, 'museums', 'store');
 
             DB::commit();
 
@@ -224,7 +224,7 @@ class MuseumService
             }
         }
 
-        LogService::store($data, auth()->id(), 'museums', 'update');
+        LogService::store($data, $id, 'museums', 'update');
 
         DB::commit();
 

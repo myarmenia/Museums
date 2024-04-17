@@ -44,7 +44,25 @@
         </div> --}}
     <!-- /Search -->
     <ul class="navbar-nav flex-row align-items-center ms-auto">
-
+        {{-- ========================= --}}
+        <li class="nav-item dropdown-style-switcher dropdown me-2 me-xl-0">
+            <a class="nav-link dropdown-toggle hide-arrow show" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
+              <i class="bx bx-sm bx-{{session()->has('style') && session()->get('style') == 'dark' ? 'moon' : 'sun'}}"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-styles show" data-bs-popper="static">
+                <li>
+                  <a class="dropdown-item" href="{{route('change_style', 'light')}}" data-theme="light">
+                    <span class="align-middle"><i class="bx bx-sun me-2"></i>Light</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{{route('change_style', 'dark')}}" data-theme="dark">
+                    <span class="align-middle"><i class="bx bx-moon me-2"></i>Dark</span>
+                  </a>
+                </li>
+              
+            </ul>
+        </li>
         <!-- User -->
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">

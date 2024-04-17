@@ -41,7 +41,7 @@ class MuseumRepository implements MuseumRepositoryInterface
 
     public function getApiMuseum()
     {
-        return Museum::with([
+        return Museum::has('standart_tickets')->with([
             'images', 'region',
             'translations' => function ($query) {
                 $query->where('lang', session('languages'))->get();

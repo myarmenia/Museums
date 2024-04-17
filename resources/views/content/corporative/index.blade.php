@@ -4,6 +4,7 @@
 @endsection
 
 @section('content')
+    @include('includes.alert')
     <h4 class="py-3 mb-4">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -51,7 +52,7 @@
                             <th>Մնացած տոմսեր</th>
                             <th>Գին</th>
                             <th>Ակտիվ է մինչև</th>
-                            <th>Ջնջել</th>
+                            <th>Փոփոխել</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -81,16 +82,17 @@
                                 <td>{{ $corporative->email }}</td>
                                 <td>{{ $corporative->contract_number }}</td>
                                 <td>{{ $corporative->tickets_count }}</td>
-                                <td>{{ $corporative->visitors_count }}</td>
+                                <td>{{ (int) $corporative->tickets_count - (int) $corporative->visitors_count }}</td>
                                 <td>{{ $corporative->price }}</td>
                                 <td>{{ $corporative->ttl_at }}</td>
-                                <td>
-                                    <div class="action" data-id="{{ $corporative->id }}" data-tb-name="corporative_sales">
-                                        <button type="button" data-bs-toggle="modal"
-                                            class="dropdown-item click_delete_item" data-bs-target="#smallModal"><i
-                                                class="bx bx-trash me-1"></i>
-                                        </button>
-                                    </div>
+                                <td class="text-center">
+                                    @if($corporative->created_at->addHour() >= Carbon\Carbon::now())
+                                        <a  href="{{route('corporative_edit', $corporative->id)}}"><i
+                                            class="bx bx-edit-alt me-1"></i>
+                                        </a>
+                                    @else
+                                        <i class="bx bx-edit-alt me-1"></i>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

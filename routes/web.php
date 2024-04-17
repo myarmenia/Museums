@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Banner\BannerStoreController;
 use App\Http\Controllers\Admin\Banner\BannerUpdateController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ChangeStatusController;
+use App\Http\Controllers\Admin\ChangeStyleController;
 use App\Http\Controllers\Admin\DeleteItemController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCalendarController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCreateController;
@@ -283,6 +284,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [CorporativeSaleController::class, 'index'])->name('corporative');
     Route::get('/create', [CorporativeSaleController::class, 'create'])->name('corporative.create');
     Route::post('/create', [CorporativeSaleController::class, 'addCorporative'])->name('corporative.add');
+    Route::get('/edit/{id}', [CorporativeSaleController::class, 'edit'])->name('corporative_edit');
+    Route::post('/edit/{id}', [CorporativeSaleController::class, 'update'])->name('corporative.edit');
+    Route::delete('/delete-file/{id}', [CorporativeSaleController::class, 'deleteFile']);
   });
 
 
@@ -305,6 +309,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
   });
 
+  Route::get('change-style/{type}', [ChangeStyleController::class, "change_style"])->name('change_style');
 
 });
 
