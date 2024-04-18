@@ -31,7 +31,7 @@ class MuseumEditRequest extends FormRequest
             'phones.phone1' => 'required',
             'region' => 'required',
             'account_number' => 'required',
-            'general_photo' => 'required|dimensions:min_width=1520,min_height=445,max_width=1550,max_height=500',
+            'general_photo' => 'dimensions:min_width=1520,min_height=445,max_width=1550,max_height=500',
         ];
     }
 
