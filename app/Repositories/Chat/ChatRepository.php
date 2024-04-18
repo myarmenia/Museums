@@ -88,7 +88,7 @@ class ChatRepository implements ChatInterface
                'messages' => function ($query) {
                     $query->orderBy('id', 'ASC')->get();
                }
-          ])->where('visitor_id', $userId)->whereNotNull('museum_id')->get();
+          ])->where('visitor_id', $userId)->get();
      }
 
 }

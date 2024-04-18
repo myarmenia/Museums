@@ -83,5 +83,16 @@ class ChatController extends Controller
         
         return AllChatResource::collection($data);
     }
+
+    public function addProfileMessage(AddAdminChatMessageRequest $request)
+    {
+        $addMessage = $this->chatService->addProfileMessage($request->all());
+
+        if($addMessage['success']){
+            return response()->json(['status' => true, 'message' => $addMessage['message']]);
+        }
+
+        return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong')]);
+    }
     
 }
