@@ -14,7 +14,7 @@ class ChatRepository implements ChatInterface
           return Chat::withTrashed()->with([
                'visitor',
                'messages' => function ($query) {
-                    $query->orderBy('id', 'DESC')->first();
+                    $query->orderBy('id', 'DESC')->get();
                }
           ])->whereNull('museum_id')->orderBy('id', 'DESC')->paginate(5);
      }
