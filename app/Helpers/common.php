@@ -335,6 +335,33 @@ if (!function_exists('reportTypes')) {
   }
 }
 
+if (!function_exists('ticketColors')) {
+  function ticketColors()
+  {
+      return [
+        'standart' => '#fff',
+        'discount' => '#E8D71E',
+        'free' => '#16EA91',
+        'united' => 'linear-gradient(to bottom right, #9c78b1, #16acea7d)',
+        'subscription' => '#16ACEA',
+        'event' => '#9C78B1'
+      ];
+  }
+}
+
+if (!function_exists('ticketTitles')) {
+  function ticketTitles()
+  {
+      return [
+        'standart' => 'ստանդարտ տոմս стандартный билет standart ticket',
+        'discount' => 'զեղչված տոմս билет со скидкой discounted ticket',
+        'free' => 'անվճար տոմս бесплатный билет free ticket',
+        'united' => 'միջոցառման անվանումը  название события event name',
+        'subscription' => 'աբոնեմենտ տոմս  абонементный билет abonement ticket',
+        'event' => 'միջոցառման անվանումը  название события event name'
+      ];
+  }
+}
 
 
 

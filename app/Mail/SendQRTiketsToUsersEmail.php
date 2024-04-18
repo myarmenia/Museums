@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class SendQRTiketsToUsersEmail extends Mailable
 {
@@ -24,7 +25,6 @@ class SendQRTiketsToUsersEmail extends Mailable
     {
         $this->data = $data;
         $this->email = $email;
-        $this->logoPath = public_path('assets/img/logos/logo.png');
 
     }
 
@@ -34,7 +34,7 @@ class SendQRTiketsToUsersEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send QR Tikets To Users Email',
+            subject: 'Հայաստանի թանգարաններ։ ՏՈՄՍ',
         );
     }
 
@@ -55,8 +55,8 @@ class SendQRTiketsToUsersEmail extends Mailable
      */
     public function attachments(): array
     {
-        // return ['logo' => storage_path('/assets/img/logos/logo.png')];
-        return [];
+        return ['logo' => Storage::disk('local')->path($this->data->path)];
+        // return [];
     }
 
 
