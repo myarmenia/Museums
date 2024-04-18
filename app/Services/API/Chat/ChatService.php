@@ -186,7 +186,7 @@ class ChatService
 
         $museumId = $data['museum_id'] ? $data['museum_id'] : null;
 
-        $chat = Chat::where(['visitor_id' => $authUserId, 'museum_id' => $museumId, 'chat_id' => $data['chat_id']])->first();
+        $chat = Chat::where(['visitor_id' => $authUserId, 'museum_id' => $museumId, 'id' => $data['chat_id']])->first();
 
         if($chat){
             $messageData = [
