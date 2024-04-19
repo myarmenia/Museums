@@ -28,7 +28,7 @@ class ChangeStyleController extends Controller
 
           // $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
         // }
-        $generate_qr = TicketQr::where('id',1)->first();
+        $generate_qr = TicketQr::whereIn('id',[1,2])->get();
         // dd($generate_qr);
         $email = $request->email;
         $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
