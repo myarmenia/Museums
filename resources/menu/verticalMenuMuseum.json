@@ -21,7 +21,7 @@
     {
       "name": "Թանգարան",
       "icon": "menu-icon tf-icons bx bx-museum",
-      "slug": "museum/create",
+      "slug": "museum",
       "url": "museum/create",
       "roles": [
         "museum_admin",
@@ -31,7 +31,7 @@
     {
       "name": "Հաղորդագրություններ",
       "icon": "menu-icon tf-icons bx bx-message",
-      "slug": "chat",
+      "slug": "chats",
       "roles": ["museum_admin", "content_manager", "manager"],
       "url": "chats"
     },
@@ -49,15 +49,15 @@
       "roles": ["museum_admin", "cashier"],
       "submenu": [
         {
-          "url": "cashier/tickets",
+          "url": "/cashier/tickets",
           "name": "Տոմսեր",
-          "slug": "cashier-tickets",
+          "slug": "cashier.tickets",
           "target": ""
         },
         {
           "url": "cashier/products",
           "name": "Ապրանքներ",
-          "slug": "cashier-products",
+          "slug": "cashier.product",
           "target": ""
         }
       ]
