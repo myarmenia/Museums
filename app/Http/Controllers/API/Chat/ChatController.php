@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Chat;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Chat\AddAdminChatMessageRequest;
 use App\Http\Requests\Chat\AddChatMessageRequest;
+use App\Http\Requests\Chat\AddProfileMessageRequest;
 use App\Http\Resources\API\Chat\AllChatResource;
 use App\Http\Resources\API\Chat\ChatResource;
 use App\Services\API\Chat\ChatService;
@@ -82,6 +83,17 @@ class ChatController extends Controller
         };
         
         return AllChatResource::collection($data);
+    }
+
+    public function addProfileMessage(AddProfileMessageRequest $request)
+    {
+        $addMessage = $this->chatService->addProfileMessage($request->all());
+
+        if($addMessage['success']){
+            return response()->json(['status' => true, 'message' => $addMessage['message']]);
+        }
+
+        return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong')]);
     }
     
 }

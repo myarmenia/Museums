@@ -25,7 +25,7 @@
                 <h4 class="card-header">Ապրանք</h4>
             </div>
         </div>
-        @if ($data->count())
+       
             <div class="card-body">
                 <form action="{{ route('cashier.product') }}" method="get" class="row g-3 mt-2" style="display: flex">
                     <div class="d-flex justify-content-end">
@@ -48,6 +48,7 @@
                     </div>
             </div>
             </form>
+            @if ($data->count())
             <form action="{{ route('cashier.add.product') }}" method="post">
 
                 <div class="table-responsive text-nowrap">
@@ -84,7 +85,7 @@
                         <div class="me-3">Ընդհանուր</div>
                         <div class="me-2">
                             <span id="product-total-count">0</span>
-                            <span>տոմս</span>
+                            <span>ապրանք</span>
                         </div>
                         <div class="me-2">
                             <span id="product-total-price">0</span>

@@ -18,6 +18,7 @@
     "password-changed-successfully": "Password successfully changed",
     "activated-email": "To complete the registration, you need to activate your email.",
     "wrong-role-for-login": "You do not have the appropriate permission to access this website. Please check username or password.",
-    "wrong-code": "Code is incorrect."
+    "wrong-code": "Code is incorrect.",
+    "general-name": "Museums of Armenia"
 
 }
