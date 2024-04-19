@@ -20,4 +20,15 @@ class TicketQr extends Model
         'type',
         'price',
     ];
+
+  public function museum()
+  {
+    return $this->belongsTo(Museum::class, "museum_id");
+  }
+
+  public function purchased_item()
+  {
+    return $this->belongsTo(PurchasedItem::class, "purchased_item_id");
+  }
+
 }

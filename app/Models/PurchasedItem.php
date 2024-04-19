@@ -31,5 +31,26 @@ class PurchasedItem extends Model
       return $this->hasMany(PurchaseUnitedTickets::class);
     }
 
+  public function event_config()
+  {
+
+      return $this->belongsTo(EventConfig::class, 'item_relation_id');
+
+  }
+  public function standart_ticket()
+  {
+    // return EventConfig::where('id', $this->item_relation_id)->first();
+    return $this->belongsTo(Ticket::class, 'item_relation_id');
+
+  }
+
+  public function united_museums()
+  {
+
+    $united_tikets_museums_ids = $this->purchase_united_tickets->pluck('museum_id');
+    return Museum::whereIn('id', $united_tikets_museums_ids)->get();
+
+  }
+
 
 }

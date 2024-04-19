@@ -30,14 +30,14 @@ trait PaymentCompletionTrait
                 }
             }
 
-            // =============== get QR via $paymant->purchase_id ======================
-            // $generate_qr = $this->getTokenQr($payment->purchase_id);
-            // if($generate_qr){
+            // =============== get QR via paymant purchase_id ======================
+            $generate_qr = $this->getTokenQr($payment->purchase_id);
+            if(count($generate_qr) > 0){
 
-            //     $email = $payment->purchase->email;
+                $email = $payment->purchase->email;
 
-            //     $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
-            // }
+                $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
+            }
 
 
         }

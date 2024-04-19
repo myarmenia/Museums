@@ -180,4 +180,29 @@ class ChatService
         return false;
     }
 
+    public function addProfileMessage($data)
+    {
+        $authUserId = auth('api')->id();
+
+        $museumId = $data['museum_id'] ? $data['museum_id'] : null;
+
+        $chat = Chat::where(['visitor_id' => $authUserId, 'museum_id' => $museumId, 'id' => $data['chat_id']])->first();
+
+        if($chat){
+            $messageData = [
+                'type' => Message::TYPE_VISITOR,
+                'text' => $data['text'],
+                'chat_id' => $data['chat_id'],
+            ];
+
+            $message = $this->chatRepository->addMessage($messageData);
+
+            if ($message) {
+                return ['success' => true, 'message' => $message];
+            }
+        }
+
+        return ['success' => false, 'error' => 500];
+    }
+
 }
