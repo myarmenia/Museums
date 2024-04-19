@@ -33,7 +33,7 @@ class ChatService
     public function getRoomMessage($id)
     {
         if($this->adminStaffCheck()){
-            if($chat = Chat::find($id)){
+            if($chat = Chat::withTrashed()->find($id)){
                 if($chat->museum_id){
                     return false;
                 }
@@ -64,7 +64,7 @@ class ChatService
 
     public function updateChatRead($id)
     {
-        return Chat::where('id', $id)->update(['read' => 1]);
+        return Chat::withTrashed()->where('id', $id)->update(['read' => 1]);
     }
 
     public function getChatVisitorEmail($id)
@@ -94,7 +94,7 @@ class ChatService
     {
         $museumId = getAuthMuseumId();
         if($museumId){
-            $chat = Chat::where('museum_id', $museumId)->pluck('id');
+            $chat = Chat::withTrashed()->where('museum_id', $museumId)->pluck('id');
             return  $chat->all();
         };
 

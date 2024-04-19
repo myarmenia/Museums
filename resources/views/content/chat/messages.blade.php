@@ -11,6 +11,9 @@
 
 @section('content')
     @include('includes.alert')
+    @if($data->deleted_at)
+        <h2 class="text-muted fw-light pb-3" style="color:red">Տվյալ նամակագրություն ջնջված է</հթ>
+    @endif
     <h4 class="py-3 mb-4 d-flex">
         <span class="text-muted fw-light">Նամակագրություն {{ $data->email ? $data->email : $data->visitor->email }} -ի
             հետ
@@ -33,6 +36,7 @@
                 </div>
             @endif
         </div>
+      
         <div class="row container d-flex justify-content-center">
             <div class="card card-bordered">
                 <div class="card-header">
@@ -52,20 +56,22 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="publisher bt-1 border-light">
-                    <img class="avatar avatar-xs" src="https://img.icons8.com/color/36/000000/administrator-male.png"
-                        alt="...">
-                    <input class="publisher-input" type="text" placeholder="Նամակ">
-                    <div class="spinner-border text-primary" id="loader-message" style="display: none" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                @if(!$data->deleted_at)
+                    <div class="publisher bt-1 border-light">
+                        <img class="avatar avatar-xs" src="https://img.icons8.com/color/36/000000/administrator-male.png"
+                            alt="...">
+                        <input class="publisher-input" type="text" placeholder="Նամակ">
+                        <div class="spinner-border text-primary" id="loader-message" style="display: none" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <button type="button" id="send-message" class="add-message btn btn-primary">Ուղարկել</button>
+                        @if (!isSuperAdmin())
+                            <a href="{{ route('educational_programs_calendar') }}" target="_blank"><i
+                                    class=" btn btn-primary tf-icons bx bx-table me-1"></i><span class="d-none d-sm-block">
+                                </span></a>
+                        @endif
                     </div>
-                    <button type="button" id="send-message" class="add-message btn btn-primary">Ուղարկել</button>
-                    @if (!isSuperAdmin())
-                        <a href="{{ route('educational_programs_calendar') }}" target="_blank"><i
-                                class=" btn btn-primary tf-icons bx bx-table me-1"></i><span class="d-none d-sm-block">
-                            </span></a>
-                    @endif
-                </div>
+                @endif
             </div>
         </div>
     </div>
