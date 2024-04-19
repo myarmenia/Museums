@@ -21,7 +21,7 @@
     {
       "name": "Թանգարան",
       "icon": "menu-icon tf-icons bx bx-museum",
-      "slug": "museum",
+      "slug": ["museum.edit", "create-museum"],
       "url": "museum/create",
       "roles": [
         "museum_admin",
