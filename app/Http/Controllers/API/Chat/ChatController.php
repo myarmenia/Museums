@@ -8,6 +8,7 @@ use App\Http\Requests\Chat\AddChatMessageRequest;
 use App\Http\Requests\Chat\AddProfileMessageRequest;
 use App\Http\Resources\API\Chat\AllChatResource;
 use App\Http\Resources\API\Chat\ChatResource;
+use App\Http\Resources\API\Chat\MessageResource;
 use App\Services\API\Chat\ChatService;
 use Illuminate\Http\Request;
 
@@ -90,7 +91,7 @@ class ChatController extends Controller
         $addMessage = $this->chatService->addProfileMessage($request->all());
 
         if($addMessage['success']){
-            return response()->json(['status' => true, 'message' => $addMessage['message']]);
+            return response()->json(['status' => true, 'message' => new MessageResource($addMessage['message'])]);
         }
 
         return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong')]);
