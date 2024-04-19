@@ -146,6 +146,7 @@ Route::group(['middleware' => ['api']], function ($router) {
       });
       // Route::get('get-museum-message/{id}', [ChatController::class, 'getMuseumMessage'])->middleware('apiAuthCheck');
       Route::post('add-message', [ChatController::class, 'addMessage']);
+      Route::post('add-profile-message', [ChatController::class, 'addProfileMessage']);
       Route::post('add-admin-message', [ChatController::class, 'addAdminMessage']);
     });
 
