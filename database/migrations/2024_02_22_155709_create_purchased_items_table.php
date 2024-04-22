@@ -30,6 +30,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->integer('total_price');
             $table->string('type');       // product or ticket
+            $table->softDeletes();
             $table->timestamps();
         });
     }

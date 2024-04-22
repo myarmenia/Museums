@@ -10,7 +10,7 @@ use Http;
 
 trait QrTokenTrait
 {
-    public function getTokenQr(int $purchaseId): bool|array
+    public function getTokenQr(int $purchaseId): bool|object
     {
         $url = env('NODE_API_URL') . 'getQr';
 
@@ -50,6 +50,9 @@ trait QrTokenTrait
                         'path' => $path,
                         'type' => $type,
                         'price' => $priceOneTicket,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+
                     ];
                     $addedItemsToken[]=$token;
                     $allData[] = $newData;

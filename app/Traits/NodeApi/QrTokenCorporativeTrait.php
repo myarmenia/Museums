@@ -49,6 +49,8 @@ trait QrTokenCorporativeTrait
                     'path' => $path,
                     'type' => $type,
                     'price' => NULL,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
 
                 $allData[] = $newData;
