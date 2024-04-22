@@ -11,7 +11,7 @@ trait UpdateItemQuantityTrait
   public function updateItemQuantity($purchase_id)
   {
 
-    $array_types = ['product', 'event', 'corporative'];
+    $array_types = ['product', 'event'];
 
     $purchase = Purchase::find($purchase_id);
     $items = $purchase->purchased_items->whereIn('type', $array_types)->toArray();
@@ -19,16 +19,12 @@ trait UpdateItemQuantityTrait
     if (count($items) > 0) {
       foreach ($items as $i => $item) {
         switch ($item['type']) {
-          case 'standart':
+          case 'product':
             $this->updateProductQuantity($item);
             break;
           case 'event':
             $this->updateEventConfigeQuantity($item);
             break;
-          case 'corporative':
-            $this->updateCorporativeQuantity($item);
-            break;
-
         }
       }
     }
@@ -38,8 +34,9 @@ trait UpdateItemQuantityTrait
   public function updateProductQuantity($item)
   {
 
-    $product = Product::find($item->item_relation_id);
-    $quantity = $product->quantity - $item->quantity;
+    $product = Product::find($item['item_relation_id']);
+   
+    $quantity = $product->quantity - $item['quantity'];
     $product->update(['quantity' => $quantity]);
   }
 
@@ -47,18 +44,10 @@ trait UpdateItemQuantityTrait
   public function updateEventConfigeQuantity($item)
   {
 
-    $event_config = EventConfig::find($item->item_relation_id);
-    $quantity = $event_config->visitors_quantity + $item->quantity;
+    $event_config = EventConfig::find($item['item_relation_id']);
+    $quantity = $event_config->visitors_quantity + $item['quantity'];
     $event_config->update(['visitors_quantity' => $quantity]);
   }
-
-  // ============ Gevorgi kodi mas =======================
-
-  // public function updateCorporativeQuantity($item)
-  // {
-
-  //
-  // }
 
 
 
