@@ -55,18 +55,54 @@ class SendQRTiketsToUsersEmail extends Mailable
      */
     public function attachments(): array
     {
-        return ['logo' => Storage::disk('local')->path($this->data->path)];
-        // return [];
+        $qr_images = [];
+        foreach ($this->data as $key => $item) {
+            $type = $item->purchased_item->type;
+            $museum_name = '';
+
+            if ($type == 'united'){
+
+                $united_museums = $item->purchased_item->purchase_united_tickets->pluck("museum.translationsForAdmin.name");
+
+                if (count($united_museums) > 0){
+                    foreach ($united_museums as $name){
+                        $museum_name .= $name . ", ";
+                    }
+                }
+
+                $museum_name = substr($museum_name, 0, -2);
+                $qr_images[++$key . ' - ' . $museum_name] = Storage::disk('local')->path($item->path);
+
+            }
+                else{
+
+                  $museum_name = $item->museum->translation('en')->name;
+                  $qr_images[++$key . ' - ' . $museum_name] = Storage::disk('local')->path($item->path);
+            }
+
+        }
+
+        return $qr_images;
+
     }
 
 
     public function build()
     {
 
-      // $logoPath = public_path('assets/img/logos/logo.png');
-          return $this->with([
-            'data' => $this->data,
-          ])->to($this->email);
+
+        $mail = $this->with([
+              'result' => $this->data,
+            ])->to($this->email);
+
+
+        foreach ($this->attachments() as $name => $path) {
+            $mail->attach($path, [
+              'as' => $name,
+            ]);
+        }
+
+      return  $mail;
 
     }
 }

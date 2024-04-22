@@ -36,7 +36,7 @@ trait QrTokenTrait
             foreach ($allPurchases as $key => $item) {
                 $quantity = $item->quantity;
                 $priceOneTicket = (int) $item->total_price / (int) $item->quantity;
-                
+
                 for ($i = 0; $i < $quantity; $i++) {
                     $type = $item->type;
                     $token = $data[$type][0]['unique_token'];
@@ -65,8 +65,8 @@ trait QrTokenTrait
                 return false;
             }
             DB::commit();
-            return TicketQr::whereIn('token', $addedItemsToken)->get()->pluck('id')->toArray();
-            
+            return TicketQr::whereIn('token', $addedItemsToken)->get();
+
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e->getMessage());
