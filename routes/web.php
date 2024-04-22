@@ -234,15 +234,19 @@ Route::group(['middleware' => ['auth']], function () {
   });
 
   Route::group(['prefix' => 'educational-programs'], function () {
-    Route::group(['middleware' => ['role:museum_admin|manager|content_manager']], function () {
-      Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
-      Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
-      Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
-      Route::group(['middleware' => ['model_access']], function () {
-        Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
-        Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
-      });
+    Route::group(['middleware' => ['role:museum_admin|manager|content_manager|cashier']], function () {
+        Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
     });
+    
+    Route::group(['middleware' => ['role:content_manager|museum_admin|manager']], function () {
+        Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
+        Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
+        Route::group(['middleware' => ['model_access']], function () {
+          Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
+          Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
+        });
+    });
+
     Route::group(['middleware' => ['role:museum_admin|manager|cashier']], function () {
       Route::get('calendar', EducationalProgramCalendarController::class)->name('educational_programs_calendar');
       Route::post('reserve-store', ReserveStoreController::class)->name('educational_programs_reserve_store');
@@ -252,7 +256,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     });
   });
-
 
   Route::group(['prefix' => 'banner'], function () {
     Route::get('/list', [BannerListController::class, 'index'])->name('banner_list');
