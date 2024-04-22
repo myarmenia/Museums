@@ -53,7 +53,7 @@ trait PaymentCompletionTrait
                       window.location = 'museums://TicketCongrats'
                   </script>" :
                   "<script type='text/javascript'>
-                      window.location = 'web://museum/". $response ."'
+                      window.location = 'http://museumfront.gorc-ka.am/am/'
                   </script>";
 
 

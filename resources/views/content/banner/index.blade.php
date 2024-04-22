@@ -17,7 +17,7 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('banner_list')}}">Բաններ </a>
+                  <a href="{{route('banner_list')}}">Բանեռ </a>
               </li>
               <li class="breadcrumb-item active">Ցանկ</li>
           </ol>
@@ -31,7 +31,7 @@
             </div>
             {{-- @if (museumAccessId()!=null) --}}
               <div>
-                  <a href="{{ route('banner_create') }}" class="btn btn-primary mx-4">Ստեղծել բաններ </a>
+                  <a href="{{ route('banner_create') }}" class="btn btn-primary mx-4">Ստեղծել Բանեռ </a>
               </div>
 
             {{-- @endif --}}

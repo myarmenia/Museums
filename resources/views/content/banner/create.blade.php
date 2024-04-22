@@ -1,7 +1,7 @@
 @extends('layouts/contentNavbarLayout')
 
 @section('page-script')
- 
+
     <script src="{{ asset('assets/js/admin\news\index.js') }}"></script>
 @endsection
 
@@ -15,9 +15,9 @@
       <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
-                  <a href="{{route('banner_list')}}">Բաններ </a>
+                  <a href="{{route('banner_list')}}">Բանեռ </a>
               </li>
-              <li class="breadcrumb-item active">Ստեղծել բաններ</li>
+              <li class="breadcrumb-item active">Ստեղծել բանեռ</li>
           </ol>
       </nav>
   </h4>
@@ -25,7 +25,7 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Ստեղծել բաններ </h5>
+                <h5 class="card-header">Ստեղծել բանեռ </h5>
             </div>
 
         </div>
@@ -36,11 +36,11 @@
 
               @foreach (languages() as $lang)
               <div class="mb-3 row">
-                <label for="text-{{ $lang }}" class="col-md-2 col-form-label">Բանների տեքստ {{ $lang }}
+                <label for="text-{{ $lang }}" class="col-md-2 col-form-label">Բանեռ տեքստ {{ $lang }}
                 <span class="required-field text-danger">*</span>
                 </label>
                 <div class="col-md-10">
-                    <textarea class="form-control" placeholder="Բանների տեքստ {{ $lang }}"
+                    <textarea class="form-control" placeholder="Բանեռ տեքստ {{ $lang }}"
                         id="working_days-{{ $lang }}"
                         name="translate[{{ $lang }}][text]">{{ old("translate.$lang.text") }}
                     </textarea>
