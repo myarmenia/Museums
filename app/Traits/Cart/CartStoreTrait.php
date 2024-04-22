@@ -94,7 +94,7 @@ trait CartStoreTrait
 
   public function getProduct($id, $quantity)
   {
-    return Product::where(['id' => $id, 'status' => 1])->where('quantity', '>', $quantity)->first();
+    return Product::where(['id' => $id, 'status' => 1])->where('quantity', '>=', $quantity)->first();
   }
 
   public function getEvent($id)

@@ -10,7 +10,7 @@ use App\Mail\SendQRTiketsToUsersEmail;
 use Mail;
 class ChangeStyleController extends Controller
 {
-  use QrTokenTrait;
+    use QrTokenTrait;
     public function change_style(Request $request, $type)
     {
         session()->put('style', $type);
