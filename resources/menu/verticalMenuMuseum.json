@@ -29,6 +29,16 @@
       ]
     },
     {
+      "name": "Տոմսի հետ վերադարձ",
+      "icon": "menu-icon tf-icons bx bxs-backpack",
+      "slug": "return-ticket",
+      "url": "return-ticket",
+      "roles": [
+        "museum_admin",
+        "manager"
+      ]
+    },
+    {
       "name": "Հաղորդագրություններ",
       "icon": "menu-icon tf-icons bx bx-message",
       "slug": "chat",

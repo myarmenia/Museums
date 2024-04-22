@@ -50,6 +50,8 @@ trait QrTokenTrait
                         'path' => $path,
                         'type' => $type,
                         'price' => $priceOneTicket,
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ];
                     $addedItemsToken[]=$token;
                     $allData[] = $newData;

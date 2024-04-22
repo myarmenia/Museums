@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('token')->unique();
             $table->string('path');
             $table->string('type');  // event , united, standart
+            $table->enum('status',['active', 'expired', 'used', 'returned'])->default('active');
             $table->integer('price');
             $table->timestamps();
         });

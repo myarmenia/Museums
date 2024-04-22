@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Traits\Reports\ReportFilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PurchasedItem extends Model
 {
-    use HasFactory, ReportFilterTrait;
+    use HasFactory, ReportFilterTrait, SoftDeletes;
     protected $guarded = [];
     // protected $defaultFields = ['museum_id'];
 

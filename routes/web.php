@@ -56,6 +56,7 @@ use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\Corporative\CorporativeSaleController;
 use App\Http\Controllers\museum\MuseumController;
 use App\Http\Controllers\NodeApiController;
+use App\Http\Controllers\return_ticket\ReturnTicketController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -179,6 +180,13 @@ Route::group(['middleware' => ['auth']], function () {
       Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
     });
 
+  });
+
+  Route::group(['prefix' => 'return-ticket'], function () {
+    Route::group(['middleware' => ['role:museum_admin|manager']], function () {
+      Route::get('/', [ReturnTicketController::class, 'index'])->name('return-ticket');
+      Route::get('/check/{token}', [ReturnTicketController::class, 'checkTicket']);
+    });
   });
 
   // News
