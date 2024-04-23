@@ -77,7 +77,10 @@ return [
           'driver' => 'eloquent',
           'model' => App\Models\Turnstile::class,
         ]
-
+        // 'turnstiles' => [
+        //   'driver' => 'database',
+        //   'table' => 'turnstiles',
+        // ]
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

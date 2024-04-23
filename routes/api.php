@@ -46,6 +46,8 @@ use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\Email\SendFeedbackController;
 use App\Http\Controllers\Email\SendClientProjectDetController;
+use App\Http\Controllers\Turnstile\TurnstileLoginController;
+use App\Http\Controllers\Turnstile\TurnstileRegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -191,3 +193,16 @@ Route::group(['middleware' => ['api']], function ($router) {
 
 
 });
+
+
+// ======================== turnstile Турникет ======================================
+Route::group(['prefix' => 'turnstile'], function ($router) {
+    Route::group(['middleware' => ['setlang']], function ($router) {
+
+      Route::get('museums', MuseumListController::class);
+      Route::post('login', TurnstileLoginController::class);
+      Route::post('register', TurnstileRegisterController::class);
+    });
+
+});
+

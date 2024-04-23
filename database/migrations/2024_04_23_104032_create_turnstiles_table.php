@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('turnstiles', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('museum_id')->on('museums')->onDelete('cascade');
+            $table->string('name')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }
