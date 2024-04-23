@@ -28,5 +28,12 @@ trait TicketsTrait
     return TicketUnitedSetting::first();
   }
 
+  public function getUnitedSettings()
+  {
+      return [
+          "min_museum_quantity" => $this->getUniteddeService()->min_museum_quantity,
+          "discount_percent" => $this->getUniteddeService()->percent
+      ];
+  }
 
 }
