@@ -186,6 +186,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['role:museum_admin|manager']], function () {
       Route::get('/', [ReturnTicketController::class, 'index'])->name('return-ticket');
       Route::get('/check/{token}', [ReturnTicketController::class, 'checkTicket']);
+      Route::get('/remove/{token}', [ReturnTicketController::class, 'removeTicket']);
     });
   });
 

@@ -363,6 +363,27 @@ if (!function_exists('ticketTitles')) {
   }
 }
 
+if (!function_exists('getTranslateTicketTitl')) {
+  function getTranslateTicketTitl($title)
+  {
+      $titles = [
+        'standart' => 'Ստանդարտ',
+        'discount' => 'Զեղչված',
+        'free' => 'Անվճար',
+        'united' => 'Միասնական',
+        'subscription' => 'Աբոնեմենտ',
+        'event' => 'Միջոցառում'
+      ];
+
+      //check have $title in $titles
+      if (isset($titles[$title])) {
+          return $titles[$title];
+      } else {
+        return $title;
+      }
+  }
+}
+
 
 
 
