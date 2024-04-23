@@ -24,6 +24,7 @@ use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\Email\SendFeedbackController;
 use App\Http\Controllers\Email\SendClientProjectDetController;
+use App\Http\Controllers\Turnstile\TurnstileLoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -113,5 +114,10 @@ Route::group(['middleware' => ['api']], function ($router) {
   });
   Route::get('test-museum',[TestController::class, 'test']);
 
+
+});
+
+Route::group(['middleware' => ['auth:turnstile']], function ($router) {
+  Route::post('turnstile-login', [TurnstileLoginController::class, 'login']);
 
 });
