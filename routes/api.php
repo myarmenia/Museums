@@ -1,22 +1,44 @@
 <?php
 
+use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\Cart\DeleteItemController;
+use App\Http\Controllers\API\Cart\ItemsController;
+use App\Http\Controllers\API\Cart\StoreController;
 use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Banner\BannerCantroller;
 use App\Http\Controllers\API\EducationalPrograms\EducationalProgramController;
+use App\Http\Controllers\API\Events\EventController;
+use App\Http\Controllers\API\Events\EventsListController;
+use App\Http\Controllers\API\Events\HeaderEventController;
+use App\Http\Controllers\API\Events\SingleEventController;
 use App\Http\Controllers\API\HomeController;
-use App\Http\Controllers\API\Courses\CourseLanguagesController;
 use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\API\Lessons\LessonController;
+use App\Http\Controllers\API\MuseumBranch\MuseumBranchesController;
 use App\Http\Controllers\API\MuseumController;
 use App\Http\Controllers\API\NewsController;
+use App\Http\Controllers\API\Purchase\PaymentResultController;
+use App\Http\Controllers\API\Purchase\PurchaseStoreController;
 use App\Http\Controllers\API\SendOrderController;
 use App\Http\Controllers\API\TestController;
+use App\Http\Controllers\API\Tickets\SingleMuseumEventsTicketsController;
+use App\Http\Controllers\API\Tickets\TicketsController;
+use App\Http\Controllers\API\Tickets\UnitedTicketSettingsController;
+use App\Http\Controllers\API\User\DeleteUserController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
+use App\Http\Controllers\API\Museum\SinggleMuseumEventsController;
+use App\Http\Controllers\API\Museum\SingleMuseumEventsController;
+use App\Http\Controllers\API\Museum\SingleMuseumProductController;
+use App\Http\Controllers\API\MuseumListController;
+use App\Http\Controllers\API\Notification\AllNotificationController;
+use App\Http\Controllers\API\Notification\ReadNotificationController;
+use App\Http\Controllers\API\Notification\UnreadNotificationController;
 use App\Http\Controllers\API\Product\ProductCantroller;
+use App\Http\Controllers\API\RegionListController;
 use App\Http\Controllers\API\Shop\ProductCantroller as ShopProductCantroller;
 use App\Http\Controllers\API\Shop\SingleProductController;
 use App\Http\Controllers\API\Student\DashboardController;
@@ -42,21 +64,33 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::group(['prefix' => 'mobile'], function ($router) {
           Route::post('signup-info', [AuthController::class, 'signupInfo']);
         });
+
+        Route::group(['prefix' => 'notification'], function ($router) {
+          Route::get('unread', UnreadNotificationController::class)->name('unreadNotification');
+          Route::get('/{id}', ReadNotificationController::class);
+        });
+
     });
 
+
     Route::group(['middleware' => 'apiAuthCheck'], function ($router) {
-        Route::get('course-language',[CourseLanguagesController::class,'index']);
-        Route::get('language-lessons/{id}',[LessonController::class,'languageLessons']);
-        Route::get('user-current-lesson/',[UserCurrentLessonController::class,'index']);
 
         Route::group(['prefix' => 'user'], function ($router) {
             Route::post('edit', [UserController::class, 'edit']);
             Route::post('editPassword', [UserController::class, 'editPassword']);
         });
-    });
 
-    Route::group(['prefix' => 'project'], function ($router) {
-        Route::get('getProject', [ProjectController::class, 'getProject']);
+        Route::group(['prefix' => 'cart'], function ($router) {
+          Route::post('store', StoreController::class);
+          Route::get('item/{id}/delete', DeleteItemController::class);
+          Route::get('items', ItemsController::class);
+
+        });
+
+        Route::group(['prefix' => 'mobile'], function ($router) {
+          Route::get('delete-user', DeleteUserController::class);
+        });
+
     });
 
     Route::group(['prefix' => 'email'], function ($router) {
@@ -73,11 +107,6 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::post('send-order', SendOrderController::class);
 
 
-
-    // Route::get('dashboard',[DashboardController::class,'index']);
-    // Route::get('home',[HomeController::class,'home']);
-    // Route::get('visit-history',[VisitHistoryController::class,'index']);
-
     Route::group(['prefix' => 'news'], function ($router) {
         Route::get('get-news', [NewsController::class, 'getNewslist']);
         Route::get('get-news/{id}', [NewsController::class, 'getNews']);
@@ -87,7 +116,11 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::get('get-museum', [MuseumController::class, 'getMuseum']);
         Route::get('get-museum/{id}', [MuseumController::class, 'getMuseumById']);
         Route::get('/{id}/educational-programs', EducationalProgramController::class);
-
+        Route::get('/{museum_id}/events', SingleMuseumEventsController::class);
+        Route::group(['prefix' => 'mobile'], function ($router) {
+          Route::get('get-museum/{id}', [MuseumController::class, 'getMobileMuseumById']);
+        });
+        Route::get('/{museum_id}/products',[SingleMuseumProductController::class,'index']);
     });
     Route::group(['prefix' => 'banner'], function ($router) {
       Route::get('list', [BannerCantroller::class, 'index']);
@@ -98,7 +131,7 @@ Route::group(['middleware' => ['api']], function ($router) {
     });
     Route::group(['prefix' => 'shop'], function ($router) {
       Route::get('product-list', [ShopProductCantroller::class, 'index']);
-      Route::get('museum-list', [ShopProductCantroller::class, 'museumList']);
+
       Route::get('product-category', [ShopProductCantroller::class, 'productCategory']);
       Route::get('product/{id}',SingleProductController::class);
 
@@ -107,12 +140,55 @@ Route::group(['middleware' => ['api']], function ($router) {
 
 
     Route::group(['prefix' => 'chat'], function ($router) {
-        Route::post('add-message', [ChatController::class, 'addMessage']);
-        Route::post('add-admin-message', [ChatController::class, 'addAdminMessage']);
+      Route::group(['middleware' => 'apiAuthCheck'], function ($router) {
+        Route::get('get-museum-message/{id}', [ChatController::class, 'getMuseumMessage']);
+        Route::get('get-admin-message', [ChatController::class, 'getAdminMessage']);
+        Route::get('get-all-museums-messages', [ChatController::class, 'getAllMuseumsMessages']);
+        Route::get('delete-chat/{id}', [ChatController::class, 'deleteChat']);
+      });
+      // Route::get('get-museum-message/{id}', [ChatController::class, 'getMuseumMessage'])->middleware('apiAuthCheck');
+      Route::post('add-message', [ChatController::class, 'addMessage']);
+      Route::post('add-profile-message', [ChatController::class, 'addProfileMessage']);
+      Route::post('add-admin-message', [ChatController::class, 'addAdminMessage']);
     });
+
+    Route::group(['prefix' => 'tickets'], function ($router) {
+      Route::get('', TicketsController::class);
+      Route::get('museum/events', SingleMuseumEventsTicketsController::class);
+      Route::get('united', UnitedTicketSettingsController::class);
+
+    });
+
+
+
+    Route::get('museum-list', MuseumListController::class);
+    Route::get('region-list', RegionListController::class);
+    Route::group(['prefix' => 'museum-branches'], function ($router) {
+      Route::get('/{museum_id}',MuseumBranchesController::class);
+
+    });
+
+    Route::group(['prefix' => 'events'], function ($router) {
+      Route::get('events-list', [EventsListController::class, 'index']);
+      Route::get('single-event/{event_id}', SingleEventController::class)->name('singleEvent');
+    });
+
+    Route::get('museum-list', MuseumListController::class);
+    Route::get('region-list', RegionListController::class);
+
+    Route::group(['prefix' => 'purchase'], function ($router) {
+      Route::post('store', PurchaseStoreController::class)->name('purchase_store');
+    });
+
+    Route::get('payment-result', PaymentResultController::class);
+    Route::group(['prefix' => 'header'], function ($router) {
+      Route::get('event-list', [HeaderEventController::class,'index']);
+    });
+
 
   });
   Route::get('test-museum',[TestController::class, 'test']);
+
 
 
 });

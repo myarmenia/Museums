@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('contract_number')->nullable();
             $table->unsignedInteger('tickets_count')->min(100);
             $table->unsignedInteger('visitors_count')->default(0);
+            $table->foreignId('museum_id')->on('museums')->onDelete('cascade');
             $table->integer('price');
             $table->string('coupon')->unique()->index();
             $table->date('ttl_at');

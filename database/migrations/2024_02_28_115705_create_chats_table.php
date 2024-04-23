@@ -17,7 +17,9 @@ return new class extends Migration
             $table->unsignedInteger('museum_id')->nullable();
             $table->string('email')->nullable();
             $table->string('title')->nullable();
+            $table->string('education_program_type')->nullable();
             $table->boolean('read')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

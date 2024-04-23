@@ -11,22 +11,22 @@ class ChatRepository implements ChatInterface
 {
      public function getSuperAdminRooms()
      {
-          return Chat::with([
+          return Chat::withTrashed()->with([
                'visitor',
                'messages' => function ($query) {
-                    $query->orderBy('id', 'DESC')->first();
+                    $query->orderBy('id', 'DESC')->get();
                }
           ])->whereNull('museum_id')->orderBy('id', 'DESC')->paginate(5);
      }
 
      public function getMuseumRooms($museumId)
      {
-          return Chat::where('museum_id', $museumId)->orderBy('id', 'DESC')->paginate(5);
+          return Chat::withTrashed()->where('museum_id', $museumId)->orderBy('id', 'DESC')->paginate(5);
      }
 
      public function getRoomMessage($id)
      {
-          return Chat::with([
+          return Chat::withTrashed()->with([
                'visitor',
                'messages' => function ($query) {
                     $query->orderBy('id', 'ASC')->get();
@@ -53,6 +53,42 @@ class ChatRepository implements ChatInterface
      public function createChat($data)
      {
           return Chat::create($data);
+     }
+
+     public function updateChat($data, $id)
+     {
+          return Chat::where('id', $id)->update($data);
+     }
+
+     public function getMuseumMessage($museumId, $userId)
+     {
+          return Chat::where('visitor_id', $userId)->where('museum_id', $museumId)->with([
+               'visitor',
+               'messages' => function ($query) {
+                    $query->orderBy('id', 'ASC')->get();
+               }
+          ])->first();
+     }
+
+     public function getAdminMessage($userId)
+     {
+          return Chat::where('visitor_id', $userId)->whereNull('museum_id')->with([
+               'visitor',
+               'messages' => function ($query) {
+                    $query->orderBy('id', 'ASC')->get();
+               }
+          ])->first();
+     }
+
+     public function getAllMuseumsMessages($userId)
+     {
+          return Chat::with([
+               'museum.getCurrentTranslation',
+               'museum.images',
+               'messages' => function ($query) {
+                    $query->orderBy('id', 'ASC')->get();
+               }
+          ])->where('visitor_id', $userId)->get();
      }
 
 }

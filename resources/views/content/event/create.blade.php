@@ -113,7 +113,7 @@
                   <span class="required-field text-danger">*</span>
                 </label>
                 <div class="col-md-10">
-                    <input class="form-control" placeholder="Տոմսերի առավելագույն քանակ մեկ օրվա համար" value="{{ old('visitors_quantity_limitation	') }}"
+                    <input class="form-control" placeholder="Տոմսերի առավելագույն քանակ մեկ օրվա համար" value="{{ old('visitors_quantity_limitation') }}"
                         id="visitors_quantity_limitation" name="visitors_quantity_limitation" />
                 </div>
                 @error("visitors_quantity_limitation")
@@ -150,6 +150,7 @@
                     </label>
 
                     <div class="col-md-10">
+                        <div>Նկարի նախընտրելի չափսերն են 400X270</div>
                         <div class="d-flex flex-wrap align-items-start align-items-sm-center">
                             <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                                 <span class="d-none d-sm-block">Ներբեռնել նկար</span>

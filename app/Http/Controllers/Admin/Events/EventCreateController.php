@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class EventCreateController extends Controller
 {
+  public function __construct(){
+
+    $this->middleware('role:museum_admin');
+
+  }
     public function __invoke(){
       return view("content.event.create");
     }

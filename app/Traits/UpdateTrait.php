@@ -1,6 +1,8 @@
 <?php
- namespace App\Traits;
 
+namespace App\Traits;
+
+use App\Models\EventConfig;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\ProductTranslation;
@@ -12,16 +14,18 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-trait UpdateTrait{
+trait UpdateTrait
+{
   abstract function model();
 
-  public function itemUpdate(Request $request, $id){
+  public function itemUpdate(Request $request, $id)
+  {
 
-    $data = $request->except(['translate','photo','_method']);
+    $data = $request->except(['translate', 'photo', '_method']);
 
     $className = $this->model();
 
-    if(class_exists($className)) {
+    if (class_exists($className)) {
 
       $model = new $className;
       $relation_foreign_key = $model->getForeignKey();
@@ -31,44 +35,58 @@ trait UpdateTrait{
       $item = $model::where('id', $id)->first();
 
       $item->update($data);
-      if($item){
-          if($request['translate']!=null){
-            foreach($request['translate'] as $key => $lang){
+      if ($item) {
+        if ($request['translate'] != null) {
+          foreach ($request['translate'] as $key => $lang) {
 
-                $item->item_translations()->where([$relation_foreign_key => $id,'lang' => $key])->update($lang);
-
-            }
+            $item->item_translations()->where([$relation_foreign_key => $id, 'lang' => $key])->update($lang);
           }
 
-        if(isset($request['photo'])){
+        }
 
-          $image = Image::where('imageable_id',$id)->first();
+        if (isset($request['photo'])) {
 
-          if(Storage::exists($image->path)){
+
+          $image = Image::where(['imageable_id' => $id, 'imageable_type' => $className])->first();
+
+
+          if (Storage::exists($image->path)) {
+
             Storage::delete($image->path);
 
-            $image = Image::where('imageable_id',$id)->delete();
+            $image->delete();
           }
-          $path = FileUploadService::upload($request['photo'], $table_name.'/'.$id);
+          $path = FileUploadService::upload($request['photo'], $table_name . '/' . $id);
           $photoData = [
-              'path' => $path,
-              'name' => $request['photo']->getClientOriginalName()
+            'path' => $path,
+            'name' => $request['photo']->getClientOriginalName()
           ];
 
           $item->images()->create($photoData);
+
+        }
+
+        if($className=="App\Models\Event"){
+          $item_config=self::update_config($item);
         }
 
         LogService::store($request->all(), Auth::id(), $table_name, 'update');
 
         return true;
       }
-    }
-    else{
+    } else {
 
       return false;
+    }
+  }
+  public function update_config($item){
+    // dd($item);
+    $event_config=EventConfig::where('event_id',$item->id)->get();
+    foreach($event_config as $conf){
+      $conf->visitors_quantity_limitation=$item->visitors_quantity_limitation;
+      $conf->price=$item->price;
+      $conf->save();
 
     }
-
   }
-
 }

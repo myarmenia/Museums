@@ -55,15 +55,15 @@
     {
       "name": "Հաղորդագրություններ",
       "icon": "menu-icon tf-icons bx bx-message",
-      "slug": "chat",
+      "slug": "chats",
       "roles": ["super_admin", "general_manager"],
       "url": "chats"
     },
     {
       "url": "product/list",
       "name": "Ապրանքներ",
-      "icon": "menu-icon tf-icons bx bx-museum",
-      "slug": "general-news",
+      "icon": "menu-icon tf-icons bx bx-purchase-tag",
+      "slug": "product_list",
       "roles": [
         "super_admin"
 
@@ -75,15 +75,15 @@
     {
       "name": "Նորություններ",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "general-news",
+      "slug": "news",
       "roles": ["general_manager","super_admin"],
       "url": "/news/news"
 
     },
     {
-      "name": "Բաններ",
+      "name": "Բանեռ",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "general-news",
+      "slug": "banner_list",
       "roles": ["super_admin"],
       "url": "banner/list"
     },
@@ -95,6 +95,32 @@
       "roles": ["super_admin"],
       "url": "logs"
     },
+    {
+      "url": "tickets/united",
+      "name": "Միասնական տոմս",
+      "icon": "menu-icon tf-icons bx bxs-coupon",
+      "slug": "tickets_united",
+      "roles": [
+        "super_admin",
+        "general_manager"
+      ]
+    },
+
+    {
+      "url": "reports/report",
+      "name": "Հաշվետվություն",
+      "icon": "menu-icon tf-icons bx bxs-report",
+      "slug": "reports",
+      "roles": [
+        "super_admin",
+        "general_manager",
+        "chief_accountant"
+      ]
+    },
+
+
+
+
 
     {
       "name": "Account Settings",

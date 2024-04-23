@@ -21,7 +21,7 @@
     {
       "name": "Թանգարան",
       "icon": "menu-icon tf-icons bx bx-museum",
-      "slug": "museum/create",
+      "slug": ["museum.edit", "create-museum"],
       "url": "museum/create",
       "roles": [
         "museum_admin",
@@ -29,9 +29,19 @@
       ]
     },
     {
+      "name": "Տոմսի հետ վերադարձ",
+      "icon": "menu-icon tf-icons bx bxs-backpack",
+      "slug": "return-ticket",
+      "url": "return-ticket",
+      "roles": [
+        "museum_admin",
+        "manager"
+      ]
+    },
+    {
       "name": "Հաղորդագրություններ",
       "icon": "menu-icon tf-icons bx bx-message",
-      "slug": "chat",
+      "slug": "chats",
       "roles": ["museum_admin", "content_manager", "manager"],
       "url": "chats"
     },
@@ -41,6 +51,26 @@
       "slug": "corporative",
       "roles": ["museum_admin", "manager"],
       "url": "corporative"
+    },
+    {
+      "name": "Դրամարկղ",
+      "icon": "menu-icon tf-icons bx bx-wallet",
+      "slug": "cashier",
+      "roles": ["museum_admin", "cashier"],
+      "submenu": [
+        {
+          "url": "/cashier/tickets",
+          "name": "Տոմսեր",
+          "slug": "cashier.tickets",
+          "target": ""
+        },
+        {
+          "url": "cashier/products",
+          "name": "Ապրանքներ",
+          "slug": "cashier.product",
+          "target": ""
+        }
+      ]
     },
     {
       "url": "/users",
@@ -56,7 +86,7 @@
       "url": "musuem_branches/list",
       "name": "Մասնաճյուղեր",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "general-news",
+      "slug": "branches-list",
       "roles": [
         "museum_admin",
         "content_manager"
@@ -66,8 +96,8 @@
     {
       "url": "product/list",
       "name": "Ապրանքներ",
-      "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "general-news",
+      "icon": "menu-icon tf-icons bx bx-purchase-tag",
+      "slug": "product_list",
       "roles": [
         "museum_admin",
         "content_manager"]
@@ -82,7 +112,7 @@
       "roles": [
         "museum_admin",
         "manager",
-        "cashier"
+        "content_manager"
       ]
     },
     {
@@ -99,11 +129,33 @@
     {
       "url": "events/list",
       "name": "Միջոցառումներ",
-      "icon": "menu-icon tf-icons bx bx-list-ul",
+      "icon": "menu-icon tf-icons bx bx-party",
       "slug": "event_list",
       "roles": [
         "museum_admin"
 
+      ]
+    },
+    {
+      "url": "tickets/show",
+      "name": "Տոմս",
+      "icon": "menu-icon tf-icons bx bxs-coupon",
+      "slug": "tickets_show",
+      "roles": [
+        "museum_admin",
+        "manager"
+      ]
+    },
+
+    {
+      "url": "museum/reports/report",
+      "name": "Հաշվետվություն",
+      "icon": "menu-icon tf-icons bx bxs-report",
+      "slug": "museum_reports",
+      "roles": [
+        "museum_admin",
+        "manager",
+        "accountant"
       ]
     }
 

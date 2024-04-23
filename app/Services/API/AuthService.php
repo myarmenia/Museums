@@ -101,19 +101,47 @@ class AuthService
             $getUserVerificate = VerifyUser::where('email', $credentials['email'])->first();
   
             if($getUserVerificate){
-                throw new \Exception(translateMessageApi('email_verified'), 401);
+                try {
+                   $this->resendVerify($credentials);
+
+                   return [
+                        'success' => false, 
+                        'message' => translateMessageApi('email_verified'),
+                        'is_verify' => false,
+                        'status' => 401
+                    ];
+                } catch (\Throwable $th) {
+                    throw new \Exception(translateMessageApi('something-went-wrong'), 500);
+                }
+ 
+                // throw new \Exception(translateMessageApi('email_verified'), 401);
             }
 
             if (!$token = JWTAuth::attempt($credentials)) {
-                throw new \Exception(translateMessageApi('user-email-or-password-not-found'), 401);
+                return [
+                    'success' => false, 
+                    'message' => translateMessageApi('user-email-or-password-not-found'),
+                    'status' => 401
+                ];
+                // throw new \Exception(translateMessageApi('user-email-or-password-not-found'), 401);
             }
 
             if(!auth()->user()->roles()->get()->where('name', 'visitor')->count()) {
-                throw new \Exception(translateMessageApi('wrong-role-for-login'), 401);
+                return [
+                    'success' => false, 
+                    'message' => translateMessageApi('wrong-role-for-login'),
+                    'status' => 401
+                ];
+                // throw new \Exception(translateMessageApi('wrong-role-for-login'), 401);
             }
 
             if (auth()->user()->status === 0) {
-                throw new \Exception(translateMessageApi('user-blocked'), 401);
+                return [
+                    'success' => false, 
+                    'message' => translateMessageApi('user-blocked'),
+                    'status' => 401
+                ];
+                // throw new \Exception(translateMessageApi('user-blocked'), 401);
             }
 
             auth()->user()->update([
@@ -121,11 +149,15 @@ class AuthService
                 'login_at' => now(),
             ]);
             
-            $authUser = auth()->user()->toArray();
+            $authUser = auth()->user();
+            $authUser['card_count'] = $authUser->carts()->get()->count(); 
+            $authUser = $authUser->toArray();
 
             return [
+                'success' => true,
                 'authUser' => $authUser,
-                'token' => $token
+                'access_token' => $token,
+                'status' => 200
             ];
         } catch (\Exception $e) {
             throw $e;
@@ -192,7 +224,15 @@ class AuthService
 
         $user = auth('api')->user()->update($data);
 
+        if($user){
+            $updatedUser = auth('api')->user();
+            $updatedUser['card_count'] = $updatedUser->carts()->get()->count(); 
+            return $updatedUser;
+        }
+
         return $user;
+
+        
     }
 
 }

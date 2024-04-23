@@ -6,12 +6,15 @@
 
 <link rel="stylesheet" href="{{ asset(mix('assets/vendor/fonts/boxicons.css')) }}" />
 
-<!-- Core CSS -->
-<link rel="stylesheet" href="{{ asset(mix('assets/vendor/css/core.css')) }}" />
-<link rel="stylesheet" href="{{ asset(mix('assets/vendor/css/theme-default.css')) }}" />
+@php
+    $style = session()->has('style') && session()->get('style') == 'dark' ? '-' . session()->get('style') : '';
+@endphp
+
+<link rel="stylesheet" href='{{ asset("assets/vendor/css/rtl/core$style.css")}}' id="theme"/>
+<link rel="stylesheet" href='{{ asset("assets/vendor/css/rtl/theme-default$style.css") }}' id="theme_default" />
+<link rel="stylesheet" href='{{ asset("assets/vendor/css/rtl/theme-bordered$style.css") }}' id="theme_bordered" />
 <link rel="stylesheet" href="{{ asset(mix('assets/css/demo.css')) }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
-
 <!-- Vendors CSS -->
 <link rel="stylesheet" href="{{ asset(mix('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')) }}" />
 

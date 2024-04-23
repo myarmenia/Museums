@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Banner\BannerStoreController;
 use App\Http\Controllers\Admin\Banner\BannerUpdateController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ChangeStatusController;
+use App\Http\Controllers\Admin\ChangeStyleController;
 use App\Http\Controllers\Admin\DeleteItemController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCalendarController;
 use App\Http\Controllers\Admin\EducationalPrograms\EducationalProgramCreateController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Admin\EducationalPrograms\GetCalendarDataController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\GetDayReservationsController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveStoreController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveUpdateController;
+use App\Http\Controllers\Admin\Events\EventConfigComponentController;
 use App\Http\Controllers\Admin\Events\EventConfigController;
 use App\Http\Controllers\Admin\Events\EventCreateController;
 use App\Http\Controllers\Admin\Events\EventEditController;
@@ -26,7 +28,15 @@ use App\Http\Controllers\Admin\Events\EventStoreController;
 use App\Http\Controllers\Admin\Events\EventUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
+use App\Http\Controllers\Admin\Reports\ExportExcelController;
+use App\Http\Controllers\Admin\Reports\ReportsForMuseumAdminController;
+use App\Http\Controllers\Admin\Reports\ReportsForSuperAdminController;
+use App\Http\Controllers\Admin\Tickets\GuideServiceController;
 use App\Http\Controllers\Admin\Tickets\ShowTicketsController;
+use App\Http\Controllers\Admin\Tickets\ShowUnitedTicketController;
+use App\Http\Controllers\Admin\Tickets\StandartTicketController;
+use App\Http\Controllers\Admin\Tickets\SubscriptionTicketController;
+use App\Http\Controllers\Admin\Tickets\UnitedTicketController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\News\NewsController;
 use App\Http\Controllers\Admin\Product\CreateController;
@@ -35,9 +45,18 @@ use App\Http\Controllers\Admin\Product\ProductEditController;
 use App\Http\Controllers\Admin\Product\ProductListController;
 use App\Http\Controllers\Admin\Product\ProductStoreController;
 use App\Http\Controllers\Admin\Product\ProductUpdateController;
+use App\Http\Controllers\Admin\cashier\CashierController;
+use App\Http\Controllers\cashier\BuyProduct;
+use App\Http\Controllers\cashier\BuyTicketController;
+use App\Http\Controllers\cashier\CorporativeTicket;
+use App\Http\Controllers\cashier\EducationalTicket;
+use App\Http\Controllers\cashier\EventTicket;
+use App\Http\Controllers\cashier\SubscriptionTicket;
 use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\Corporative\CorporativeSaleController;
 use App\Http\Controllers\museum\MuseumController;
+use App\Http\Controllers\NodeApiController;
+use App\Http\Controllers\return_ticket\ReturnTicketController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -89,7 +108,7 @@ Auth::routes(['register' => false]);
 
 
 // Route::post('/web/login-check', [AuthController::class, 'login'])->name('web-login-check');
-
+Route::get('/test-qr', [NodeApiController::class, 'test']);
 Route::group(['middleware' => ['auth']], function () {
   // Main Page Route
   Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
@@ -148,7 +167,9 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('change-status', [ChangeStatusController::class, 'change_status'])->name('change_status');
   Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class, 'index'])->name('delete_item');
   Route::get('logs', [LogController::class, 'index'])->name('logs');
-
+  Route::get('reports/{request_report_type}', [ReportsForSuperAdminController::class, 'index'])->name('reports');
+  Route::get('museum/reports/{request_report_type}', [ReportsForMuseumAdminController::class, 'index'])->name('museum_reports');
+  Route::get('export-report-excel', [ExportExcelController::class, "export"])->name('export_report_excel');
 
   Route::group(['prefix' => 'museum'], function () {
     Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin');
@@ -159,6 +180,13 @@ Route::group(['middleware' => ['auth']], function () {
       Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
     });
 
+  });
+
+  Route::group(['prefix' => 'return-ticket'], function () {
+    Route::group(['middleware' => ['role:museum_admin|manager']], function () {
+      Route::get('/', [ReturnTicketController::class, 'index'])->name('return-ticket');
+      Route::get('/check/{token}', [ReturnTicketController::class, 'checkTicket']);
+    });
   });
 
   // News
@@ -195,16 +223,38 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
   });
 
+  Route::group(['prefix' => 'cashier', 'middleware' => ['role:museum_admin|cashier', 'check_auth_have_museum']], function () {
+    Route::get('/tickets', [CashierController::class, 'index'])->name('cashier.tickets');
+    Route::post('/check-coupon', [CashierController::class, 'checkCoupon'])->name('cashier.check.coupon');
+    Route::post('/corporative-ticket', [CashierController::class, 'corporativeTicket'])->name('cashier.buy.corporative');
+    Route::get('/get-event-details/{id}', [CashierController::class, 'getEventDetails'])->name('cashier.eveent.details');
+    Route::get('/products', [CashierController::class, 'getMuseumProduct'])->name('cashier.product');
+    Route::post('/create-ticket', BuyTicketController::class)->name('cashier.add.ticket');
+    Route::post('/create-educational', EducationalTicket::class)->name('cashier.add.educational');
+    Route::post('/create-event', EventTicket::class)->name('cashier.add.event');
+    Route::post('/create-subscription', SubscriptionTicket::class)->name('cashier.add.subscription');
+    Route::post('/create-corporative', CorporativeTicket::class)->name('cashier.add.corporative');
+    Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
+
+
+    // Route::get('/create', [CashierController::class, 'create'])->name('cashier.add');
+
+  });
+
   Route::group(['prefix' => 'educational-programs'], function () {
-    Route::group(['middleware' => ['role:museum_admin|manager|content_manager']], function () {
-      Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
-      Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
-      Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
-      Route::group(['middleware' => ['model_access']], function () {
-        Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
-        Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
-      });
+    Route::group(['middleware' => ['role:museum_admin|manager|content_manager|cashier']], function () {
+        Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
     });
+    
+    Route::group(['middleware' => ['role:content_manager|museum_admin|manager']], function () {
+        Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
+        Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
+        Route::group(['middleware' => ['model_access']], function () {
+          Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
+          Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
+        });
+    });
+
     Route::group(['middleware' => ['role:museum_admin|manager|cashier']], function () {
       Route::get('calendar', EducationalProgramCalendarController::class)->name('educational_programs_calendar');
       Route::post('reserve-store', ReserveStoreController::class)->name('educational_programs_reserve_store');
@@ -214,8 +264,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     });
   });
-
-
 
   Route::group(['prefix' => 'banner'], function () {
     Route::get('/list', [BannerListController::class, 'index'])->name('banner_list');
@@ -231,21 +279,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('edit/{id}', EventEditController::class)->name('event_edit');
     Route::put('update/{id}', EventUpdateController::class)->name('event_update');
 
-    //   Route::get('config/component/{id}', function (Request $request) {
+      Route::get('config/component/{id}/{value}', [IncrementController::class,'increment']);
+      Route::post('event-config',[EventConfigController::class,'store'])->name('event_config_store');
+      Route::post('/event-config-update',[EventConfigController::class,'update'])->name('event_config_update');
+      // Route::post('/call-edit-component',EventConfigComponentController::class)->name('edit_component');
 
-    //     $id = request()->id;
-    //     $value = session(['my_variable' => 0]);
 
-    //     $value++;
 
-    //     $request->session()->put('my_variable', $value);
-    //     $value = $request->session()->get('my_variable', $value);
-
-    //         $count=session('my_variable');
-    //     return view('components.event-config',compact('id','count','value'));
-    // })->name('config.component');
-    Route::get('config/component/{id}/{value}', [IncrementController::class, 'increment']);
-    Route::post('event-config', EventConfigController::class)->name('event_config_store');
 
 
 
@@ -255,17 +295,35 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [CorporativeSaleController::class, 'index'])->name('corporative');
     Route::get('/create', [CorporativeSaleController::class, 'create'])->name('corporative.create');
     Route::post('/create', [CorporativeSaleController::class, 'addCorporative'])->name('corporative.add');
+    Route::get('/edit/{id}', [CorporativeSaleController::class, 'edit'])->name('corporative_edit');
+    Route::post('/edit/{id}', [CorporativeSaleController::class, 'update'])->name('corporative.edit');
+    Route::delete('/delete-file/{id}', [CorporativeSaleController::class, 'deleteFile']);
   });
+
 
   Route::group(['prefix' => 'tickets'], function () {
     Route::group(['middleware' => ['role:museum_admin|manager']], function () {
-      Route::get('show', ShowTicketsController::class)->name('tickets_show');
+        Route::get('show', ShowTicketsController::class)->name('tickets_show');
+            Route::group(['middleware' => ['model_access']], function () {
+            Route::post('ticket-standart', StandartTicketController::class)->name('ticket_standart_store');
+            Route::post('ticket-standart/{id}', StandartTicketController::class)->name('ticket_standart_update');
+            Route::post('ticket-subscription', SubscriptionTicketController::class)->name('ticket_subscription_store');
+            Route::post('ticket-subscription/{id}', SubscriptionTicketController::class)->name('ticket_subscription_update');
+            Route::post('guide-service', GuideServiceController::class)->name('guide_service_store');
+            Route::post('guide-service/{id}', GuideServiceController::class)->name('guide_service_update');
+        });
+    });
+    Route::group(['middleware' => ['role:super_admin|general_manager']], function () {
+        Route::get('united', ShowUnitedTicketController::class)->name('tickets_united');
+        Route::post('ticket-united', UnitedTicketController::class)->name('ticket_united_store');
+        Route::post('ticket-united/{id}', UnitedTicketController::class)->name('ticket_united_update');
     });
   });
 
+  Route::get('change-style/{type}', [ChangeStyleController::class, "change_style"])->name('change_style');
+  Route::get('test-email', [ChangeStyleController::class, "test_email"])->name('test_email');
+
 
 });
-
-
 
 Route::get('get-file', [FileUploadService::class, 'get_file'])->name('get-file');

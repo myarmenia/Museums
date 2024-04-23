@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CorporativeSale extends Model
 {
@@ -14,6 +15,7 @@ class CorporativeSale extends Model
         'name',
         'tin',
         'file_path',
+        'museum_id',
         'email',
         'contract_number',
         'tickets_count',
@@ -23,7 +25,10 @@ class CorporativeSale extends Model
         'ttl_at',
     ];
 
-    protected $table = 'corporative_sales'; 
+    protected $table = 'corporative_sales';
 
-
+    public function museum(): BelongsTo
+    {
+      return $this->belongsTo(Museum::class, 'museum_id');
+    }
 }

@@ -12,6 +12,8 @@ class Turnstile extends Authenticatable implements JWTSubject
 {
     use HasFactory;
     protected $table = 'turnstiles';
+
+
     protected $guarded = [];
 
     public function getJWTIdentifier()
@@ -28,4 +30,5 @@ class Turnstile extends Authenticatable implements JWTSubject
     {
       return [];
     }
+
 }

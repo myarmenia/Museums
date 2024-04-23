@@ -2,7 +2,7 @@
 
 
 @section('page-script')
-    <script src="{{ asset('assets/js/admin\project\project-upload-photo.js') }}"></script>
+    <script src="{{ asset('assets/js/admin\news\index.js') }}"></script>
 @endsection
 
 @section('page-style')

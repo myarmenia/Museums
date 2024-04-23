@@ -18,7 +18,8 @@ return new class extends Migration
 
             $table->unsignedBigInteger('purchased_item_id');
             $table->foreign('purchased_item_id')->references('id')->on('purchased_items')->onUpdate('cascade');
-
+            $table->integer('quantity');
+            $table->integer('total_price');
             $table->integer('price');
             $table->timestamps();
         });

@@ -1,11 +1,10 @@
 @extends('layouts/contentNavbarLayout')
 @section('page-script')
-    <script src="{{ asset('assets/js/change-status.js') }}"></script>
     <script src="{{ asset('assets/js/delete-item.js') }}"></script>
 @endsection
 
 @section('content')
-
+    @include('includes.alert')
     <h4 class="py-3 mb-4">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -22,15 +21,24 @@
                 <h5 class="card-header">Կորպորատիվի ցանկ</h5>
             </div>
 
-              <div>
+            <div>
                 <a href="{{ route('corporative.create') }}" class="btn btn-primary mx-4">Ստեղծել նոր կորպորատիվ </a>
-              </div>
+            </div>
 
         </div>
         <div class="card-body">
-
-
             <div class="table-responsive text-nowrap">
+                <form action="{{ route('corporative') }}" method="get" class="row g-3 mt-2" style="display: flex">
+                    <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
+                        <div class="col-2">
+                            <input type="text" class="form-control" id="" placeholder="ՀՎՀՀ" name="tin"
+                                value="{{ request()->input('tin') }}">
+                        </div>
+                        <div class="mb-3 row">
+                        </div>
+                        <button class="btn btn-primary col-2">Փնտրել</button>
+                    </div>
+                </form>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -44,61 +52,47 @@
                             <th>Մնացած տոմսեր</th>
                             <th>Գին</th>
                             <th>Ակտիվ է մինչև</th>
-                            <th>Ջնջել</th>
+                            <th>Փոփոխել</th>
                         </tr>
                     </thead>
                     <tbody>
-
-                        @foreach ($data as $key => $user)
+                        @foreach ($data as $key => $corporative)
                             <tr>
                                 <td>{{ ++$i }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->surname }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->phone }}</td>
-                                <td class="status">
-                                    @if ($user->status)
-                                        <span class="badge bg-label-success me-1">Ակտիվ</span>
+                                <td>{{ $corporative->name }}</td>
+                                <td>{{ $corporative->tin }}</td>
+                                <td>
+                                    @if ($corporative->file_path)
+                                        <a href="{{ route('get-file', ['path' => $corporative->file_path]) }}"
+                                            target="_blank">
+                                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M16 7C6 7 2 16 2 16C2 16 6 25 16 25C26 25 30 16 30 16C30 16 26 7 16 7Z"
+                                                    stroke="#49536E" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M16 21C18.7614 21 21 18.7614 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21Z"
+                                                    stroke="#49536E" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+                                        </a>
+                                    @endif
+                                </td>
+                                <td>{{ $corporative->email }}</td>
+                                <td>{{ $corporative->contract_number }}</td>
+                                <td>{{ $corporative->tickets_count }}</td>
+                                <td>{{ (int) $corporative->tickets_count - (int) $corporative->visitors_count }}</td>
+                                <td>{{ $corporative->price }}</td>
+                                <td>{{ $corporative->ttl_at }}</td>
+                                <td class="text-center">
+                                    @if($corporative->created_at->addHour() >= Carbon\Carbon::now())
+                                        <a  href="{{route('corporative_edit', $corporative->id)}}"><i
+                                            class="bx bx-edit-alt me-1"></i>
+                                        </a>
                                     @else
-                                        <span class="badge bg-label-danger me-1">Ապաակտիվ</span>
+                                        <i class="bx bx-edit-alt me-1"></i>
                                     @endif
-                                </td>
-
-                                <td>
-                                    @if (!empty($user->getRoleNames()))
-                                        @foreach ($user->getRoleNames() as $v)
-                                            <label>{{ __("roles.$v") }}</label>
-                                        @endforeach
-                                    @endif
-                                </td>
-
-                                <td>
-                                    <div class="dropdown action" data-id="{{ $user->id }}" data-tb-name="users">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-
-                                        <div class="dropdown-menu">
-
-                                            <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input change_status" type="checkbox"
-                                                        role="switch" data-field-name="status"
-                                                        {{ $user->status ? 'checked' : null }}>
-                                                </div>Կարգավիճակ
-                                            </a>
-                                            <a class="dropdown-item" href="{{route('users.edit', $user->id)}}"><i
-                                                class="bx bx-edit-alt me-1"></i>Փոփոխել
-                                            </a>
-                                            <button type="button" class="dropdown-item click_delete_item"
-                                                data-bs-toggle="modal" data-bs-target="#smallModal"><i
-                                                    class="bx bx-trash me-1"></i>
-                                                Ջնջել
-                                            </button>
-
-                                        </div>
-                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -110,8 +104,6 @@
             </div>
         </div>
     </div>
-
-
 @endsection
 
 <x-modal-delete></x-modal-delete>

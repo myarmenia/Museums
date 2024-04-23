@@ -14,6 +14,7 @@ class EducationalProgramsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+      
         return [
           "id" => $this->id,
           "name" => $this->translation(session("languages"))->name,

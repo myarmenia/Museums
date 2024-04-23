@@ -3,37 +3,65 @@
 namespace App\Http\Controllers\Admin\Events;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EventConfigRequest;
 use App\Models\Event;
 use App\Models\EventConfig;
 use App\Traits\Event\EventTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class EventConfigController extends Controller
 {
   use  EventTrait;
-    public function __invoke(Request $request){
-      // dd($request->event_config);
+    public function store(EventConfigRequest $request){
+// dd($request->all());
       $id='';
+      $config_arr=[];
       foreach($request->event_config as $key=>$value){
         $id=$key;
         $event=Event::find($id);
 
         foreach($value as $data){
-          // dd($event->start_date);
-          // dd($data['day']);
 
-          if(strtotime($event->start_date)>strtotime($data['day']) || strtotime($event->end_date)<strtotime($data['day'])){
-              return redirect()->back()->with(["errorMessage"=>"Մուտքագրեք միջոցառման վավեր օր"]);
-          }
 
           $data['event_id']=$key;
-
+          $data['visitors_quantity_limitation']=$event->visitors_quantity_limitation;
+          $data['price']=$event->price;
           $event_config=EventConfig::create($data);
+          array_push($config_arr,$event_config->id);
         }
 
       }
       $data = $this->getEvent($id);
-      // $data = Event::all();
-      return redirect()->route('event_edit', $id);
+      $configs= EventConfig::whereIn('id',$config_arr)->get();
+      return response()->json(["message"=> $configs]);
+
+    }
+    public function update(EventConfigRequest  $request){
+
+      $event_id='';
+      foreach($request->event_config as $key=>$value){
+        $event_id=$key;
+        $event=Event::find($event_id);
+        // dd($event);
+        foreach($value as $conf_id=>$data){
+
+          $data['event_id']=$key;
+          $data['visitors_quantity_limitation']=$event->visitors_quantity_limitation;
+          $data['price']=$event->price;
+
+          $event_conf=EventConfig::find($conf_id);
+          $event_conf->update($data);
+
+
+
+
+
+        }
+
+      }
+
+      return response()->json(["message"=>  'updated']);
+
     }
 }

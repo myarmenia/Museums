@@ -41,7 +41,7 @@ class MuseumRepository implements MuseumRepositoryInterface
 
     public function getApiMuseum()
     {
-        return Museum::with([
+        return Museum::has('standart_tickets')->with([
             'images', 'region',
             'translations' => function ($query) {
                 $query->where('lang', session('languages'))->get();
@@ -52,9 +52,26 @@ class MuseumRepository implements MuseumRepositoryInterface
     public function getMuseumByLangAndId($id)
     {
         return Museum::with([
-            'user', 'phones', 'images', 'links', 'region',
+            'user', 'phones', 'images', 'links', 'region', 'museum_branches.links',
             'translations' => function ($query) {
                 $query->where('lang', session('languages'))->get();
+            }
+        ])->find($id);
+    }
+
+    public function getMobileMuseumById($id)
+    {
+        return Museum::with([
+            'user', 'translations', 'phones', 'images', 'links', 
+            'region', 
+            'products' => function ($query) {
+                $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
+            },
+            'educational_programs' => function ($query) {
+                $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
+            },
+            'events' => function ($query) {
+                $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
             }
         ])->find($id);
     }

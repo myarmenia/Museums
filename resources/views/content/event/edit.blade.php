@@ -148,6 +148,7 @@
                     </label>
 
                     <div class="col-md-10">
+                        <div>Նկարի նախընտրելի չափսերն են 400X270</div>
                         <div class="d-flex flex-wrap align-items-start align-items-sm-center">
                             <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                                 <span class="d-none d-sm-block">Ներբեռնել նկար</span>
@@ -182,28 +183,30 @@
               </div>
 
         </form>
-        {{-- {{ dd($data->event_configs) }} --}}
-        @if (count($data->event_configs)>0)
-          @foreach ($data->event_configs as  $conf)
-          {{-- {{ dd($conf) }} --}}
-          <div class="card-body" >
-              <x-edit-event-config :id="$data->id" :count="$conf->id" :value="$conf" ></x-edit-event-config>
-            </div>
-          @endforeach
-        @endif
+
+
+
+              <x-edit-event-config :data="$data"  ></x-edit-event-config>
+
+
+
+
 
 
    {{-- ============Միջոցառման օրերի կարգավորումներ============= --}}
         <div class="m-3 row">
           <label for="email" class="col-form-label">Միջոցառման օրերի կարգավորումներ
-              <button id="add_event_config" data-id="{{ $data->id }}" class="btn btn-primary mx-3">+</button>
+              <button id="add_event_config" data-id="{{ $data->id }}" data-conf-count='0' class="btn btn-primary mx-3">+</button>
           </label>
         </div>
 
     </div>
     {{-- =============Միջոցառման օրերի կարգավորումներ sections=============== --}}
     <div class="card my-2"  id="config_div" style="display:none">
-      <form id="submit_event_config"  method="POST" action={{ route('event_config_store')}}>
+      <form
+      id="submit_event_config"
+       method="POST"
+      >
         @csrf
 
         <div class="card-body" id="event_config"></div>

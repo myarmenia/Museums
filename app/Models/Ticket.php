@@ -2,18 +2,22 @@
 
 namespace App\Models;
 
+use App\Traits\ModelFilterTrait;
+use App\Traits\Museum\Tickets\TicketTypeTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ticket extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, TicketTypeTrait, ModelFilterTrait;
 
     protected $guarded = [];
+    protected $boolFilterFields = ['status'];
 
-  public function user()
+  public function museum()
   {
-    return $this->belongsTo(User::class, 'museum_id');
+      return $this->belongsTo(Museum::class, 'museum_id');
   }
+
 }

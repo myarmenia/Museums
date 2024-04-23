@@ -15,7 +15,6 @@ function calendar() {
       },
       weekNumbers: true,
       dayMaxEvents: true, // allow "more" link when too many events
-      // events: '/api/demo-feeds/events.json',
       events: `/educational-programs/calendar-data`,
       eventTimeFormat: {
         hour: '2-digit', //2-digit, numeric
@@ -34,7 +33,6 @@ function calendar() {
 
   // ==================  Click calendar td and get reservations ============================
 
-  // $('table[role=presentation]').on('click', "td", function(){
   $('body').on('click', '.fc-daygrid-day', function () {
 
 
@@ -101,6 +99,7 @@ function calendar() {
           $that.find('.item').val('')
 
         }
+        console.log(555555)
         $that.find('.result_message').html(`<span class=" text-success">Գործողությունը կատարված է</span>`)
         calendar()
         setTimeout(function () {

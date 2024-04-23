@@ -20,13 +20,20 @@ class CorporativeSaleController extends BaseController
 
     public function index(Request $request)
     {
-        // if(haveMuseumAdmin() && $id = haveMuseum()) {
-        //     return redirect()->route('museum.edit', ['id' => (int) $id]);
-        // }elseif (haveMuseumAdmin() && !haveMuseum()) {
-        //     return redirect()->route('create-museum');
-        // };
+        $museumId = getAuthMuseumId();
+        if(!$museumId) {
+            session(['errorMessage' => 'Նախ ստեղծեք թանգարան']);
+            return redirect()->route('create-museum');
+        }
+
+        $query = CorporativeSale::query();
         
-        $data = CorporativeSale::orderBy('id', 'DESC')->paginate(5);
+        if (request()->filled('tin')) {
+            $tin = request()->tin;
+            $query->where('tin', $tin);
+        }
+    
+        $data = $query->where('museum_id', $museumId)->orderBy('id', 'DESC')->paginate(5);
 
         return view('content.corporative.index', compact('data'))
                ->with('i', ($request->input('page', 1) - 1) * 5);
@@ -39,10 +46,40 @@ class CorporativeSaleController extends BaseController
 
     public function addCorporative(CorporativeRequest $request)
     {
-        dd($request->all());
-        $id = $this->museumService->createMuseum($request->all());
+        $this->corporativeSaleService->createCorporative($request->all());
 
-        return redirect()->route('museum.edit', ['id' => $id]);
+        return redirect()->route('corporative');
+    }
 
+    public function edit(int $id)
+    {
+        $data = $this->corporativeSaleService->getEditItem($id);
+
+        if($data){
+            $havePermission = $this->corporativeSaleService->isMuseumCorporative($data);
+            if($havePermission) {
+                return view('content.corporative.edit', compact('data'));
+            }
+        }
+
+        return redirect()->route('corporative');
+    }
+
+    public function update(CorporativeRequest $request, $id)
+    {
+        $this->corporativeSaleService->updateCorporative($request->all(), $id);
+
+        return redirect()->route('corporative');
+    }
+
+    public function deleteFile(int $id)
+    {
+       $deletedFile =  $this->corporativeSaleService->deleteFile($id);
+
+       if($deletedFile) {
+           return response()->json(['result' => true]);
+       }
+       
+       return response()->json(['result' => false], 403);
     }
 }

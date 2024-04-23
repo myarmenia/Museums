@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\API\Museum\MuseumIdResource;
+use App\Http\Resources\API\Museum\MuseumMobileIdResource;
 use App\Http\Resources\API\Museum\MuseumsResource;
 use App\Services\API\MuseumService;
 use Illuminate\Http\Request;
@@ -37,5 +38,13 @@ class MuseumController extends Controller
         $museum = $this->museumService->getMuseumById($id);
 
         return new MuseumIdResource($museum);
+    }
+
+    public function getMobileMuseumById($id)
+    {
+        $museum = $this->museumService->getMobileMuseumById($id);
+
+        return new MuseumMobileIdResource($museum);
+
     }
 }

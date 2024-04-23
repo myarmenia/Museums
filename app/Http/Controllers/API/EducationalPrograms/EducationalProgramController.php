@@ -14,17 +14,9 @@ class EducationalProgramController extends BaseController
     public function __invoke($id)
     {
 
-      try {
+        $educational_program = $this->getSingleMuseumEducationalProgramsForAPI($id);
 
-          $educational_program = $this->getSingleMuseumEducationalProgramsForAPI($id);
-
-          return $this->sendResponse(EducationalProgramsResource::collection($educational_program), 'success');
-
-      } catch (\Throwable $th) {
-
-          return $this->sendError($th->errorInfo, 'error');
-      }
-
+        return $this->sendResponse(EducationalProgramsResource::collection($educational_program), 'success');
 
     }
 }
