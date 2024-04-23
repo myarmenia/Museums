@@ -149,6 +149,9 @@
             @foreach ($result as $data)
                 @php
                     $type = $data->purchased_item->type;
+                    $rand = rand(10000, 99999);
+                    $code = $data->id . $rand;
+
                 @endphp
                 <div class="ticket-card">
                     <div class="card-div" >
@@ -187,7 +190,7 @@
                                     <span>{{ $data->created_at != null && ($type == 'subsctiption' || $type == 'united') ? date('d-m-Y', strtotime($data->created_at)) : ''}} </span>
                                     <span>{{ $type == 'event' ? date('d-m-Y', strtotime($data->purchased_item->event_config->day)) : ''}}</span>
                                     <span>{{ $type == 'event' ? date('H:i', strtotime($data->purchased_item->event_config->start_tyme)) : ''}}</span>
-                                    <p style="margin-bottom: 0; font-size: 8px; color: #aaa">10047005</p>
+                                    <p style="margin-bottom: 0; font-size: 8px; color: #aaa">{{$code}}</p>
                                 </div>
                             </div>
                         </div>

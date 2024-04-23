@@ -44,6 +44,10 @@ return [
             'driver' => 'jwt',
             'provider' => 'users',
         ],
+        'turnstile' => [
+          'driver' => 'jwt',
+          'provider' => 'turnstiles',
+        ]
     ],
 
     /*
@@ -68,6 +72,11 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+
+        'turnstiles' => [
+          'driver' => 'eloquent',
+          'model' => App\Models\Turnstile::class,
+        ]
 
         // 'users' => [
         //     'driver' => 'database',

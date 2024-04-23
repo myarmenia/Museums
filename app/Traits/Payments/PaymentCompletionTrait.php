@@ -18,7 +18,7 @@ trait PaymentCompletionTrait
             $response = 'OK';
 
             // =============== update purchase status to 1 ======================
-            $payment->purchase->uptade(['status, 1']);
+            $payment->purchase->update(['status' => 1]);
             $this->updateItemQuantity($payment->purchase_id);
 
 
