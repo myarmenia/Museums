@@ -2,34 +2,23 @@
 
 namespace App\Http\Controllers\Turnstile;
 
+use App\Http\Controllers\API\BaseController;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Turnstile\LoginRequest;
+use App\Traits\Turnstile\Authorization;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
-class TurnstileLoginController extends Controller
+class TurnstileLoginController extends BaseController
 {
-  public function login(Request $request)
-  {
-    $credentials = $request->only('name', 'password');
-    try {
-      if (!$token = auth()->guard('turnstile')->attempt($credentials)) {
-        return response()->json(['success' => false, 'error' => 'Some Error Message'], 401);
-      }
-    } catch (JWTException $e) {
-      return response()->json(['success' => false, 'error' => 'Failed to login, please try again.'], 500);
-    }
-    return $this->respondWithToken($token);
-  }
+    use Authorization;
+    public function __invoke(LoginRequest $request)
+    {
 
-  protected function respondWithToken($token)
-  {
-    return response()->json([
-      'success' => true,
-      'data' => [
-        'access_token' => $token,
-        'token_type' => 'bearer',
-        'expires_in' => auth()->factory()->getTTL() * 60
-      ]
-    ], 200);
-  }
+      $data = $this->login($request->all());
+
+      return $data ? $this->sendResponse($data, 'success') : $this->sendError('error');
+    }
+
+
+
 }
