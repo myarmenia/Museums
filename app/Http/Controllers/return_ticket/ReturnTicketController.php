@@ -24,7 +24,14 @@ class ReturnTicketController extends Controller
 
     public function checkTicket($token)
     {
-            $token = $this->returnTicketService->checkToken($token);
+        $token = $this->returnTicketService->checkToken($token);
+
+        return response()->json($token);
+    }
+
+    public function removeTicket($token)
+    {
+        $token = $this->returnTicketService->removeToken($token);
 
         return response()->json($token);
     }
