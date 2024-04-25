@@ -46,6 +46,7 @@ use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\Email\SendFeedbackController;
 use App\Http\Controllers\Email\SendClientProjectDetController;
+use App\Http\Controllers\Turnstile\CheckQRController;
 use App\Http\Controllers\Turnstile\TurnstileLoginController;
 use App\Http\Controllers\Turnstile\TurnstileRegisterController;
 use Illuminate\Http\Request;
@@ -202,6 +203,12 @@ Route::group(['prefix' => 'turnstile'], function ($router) {
       Route::get('museums', MuseumListController::class);
       Route::post('login', TurnstileLoginController::class);
       Route::post('register', TurnstileRegisterController::class);
+
+      Route::group(['middleware' => ['turnstile']], function () {
+
+          Route::get('check-qr', CheckQRController::class);
+      });
+
     });
 
 });
