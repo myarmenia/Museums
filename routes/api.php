@@ -25,6 +25,7 @@ use App\Http\Controllers\API\SendOrderController;
 use App\Http\Controllers\API\TestController;
 use App\Http\Controllers\API\Tickets\SingleMuseumEventsTicketsController;
 use App\Http\Controllers\API\Tickets\TicketsController;
+use App\Http\Controllers\API\Tickets\UnitedTicketSettingsController;
 use App\Http\Controllers\API\User\DeleteUserController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
@@ -45,6 +46,9 @@ use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\Email\SendFeedbackController;
 use App\Http\Controllers\Email\SendClientProjectDetController;
+use App\Http\Controllers\Turnstile\CheckQRController;
+use App\Http\Controllers\Turnstile\TurnstileLoginController;
+use App\Http\Controllers\Turnstile\TurnstileRegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -152,7 +156,8 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     Route::group(['prefix' => 'tickets'], function ($router) {
       Route::get('', TicketsController::class);
-       Route::get('museum/events', SingleMuseumEventsTicketsController::class);
+      Route::get('museum/events', SingleMuseumEventsTicketsController::class);
+      Route::get('united', UnitedTicketSettingsController::class);
 
     });
 
@@ -168,17 +173,13 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::group(['prefix' => 'events'], function ($router) {
       Route::get('events-list', [EventsListController::class, 'index']);
       Route::get('single-event/{event_id}', SingleEventController::class)->name('singleEvent');
-
-
-     });
+    });
 
     Route::get('museum-list', MuseumListController::class);
     Route::get('region-list', RegionListController::class);
 
     Route::group(['prefix' => 'purchase'], function ($router) {
       Route::post('store', PurchaseStoreController::class)->name('purchase_store');
-
-
     });
 
     Route::get('payment-result', PaymentResultController::class);
@@ -186,9 +187,29 @@ Route::group(['middleware' => ['api']], function ($router) {
       Route::get('event-list', [HeaderEventController::class,'index']);
     });
 
+
   });
   Route::get('test-museum',[TestController::class, 'test']);
 
 
 
 });
+
+
+// ======================== turnstile Турникет ======================================
+Route::group(['prefix' => 'turnstile'], function ($router) {
+    Route::group(['middleware' => ['setlang']], function ($router) {
+
+      Route::get('museums', MuseumListController::class);
+      Route::post('login', TurnstileLoginController::class);
+      Route::post('register', TurnstileRegisterController::class);
+
+      Route::group(['middleware' => ['turnstile']], function () {
+
+          Route::get('check-qr', CheckQRController::class);
+      });
+
+    });
+
+});
+

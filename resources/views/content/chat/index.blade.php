@@ -39,7 +39,7 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $room->title}}</td>
                                 <td>{{ $room->email? $room->email : $room->visitor->email}}</td>
-                                <td>{{ $room->messages->count()? $room->messages->first()->text : ""}}</td>
+                                <td>{{ $room->messages->count()? $room->messages->last()->text : ""}}</td>
                                 <td>{{ $room->created_at}}</td>
                                 <td>
                                     <a class="dropdown-item d-flex" href="{{ route('room-message', $room->id)}}">

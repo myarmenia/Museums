@@ -23,14 +23,8 @@ class ChangeStyleController extends Controller
 
     public function test_email(Request $request)
     {
-        // $generate_qr = $this->getTokenQr($payment->purchase_id);
-        // if ($generate_qr) {
 
-          // $email = $payment->purchase->email;
-
-          // $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
-        // }
-    $generate_qr = $this->getTokenQr(1);
+        $generate_qr = $this->getTokenQr(1);
         $generate_qr = TicketQr::whereIn('id',[1,2])->get();
         // dd($generate_qr);
         $email = $request->email;

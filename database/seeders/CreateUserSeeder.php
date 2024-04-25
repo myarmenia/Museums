@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Turnstile;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -52,5 +53,15 @@ class CreateUserSeeder extends Seeder
         $roleVisitor = Role::updateOrCreate(['name' => 'visitor'], ['g_name' => 'web', 'interface' => 'web' ]);
 
         $userVisitor->assignRole([$roleVisitor->id]);
+
+
+        $userVisitor = Turnstile::updateOrCreate(
+          ['name' => 'anun'],
+          [
+            'name' => 'anun',
+
+            'password' => bcrypt('123456')
+          ]
+        );
     }
 }
