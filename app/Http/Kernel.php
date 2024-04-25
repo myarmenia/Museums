@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AcessInItem;
+use App\Http\Middleware\CheckTurnstileUser;
 use App\Http\Middleware\ModelAccess;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -94,6 +95,7 @@ class Kernel extends HttpKernel
     'check_auth_have_museum' => \App\Http\Middleware\CheckHaveMuseum::class,
     'model_access' => ModelAccess::class,
     'acess_in_item' => AcessInItem::class,
+    'turnstile' => CheckTurnstileUser::class
 
 
   ];

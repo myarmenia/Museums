@@ -70,7 +70,7 @@ trait PaymentRegister
             "callback_url" => url(''). '/api/payment-result',
             "contact_email" => $data['email'],
             'payments' => $payments
-            ])
+          ])
       ]);
 
 
