@@ -6,13 +6,14 @@ use DateTime;
 
 trait QR
 {
-  public function check($token)
+  public function check($data)
   {
 
-      $turnstile_user = auth('turnstile')->user();
+
+      // $turnstile_user = auth('turnstile')->user();
       $qr = TicketQr::where([
-        "token" => $token,
-        "museum_id" => $turnstile_user->museum_id,
+        "token" => $data['token'],
+        "museum_id" => $data['museum_id'],
         'status' => 'active'
       ])->first();
 
@@ -35,7 +36,7 @@ trait QR
 
           return $check_ticket_accesses ? true : false;
         }
-        
+
 
     }
 
