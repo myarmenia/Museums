@@ -17,6 +17,7 @@ class ProductsResource extends JsonResource
       return [
         'id' => $this->id,
         'product_id' => $this->item_relation_id,
+        'type' => $this->type,
         'name' => $this->product->translation(session("languages"))->name,
         'museum_name' => $this->museum->translation(session("languages"))->name,
         'image' => route('get-file', ['path' => $this->product->images[0]->path]),
