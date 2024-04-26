@@ -201,13 +201,12 @@ Route::group(['prefix' => 'turnstile'], function ($router) {
     Route::group(['middleware' => ['setlang']], function ($router) {
 
       Route::get('museums', MuseumListController::class);
-      Route::post('login', TurnstileLoginController::class);
-      Route::post('register', TurnstileRegisterController::class);
+      Route::post('check-qr', CheckQRController::class);
 
-      Route::group(['middleware' => ['turnstile']], function () {
-
-          Route::get('check-qr', CheckQRController::class);
-      });
+      // ================ for auth turnstile users =======================
+      // Route::post('login', TurnstileLoginController::class);
+      // Route::post('register', TurnstileRegisterController::class);
+      // Route::group(['middleware' => ['turnstile']], function () {});
 
     });
 
