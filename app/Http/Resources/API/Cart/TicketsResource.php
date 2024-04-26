@@ -25,6 +25,8 @@ class TicketsResource extends JsonResource
 
             ];
 
+        $data['museum_ids'] = $this->type == 'united' ? $this->cart_united_tickets->pluck('museum_id')->toArray() : '';
+
         if($this->type == 'event'){
             $data['date'] = date('m-d-Y', strtotime($this->event_config->day)) . ' ' . date('H:i', strtotime($this->event_config->start_time)) . '-' . date('H:i', strtotime($this->event_config->end_time));
         }
