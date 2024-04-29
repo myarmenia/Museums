@@ -27,6 +27,7 @@ use App\Http\Controllers\API\Tickets\SingleMuseumEventsTicketsController;
 use App\Http\Controllers\API\Tickets\TicketsController;
 use App\Http\Controllers\API\Tickets\UnitedTicketSettingsController;
 use App\Http\Controllers\API\User\DeleteUserController;
+use App\Http\Controllers\API\User\ListActiveQR;
 use App\Http\Controllers\API\User\OrderHistoryController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
@@ -82,6 +83,7 @@ Route::group(['middleware' => ['api']], function ($router) {
             Route::post('edit', [UserController::class, 'edit']);
             Route::post('editPassword', [UserController::class, 'editPassword']);
             Route::get('order-history', OrderHistoryController::class);
+            Route::get('list-active-qr', ListActiveQR::class);
 
         });
 
