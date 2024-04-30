@@ -70,7 +70,9 @@ class Event extends Model
 
   }
 
-
+  // public function notifiable(){
+  //     return $this->morphToMany('notifiable', 'notifiable_id');
+  // }
 
 
 }
