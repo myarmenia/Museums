@@ -17,8 +17,11 @@ trait SendQRToMail
       $list_qr_ids = $this->getList()->pluck('id')->toArray();
 
       if(in_array($id, $list_qr_ids)){
-          $qr = TicketQr::find($id);
-          // $email = $user->email;
+
+          // $qr = TicketQr::where('id', $id)->with('purchased_item')->first();
+      $qr = TicketQr::find($id);
+
+      // $email = $user->email;
           $email = 'naromisho87@gmail.com';
 
           $result = mail::send(new SendSingleQRToMail($qr, $email));

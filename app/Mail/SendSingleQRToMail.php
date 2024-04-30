@@ -56,6 +56,7 @@ class SendSingleQRToMail extends Mailable
      */
     public function attachments(): array
     {
+      // dd($this->data);
         $qr_images = [];
         $museum_name = '';
 
