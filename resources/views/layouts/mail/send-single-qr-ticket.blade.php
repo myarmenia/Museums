@@ -147,10 +147,10 @@
                     ՆԱԽԱՐԱՐՈՒԹՅՈՒՆ</p>
             </div>
             @php
-                    $result = [$result];
+                    // $result = [$result];
 
                 @endphp
-            {{-- {{dd($result)}} --}}
+            {{-- {{dd($result->purchased_item->united_museums())}} --}}
             {{-- @foreach ($result as $result) --}}
                 @php
                     $type = $result->purchased_item->type;
