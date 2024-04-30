@@ -13,26 +13,19 @@ trait SendQRToMail
     {
 
       $user = auth('api')->user();
-
       $list_qr_ids = $this->getList()->pluck('id')->toArray();
 
-      // if(in_array($id, $list_qr_ids)){
+      if(in_array($id, $list_qr_ids)){
 
-          // $qr = TicketQr::where('id', $id)->with('purchased_item')->first();
-      $qr = TicketQr::find($id);
-
-      // $email = $user->email;
+          $qr = TicketQr::find($id);
+          // $email = $user->email;
           $email = 'naromisho87@gmail.com';
 
-          $result = mail::send(new SendSingleQRToMail($qr, $email));
-          dd(11);
-      // }
-      // $purchase = $user->purchases;
-      // $payment = $purchase->pluck('payment')->where('status', '!=', null);
+          mail::send(new SendSingleQRToMail($qr, $email));
 
-      // $purchase_items = $payment->pluck('purchase')->pluck('purchased_items')->flatten();
+          return true;
+      }
 
-      // return $purchase_items;
 
     }
 }
