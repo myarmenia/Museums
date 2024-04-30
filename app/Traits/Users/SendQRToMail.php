@@ -19,7 +19,7 @@ trait SendQRToMail
       if(in_array($id, $list_qr_ids)){
           $qr = TicketQr::find($id);
           // $email = $user->email;
-          $email = 'narine@webex.am';
+          $email = 'naromisho87@gmail.com';
 
           $result = mail::send(new SendSingleQRToMail($qr, $email));
           dd(11);
