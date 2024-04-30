@@ -11,7 +11,7 @@ use Http;
 trait QrTokenCorporativeTrait
 {
 
-    public function getTokenQr(int $purchaseId, object $corporative, int $ticketCount): bool|array
+    public function getTokenQr(int $purchaseId, object $corporative, int $ticketCount): bool|object
     {
 
         $url = env('NODE_API_URL') . 'getQr';
@@ -48,7 +48,7 @@ trait QrTokenCorporativeTrait
                     'token' => $token,
                     'path' => $path,
                     'type' => $type,
-                    'price' => NULL,
+                    'price' => 0,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
@@ -56,7 +56,6 @@ trait QrTokenCorporativeTrait
                 $allData[] = $newData;
                 array_shift($data[$type]);
             }
-           
             $insert = TicketQr::insert($allData);
 
             if (!$insert) {
@@ -66,7 +65,7 @@ trait QrTokenCorporativeTrait
     
             DB::commit();
 
-            return TicketQr::where('purchased_item_id', $purchaseId)->get()->pluck('id')->toArray();
+            return TicketQr::orderBy('id', 'desc')->take($ticketCount)->get();
             
         } catch (\Exception $e) {
             DB::rollBack();

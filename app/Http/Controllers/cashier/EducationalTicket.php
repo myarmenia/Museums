@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-class EducationalTicket extends Controller
+class EducationalTicket extends CashierController
 {
     use PurchaseTrait;
     use QrTokenTrait;
@@ -19,53 +19,55 @@ class EducationalTicket extends Controller
     {
         try {
             DB::beginTransaction();
-        $requestData = $request->input('educational');
+            $requestData = $request->input('educational');
 
-        $data['purchase_type'] = 'offline';
-        $data['status'] = 1;
-        $data['items'] =  [];
+            $data['purchase_type'] = 'offline';
+            $data['status'] = 1;
+            $data['items'] = [];
 
-        $museumId = getAuthMuseumId();
+            $museumId = getAuthMuseumId();
 
-        $allEducational = EducationalProgram::where(['museum_id' => $museumId, 'status' => 1])->get();
+            $allEducational = EducationalProgram::where(['museum_id' => $museumId, 'status' => 1])->get();
 
-        foreach ($requestData as $key => $item) {
-            $educational = $allEducational->find($key);
+            foreach ($requestData as $key => $item) {
+                $educational = $allEducational->find($key);
 
-            if($educational && $item){
-                $data['items'][] = [
-                    "type"=> 'educational', 
-                    "id"=> $educational->id,            
-                    "quantity"=> (int) $item
-                ];
+                if ($educational && $item) {
+                    $data['items'][] = [
+                        "type" => 'educational',
+                        "id" => $educational->id,
+                        "quantity" => (int) $item
+                    ];
+                }
             }
-        }
 
-        $addTicketPurchase =  $this->purchase($data);
+            $addTicketPurchase = $this->purchase($data);
 
-        if($addTicketPurchase){
-            $addQr = $this->getTokenQr($addTicketPurchase->id);
+            if ($addTicketPurchase) {
+                $addQr = $this->getTokenQr($addTicketPurchase->id);
 
-            if ($addQr) {
-                session(['success' => 'Տոմսերը ավելացված է']);
+                if ($addQr) {
+                    $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
+                    session(['success' => 'Տոմսերը ավելացված է']);
 
-                DB::commit();
-                return redirect()->back();
+                    DB::commit();
+                    return redirect()->back()->with('pdfFile', $pdfPath);
+                }
             }
-        }
 
-        DB::rollBack();
+            DB::rollBack();
             return redirect()->back();
 
-    } catch (\Exception $e) {
-        session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
-        DB::rollBack();
-        dd($e->getMessage());
-        return redirect()->back();
-    } catch (\Error $e) {
-        session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
-        DB::rollBack();
-        dd($e->getMessage());
-        return redirect()->back();
+        } catch (\Exception $e) {
+            session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
+            DB::rollBack();
+            dd($e->getMessage());
+            return redirect()->back();
+        } catch (\Error $e) {
+            session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);
+            DB::rollBack();
+            dd($e->getMessage());
+            return redirect()->back();
+        }
     }
-    }}
+}

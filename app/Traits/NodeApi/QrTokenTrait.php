@@ -18,8 +18,7 @@ trait QrTokenTrait
 
         $unusedTypes = [
             'product',
-            'guide_am',
-            'guide_other',
+            'guide',
         ];
 
         try {
