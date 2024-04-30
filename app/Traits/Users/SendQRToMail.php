@@ -23,7 +23,11 @@ trait SendQRToMail
 
           mail::send(new SendSingleQRToMail($qr, $email));
 
-          return true;
+          echo true;
+
+      }
+      else{
+        echo false;
       }
 
 
