@@ -29,6 +29,7 @@ use App\Http\Controllers\API\Tickets\UnitedTicketSettingsController;
 use App\Http\Controllers\API\User\DeleteUserController;
 use App\Http\Controllers\API\User\ListActiveQR;
 use App\Http\Controllers\API\User\OrderHistoryController;
+use App\Http\Controllers\API\User\SendQRToMailController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
@@ -84,6 +85,7 @@ Route::group(['middleware' => ['api']], function ($router) {
             Route::post('editPassword', [UserController::class, 'editPassword']);
             Route::get('order-history', OrderHistoryController::class);
             Route::get('list-active-qr', ListActiveQR::class);
+            Route::get('send-qr-to-mail/{id}', SendQRToMailController::class);
 
         });
 
@@ -214,6 +216,7 @@ Route::group(['prefix' => 'turnstile'], function ($router) {
       // Route::group(['middleware' => ['turnstile']], function () {});
 
     });
+  // Route::get('send-qr-to-mail/{id}', SendQRToMailController::class);
 
 });
 
