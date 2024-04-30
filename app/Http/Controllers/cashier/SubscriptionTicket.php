@@ -9,7 +9,7 @@ use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class SubscriptionTicket extends Controller
+class SubscriptionTicket extends CashierController
 {
     use PurchaseTrait;
     use QrTokenTrait;
@@ -47,11 +47,11 @@ class SubscriptionTicket extends Controller
                     $addQr = $this->getTokenQr($addTicketPurchase->id);
 
                     if ($addQr) {
-
+                        $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
                         session(['success' => 'Տոմսերը ավելացված է']);
 
                         DB::commit();
-                        return redirect()->back();
+                        return redirect()->back()->with('pdfFile', $pdfPath);
                     }
                 }
             }

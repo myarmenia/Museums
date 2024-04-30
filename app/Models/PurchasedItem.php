@@ -6,6 +6,7 @@ use App\Traits\Reports\ReportFilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PurchasedItem extends Model
 {
@@ -53,5 +54,10 @@ class PurchasedItem extends Model
 
   }
 
+  public function ticketQr(): HasMany
+  {
+    return $this->hasMany(TicketQr::class);
+
+  }
 
 }

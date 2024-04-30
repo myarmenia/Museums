@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Mail;
 use Carbon\Carbon;
 
-class CorporativeTicket extends Controller
+class CorporativeTicket extends CashierController
 {
     use PurchaseTrait;
     use QrTokenCorporativeTrait;
@@ -44,6 +44,8 @@ class CorporativeTicket extends Controller
                 if ($purchaseId) {
                     $addQr = $this->getTokenQr($purchaseId, $corporativeSale, $ticketCount);
                     if ($addQr) {
+                        $pdfPath = $this->showReadyPdf($purchaseId, $addQr);
+
                         $corporativeSale->update(['visitors_count' => $corporativeSale->visitors_count + $ticketCount]);
                         CorporativeVisitorCount::create(['corporative_id' => $corporativeSale->id, 'count' => $ticketCount]);
                         $ownerEmail = $corporativeSale->email;
@@ -56,7 +58,7 @@ class CorporativeTicket extends Controller
                         session(['success' => 'Տոմսերը ավելացված է']);
 
                         DB::commit();
-                        return redirect()->back();
+                        return redirect()->back()->with('pdfFile', $pdfPath);
                     }
                 }
             }
