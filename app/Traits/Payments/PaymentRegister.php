@@ -88,7 +88,8 @@ trait PaymentRegister
                     'amount' => $data->amount,
                     'payment_result' => 'new',
                     'guard_name' => request()->request_name,
-                    'guard_type' => request()->request_type
+                    'guard_type' => request()->request_type,
+                    'redirect_url' => request()->redirect_url
 
                   ];
 
