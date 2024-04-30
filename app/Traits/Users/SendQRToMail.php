@@ -16,7 +16,7 @@ trait SendQRToMail
 
       $list_qr_ids = $this->getList()->pluck('id')->toArray();
 
-      if(in_array($id, $list_qr_ids)){
+      // if(in_array($id, $list_qr_ids)){
 
           // $qr = TicketQr::where('id', $id)->with('purchased_item')->first();
       $qr = TicketQr::find($id);
@@ -26,7 +26,7 @@ trait SendQRToMail
 
           $result = mail::send(new SendSingleQRToMail($qr, $email));
           dd(11);
-      }
+      // }
       // $purchase = $user->purchases;
       // $payment = $purchase->pluck('payment')->where('status', '!=', null);
 
