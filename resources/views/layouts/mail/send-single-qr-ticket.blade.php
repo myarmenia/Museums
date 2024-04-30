@@ -146,12 +146,16 @@
                 <p style="margin: 12px auto; font-weight: 600; text-align: center; width: 60%">ՀԱՅԱՍՏԱՆԻ ՀԱՆՐԱՊԵՏՈՒԹՅԱՆ ԿՐԹՈՒԹՅԱՆ, ԳԻՏՈՒԹՅԱՆ, ՄՇԱԿՈՒՅԹԻ ԵՎ ՍՊՈՐՏԻ
                     ՆԱԽԱՐԱՐՈՒԹՅՈՒՆ</p>
             </div>
+            @php
+                    // $result = [$result];
 
-            @foreach ($result as $data)
+                @endphp
+            {{-- {{dd($result->purchased_item->united_museums())}} --}}
+            {{-- @foreach ($result as $result) --}}
                 @php
-                    $type = $data->purchased_item->type;
+                    $type = $result->purchased_item->type;
                     $rand = rand(10000, 99999);
-                    $code = $data->id . $rand;
+                    $code = $result->id . $rand;
 
                 @endphp
                 <div class="ticket-card">
@@ -163,7 +167,7 @@
                             </div>
                             @if ($type == 'united')
                                   @php
-                                      $united_museums = $data->purchased_item->united_museums();
+                                      $united_museums = $result->purchased_item->united_museums();
                                   @endphp
                                   @if (count($united_museums) > 0)
                                       @foreach ($united_museums as $museum)
@@ -173,10 +177,10 @@
                             @else
                                 @foreach (languages() as $lng)
                                     <div style="font-size: 12px; ine-height: 13.6px; margin-top: 6px; margin-left: 6px;">
-                                        <p style="font-weight: 600; margin-bottom: 0">{{$data->museum->translation($lng)->name}}</p>
+                                        <p style="font-weight: 600; margin-bottom: 0">{{$result->museum->translation($lng)->name}}</p>
                                         <span  style="font-size: 10px">
                                             <img src="{{ $message->embed('assets/img/icons/address.png') }}" >
-                                            {{$data->museum->translation($lng)->address}}
+                                            {{$result->museum->translation($lng)->address}}
                                         </span>
                                     </div>
                                 @endforeach
@@ -184,13 +188,13 @@
 
                             <div id="price_cont">
                                 <div style="width: 50%">
-                                  <span style="font-weight: 600">{{$data->price}} </span>
+                                  <span style="font-weight: 600">{{$result->price}} </span>
                                   <span >AMD</span>
                                 </div>
                                 <div style="width: 50%; text-align: end; align-content: content">
-                                    <span>{{ $data->created_at != null && ($type == 'subsctiption' || $type == 'united') ? date('d-m-Y', strtotime($data->created_at)) : ''}} </span>
-                                    <span>{{ $type == 'event' ? date('d-m-Y', strtotime($data->purchased_item->event_config->day)) : ''}}</span>
-                                    <span>{{ $type == 'event' ? date('H:i', strtotime($data->purchased_item->event_config->start_tyme)) : ''}}</span>
+                                    <span>{{ $result->created_at != null && ($type == 'subsctiption' || $type == 'united') ? date('d-m-Y', strtotime($result->created_at)) : ''}} </span>
+                                    <span>{{ $type == 'event' ? date('d-m-Y', strtotime($result->purchased_item->event_config->day)) : ''}}</span>
+                                    <span>{{ $type == 'event' ? date('H:i', strtotime($result->purchased_item->event_config->start_tyme)) : ''}}</span>
                                     <p style="margin-bottom: 0; font-size: 8px; color: #aaa">{{$code}}</p>
                                 </div>
                             </div>
@@ -199,7 +203,7 @@
 
                             <div id="qr_img_cont" >
                                 <div id="qr_img" class="{{ $type == 'united' ? 'qr_responsive' : ''}}">
-                                  <img style="width: 100%" src="{{$message->embed(Storage::disk('local')->path($data->path))}}" alt="qr" />
+                                  <img style="width: 100%" src="{{$message->embed(Storage::disk('local')->path($result->path))}}" alt="qr" />
                                 </div>
                             </div>
                         </div>
@@ -207,7 +211,7 @@
                     </div>
                 </div>
 
-            @endforeach
+            {{-- @endforeach --}}
 
         </section>
       </div>

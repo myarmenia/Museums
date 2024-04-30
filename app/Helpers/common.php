@@ -345,6 +345,7 @@ if (!function_exists('ticketColors')) {
         'united' => 'linear-gradient(to bottom right, #9c78b1, #16acea7d)',
         'subscription' => '#16ACEA',
         'event' => '#9C78B1'
+
       ];
   }
 }

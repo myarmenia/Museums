@@ -27,6 +27,9 @@ use App\Http\Controllers\API\Tickets\SingleMuseumEventsTicketsController;
 use App\Http\Controllers\API\Tickets\TicketsController;
 use App\Http\Controllers\API\Tickets\UnitedTicketSettingsController;
 use App\Http\Controllers\API\User\DeleteUserController;
+use App\Http\Controllers\API\User\ListActiveQR;
+use App\Http\Controllers\API\User\OrderHistoryController;
+use App\Http\Controllers\API\User\SendQRToMailController;
 use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
@@ -46,6 +49,9 @@ use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\Email\SendFeedbackController;
 use App\Http\Controllers\Email\SendClientProjectDetController;
+use App\Http\Controllers\Turnstile\CheckQRController;
+use App\Http\Controllers\Turnstile\TurnstileLoginController;
+use App\Http\Controllers\Turnstile\TurnstileRegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +83,10 @@ Route::group(['middleware' => ['api']], function ($router) {
         Route::group(['prefix' => 'user'], function ($router) {
             Route::post('edit', [UserController::class, 'edit']);
             Route::post('editPassword', [UserController::class, 'editPassword']);
+            Route::get('order-history', OrderHistoryController::class);
+            Route::get('list-active-qr', ListActiveQR::class);
+            Route::get('send-qr-to-mail/{id}', SendQRToMailController::class);
+
         });
 
         Route::group(['prefix' => 'cart'], function ($router) {
@@ -191,3 +201,22 @@ Route::group(['middleware' => ['api']], function ($router) {
 
 
 });
+
+
+// ======================== turnstile Турникет ======================================
+Route::group(['prefix' => 'turnstile'], function ($router) {
+    Route::group(['middleware' => ['setlang']], function ($router) {
+
+      Route::get('museums', MuseumListController::class);
+      Route::post('check-qr', CheckQRController::class);
+
+      // ================ for auth turnstile users =======================
+      // Route::post('login', TurnstileLoginController::class);
+      // Route::post('register', TurnstileRegisterController::class);
+      // Route::group(['middleware' => ['turnstile']], function () {});
+
+    });
+  // Route::get('send-qr-to-mail/{id}', SendQRToMailController::class);
+
+});
+

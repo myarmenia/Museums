@@ -11,10 +11,12 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class Turnstile extends Authenticatable implements JWTSubject
 {
     use HasFactory;
+    protected $table = 'turnstiles';
 
     protected $guarded = [];
+    protected $hidden = ['password'];
 
-    public function getJWTIdentifier()
+  public function getJWTIdentifier()
     {
       return $this->getKey();
     }

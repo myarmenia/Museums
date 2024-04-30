@@ -23,7 +23,7 @@ class ChangeStyleController extends Controller
 
     public function test_email(Request $request)
     {
-        
+
         $generate_qr = $this->getTokenQr(1);
         $generate_qr = TicketQr::whereIn('id',[1,2])->get();
         // dd($generate_qr);

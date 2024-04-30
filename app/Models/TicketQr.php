@@ -32,10 +32,22 @@ class TicketQr extends Model
     return $this->belongsTo(PurchasedItem::class, "purchased_item_id");
   }
 
+  public function event_config()
+  {
+    return $this->belongsTo(EventConfig::class, 'item_relation_id');
+  }
+
+  public function corporative()
+  {
+    return $this->belongsTo(CorporativeSale::class, 'item_relation_id');
+  }
+
   //add status constants
   const STATUS_ACTIVE = 'active';
   const STATUS_EXPIRED = 'expired';
   const STATUS_USED = 'used';
   const STATUS_RETURNED = 'returned';
+
+
 
 }

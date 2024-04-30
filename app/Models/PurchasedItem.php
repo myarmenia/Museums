@@ -35,9 +35,7 @@ class PurchasedItem extends Model
 
   public function event_config()
   {
-
       return $this->belongsTo(EventConfig::class, 'item_relation_id');
-
   }
   public function standart_ticket()
   {
