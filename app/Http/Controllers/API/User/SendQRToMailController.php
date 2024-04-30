@@ -12,8 +12,8 @@ class SendQRToMailController extends Controller
     use SendQRToMail, ListActiveQR;
     public function __invoke(Request $request)
     {
-     
+
       $list = $this->sendQR($request->id);
-      // return true;
+      
     }
 }
