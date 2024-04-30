@@ -8,6 +8,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
+
 
 class SendSingleQRToMail extends Mailable
 {
@@ -43,7 +45,7 @@ class SendSingleQRToMail extends Mailable
     public function content(): Content
     {
       return new Content(
-        view: 'layouts.mail.send-qr-ticket',
+        view: 'layouts.mail.send-single-qr-ticket',
       );
     }
 
@@ -52,54 +54,52 @@ class SendSingleQRToMail extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-  // public function attachments(): array
-  // {
-  //   $qr_images = [];
-  //   foreach ($this->data as $key => $item) {
-  //     $type = $item->purchased_item->type;
-  //     $museum_name = '';
+    public function attachments(): array
+    {
+        $qr_images = [];
+        $museum_name = '';
 
-  //     if ($type == 'united') {
+        if ($this->data->type == 'united') {
 
-  //       $united_museums = $item->purchased_item->purchase_united_tickets->pluck("museum.translationsForAdmin.name");
+          $united_museums = $this->data->purchased_item->purchase_united_tickets->pluck("museum.translationsForAdmin.name");
 
-  //       if (count($united_museums) > 0) {
-  //         foreach ($united_museums as $name) {
-  //           $museum_name .= $name . ", ";
-  //         }
-  //       }
+          if (count($united_museums) > 0) {
+            foreach ($united_museums as $name) {
+              $museum_name .= $name . ", ";
+            }
+          }
 
-  //       $museum_name = substr($museum_name, 0, -2);
-  //       $qr_images[++$key . ' - ' . $museum_name] = Storage::disk('local')->path($item->path);
+          $museum_name = substr($museum_name, 0, -2);
+          $qr_images[$museum_name] = Storage::disk('local')->path($this->data->path);
 
-  //     } else {
+        } else {
 
-  //       $museum_name = $item->museum->translation('en')->name;
-  //       $qr_images[++$key . ' - ' . $museum_name] = Storage::disk('local')->path($item->path);
-  //     }
-
-  //   }
-
-  //   return $qr_images;
-
-  // }
-
-  // public function build()
-  // {
+          $museum_name = $this->data->museum->translation('en')->name;
+          $qr_images[$museum_name] = Storage::disk('local')->path($this->data->path);
+        }
 
 
-  //   $mail = $this->with([
-  //     'result' => $this->data,
-  //   ])->to($this->email);
+
+      return $qr_images;
+
+    }
+
+    public function build()
+    {
 
 
-  //   foreach ($this->attachments() as $name => $path) {
-  //     $mail->attach($path, [
-  //       'as' => $name,
-  //     ]);
-  //   }
+      $mail = $this->with([
+        'result' => $this->data,
+      ])->to($this->email);
 
-  //   return $mail;
 
-  // }
+      foreach ($this->attachments() as $name => $path) {
+        $mail->attach($path, [
+          'as' => $name,
+        ]);
+      }
+
+      return $mail;
+
+    }
 }

@@ -146,7 +146,11 @@
                 <p style="margin: 12px auto; font-weight: 600; text-align: center; width: 60%">ՀԱՅԱՍՏԱՆԻ ՀԱՆՐԱՊԵՏՈՒԹՅԱՆ ԿՐԹՈՒԹՅԱՆ, ԳԻՏՈՒԹՅԱՆ, ՄՇԱԿՈՒՅԹԻ ԵՎ ՍՊՈՐՏԻ
                     ՆԱԽԱՐԱՐՈՒԹՅՈՒՆ</p>
             </div>
+            @php
+                    $result = [$result];
 
+                @endphp
+            {{-- {{dd($result)}} --}}
             @foreach ($result as $data)
                 @php
                     $type = $data->purchased_item->type;

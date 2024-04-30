@@ -2,6 +2,7 @@
 namespace App\Traits\Users;
 
 use App\Mail\SendQRTiketsToUsersEmail;
+use App\Mail\SendSingleQRToMail;
 use App\Models\TicketQr;
 use App\Models\User;
 use Mail;
@@ -18,9 +19,9 @@ trait SendQRToMail
       if(in_array($id, $list_qr_ids)){
           $qr = TicketQr::find($id);
           // $email = $user->email;
-      $email = 'narine@webex.am';
+          $email = 'narine@webex.am';
 
-          $result = mail::send(new SendQRTiketsToUsersEmail($qr, $email));
+          $result = mail::send(new SendSingleQRToMail($qr, $email));
           dd(11);
       }
       // $purchase = $user->purchases;

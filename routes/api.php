@@ -216,6 +216,7 @@ Route::group(['prefix' => 'turnstile'], function ($router) {
       // Route::group(['middleware' => ['turnstile']], function () {});
 
     });
+  // Route::get('send-qr-to-mail/{id}', SendQRToMailController::class);
 
 });
 
