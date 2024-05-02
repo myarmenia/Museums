@@ -55,7 +55,7 @@ class EventNotification extends Notification
       // dd($notifiable);
       return  [
             'event'=> $this->event_obj
-           
+
         ];
 
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\EditRequest;
 use App\Services\API\UserService;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -17,7 +18,7 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function edit(EditRequest $request)
+    public function edit(Request $request)
     {
         $user = $this->userService->edit($request->all());
 

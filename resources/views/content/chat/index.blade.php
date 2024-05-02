@@ -38,7 +38,7 @@
                             <tr class="{{$room->read ? 'table-default': 'table-primary'}}">
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $room->title}}</td>
-                                <td>{{ $room->email? $room->email : $room->visitor->email}}</td>
+                                <td>{{ $room->email ?? $room->visitor->email ?? ''}}</td>
                                 <td>{{ $room->messages->count()? $room->messages->last()->text : ""}}</td>
                                 <td>{{ $room->created_at}}</td>
                                 <td>

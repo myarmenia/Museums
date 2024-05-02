@@ -370,10 +370,12 @@ if (!function_exists('getTranslateTicketTitl')) {
       $titles = [
         'standart' => 'Ստանդարտ',
         'discount' => 'Զեղչված',
+        'educational' => 'Կրթական',
         'free' => 'Անվճար',
         'united' => 'Միասնական',
         'subscription' => 'Աբոնեմենտ',
-        'event' => 'Միջոցառում'
+        'event' => 'Միջոցառում',
+        'corporative' => 'Կորպորատիվ',
       ];
 
       //check have $title in $titles

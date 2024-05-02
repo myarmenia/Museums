@@ -12,12 +12,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class Event extends Model
 {
 
 
-    use HasFactory, SoftDeletes, FilterTrait;
+    use HasFactory, SoftDeletes, Notifiable, FilterTrait;
 
 
     protected $guarded=[];
@@ -69,7 +71,6 @@ class Event extends Model
 
 
   }
-
 
 
 

@@ -8,6 +8,11 @@ $(function () {
       }
     });
 
+  if($('#pdf-path').val()){
+    let path = $('#pdf-path').val();
+    window.open(path, '_blank')
+  }
+
   $('#standart').on('input', function () {
     let ticketCount = $('#standart').val();
     if (ticketCount > 0) {

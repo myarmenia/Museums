@@ -15,6 +15,7 @@
     <h4 class="py-3 mb-4">
         <span class="text-muted fw-light">Դրամարկղ /</span> Տոմսերի վաճառք
     </h4>
+    <input type="hidden" id="pdf-path" value="{{ session('pdfFile') }}">
     <div class="card">
 
         <div class="d-flex justify-content-between align-items-center">
@@ -269,7 +270,7 @@
                                 <input type="text" class="form-control" id="corporative-coupon-input"
                                     placeholder="Գրեք կուպոնը" name="corporative-ticket">
                                 <button type="button" id = "corporative-coupon"
-                                    class="btn btn-primary ms-2">ստուգել</button>
+                                    class="btn btn-primary ms-2">Ստուգել</button>
                             </div>
                         </div>
                         <div id='corporative-coupon-not-found' class="mt-3 d-none"></div>

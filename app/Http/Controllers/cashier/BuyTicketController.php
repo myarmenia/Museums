@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\cashier;
 
-use App\Http\Controllers\Controller;
+use App\Models\GuideService;
 use App\Models\Ticket;
 use App\Traits\NodeApi\QrTokenTrait;
 use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class BuyTicketController extends Controller
+class BuyTicketController extends CashierController
 {
     use PurchaseTrait;
     use QrTokenTrait;
@@ -35,13 +35,22 @@ class BuyTicketController extends Controller
 
             $ticketId = $ticket->id;
 
+            $guidId = GuideService::where('museum_id', $museumId)->first()->id;
+
             foreach ($requestData as $key => $item) {
                 if ($item) {
-                    $data['items'][] = [
+                    $newItem = [
                         "type" => $key,
-                        "id" => $ticketId,
-                        "quantity" => (int) $item
+                        "quantity" => (int) $item,
                     ];
+                
+                    if ($key === 'guide_other' || $key === 'guide_am') {
+                        $newItem["id"] = $guidId;
+                    } else {
+                        $newItem["id"] = $ticketId;
+                    }
+
+                    $data['items'][] = $newItem;
                 }
             }
 
@@ -51,10 +60,12 @@ class BuyTicketController extends Controller
                 $addQr = $this->getTokenQr($addTicketPurchase->id);
 
                 if ($addQr) {
-                    session(['success' => 'Տոմսերը ավելացված է']);
+                    $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
 
+                    session(['success' => 'Տոմսերը ավելացված է']);
+                   
                     DB::commit();
-                    return redirect()->back();
+                    return redirect()->back()->with('pdfFile', $pdfPath);
                 }
             }
             DB::rollBack();

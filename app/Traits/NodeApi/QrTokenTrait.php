@@ -5,6 +5,7 @@ namespace App\Traits\NodeApi;
 
 use App\Models\PurchasedItem;
 use App\Models\TicketQr;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Http;
 
@@ -18,8 +19,7 @@ trait QrTokenTrait
 
         $unusedTypes = [
             'product',
-            'guide_am',
-            'guide_other',
+            'guide',
         ];
 
         try {
@@ -47,6 +47,7 @@ trait QrTokenTrait
                         'purchased_item_id' => $item->id,
                         'item_relation_id' => $item->item_relation_id,
                         'token' => $token,
+                        'ticket_token' => Carbon::now()->secondsSinceMidnight().rand(1000, 9999),
                         'path' => $path,
                         'type' => $type,
                         'price' => $priceOneTicket,
