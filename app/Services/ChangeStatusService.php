@@ -30,6 +30,10 @@ class ChangeStatusService
             $instance->get($request->id);
 
           }
+          else{
+              $event->notifications()->delete();
+
+          }
         }
 
       LogService::store($data, Auth::id(), $request->tb_name, "change_status");

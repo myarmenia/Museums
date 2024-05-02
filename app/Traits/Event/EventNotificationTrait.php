@@ -11,7 +11,7 @@ use stdClass;
 trait EventNotificationTrait{
   public function sendEvent($id) {
     $event = Event::where('id',$id)->first();
- 
+
     $visitors = User::whereHas('roles', function ($query) {
       $query->where('name', 'visitor')->where('status',1);
   })->get();
@@ -24,13 +24,9 @@ trait EventNotificationTrait{
   $event_obj->start_date = $event->start_date;
   $event_obj->end_date = $event->end_date;
   $event_obj->link = route('singleEvent',$id);
-//  dd($event_obj);
 
-    foreach($visitors as $visitor){
 
-      $visitor->notify(new EventNotification($visitor->id,$event_obj));
-      $notification = DB::table('notifications')->where('notifiable_id', $visitor->id)->orderBy('created_at','desc')->get();
-    }
+      $event->notify(new EventNotification($event->id, $event_obj));
 
 
   }
