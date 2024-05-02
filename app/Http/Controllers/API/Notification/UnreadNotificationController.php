@@ -5,16 +5,16 @@ namespace App\Http\Controllers\API\Notification;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Notification\NotificationResource;
+use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UnreadNotificationController extends BaseController
 {
     public function __invoke(){
-      $user = auth('api')->user();
-      $notification = $user->unreadNotifications;
-      $unread_notification_count = $user->unreadNotifications->count();
 
+        $notifications = DB::table('notifications')->get();
 
-      return $this->sendResponse(NotificationResource::collection($notification),'success',['unread_notification_count'=>$unread_notification_count]);
+        return $this->sendResponse(NotificationResource::collection($notifications), 'success', ['unread_notification_count' => $notifications->count()]);
     }
 }
