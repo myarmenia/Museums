@@ -5,6 +5,7 @@ namespace App\Traits\NodeApi;
 
 use App\Models\PurchasedItem;
 use App\Models\TicketQr;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Http;
 
@@ -48,6 +49,7 @@ trait QrTokenCorporativeTrait
                     'token' => $token,
                     'path' => $path,
                     'type' => $type,
+                    'ticket_token' => Carbon::now()->secondsSinceMidnight().rand(1000, 9999),
                     'price' => 0,
                     'created_at' => now(),
                     'updated_at' => now(),

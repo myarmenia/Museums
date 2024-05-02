@@ -82,7 +82,7 @@ class CashierController extends Controller
             }
 
             $data['data'][] = [
-                'token' => $qr['id'].mt_rand(10000, 99999),
+                'ticket_token' => $qr['ticket_token'],
                 'photo' => public_path(Storage::url($qr['path'])),
                 'description_educational_programming' => $itemDescriptionName? trim($itemDescriptionName)  : null,
                 'type' => $qr['type'],

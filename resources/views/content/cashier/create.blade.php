@@ -270,7 +270,7 @@
                                 <input type="text" class="form-control" id="corporative-coupon-input"
                                     placeholder="Գրեք կուպոնը" name="corporative-ticket">
                                 <button type="button" id = "corporative-coupon"
-                                    class="btn btn-primary ms-2">ստուգել</button>
+                                    class="btn btn-primary ms-2">Ստուգել</button>
                             </div>
                         </div>
                         <div id='corporative-coupon-not-found' class="mt-3 d-none"></div>
