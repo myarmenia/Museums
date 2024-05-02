@@ -27,7 +27,8 @@ class DeleteItemService
 
           $file_path = '';
           $item_db = $item->first();
-// dd($item->notifiable);
+
+
           if(isset($item_db->images)){
             Storage::disk('public')->deleteDirectory("$tb_name/$id");
 
@@ -48,6 +49,9 @@ class DeleteItemService
                 Storage::delete($file_path);
           }
 
+          if($tb_name == 'events'){
+              $item_db->notifications()->delete();
+          }
 
           $delete = $item ? $item->delete() : false;
 
