@@ -15,7 +15,7 @@
         <h2 class="text-muted fw-light pb-3" style="color:red">Տվյալ նամակագրություն ջնջված է</հթ>
     @endif
     <h4 class="py-3 mb-4 d-flex">
-        <span class="text-muted fw-light">Նամակագրություն {{ $data->email ? $data->email : $data->visitor->email }} -ի
+        <span class="text-muted fw-light">Նամակագրություն {{ $room->email ?? $room->visitor->email ?? '' }} -ի
             հետ
         </span>
     </h4>

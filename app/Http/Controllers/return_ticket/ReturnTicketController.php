@@ -3,11 +3,7 @@
 namespace App\Http\Controllers\return_ticket;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ReturnTicketRequest;
-use App\Models\TicketQr;
 use App\Services\Ticket\ReturnTicketService;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class ReturnTicketController extends Controller
 {

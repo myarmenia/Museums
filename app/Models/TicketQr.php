@@ -16,6 +16,7 @@ class TicketQr extends Model
         'purchased_item_id',
         'item_relation_id',
         'token',
+        'ticket_token',
         'path',
         'status',
         'type',
