@@ -9,16 +9,16 @@ use Carbon\Carbon;
 
 class ReturnTicketService
 {
-  public function checkToken($token)
+  public function checkToken(int $token)
   {
-    $id = $this->extractIdFromToken($token);
+    // $id = $this->extractIdFromToken($token);
     $ticket = null;
 
     $museumId = getAuthMuseumId();
 
-    if ($museumId && $id) {
+    if ($museumId && $token) {
 
-      $ticket = $this->getActiveTicket($id, $museumId);
+      $ticket = $this->getActiveTicket($token, $museumId);
 
       if ($ticket) {
         return ['success' => true, 'type' => getTranslateTicketTitl($ticket->type)];
@@ -31,17 +31,15 @@ class ReturnTicketService
 
   public function removeToken($token)
   {
-    $id = $this->extractIdFromToken($token);
+    // $id = $this->extractIdFromToken($token);
 
     $museumId = getAuthMuseumId();
 
-    if ($museumId && $id) {
+    if ($museumId && $token) {
       try {
         DB::beginTransaction();
 
-        $ticket = $this->getActiveTicket($id, $museumId);
-
-        $ticket = $this->getActiveTicket($id, $museumId);
+        $ticket = $this->getActiveTicket($token, $museumId);
 
         $ticket->update(['status' => TicketQr::STATUS_RETURNED]);
 
@@ -77,17 +75,17 @@ class ReturnTicketService
     }
   }
 
-  private function extractIdFromToken(string $token): ?int
-  {
-    $rawId = substr($token, 0, -5);
-    return is_numeric($rawId) ? (int) $rawId : null;
-  }
+  // private function extractIdFromToken(string $token): ?int
+  // {
+  //   $rawId = substr($token, 0, -5);
+  //   return is_numeric($rawId) ? (int) $rawId : null;
+  // }
 
-  private function getActiveTicket(int $id, int $museumId): ?TicketQr
+  private function getActiveTicket(int $token, int $museumId): ?TicketQr
   {
     $dateLimit = Carbon::now()->subDays(15);
 
-    return TicketQr::where('id', $id)
+    return TicketQr::where('ticket_token', $token)
         ->where('museum_id', $museumId)
         ->where('status', TicketQr::STATUS_ACTIVE)
         ->where('created_at', '>=', $dateLimit)
