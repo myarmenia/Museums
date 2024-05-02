@@ -17,16 +17,11 @@
                 <button class="ms-2 btn btn-primary col-2 search" id='send_unique_id'>Ստուգել</button>
             </div>
 
-            
-
             <div id='returned_info' class="mt-2 row">
-                
+
             </div>
         </div>
-        
     </div>
-
 
 @endsection
 <x-modal-delete></x-modal-delete>
-

@@ -37,7 +37,9 @@ $(function () {
        cache: false,
        success: function (data) {
          if (data.success) {
-            window.location.reload();
+            //remove input by id
+            $('#unique_id').val('');
+            $('#returned_info').html('<div class="col-sm-10 text-success fts-14" id="success">Տոմսը հաջողությամբ չեղարկվեց</div>')
          }else {
             $('#returned_info').html('<div class="col-sm-10 text-danger fts-14" id="error">Ինչ որ բան այն չէ</div>')
          }
