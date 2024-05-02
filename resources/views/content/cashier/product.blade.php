@@ -95,7 +95,7 @@
                 </div>
                 <div class="mt-3 row justify-content-end">
                     <div class="col-sm-10 d-flex justify-content-end">
-                        <button id='product-button' type="submit" class="btn btn-primary m-2">Պահպանել</button>
+                        <button id='product-button' type="submit" class="btn btn-primary m-2">Վաճառել</button>
                     </div>
                 </div>
             </form>
