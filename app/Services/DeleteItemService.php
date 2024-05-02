@@ -27,7 +27,7 @@ class DeleteItemService
 
           $file_path = '';
           $item_db = $item->first();
-
+// dd($item->notifiable);
           if(isset($item_db->images)){
             Storage::disk('public')->deleteDirectory("$tb_name/$id");
 
