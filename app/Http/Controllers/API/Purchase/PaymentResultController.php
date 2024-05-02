@@ -24,7 +24,6 @@ class PaymentResultController extends BaseController
               $payment_completion = $this->paymentCompletion($payment_result, $order_number);
               return $payment_completion;
           }
-
-
-  }
+          
+    }
 }
