@@ -16,12 +16,10 @@ class MuseumBranchMiddleware
     public function handle(Request $request, Closure $next): Response
     {
       $administrator = request()->user();
-      // dd(request()->user()->roles);
-      // $user_g_name = $administrator->roles->pluck('name');
 
-      if($administrator->hasRole('museum_admin|content_manager')) {
-        // dd(444);
-      //   return $user_g_name == 'admin' || $user_g_name == 'super_admin' || $user_g_name == 'web' ?  $next($request) : redirect()->back();
+
+      if($administrator->hasRole('museum_admin|content_manager|manager')) {
+
       }
 
         return $next($request);

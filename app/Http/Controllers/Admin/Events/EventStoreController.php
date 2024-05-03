@@ -17,7 +17,7 @@ class EventStoreController extends Controller
     return Event::class;
   }
     public function __invoke(EventRequest $request){
-      // dd($request->all());
+
       $event = $this->itemStore($request);
 
       if($event){

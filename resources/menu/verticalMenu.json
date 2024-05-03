@@ -65,8 +65,8 @@
       "icon": "menu-icon tf-icons bx bx-purchase-tag",
       "slug": "product_list",
       "roles": [
-        "super_admin"
-
+        "super_admin",
+        "general_manager"
         ]
 
     },
@@ -84,7 +84,10 @@
       "name": "Բանեռ",
       "icon": "menu-icon tf-icons bx bx-box",
       "slug": "banner_list",
-      "roles": ["super_admin"],
+      "roles": [
+        "super_admin",
+        "general_manager"
+    ],
       "url": "banner/list"
     },
 
