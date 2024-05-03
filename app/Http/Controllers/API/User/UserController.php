@@ -37,7 +37,7 @@ class UserController extends Controller
             return response()->json(['success' => true, 'message' => translateMessageApi('password-changed')], 200);
         }
 
-        return response()->json(translateMessageApi('wrong-password'), 500);
+        return response()->json(['success' => false, 'message' => translateMessageApi('wrong-password')], 400);
 
     }
     
