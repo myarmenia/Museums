@@ -27,7 +27,9 @@ class ChatRepository implements ChatInterface
      public function getRoomMessage($id)
      {
           return Chat::withTrashed()->with([
-               'visitor',
+               'visitor' => function ($query) {
+                    $query->withTrashed(); 
+                },
                'messages' => function ($query) {
                     $query->orderBy('id', 'ASC')->get();
                }

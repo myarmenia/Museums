@@ -4,6 +4,7 @@
 
 @section('page-script')
     <script src="{{ asset('assets/js/admin\cashier\productCashier.js') }}"></script>
+    <script src="{{ asset('assets/js/ui-modals.js') }}"></script>
 @endsection
 
 @section('content')
@@ -25,30 +26,30 @@
                 <h4 class="card-header">Ապրանք</h4>
             </div>
         </div>
-       
-            <div class="card-body">
-                <form action="{{ route('cashier.product') }}" method="get" class="row g-3 mt-2" style="display: flex">
-                    <div class="d-flex justify-content-end">
-                        <div class="mx-2">
-                            <select id="defaultSelect" name="product_category_id" class="form-select"
-                                value="{{ request()->input('product_category_id') }}">
-                                <option value="">ֆիլտրել ըստ կատեգորիաի</option>
-                                @foreach ($product_category as $item)
-                                    @if (request()->input('product_category_id') != null && $item->id == request()->input('product_category_id'))
-                                        <option value="{{ $item->id }}" selected>
-                                            {{ __('product-categories.' . $item->key) }}</option>
-                                    @else
-                                        <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}
-                                        </option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </div>
-                        <button class="btn btn-primary">Փնտրել</button>
+
+        <div>
+            <form action="{{ route('cashier.product') }}" method="get" class="row g-3 mt-2" style="display: flex">
+                <div class="d-flex justify-content-end">
+                    <div class="mx-2">
+                        <select id="defaultSelect" name="product_category_id" class="form-select"
+                            value="{{ request()->input('product_category_id') }}">
+                            <option value="">ֆիլտրել ըստ կատեգորիաի</option>
+                            @foreach ($product_category as $item)
+                                @if (request()->input('product_category_id') != null && $item->id == request()->input('product_category_id'))
+                                    <option value="{{ $item->id }}" selected>
+                                        {{ __('product-categories.' . $item->key) }}</option>
+                                @else
+                                    <option value="{{ $item->id }}">{{ __('product-categories.' . $item->key) }}
+                                    </option>
+                                @endif
+                            @endforeach
+                        </select>
                     </div>
-            </div>
-            </form>
-            @if ($data->count())
+                    <button class="btn btn-primary">Փնտրել</button>
+                </div>
+        </div>
+        </form>
+        @if ($data->count())
             <form action="{{ route('cashier.add.product') }}" method="post">
 
                 <div class="table-responsive text-nowrap">
@@ -95,7 +96,38 @@
                 </div>
                 <div class="mt-3 row justify-content-end">
                     <div class="col-sm-10 d-flex justify-content-end">
-                        <button id='product-button' type="submit" class="btn btn-primary m-2">Պահպանել</button>
+                        <div class="card mb-4">
+                            <div>
+                                <div class="row gy-3">
+                                    <div>
+                                        <div>
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#basicModal">
+                                                Վաճառել
+                                            </button>
+                                            <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel1">Վաճառքի
+                                                                հաստատում</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-outline-secondary"
+                                                                data-bs-dismiss="modal">Փակել</button>
+                                                            <button id='product-button' type="submit"
+                                                                class="btn btn-primary m-2">Վաճառել</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
