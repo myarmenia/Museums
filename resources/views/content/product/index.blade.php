@@ -44,7 +44,7 @@
             </div>
             @if (museumAccessId()!=null)
               <div>
-                  <a href="{{ route('product_create') }}" class="btn btn-primary mx-4">Ստեղծել Ապրանք </a>
+                  <a href="{{ route('product_create',museumAccessId()) }}" class="btn btn-primary mx-4">Ստեղծել Ապրանք </a>
               </div>
 
             @endif

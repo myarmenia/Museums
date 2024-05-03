@@ -8,7 +8,7 @@
 
 @section('content')
     @include('includes.alert')
-  
+
     @if (museumAccessId()==null)
     <div class="alert alert-danger">
       Նախ ստեղծեք թանգարան
@@ -32,9 +32,10 @@
             <div>
                 <h5 class="card-header">Թանգարանի մասնաճյուղերի ցանկ</h5>
             </div>
+
             @if (museumAccessId()!==null)
               <div>
-                  <a href="{{ route('branches-create') }}" class="btn btn-primary mx-4">Ստեղծել Մասնաճյուղ </a>
+                  <a href="{{ route('branches-create',museumAccessId()) }}" class="btn btn-primary mx-4">Ստեղծել Մասնաճյուղ </a>
               </div>
               @endif
         </div>

@@ -15,7 +15,7 @@ class ProductListController extends Controller
 
 	public function __construct(Product $model)
 	{
-    $this->middleware('role:super_admin|museum_admin|content_manager');
+    $this->middleware('role:super_admin|museum_admin|content_manager|manager|general_manager');
 
 		$this->model = $model;
 	}

@@ -27,7 +27,7 @@ class CorporativeSaleService
             $path = FileUploadService::upload($data['file'], 'files');
  
             if(!$path){
-                session(['errorMessage' => 'Ինչ որ բան այն չէ ֆալյի հետ կապված']);
+                session(['errorMessage' => 'Ինչ որ բան այն չէ ֆայլի հետ կապված']);
                 return false;
             }  
 
@@ -150,7 +150,7 @@ class CorporativeSaleService
             $path = FileUploadService::upload($data['file'], 'files');
  
             if(!$path){
-                session(['errorMessage' => 'Ինչ որ բան այն չէ ֆալյի հետ կապված']);
+                session(['errorMessage' => 'Ինչ որ բան այն չէ ֆայլի հետ կապված']);
                 return false;
             }  
 

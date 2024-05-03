@@ -11,8 +11,8 @@ class ProductEditController extends Controller
 {
   public function __construct(Product $model)
 	{
-    
-    $this->middleware('role:museum_admin|content_manager');
+
+    $this->middleware('role:museum_admin|content_manager|manager');
 
 
 	}

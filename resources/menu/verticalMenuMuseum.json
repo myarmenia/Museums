@@ -89,7 +89,8 @@
       "slug": "branches-list",
       "roles": [
         "museum_admin",
-        "content_manager"
+        "content_manager",
+        "manager"
       ]
 
     },
@@ -100,7 +101,9 @@
       "slug": "product_list",
       "roles": [
         "museum_admin",
-        "content_manager"]
+        "content_manager",
+        "manager"
+      ]
 
     },
 
@@ -132,8 +135,9 @@
       "icon": "menu-icon tf-icons bx bx-party",
       "slug": "event_list",
       "roles": [
-        "museum_admin"
-
+        "museum_admin",
+        "manager",
+        "content_manager"
       ]
     },
     {

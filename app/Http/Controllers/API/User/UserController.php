@@ -23,10 +23,10 @@ class UserController extends Controller
         $user = $this->userService->edit($request->all());
 
         if($user){
-            return response()->json(['user' => $user, 'message' => translateMessageApi('user-edit')], 200);
+            return response()->json(['user' => $user, 'message' => translateMessageApi('user-edit'), 'success' => true], 200);
         }
 
-        return response()->json(translateMessageApi('something-went-wrong'), 500);
+        return response()->json(['message' => translateMessageApi('something-went-wrong'), 'success' => false], 500);
     }
 
     public function editPassword(ChangePasswordRequest $request)

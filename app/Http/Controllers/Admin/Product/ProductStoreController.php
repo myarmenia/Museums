@@ -14,7 +14,7 @@ class ProductStoreController extends Controller
 
   public function __construct()
 	{
-    $this->middleware('role:museum_admin|content_manager');
+    $this->middleware('role:museum_admin|content_manager|manager');
     $this->middleware('product_viewer_list');
 
 	}

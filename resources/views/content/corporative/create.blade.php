@@ -98,7 +98,7 @@
             @enderror
 
             <div class="mb-3 row">
-                <label for="file" class="col-md-2 col-form-label">Ֆալյ</label>
+                <label for="file" class="col-md-2 col-form-label">Ֆայլ</label>
                 <div class="col-md-10">
                     <input type="file" class="form-control" name="file" aria-label="Upload">
                 </div>
