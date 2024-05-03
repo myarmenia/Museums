@@ -9,14 +9,13 @@ $(function () {
        url: url,
        cache: false,
        success: function (data) {
-         
          if (data.success) {
           $('#returned_info').html(`<div class="col-sm-10 text-success "> 
               <div class="col-sm-10 text-success my-2"><span class='fts-22'>Տոմսի տեսակը՝ ${data.type}</span></div>
               <button class="btn btn-primary col-2" data-id="${unique}" id="archive-ticket">Արխիվացնել</button>
           </div>`)
          }else {
-            $('#returned_info').html('<div class="col-sm-10 text-danger fts-14" id="error">Տվյալ թոքենով տվյալ չի գտնվել</div>')
+            $('#returned_info').html(`<div class="col-sm-10 text-danger fts-14" id="error">${data.message}</div>`)
          }
        }
      });
