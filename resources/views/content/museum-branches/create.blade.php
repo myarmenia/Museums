@@ -32,7 +32,7 @@
         <div class="card-body">
 
             <form action="{{ route('branches-store') }}" method="post" enctype="multipart/form-data">
-              <input type = "hidden"name = "museum_id" value="{{ $data->id }}">
+              <input type = "hidden"name = "museum_id" value="{{ $data->museum_id }}">
               @foreach (languages() as $lang)
                 <div class="mb-3 row">
                   <label for="name-{{ $lang}}" class="col-md-2 col-form-label">Անվանում {{ $lang }}

@@ -31,8 +31,9 @@ class MuseumBranchRepository implements MuseumBranchesRepositoryInterface
 
   }
 
-  public  function creat(){
-    return $data = Museum::where('user_id',Auth::id())->first();
+  public  function creat($museumId){
+
+    return $data = MuseumStaff::where(['user_id'=>Auth::id(),'museum_id'=>$museumId])->first();
   }
 
   public function store($request){

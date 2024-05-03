@@ -143,6 +143,7 @@ if(!function_exists('haveMuseum')){
 if(!function_exists('museumAccessId')){
   function museumAccessId()
   {
+  
       return Auth::user()->museum_staff_user ? Auth::user()->museum_staff_user->museum_id : false;
   }
 }

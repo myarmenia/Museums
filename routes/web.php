@@ -203,7 +203,7 @@ Route::group(['middleware' => ['auth']], function () {
   // Museum branches
   Route::group(['prefix' => 'musuem_branches'], function () {
     Route::get('/list', [MuseumBranchController::class, 'index'])->name('branches-list');
-    Route::get('/create', [MuseumBranchController::class, 'create'])->name('branches-create');
+    Route::get('/create/{museum_id}', [MuseumBranchController::class, 'create'])->name('branches-create');
     Route::post('/store', [MuseumBranchController::class, 'store'])->name('branches-store');
     Route::get('/edit/{id}', [MuseumBranchController::class, 'edit'])->name('branches-edit');
     Route::put('/update/{id}', [MuseumBranchController::class, 'update'])->name('branches-update');
@@ -211,7 +211,7 @@ Route::group(['middleware' => ['auth']], function () {
   });
   Route::group(['prefix' => 'product'], function () {
     Route::get('/list', [ProductListController::class, 'index'])->name('product_list');
-    Route::get('/create', [ProductCreateController::class, 'create'])->name('product_create');
+    Route::get('/create/{museum_id}', [ProductCreateController::class, 'create'])->name('product_create');
     Route::post('/store', [ProductStoreController::class, 'store'])->name('product_store');
     Route::get('/edit/{id}', [ProductEditController::class, 'edit'])->name('product_edit');
     Route::put('/update/{id}', [ProductUpdateController::class, 'update'])->name('product_update');
@@ -246,7 +246,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['role:museum_admin|manager|content_manager|cashier']], function () {
         Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
     });
-    
+
     Route::group(['middleware' => ['role:content_manager|museum_admin|manager']], function () {
         Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
         Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');

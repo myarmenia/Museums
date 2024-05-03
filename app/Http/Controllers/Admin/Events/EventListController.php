@@ -10,7 +10,7 @@ class EventListController extends Controller
 {
   public function __construct(){
 
-    $this->middleware('role:museum_admin');
+    $this->middleware('role:museum_admin|manager');
 
   }
   public function __invoke(Request $request){
