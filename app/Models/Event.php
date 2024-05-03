@@ -66,7 +66,8 @@ class Event extends Model
 
     return $this->where([
       ['museum_id','=',$museum_id],
-      ['id','!=',$event_id]
+      ['id','!=',$event_id],
+      ['status','=',1]
     ] )->get();
 
 
