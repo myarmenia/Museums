@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\API;
 
+use App\Models\Country;
 use App\Services\FileUploadService;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
@@ -11,16 +12,27 @@ class UserService
     public function edit($data)
     {
         $user = JWTAuth::parseToken()->authenticate();
-        $updateData = $data['data'];
 
         if (array_key_exists('avatar', $data)) {
             $path = FileUploadService::upload($data['avatar'], 'user/'.$user->id);
-            $updateData['avatar'] = $path;
+            $data['avatar'] = $path;
         }
 
-        $user->update($updateData);
-        $user->avatar = $user->avatar? route('get-file', ['path' => $user->avatar]) : "";
+        if (array_key_exists('country', $data)) {
+           $countryId = Country::where('key', $data['country'])->first()->id;
+           if($countryId){
+               $data['country_id'] = $countryId;
+               unset($data['country']);
+           }
+        }
 
+        $user->update($data);
+
+        $user['card_count'] = $user->carts()->get()->count(); 
+        $user['country_key'] = $user->country ? $user->country->key : null;
+        
+        $user->avatar = $user->avatar? route('get-file', ['path' => $user->avatar]) : "";
+        unset($user['country']);
         return $user;
     }
 
