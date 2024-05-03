@@ -10,20 +10,13 @@
 @section('content')
     @include('includes.alert')
     <h4 class="py-3 mb-4">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('dashboard-analytics') }}">Դրամարկղ</a>
-                </li>
-                <li class="breadcrumb-item active">Ապրանք</li>
-            </ol>
-        </nav>
+        <span class="text-muted fw-light">Դրամարկղ /</span> Ապրանք
     </h4>
 
     <div class="card">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h4 class="card-header">Ապրանք</h4>
+                <h5 class="card-header">Ապրանք</h5>
             </div>
         </div>
 
