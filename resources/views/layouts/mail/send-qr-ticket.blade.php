@@ -150,7 +150,7 @@
             @foreach ($result as $data)
                 @php
                     $type = $data->purchased_item->type;
-                    $rand = rand(10000, 99999);
+                    $rand = $data->ticket_token;
                     $code = $data->id . $rand;
 
                 @endphp

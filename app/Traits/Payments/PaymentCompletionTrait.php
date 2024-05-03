@@ -39,7 +39,6 @@ trait PaymentCompletionTrait
         $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
       }
 
-
     } else {
       $response = 'Diny';
 
