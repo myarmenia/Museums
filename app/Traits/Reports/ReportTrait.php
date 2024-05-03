@@ -4,6 +4,7 @@ namespace App\Traits\Reports;
 use App\Models\Purchase;
 use App\Models\PurchasedItem;
 use App\Models\PurchaseUnitedTickets;
+use App\Models\TicketQr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -51,7 +52,8 @@ trait ReportTrait
 
       $report =  $model->reportFilter($data)->where('type', '!=', 'united');
 
-        if(isset($data['museum_id']) && !empty($data['museum_id'])){
+
+    if(isset($data['museum_id']) && !empty($data['museum_id'])){
           $report =  $report->whereIn('museum_id', $data['museum_id']);
         }
 
@@ -64,20 +66,23 @@ trait ReportTrait
       }
 
 
+      $report_ids = $report->pluck('id');
+      $canceled = TicketQr::where('status', 'returned')->where('type', '!=', 'united')->whereIn('purchased_item_id', $report_ids );
+
 
       if($data['report_type'] == 'fin_quant'){
 
-          $groupedData = $this->report_fin_quant($report, $united);
+          $groupedData = $this->report_fin_quant($report, $united, $canceled);
       }
 
       if ($data['report_type'] == 'financial') {
 
-          $groupedData = $this->report_financial($report, $united);
+          $groupedData = $this->report_financial($report, $united, $canceled);
       }
 
       if ($data['report_type'] == 'quantitative') {
 
-        $groupedData = $this->report_quantitative($report, $united);
+        $groupedData = $this->report_quantitative($report, $united, $canceled);
       }
 
       // dd($groupedData);
@@ -86,7 +91,7 @@ trait ReportTrait
   }
 
 
-  public function report_financial($report, $united){
+  public function report_financial($report, $united, $canceled){
       $report = $report
         ->groupBy('museum_id', 'type')
         ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
@@ -96,14 +101,24 @@ trait ReportTrait
         ->select('museum_id', \DB::raw('SUM(total_price) as total_price'))
         ->get();
 
+      $canceled = $canceled->groupBy('museum_id')
+        ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
+        ->get();
+
       $report = $report->toArray();
       $united = $united->toArray();
+      $canceled = $canceled->toArray();
 
-      return $this->groupByMuseumId(array_merge($report, $united));
+      $canceled = array_map(function ($item) {
+        $item['type'] = 'canceled';
+        return $item;
+      }, $canceled);
+
+      return $this->groupByMuseumId(array_merge($report, $united, $canceled));
 
   }
 
-  public function report_fin_quant($report, $united)
+  public function report_fin_quant($report, $united, $canceled)
   {
       $report = $report
         ->groupBy('museum_id', 'type')
@@ -114,14 +129,26 @@ trait ReportTrait
         ->select('museum_id', \DB::raw('SUM(total_price) as total_price'), \DB::raw('SUM(quantity) as quantity'))
         ->get();
 
+      $canceled = $canceled->groupBy('museum_id')
+      ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
+      ->get();
+
       $report = $report->toArray();
       $united = $united->toArray();
+      $canceled = $canceled->toArray();
 
-      return $this->groupByMuseumId(array_merge($report, $united));
+      $canceled = array_map(function ($item) {
+        $item['type'] = 'canceled';
+        return $item;
+      }, $canceled);
+
+
+    // dd($this->groupByMuseumId(array_merge($report, $united, $canceled)));
+      return $this->groupByMuseumId(array_merge($report, $united, $canceled));
 
   }
 
-  public function report_quantitative($report, $united)
+  public function report_quantitative($report, $united, $canceled)
   {
       $report = $report
         ->groupBy('museum_id', 'type')
@@ -132,15 +159,26 @@ trait ReportTrait
         ->select('museum_id', \DB::raw('SUM(quantity) as quantity'))
         ->get();
 
+      $canceled = $canceled->groupBy('museum_id')
+        ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
+        ->get();
+
       $report = $report->toArray();
       $united = $united->toArray();
+      $canceled = $canceled->toArray();
 
-      return $this->groupByMuseumId(array_merge($report, $united));
+      $canceled = array_map(function ($item) {
+        $item['type'] = 'canceled';
+        return $item;
+      }, $canceled);
+
+      return $this->groupByMuseumId(array_merge($report, $united, $canceled));
 
   }
 
   public function groupByMuseumId($array)
   {
+
     return array_reduce($array, function ($carry, $item) {
       $museumId = $item['museum_id'];
 
@@ -149,6 +187,7 @@ trait ReportTrait
             $carry[$museumId] = [];
 
           }
+
           $type = isset ($item['type']) ? $item['type'] : 'united';
 
           if(isset ($item['quantity'])){
