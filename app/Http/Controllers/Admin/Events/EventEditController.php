@@ -12,7 +12,7 @@ class EventEditController extends Controller
   use  EventTrait;
   public function __construct(){
 
-    $this->middleware('role:museum_admin');
+    $this->middleware('role:museum_admin|manager|content_manager');
 
   }
     public function __invoke($id){

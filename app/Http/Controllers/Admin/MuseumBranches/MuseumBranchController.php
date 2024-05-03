@@ -18,7 +18,7 @@ class MuseumBranchController extends Controller
     private $museumBranchRepository;
     public function __construct(MuseumBranchesRepositoryInterface $museumBranchRepository){
 
-      $this->middleware('role:museum_admin|manager');
+      $this->middleware('role:museum_admin|manager|content_manager');
       $this->middleware('museum_branch_middleware')->only(['edit','update']);
       $this->museumBranchRepository = $museumBranchRepository;
 

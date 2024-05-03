@@ -136,8 +136,8 @@
       "slug": "event_list",
       "roles": [
         "museum_admin",
-        "manager"
-
+        "manager",
+        "content_manager"
       ]
     },
     {

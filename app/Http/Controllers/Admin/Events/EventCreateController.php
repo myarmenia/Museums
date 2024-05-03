@@ -9,7 +9,7 @@ class EventCreateController extends Controller
 {
   public function __construct(){
 
-    $this->middleware('role:museum_admin|manager');
+    $this->middleware('role:museum_admin|manager|content_manager');
 
   }
     public function __invoke(){
