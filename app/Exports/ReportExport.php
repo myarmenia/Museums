@@ -66,6 +66,7 @@ class ReportExport implements FromCollection, WithHeadings, WithMapping
         'Կորպորատիվ',
         'Կրթական ծրագիր',
         'Էքսկուրսիա',
+        'Չեղարկված',
         'Ապրանքներ'
       ];
 

@@ -42,6 +42,8 @@ class AuthController extends BaseController
     {
         if($me = auth('api')->user()){
             $me['card_count'] = $me->carts()->get()->count(); 
+            $me['country_key'] = $me->country ? $me->country->key : null;
+
             return response()->json($me);
         }
 

@@ -36,10 +36,10 @@ class ChatController extends Controller
         $addMessage = $this->chatService->addAdminMessage($request->all());
 
         if($addMessage['success']){
-            return response()->json(['status' => true, 'message' => $addMessage['message']]);
+            return response()->json(['success' => true, 'message' =>  translateMessageApi('email-send')],200);
         }
 
-        return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong')]);
+        return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong')],500);
     }
 
     public function getMuseumMessage($id)

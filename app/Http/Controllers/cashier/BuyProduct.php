@@ -51,7 +51,7 @@ class BuyProduct extends Controller
                 $addTicketPurchase = $this->purchase($data);
 
                 if ($addTicketPurchase) {
-                    session(['success' => 'Ապրանքը պատրաստ է գնման']);
+                    session(['success' => 'Ապրանքը վաճառված է']);
 
                     DB::commit();
                     return redirect()->back();

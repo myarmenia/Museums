@@ -42,17 +42,16 @@
                 <div class="col-md-10">
                     <textarea class="form-control" placeholder="Բանեռ տեքստ {{ $lang }}"
                         id="working_days-{{ $lang }}"
-                        name="translate[{{ $lang }}][text]">{{ old("translate.$lang.text") }}
-                    </textarea>
+                        name="translate[{{ $lang }}][text]">{{ old("translate.$lang.text") }}</textarea>
 
                 </div>
             </div>
-            @error("translate.$lang.text")
-                <div class="mb-3 mt-5 row justify-content-end">
-                    <div class="col-sm-10 text-danger fts-14">{{ $message }}
-                    </div>
-                </div>
-            @enderror
+              @error("translate.$lang.text")
+                  <div class="mb-3 mt-5 row justify-content-end">
+                      <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                      </div>
+                  </div>
+              @enderror
 
               @endforeach
 

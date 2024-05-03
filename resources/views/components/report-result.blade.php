@@ -14,6 +14,7 @@
               <th>Կորպորատիվ</th>
               <th>Կրթական ծրագիր</th>
               <th>Էքսկուրսիա</th>
+              <th>Չեղարկված</th>
               <th>Ապրանքներ</th>
               @if (request()->request_report_type == 'compare')
                 <th>Ամսաթիվ</th>
