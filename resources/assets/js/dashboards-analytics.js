@@ -19,7 +19,7 @@
       series: [
         {
           name: '2021',
-          data: [18, 7, 15, 29, 18, 12, 9]
+          data: [18, 7, 15, 29, 18, 12, 99]
         },
         {
           name: '2020',
@@ -102,7 +102,7 @@
       },
       responsive: [
         {
-          breakpoint: 1700,
+          breakpoint: 555,
           options: {
             plotOptions: {
               bar: {
@@ -113,7 +113,7 @@
           }
         },
         {
-          breakpoint: 1580,
+          breakpoint: 666,
           options: {
             plotOptions: {
               bar: {
@@ -124,7 +124,7 @@
           }
         },
         {
-          breakpoint: 1440,
+          breakpoint: 777,
           options: {
             plotOptions: {
               bar: {

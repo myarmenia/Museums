@@ -12,19 +12,19 @@
   axisColor = config.colors.axisColor;
   borderColor = config.colors.borderColor;
 
+  var totalRevenueObj = JSON.parse(totalRevenueResult)
+  console.log(totalRevenueObj.total_prices);
   // Total Revenue Report Chart - Bar Chart
   // --------------------------------------------------------------------
   const totalRevenueChartEl = document.querySelector('#totalRevenueChart'),
     totalRevenueChartOptions = {
       series: [
         {
-          name: '2021',
-          data: [18, 7, 15, 29, 18, 12, 9]
-        },
-        {
-          name: '2020',
-          data: [-13, -18, -9, -14, -5, -17, -15]
+          name: new Date().getFullYear(),
+          // data: [18, 7, 15, 29, 18, 12, 9]
+          data: totalRevenueObj.total_prices
         }
+
       ],
       chart: {
         height: 300,
@@ -78,7 +78,8 @@
         }
       },
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        // categories: ['January', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        categories: totalRevenueObj.museum_names,
         labels: {
           style: {
             fontSize: '13px',
@@ -135,7 +136,7 @@
           }
         },
         {
-          breakpoint: 1300,
+          breakpoint: 111111,
           options: {
             plotOptions: {
               bar: {
@@ -428,7 +429,7 @@
         type: 'donut'
       },
       labels: ['Electronic', 'Sports', 'Decor', 'Fashion'],
-      series: [85, 15, 50, 50],
+      series: [85, 15, 50, 50, 15],
       colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
       stroke: {
         width: 5,
