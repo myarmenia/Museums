@@ -6,7 +6,6 @@ use App\Models\Museum;
 use App\Models\MuseumTranslation;
 
 
-
 class MuseumRepository implements MuseumRepositoryInterface
 {
     public function getProject()
@@ -52,7 +51,11 @@ class MuseumRepository implements MuseumRepositoryInterface
     public function getMuseumByLangAndId($id)
     {
         return Museum::with([
-            'user', 'phones', 'images', 'links', 'region', 'museum_branches.links',
+            'user', 'phones', 'images', 'links', 'region',
+            'museum_branches' => function ($query) {
+                $query->where('status', 1);
+            },
+            'museum_branches.links',
             'translations' => function ($query) {
                 $query->where('lang', session('languages'))->get();
             }
@@ -63,7 +66,10 @@ class MuseumRepository implements MuseumRepositoryInterface
     {
         return Museum::with([
             'user', 'translations', 'phones', 'images', 'links', 
-            'region', 
+            'region',
+            'museum_branches' => function ($query) {
+                $query->where('status', 1);
+            },
             'products' => function ($query) {
                 $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
             },
