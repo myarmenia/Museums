@@ -27,10 +27,10 @@ class MuseumController extends Controller
             return redirect()->route('create-museum');
         };
         
-        $data = Museum::with(['user','translationsAdmin', 'phones', 'images', 'links'])->orderBy('id', 'DESC')->paginate(5);
+        $data = Museum::with(['user','translationsAdmin', 'phones', 'images', 'links'])->orderBy('id', 'DESC')->paginate(10);
 
         return view('content.museum.index', compact('data'))
-               ->with('i', ($request->input('page', 1) - 1) * 5);
+               ->with('i', ($request->input('page', 1) - 1) * 10);
     }
 
     public function create()
