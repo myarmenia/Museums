@@ -151,6 +151,7 @@ class AuthService
             
             $authUser = auth()->user();
             $authUser['card_count'] = $authUser->carts()->get()->count(); 
+            $authUser['country_key'] = $authUser->country ? $authUser->country->key : null;
             $authUser = $authUser->toArray();
 
             return [
