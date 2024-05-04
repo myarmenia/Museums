@@ -16,12 +16,12 @@ class ChatRepository implements ChatInterface
                'messages' => function ($query) {
                     $query->orderBy('id', 'DESC')->get();
                }
-          ])->whereNull('museum_id')->orderBy('id', 'DESC')->paginate(5);
+          ])->whereNull('museum_id')->orderBy('id', 'DESC')->paginate(10);
      }
 
      public function getMuseumRooms($museumId)
      {
-          return Chat::withTrashed()->where('museum_id', $museumId)->orderBy('id', 'DESC')->paginate(5);
+          return Chat::withTrashed()->where('museum_id', $museumId)->orderBy('id', 'DESC')->paginate(10);
      }
 
      public function getRoomMessage($id)
