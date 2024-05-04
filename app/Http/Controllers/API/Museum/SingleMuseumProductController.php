@@ -31,7 +31,7 @@ class SingleMuseumProductController extends BaseController
     $data = $this->model
                 ->filter($request->all());
 
-      $data=$data->where('museum_id',$request->museum_id);
+      $data=$data->where(['museum_id'=>$request->museum_id, 'status'=>1]);
 
       $data = $data
 
