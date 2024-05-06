@@ -26,32 +26,32 @@
         <div class="card-body">
 
             <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
+                <li data-name='standard' class="nav-item">
                     <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
                         data-bs-target="#navs-top-home" aria-controls="navs-top-home" aria-selected="true">Տոմս</button>
                 </li>
                 @if (count($data['educational']))
-                    <li class="nav-item">
+                    <li data-name='educational' class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                             data-bs-target="#navs-top-educational" aria-controls="navs-top-educational"
                             aria-selected="false">Կրթական</button>
                     </li>
                 @endif
                 @if (array_key_exists('events', $data))
-                    <li class="nav-item">
+                    <li data-name='events' class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                             data-bs-target="#navs-top-event" aria-controls="navs-top-event"
                             aria-selected="false">Միջոցառում</button>
                     </li>
                 @endif
                 @if (array_key_exists('aboniment', $data))
-                    <li class="nav-item">
+                    <li data-name='aboniment' class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                             data-bs-target="#navs-top-aboniment" aria-controls="navs-top-aboniment"
                             aria-selected="false">Աբոնեմենտ</button>
                     </li>
                 @endif
-                <li class="nav-item">
+                <li data-name='corporative' class="nav-item">
                     <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                         data-bs-target="#navs-top-corporative" aria-controls="navs-top-corporative"
                         aria-selected="false">Կորպորատիվ</button>
@@ -59,7 +59,7 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
-                    <form action="{{ route('cashier.add.ticket') }}" method="post">
+                    <form data-name='standard' action="{{ route('cashier.add.ticket') }}" method="post">
                         <div class="table-responsive text-nowrap">
                             <table class="table cashier-table">
                                 <thead>
@@ -76,21 +76,21 @@
                                                 onwheel="return false;" price="<?= $data['ticket']['price'] ?>"
                                                 id="standart" name="standart"
                                                 value="{{ old('standart') }}"></td>
-                                        <td id = 'standard-ticket-price'>0</td>
+                                        <td class="remove-value" id = 'standard-ticket-price'>0</td>
                                     </tr>
                                     <tr class='table-default'>
                                         <td>Զեղչված</td>
                                         <td><input type="number" min="0" class="form-control form-control-validate"
                                                 onwheel="return false;" price="<?= $data['ticket']['sale'] ?>"
                                                 id="discount" name="discount" value="{{ old('discount') }}"></td>
-                                        <td id = 'discount-price'>0</td>
+                                        <td class="remove-value" id = 'discount-price'>0</td>
                                     </tr>
                                     <tr class='table-default'>
                                         <td>Անվճար</td>
                                         <td><input type="number" min="0" class="form-control form-control-validate" id="free"
                                                 onwheel="return false;" name="free" value="{{ old('free') }}">
                                         </td>
-                                        <td>0</td>
+                                        <td class="remove-value" class="remove-value">0</td>
                                     </tr>
                                 </tbody>
 
@@ -102,7 +102,7 @@
                                                     price="<?= $data['ticket']['guid-arm'] ?>" min="0"
                                                     class="form-control form-control-validate" id="guide_am" name="guide_am"
                                                     value="{{ old('guide_am') }}"></td>
-                                            <td id = 'guide_am_price'>0</td>
+                                            <td class="remove-value" id = 'guide_am_price'>0</td>
                                         </tr>
                                         <tr class='table-default'>
                                             <td>Էքսկուրսավար(այլ)</td>
@@ -110,7 +110,7 @@
                                                     price="<?= $data['ticket']['guid-other'] ?>" min="0"
                                                     class="form-control form-control-validate" id="guide_other" name="guide_other"
                                                     value="{{ old('guide_other') }}"></td>
-                                            <td id = 'guide_other_price'>0</td>
+                                            <td class="remove-value" id = 'guide_other_price'>0</td>
                                         </tr>
                                     </tbody>
                                 @endif
@@ -120,17 +120,17 @@
                             <div class="d-flex">
                                 <div class="me-3">Ընդհանուր</div>
                                 <div class="me-2">
-                                    <span id="ticket-total-count">0</span>
+                                    <span class="remove-value" id="ticket-total-count">0</span>
                                     <span>տոմս</span>
                                 </div>
                                 @if (array_key_exists('guid-arm', $data['ticket']) && array_key_exists('guid-other', $data['ticket']))
                                     <div class="me-2">
-                                        <span id="git-total-count">0</span>
+                                        <span class="remove-value" id="git-total-count">0</span>
                                         <span>Էքսկուրսավար</span>
                                     </div>
                                 @endif
                                 <div class="me-2">
-                                    <span id="ticket-total-price">0</span>
+                                    <span class="remove-value" id="ticket-total-price">0</span>
                                     <span>դրամ</span>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@
                 </div>
                 @if (count($data['educational']))
                     <div class="tab-pane fade" id="navs-top-educational" role="tabpanel">
-                        <form action="{{ route('cashier.add.educational') }}" method="post">
+                        <form data-name='educational' action="{{ route('cashier.add.educational') }}" method="post">
                             <div class="table-responsive text-nowrap">
                                 <table class="table cashier-table">
                                     <thead>
@@ -168,7 +168,7 @@
                                                         onwheel="return false;" price="<?= $item['price'] ?>"
                                                         id="educational_{{ $item['id'] }}"
                                                         name="educational[{{ $item['id'] }}]"></td>
-                                                <td id = 'educational-ticket-price_{{ $item['id'] }}'>0</td>
+                                                <td class="remove-value" id = 'educational-ticket-price_{{ $item['id'] }}'>0</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -178,11 +178,11 @@
                                 <div class="d-flex">
                                     <div class="me-3">Ընդհանուր</div>
                                     <div class="me-2">
-                                        <span id="educational-total-count">0</span>
+                                        <span class="remove-value" id="educational-total-count">0</span>
                                         <span>տոմս</span>
                                     </div>
                                     <div class="me-2">
-                                        <span id="educational-total-price">0</span>
+                                        <span class="remove-value" id="educational-total-price">0</span>
                                         <span>դրամ</span>
                                     </div>
                                 </div>
@@ -197,7 +197,7 @@
                 @endif
                 @if (array_key_exists('events', $data))
                     <div class="tab-pane fade" id="navs-top-event" role="tabpanel">
-                        <form action="{{ route('cashier.add.event') }}" method="post">
+                        <form data-name='events' action="{{ route('cashier.add.event') }}" method="post">
                             <div class="table-responsive text-nowrap">
                                 <select id="event-select" name="event" class="form-select">
                                     <option value="">Ընտրեք միջոցառումը</option>
@@ -213,11 +213,11 @@
                                 <div class="d-flex">
                                     <div class="me-3">Ընդհանուր</div>
                                     <div class="me-2">
-                                        <span id="event-total-count">0</span>
+                                        <span class="remove-value" id="event-total-count">0</span>
                                         <span>տոմս</span>
                                     </div>
                                     <div class="me-2">
-                                        <span id="event-total-price">0</span>
+                                        <span class="remove-value" id="event-total-price">0</span>
                                         <span>դրամ</span>
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@
                 @endif
                 @if (array_key_exists('aboniment', $data))
                     <div class="tab-pane fade" id="navs-top-aboniment" role="tabpanel">
-                        <form action="{{ route('cashier.add.subscription') }}" method="post">
+                        <form data-name='aboniment' action="{{ route('cashier.add.subscription') }}" method="post">
                             <div class="table-responsive text-nowrap">
                                 <table class="table cashier-table">
                                     <thead>
@@ -249,7 +249,7 @@
                                                     onwheel="return false;" price="<?= $data['aboniment']['price'] ?>"
                                                     id="aboniment-ticket" name="aboniment-ticket" max="10"
                                                     value="{{ old('aboniment-ticket') }}"></td>
-                                            <td id = 'aboniment-ticket-price'>0</td>
+                                            <td class="remove-value" id = 'aboniment-ticket-price'>0</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -264,7 +264,7 @@
                     </div>
                 @endif
                 <div class="tab-pane fade" id="navs-top-corporative" role="tabpanel">
-                    <form action="{{ route('cashier.add.corporative') }}" method="post">
+                    <form data-name='corporative' action="{{ route('cashier.add.corporative') }}" method="post">
                         <div class="table-responsive text-nowrap">
                             <div class="d-flex">
                                 <input type="text" class="form-control" id="corporative-coupon-input"
