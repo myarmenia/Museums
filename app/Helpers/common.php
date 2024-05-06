@@ -143,7 +143,7 @@ if(!function_exists('haveMuseum')){
 if(!function_exists('museumAccessId')){
   function museumAccessId()
   {
-  
+
       return Auth::user()->museum_staff_user ? Auth::user()->museum_staff_user->museum_id : false;
   }
 }
@@ -371,12 +371,15 @@ if (!function_exists('getTranslateTicketTitl')) {
       $titles = [
         'standart' => 'Ստանդարտ',
         'discount' => 'Զեղչված',
-        'educational' => 'Կրթական',
         'free' => 'Անվճար',
-        'united' => 'Միասնական',
         'subscription' => 'Աբոնեմենտ',
+        'united' => 'Միասնական',
+        'educational' => 'Կրթական',
         'event' => 'Միջոցառում',
         'corporative' => 'Կորպորատիվ',
+        'guide' => 'Էքսկուրսիա',
+        'product' => 'Ապրանք'
+
       ];
 
       //check have $title in $titles
