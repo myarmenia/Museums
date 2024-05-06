@@ -10,10 +10,10 @@ use Illuminate\Http\Request;
 
 class SingleMuseumEventsController extends BaseController
 {
-    public function __invoke($museum_id){
-      $data=Event::where('museum_id',$museum_id)->paginate(12);
+  public function __invoke($museum_id)
+  {
+    $data = Event::where(['museum_id' => $museum_id, 'status' => 1])->paginate(12);
 
-      return  $this->sendResponse(EventListResource::collection($data),'success',['page_count' => $data->lastPage()]);
-
-    }
+    return $this->sendResponse(EventListResource::collection($data), 'success', ['page_count' => $data->lastPage()]);
+  }
 }

@@ -36,7 +36,7 @@
                     <tbody class="table-border-bottom-0">
                         @foreach ($data as $key => $room)
                             <tr class="{{$room->read ? 'table-default': 'table-primary'}}">
-                                <td>{{ $key + 1 }}</td>
+                                <td>{{ ++$i }}</td>
                                 <td>{{ $room->title}}</td>
                                 <td>{{ $room->email ?? $room->visitor->email ?? ''}}</td>
                                 <td>{{ $room->messages->count()? $room->messages->last()->text : ""}}</td>
@@ -56,7 +56,9 @@
             @endif
         </div>
       </div>
-
+      <div class="demo-inline-spacing">
+        {{ $data->links() }}
+      </div>
 
 @endsection
 <x-modal-delete></x-modal-delete>

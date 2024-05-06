@@ -9,9 +9,14 @@ use Carbon\Carbon;
 
 class ReturnTicketService
 {
-  public function checkToken(int $token)
+  public function checkToken($token)
   {
-    // $id = $this->extractIdFromToken($token);
+
+    if(!ctype_digit($token)){
+      return ['success' => false, 'type' => null, 'message' => 'Թոքենը պետք է լինի բաղկացած միայն թվերից։'];
+    }
+
+    $token = (int) $token;
     $ticket = null;
 
     $museumId = getAuthMuseumId();
@@ -20,12 +25,16 @@ class ReturnTicketService
 
       $ticket = $this->getActiveTicket($token, $museumId);
 
+      if($ticket && $ticket->type == "united"){
+         return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով տոմսը միասնական է որը վերադարձի ենթակա չէ։'];
+      }
+
       if ($ticket) {
         return ['success' => true, 'type' => getTranslateTicketTitl($ticket->type)];
       }
     }
 
-    return ['success' => false, 'type' => null];
+    return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով տվյալ չի գտնվել։'];
 
   }
 
@@ -86,9 +95,12 @@ class ReturnTicketService
     $dateLimit = Carbon::now()->subDays(15);
 
     return TicketQr::where('ticket_token', $token)
-        ->where('museum_id', $museumId)
         ->where('status', TicketQr::STATUS_ACTIVE)
         ->where('created_at', '>=', $dateLimit)
+        ->where(function ($query) use ($museumId) {
+          $query->where('type', 'united')
+                ->orWhere('museum_id', $museumId);
+      })
         ->first();
   }
 }
