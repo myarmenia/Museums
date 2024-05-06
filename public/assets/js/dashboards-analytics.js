@@ -72,7 +72,7 @@
         borderColor: borderColor,
         padding: {
           top: 0,
-          bottom: -8,
+          bottom: 8,
           left: 20,
           right: 20
         }
@@ -82,7 +82,7 @@
         categories: totalRevenueObj.museum_names,
         labels: {
           style: {
-            fontSize: '13px',
+            fontSize: '8px',
             colors: axisColor
           }
         },
