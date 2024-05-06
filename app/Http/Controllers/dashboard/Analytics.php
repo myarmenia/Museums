@@ -29,7 +29,7 @@ class Analytics extends Controller
       // $data = $this->report([], $this->model, 'report');
       $ticket_type = $this->ticketsType();
       $total_revenue = json_encode($this->totalRevenue());
-      $attendance_by_country = $this->forAllMuseum();
+      // $attendance_by_country = $this->forAllMuseum();
 
       // return view("content.dashboard.dashboards-analytics", compact('ticket_type', 'total_revenue'));
     return view("content.dashboard.dashboards-analytics", compact('ticket_type', 'total_revenue'));
