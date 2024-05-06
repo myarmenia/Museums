@@ -16,7 +16,7 @@ class Purchase extends Model
     protected $filterDateRangeFields = ['start_date', 'end_date'];
     protected $filterAgeRangeFields = ['start_age', 'end_age'];
 
-  protected $relationFilter = [
+    protected $relationFilter = [
         'person_purchase' => ['gender', 'country_id'],
         'user' => ['gender', 'country_id'],
         // 'purchased_items' => ['museum_id'],
