@@ -49,7 +49,7 @@
       "name": "Թանգարաններ",
       "icon": "menu-icon tf-icons bx bx-museum",
       "slug": "museum",
-      "roles": ["super_admin"],
+      "roles": ["super_admin", "general_manager"],
       "url": "museum"
     },
     {
