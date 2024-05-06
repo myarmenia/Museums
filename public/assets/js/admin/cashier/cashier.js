@@ -1,6 +1,23 @@
-
-
 $(function () {
+
+  $('.nav-tabs').on('click', function (event) {  
+    let activeButton = $("ul.nav-tabs .nav-link.active");
+    let activeTab = activeButton.closest("li");
+    let activeTabId = activeTab.attr('data-name');
+
+    let forms = $(".tab-content form");
+    
+    forms.each(function(form, index) {
+      if ($(this).attr('data-name') !== activeTabId) {
+        let classesRemove = $(this).find(".remove-value");
+        this.reset(); 
+        classesRemove.each(function () {
+          $(this).text(0);
+        })
+      }
+    });
+});
+
     $(document).on('input', '.form-control-validate', function() {
       var inputValue = $(this).val();
       if (!/^[1-9][0-9]*$/.test(inputValue)) {
@@ -207,7 +224,7 @@ $(function () {
                             <td>${element.visitors_quantity_limitation - element.visitors_quantity} մարդ</td>
                             <td><input type="number" min="0" class="form-control form-control-validate" onwheel="return false;" price="${element['price']}"
                               id="event_${element['id']}" name="event[${element['id']}]"></td>
-                            <td id = 'event-ticket-price_${element['id']}'>0</td>
+                            <td id = 'event-ticket-price_${element['id']}' class='remove-value'>0</td>
                         </tr>`;
             });
           } else {
