@@ -76,7 +76,7 @@ class AuthController extends BaseController
 
     public function authGoogle(Request $request)
     {
-
+        //add comment
         $token = $request->input('token');
 
         $client = new Google_Client();
