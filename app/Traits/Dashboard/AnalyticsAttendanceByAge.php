@@ -32,7 +32,8 @@ trait AnalyticsAttendanceByAge
               $ageGroup = $this->getAgeGroup($user_age);
           }
           else if( $person != null){
-              $ageGroup = $person->age != null ? $this->getAgeGroup($person->age) : null;
+              $person_age = $person->age != null ? $person->age : null;
+              $ageGroup = $this->getAgeGroup($person_age);
           }
           else{
             $ageGroup = $this->getAgeGroup(null);
