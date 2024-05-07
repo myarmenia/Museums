@@ -172,8 +172,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('export-report-excel', [ExportExcelController::class, "export"])->name('export_report_excel');
 
   Route::group(['prefix' => 'museum'], function () {
-    Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin');
-    Route::group(['middleware' => ['role:museum_admin|content_manager']], function () {
+    Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin|general_manager');
+    Route::group(['middleware' => ['role:museum_admin|content_manager|manager']], function () {
       Route::get('/create', [MuseumController::class, 'create'])->name('create-museum');
       Route::post('/add-museum', [MuseumController::class, 'addMuseum'])->name('museum.add');
       Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit');
@@ -218,13 +218,13 @@ Route::group(['middleware' => ['auth']], function () {
 
   });
 
-  Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|content_manager|super_admin|general_manager|manager']], function () {
+  Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|super_admin|general_manager|manager']], function () {
     Route::get('/', [ChatController::class, 'index'])->name('chats');
     Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
     Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
   });
 
-  Route::group(['prefix' => 'cashier', 'middleware' => ['role:museum_admin|cashier', 'check_auth_have_museum']], function () {
+  Route::group(['prefix' => 'cashier', 'middleware' => ['role:museum_admin|cashier|manager', 'check_auth_have_museum']], function () {
     Route::get('/tickets', [CashierController::class, 'index'])->name('cashier.tickets');
     Route::post('/check-coupon', [CashierController::class, 'checkCoupon'])->name('cashier.check.coupon');
     Route::post('/corporative-ticket', [CashierController::class, 'corporativeTicket'])->name('cashier.buy.corporative');
