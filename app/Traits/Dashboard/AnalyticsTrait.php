@@ -17,8 +17,9 @@ trait AnalyticsTrait
     }
     public function ticketsType($museum_id = null)
     {
-
-      $analytic = PurchasedItem::where('id', '>', 0);
+      $currentYear = now()->year;
+      $purchases_ids = Purchase::where('status', 1)->whereYear('created_at', $currentYear)->pluck('id');
+      $analytic = PurchasedItem::whereIn('purchase_id', $purchases_ids);
 
       if ($museum_id != null) {
         $analytic = $analytic->where('museum_id', $museum_id);
@@ -48,35 +49,28 @@ trait AnalyticsTrait
     }
 
 
-    public function totalRevenue()
+    public function totalRevenue($top_museums = null)
     {
-      // $purchases = Purchase::where('status', 1)->get();
+        $currentYear = now()->year;
 
-      // $purchased_items = $purchases->pluck('purchased_items')->flatten();
+        $purchases = Purchase::where('status', 1)->whereYear('created_at', $currentYear)->pluck('id');
+        $purchased_items = PurchasedItem::whereIn('purchase_id', $purchases);
 
-      $purchases = Purchase::where('status', 1)->pluck('id');
-      $purchased_items = PurchasedItem::whereIn('purchase_id', $purchases);
+        $analytic = $purchased_items->where('type', '!=', 'united');
 
-      $analytic = $purchased_items->where('type', '!=', 'united');
-
-      $purchased_items = PurchasedItem::whereIn('purchase_id', $purchases);
-      $purchased_item_id = $purchased_items->where('type', 'united')->pluck('id');
+        $purchased_items = PurchasedItem::whereIn('purchase_id', $purchases);
+        $purchased_item_id = $purchased_items->where('type', 'united')->pluck('id');
 
 
-      $united = [];
-      $united = PurchaseUnitedTickets::whereIn('purchased_item_id', $purchased_item_id);
+        $united = [];
+        $united = PurchaseUnitedTickets::whereIn('purchased_item_id', $purchased_item_id);
 
-      $groupedData = $this->analytic_report_financial($analytic, $united);
-      return $groupedData;
-      // dd($groupedData);
-      // $total = $total
-      //   ->groupBy('musseum_id')
-      //   ->select('museum_id', \DB::raw('SUM(total_price) as total_price'), \DB::raw('SUM(quantity) as quantity'))
-      //   ->get();
-      //   dd($total );
+        $groupedData = $this->analytic_report_financial($analytic, $united, $top_museums);
+        return $groupedData;
+     
     }
 
-    public function analytic_report_financial($analytic, $united)
+    public function analytic_report_financial($analytic, $united, $top_museums = null)
     {
       $analytic = $analytic
         ->groupBy('museum_id')
@@ -92,6 +86,9 @@ trait AnalyticsTrait
       $analytic = $analytic->toArray();
       $united = $united->toArray();
 
+      if($top_museums){
+        return array_merge($analytic, $united);
+      }
 
       return $this->analyticgroupByMuseumId(array_merge($analytic, $united));
 
