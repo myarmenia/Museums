@@ -1,21 +1,15 @@
 {
   "menu": [
     {
-      "url": "/",
-      "name": "Dashboards",
+      "url": "/museum-dashboard",
+      "name": "Վիճակագրություն",
       "icon": "menu-icon tf-icons bx bx-home-circle",
-      "slug": "dashboard",
-      "roles": ["all"],
-      "badge": [
-        "danger",
-        "5"
-      ],
-      "submenu": [
-        {
-          "url": "/",
-          "name": "Analytics",
-          "slug": "dashboard-analytics"
-        }
+      "slug": "museum_dashboard_analytics",
+      "roles": [
+        "museum_admin",
+        "manager",
+        "content_manager",
+        "accountant"
       ]
     },
     {

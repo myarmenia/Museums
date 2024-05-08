@@ -93,7 +93,10 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 
     foreach ($this->roles()->get() as $role) {
       if ($role->interface == "admin" || $role->interface ==  "museum") {
-        return true;
+        return $role->interface;
+      }
+      else{
+        return false;
       }
     }
 
