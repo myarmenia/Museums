@@ -67,7 +67,7 @@ trait AnalyticsTrait
 
         $groupedData = $this->analytic_report_financial($analytic, $united, $top_museums);
         return $groupedData;
-     
+
     }
 
     public function analytic_report_financial($analytic, $united, $top_museums = null)

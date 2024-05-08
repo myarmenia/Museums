@@ -180,13 +180,13 @@
                     <div class="avatar flex-shrink-0 me-3">
                       <span class="avatar-initial rounded bg-label-warning"><i class='bx bx-museum'></i></span>
                     </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="w-100 flex-wrap align-items-center justify-content-between gap-2">
                       <div class="me-2">
                         <small class="text-muted d-block mb-1">Թանգարան</small>
-                        <h6 class="mb-0">{{$museum['museum_name']}}</h6>
+                        <h6 class="mb-0 ">{{$museum['museum_name']}} {{$museum['museum_name']}} </h6>
                       </div>
                       <div class="user-progress d-flex align-items-center gap-1">
-                        <h6 class="mb-0">{{$museum['total_price']}}</h6> <span class="text-muted">դրամ</span>
+                        <h6 class="mb-0 text-warning">{{$museum['total_price']}}</h6> <span class="text-muted">դրամ</span>
                       </div>
                     </div>
                 </li>
