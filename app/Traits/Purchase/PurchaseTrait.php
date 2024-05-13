@@ -384,7 +384,7 @@ trait PurchaseTrait
 
     foreach ($museums as $key => $museum) {
       $price = $museum->standart_tickets ? $museum->standart_tickets->price : 0;
-      $discont_price = $price - ($price * $coefficient);
+      $discont_price = round($price - ($price * $coefficient));
       $total_price += $discont_price;
       $single_museum_total_price = $data['quantity'] * $discont_price;
       $data['united'][$key] = [
@@ -475,7 +475,7 @@ trait PurchaseTrait
     $data = array_filter($data, function ($value) {
       return $value['type'] == 'united';
     });
-     
+
 
     if (count($data) > 0) {
 
