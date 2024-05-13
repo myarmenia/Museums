@@ -139,11 +139,8 @@
                     </div>
                 </form>
             </div>
-            <div class="table-responsive text-nowrap">
 
-                <x-report-result :data="$data"></x-report-result>
-
-            </div>
+            <x-report-result :data="$data"></x-report-result>
 
         </div>
     </div>
