@@ -15,7 +15,8 @@
   var totalRevenueObj = JSON.parse(totalRevenueResult)
   var attendanceByCountryObj = JSON.parse(attendanceByCountry)
   var attendanceByAgeObj = JSON.parse(attendanceByAge)
-  console.log(totalRevenueObj.total_prices);
+  // console.log(totalRevenueObj.total_prices);
+  
   // Total Revenue Report Chart - Bar Chart
   // --------------------------------------------------------------------
   const totalRevenueChartEl = document.querySelector('#totalRevenueChart'),
@@ -81,7 +82,7 @@
       },
       xaxis: {
         // categories: ['January', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        categories: totalRevenueObj.museum_names,
+        categories: totalRevenueObj.item_names,
         labels: {
           style: {
             fontSize: '8px',

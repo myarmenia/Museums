@@ -12,11 +12,26 @@ use Illuminate\Support\Facades\DB;
 trait AnalyticsAttendanceByAge
 {
 
-    public function groupAgeForAllMuseum()
+    public function groupAgeForAllMuseum($museum_id = null)
     {
         $currentYear = now()->year;
 
         $purchases = Purchase::where('status', 1)->whereYear('created_at', $currentYear)->with('user', 'person_purchase')->get();
+
+        // ========== for single useum ====================
+        if($museum_id != null){
+
+          $purchased_items = $purchases->pluck('purchased_items')->flatten()->where('museum_id', $museum_id)->pluck('purchase_id')->toArray();
+          $purchase_united_tickets = $purchases->pluck('purchased_items')->flatten()
+            ->pluck('purchase_united_tickets')->flatten()->where('museum_id', $museum_id)
+            ->pluck('purchased_item')->pluck('purchase_id')->toArray();
+
+          $purchases_ids = array_merge($purchased_items, $purchase_united_tickets);
+          $purchases = Purchase::whereIn('id', $purchases_ids)->get();
+        }
+        // ========== end for single useum ====================
+
+
         $analytics = [
           'junior' => 0,
           'young' => 0,
@@ -73,7 +88,6 @@ trait AnalyticsAttendanceByAge
 
         return null;
     }
-
 
 
 }
