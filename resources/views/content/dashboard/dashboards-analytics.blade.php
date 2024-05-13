@@ -154,8 +154,8 @@
     <!-- Top Museums -->
     @php
         $currentDate = now();
-        $start_date = $currentDate->startOfYear()->format('d-m-Y');
-        $end_date = $currentDate->endOfYear()->format('d-m-Y');
+        $start_date = $currentDate->startOfYear()->format('d.m.Y');
+        $end_date = $currentDate->endOfYear()->format('d.m.Y');
     @endphp
     <div class="col-md-6 col-lg-4 order-1 mb-4">
       <div class="card h-100">
