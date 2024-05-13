@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -29,40 +30,34 @@ class LoginController extends Controller
    *
    * @var string
    */
-
-  // protected $redirectTo = RouteServiceProvider::HOME;
-  protected function redirectTo()
+  protected function authenticated(Request $request, $user)
   {
+      if ($user->status) {
+          if($user->isAdmin() ){
 
-    $user = auth('web')->user();
+              if ($user->isAdmin() == "admin") {
+                  return redirect('/');
+              }
+              if ($user->isAdmin() == "museum") {
 
-    if ($user->status) {
-      $user_interface = $user->isAdmin();
-      if($user_interface){
+                  return redirect('/museum-dashboard');
+              }
 
-          if ($user_interface == "admin") {
-            return "/";
+          }else{
+
+            Auth::logout();
+            return redirect('/');
           }
-          if ($user_interface == "museum") {
-            return "/museum-dashboard";
-          }
 
-      }else{
+      } else {
 
-        Auth::logout();
-        return '/';
+          session(['errorMessage' => 'Ձեր հաշիվն ապաակտիվացված է:']);
+          Auth::logout();
+          return redirect('/');
       }
 
-    } else {
-      // dd(999);
-
-
-      session(['errorMessage' => 'Ձեր հաշիվն ապաակտիվացված է:']);
-      Auth::logout();
-      return '/';
-    }
-
   }
+
 
   /**
    * Create a new controller instance.

@@ -389,6 +389,15 @@ if (!function_exists('getTranslateTicketTitl')) {
         return $title;
       }
   }
+
+  if (!function_exists('getMonths')) {
+    function getMonths()
+    {
+      return ['Հունվար', 'Փետրվար', 'Մարտ', 'Ապրիլ', 'Մայիս', 'Հունիս', 'Հուլիս', 'Օգօստոս', 'Սեպտեմբեր', 'Հոկտեմբեր', 'Նոյեմբեր','Դեկտեմբեր'];
+    }
+
+  }
+
 }
 
 
