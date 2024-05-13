@@ -13,26 +13,26 @@ class ForgotPasswordService
 {
   public function sendResetLink($email)
   {
-    $user = User::where('email', $email)->whereHas('roles', function ($query) {
-                $query->where('name', 'visitor');
-            })->first();
+    try {
+      $user = User::where('email', $email)->whereHas('roles', function ($query) {
+        $query->where('name', 'visitor');
+      })->first();
 
-    if($user->google_id){
-      return ['success' => false, 'reason' => 'google-user-error-password'];
-    }
+      if ($user) {
+        if ($user->google_id) {
+          return ['success' => false, 'reason' => 'google-user-error-password'];
+        }
+        $token = mt_rand(10000, 99999);
+        $email = $user->email;
+        PasswordReset::updateOrCreate(
+          ["email" => $email],
+          ["token" => $token]
+        );
 
-    if ($user) {
-      $token = mt_rand(10000, 99999);
-      $email = $user->email;
-      PasswordReset::updateOrCreate(
-        ["email" => $email],
-        ["token" => $token]
-      );
-
-      Mail::send(new SendForgotToken($email, $token));
-
+        Mail::send(new SendForgotToken($email, $token));
+      }
       return ['success' => true];
-    } else {
+    } catch (\Throwable $th) {
       return ['success' => false, 'reason' => 'something-went-wrong'];
     }
 
@@ -64,22 +64,22 @@ class ForgotPasswordService
   }
 
   public function resendForgot($data)
-    {
-        $email = $data['email'];
+  {
+    $email = $data['email'];
 
-        if($forgot = PasswordReset::where('email', $email)->first()){
-            $token = mt_rand(10000, 99999);
-            $forgot->update([
-                'token' => $token
-            ]);
+    if ($forgot = PasswordReset::where('email', $email)->first()) {
+      $token = mt_rand(10000, 99999);
+      $forgot->update([
+        'token' => $token
+      ]);
 
-            Mail::send(new SendForgotToken($email, $token));
+      Mail::send(new SendForgotToken($email, $token));
 
-            return true;
-        }
-
-        return false;
-        
+      return true;
     }
-  
+
+    return false;
+
+  }
+
 }

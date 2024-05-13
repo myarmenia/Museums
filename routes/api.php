@@ -31,7 +31,6 @@ use App\Http\Controllers\API\User\ListActiveQR;
 use App\Http\Controllers\API\User\OrderHistoryController;
 use App\Http\Controllers\API\User\SendQRToMailController;
 use App\Http\Controllers\Email\SendYourQuestionController;
-use App\Http\Controllers\API\TrialCourseController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
 use App\Http\Controllers\API\Museum\SinggleMuseumEventsController;
 use App\Http\Controllers\API\Museum\SingleMuseumEventsController;
@@ -112,7 +111,6 @@ Route::group(['middleware' => ['api']], function ($router) {
     Route::post('check-forgot-token', [ForgotPasswordController::class, 'checkForgotToken']);
     Route::post('send-new-password', [ForgotPasswordController::class, 'sendNewPassword']);
     Route::post('resend-forgot', [ForgotPasswordController::class, 'resendForgot']);
-    Route::post('trial-course', [TrialCourseController::class, 'trialCourse']);
     Route::post('send-order', SendOrderController::class);
 
 
