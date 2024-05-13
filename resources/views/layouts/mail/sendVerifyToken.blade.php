@@ -11,11 +11,7 @@
                 <table width="600px" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background-color: white;">
                     <tr>
                         <td style="padding: 20px; text-align: left;">
-                            <picture>
-                                <source media="(min-width:650px)" srcset="img_pink_flowers.jpg">
-                                <source media="(min-width:465px)" srcset="img_white_flower.jpg">
-                                <img src="https://museum.gorc-ka.am/assets/img/mail-img/menu-search-logo.png" alt="Museum Logo" style="width: 100px; height: auto;">
-                            </picture>
+                            <img src="https://museum.gorc-ka.am/assets/img/mail-img/mobile-museum-logo.png" alt="Museum Logo" style="width: 130px; height: auto;">
                         </td>
                     </tr>
                     <tr>
@@ -29,9 +25,9 @@
                         <td style="padding: 20px; text-align: center;">
                             <h1 style="font-size: 30px; font-weight: bold; margin: 0;">Բարի գալուստ Հայաստանի թանգարաններ</h1>
                             <p style="font-size: 14px; line-height: 22px; margin: 10px 0;">Եկեք միասին այցելենք թանգարաններ։ Ձեր հաշիվը հաստատելու համար գրանցեք ստորև նշված կոդը։</p>
-                            <h1 style="font-size: 30px; font-weight: bold; margin: 0;">Добро пожаловать во все музеи Армении</h1>
+                            <h1 style="font-size: 30px; font-weight: bold; margin: 0;">Добро пожаловать в музеи Армении</h1>
                             <p style="font-size: 14px; line-height: 22px; margin: 10px 0;">Давайте вместе посещать музеи․Ввидите код указанный ниже для подтверждения регистрации.</p>
-                            <h1 style="font-size: 30px; font-weight: bold; margin: 0;">Welcome to All museums of Armenia</h1>
+                            <h1 style="font-size: 30px; font-weight: bold; margin: 0;">Welcome to museums of Armenia</h1>
                             <p style="font-size: 14px; line-height: 22px; margin: 10px 0;">Let's visit museums together․See the code below to confirm your registration.</p>
                         </td>
                     </tr>
