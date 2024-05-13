@@ -44,7 +44,7 @@
   </div>
   <div class="row">
     <!-- Attendance By Country -->
-    <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+    {{-- <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between pb-0">
           <div class="card-title mb-0">
@@ -89,14 +89,14 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!--/ Attendance By Country -->
 
 
 
 
     <!-- Attendance By Age -->
-    <div class="col-md-6 col-lg-4 col-xl-4 order-2 mb-4">
+    {{-- <div class="col-md-6 col-lg-4 col-xl-4 order-2 mb-4">
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between pb-0">
           <div class="card-title mb-0">
@@ -137,11 +137,11 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!--/ Attendance By Age -->
 
     <!-- Top Museums -->
-    @php
+    {{-- @php
         $currentDate = now();
         $start_date = $currentDate->startOfYear()->format('d-m-Y');
         $end_date = $currentDate->endOfYear()->format('d-m-Y');
@@ -169,10 +169,10 @@
                     <div class="avatar flex-shrink-0 me-3">
                       <span class="avatar-initial rounded bg-label-warning"><i class='bx bx-museum'></i></span>
                     </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class=" w-100 align-items-center justify-content-between gap-2">
                       <div class="me-2">
                         <small class="text-muted d-block mb-1">Թանգարան</small>
-                        <h6 class="mb-0">{{$museum['museum_name']}}</h6>
+                        <h6 class="mb-0">{{$museum['museum_name']}} cfffffffffffffffffff</h6>
                       </div>
                       <div class="user-progress d-flex align-items-center gap-1">
                         <h6 class="mb-0">{{$museum['total_price']}}</h6> <span class="text-muted">դրամ</span>
@@ -184,14 +184,14 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!--/ Top Museums -->
 
   </div>
 @endsection
-<script>
+{{-- <script>
       var totalRevenueResult =  '<?php echo $total_revenue ?>';
       var attendanceByCountry = '<?php echo $attendance_by_country ?>'
       var totalByCount = {{$total_by_count}}
       var attendanceByAge = '<?php echo $attendance_by_age_arr ?>'
-</script>
+</script> --}}

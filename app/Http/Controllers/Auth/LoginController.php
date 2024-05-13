@@ -33,12 +33,20 @@ class LoginController extends Controller
   // protected $redirectTo = RouteServiceProvider::HOME;
   protected function redirectTo()
   {
-    // dd(88);
-    $user = Auth::user();
+
+    $user = auth('web')->user();
 
     if ($user->status) {
-      if(Auth::user()->isAdmin() ){
-        return "/";
+      $user_interface = $user->isAdmin();
+      if($user_interface){
+
+          if ($user_interface == "admin") {
+            return "/";
+          }
+          if ($user_interface == "museum") {
+            return "/museum-dashboard";
+          }
+
       }else{
 
         Auth::logout();

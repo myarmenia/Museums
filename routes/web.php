@@ -54,13 +54,14 @@ use App\Http\Controllers\cashier\EventTicket;
 use App\Http\Controllers\cashier\SubscriptionTicket;
 use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\Corporative\CorporativeSaleController;
+use App\Http\Controllers\Dashboard\AnalyticsController;
+use App\Http\Controllers\Dashboard\SingleMuseumAnalyticsController;
 use App\Http\Controllers\museum\MuseumController;
 use App\Http\Controllers\NodeApiController;
 use App\Http\Controllers\return_ticket\ReturnTicketController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\dashboard\Analytics;
 use App\Http\Controllers\pages\AccountSettingsAccount;
 use App\Http\Controllers\pages\AccountSettingsNotifications;
 use App\Http\Controllers\pages\AccountSettingsConnections;
@@ -99,19 +100,26 @@ use App\Http\Controllers\tables\Basic as TablesBasic;
 use Illuminate\Http\Request;
 
 // authentication
+Auth::routes(['register' => false]);
 
 Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 
 // Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
 Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])->name('auth-reset-password-basic');
-Auth::routes(['register' => false]);
 
 
 // Route::post('/web/login-check', [AuthController::class, 'login'])->name('web-login-check');
 Route::get('/test-qr', [NodeApiController::class, 'test']);
 Route::group(['middleware' => ['auth']], function () {
   // Main Page Route
-  Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
+  Route::group(['middleware' => ['role:super_admin|general_manager|chief_accountant']], function () {
+      Route::get('/', AnalyticsController::class)->name('dashboard_analytics');
+  });
+
+  Route::group(['middleware' => ['role:museum_admin|manager|content_manager']], function () {
+    Route::get('/museum-dashboard', SingleMuseumAnalyticsController::class)->name('museum_dashboard_analytics');
+  });
+
   // Route::resource('roles', RoleController::class);
   Route::resource('users', UserController::class);
   Route::get('users-visitors', [UserController::class, 'users_visitors'])->name('users_visitors');

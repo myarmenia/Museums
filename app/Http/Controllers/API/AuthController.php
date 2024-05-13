@@ -76,7 +76,6 @@ class AuthController extends BaseController
 
     public function authGoogle(Request $request)
     {
-        //add comment
         $token = $request->input('token');
 
         $client = new Google_Client();
@@ -86,18 +85,30 @@ class AuthController extends BaseController
 
         $email = $payload['email'];
 
-        $user = User::where('email', $email)->firstOrCreate([
+        $user = User::where('email', $email)->first();
+
+        if($user && $user->password){
+            return response()->json(['success' => false, 'message' => translateMessageApi('google-duplicate-email')],500);
+        }
+
+        $googleUser = $user->firstOrCreate([
             'name' => $payload['given_name'],
             'surname' => $payload['family_name'],
             'email' => $email,
             'google_id' => $payload['sub'],
             'status' => 1,
         ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        return response()->json(['success' => true, 'token' => $token, 'user' => $user]);
        
+        if(!$googleUser->hasRole('visitor')){
+            $googleUser->assignRole('visitor');
+        }
+
+        $googleUser['card_count'] = $googleUser->carts()->get()->count(); 
+        $googleUser['country_key'] = $googleUser->country ? $googleUser->country->key : null;
+
+        $token = JWTAuth::fromUser($googleUser);
+
+        return response()->json(['success' => true, 'access_token' => $token, 'authUser' => $googleUser]);
     }
 
     // public function refresh()
