@@ -17,6 +17,10 @@ class ForgotPasswordService
                 $query->where('name', 'visitor');
             })->first();
 
+    if($user->google_id){
+      return ['success' => false, 'reason' => 'google-user-error-password'];
+    }
+
     if ($user) {
       $token = mt_rand(10000, 99999);
       $email = $user->email;
@@ -27,9 +31,9 @@ class ForgotPasswordService
 
       Mail::send(new SendForgotToken($email, $token));
 
-      return true;
+      return ['success' => true];
     } else {
-      return false;
+      return ['success' => false, 'reason' => 'something-went-wrong'];
     }
 
   }
