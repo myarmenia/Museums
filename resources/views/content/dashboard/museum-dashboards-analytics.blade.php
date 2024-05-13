@@ -1,7 +1,17 @@
 @extends('layouts/contentNavbarLayout')
 
 @section('title', 'Dashboard - Analytics')
+@section('vendor-style')
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/apex-charts/apex-charts.css')}}">
+@endsection
 
+@section('vendor-script')
+<script src="{{asset('assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
+@endsection
+
+@section('page-script')
+<script src="{{asset('assets/js/dashboards-analytics.js')}}"></script>
+@endsection
 
 @section('content')
 
@@ -33,7 +43,7 @@
         <div class="card">
           <div class="row row-bordered g-0">
             <div class="col-md-12">
-              <h5 class="card-header m-0 me-2 pb-3">Total Revenue</h5>
+              <h5 class="card-header m-0 me-2 pb-3">Վիճակագրություն ըստ ամիսների</h5>
               <div id="totalRevenueChart" class="px-2"></div>
             </div>
           </div>
@@ -44,7 +54,7 @@
   </div>
   <div class="row">
     <!-- Attendance By Country -->
-    {{-- <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+    <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between pb-0">
           <div class="card-title mb-0">
@@ -89,14 +99,14 @@
           </ul>
         </div>
       </div>
-    </div> --}}
+    </div>
     <!--/ Attendance By Country -->
 
 
 
 
     <!-- Attendance By Age -->
-    {{-- <div class="col-md-6 col-lg-4 col-xl-4 order-2 mb-4">
+    <div class="col-md-6 col-lg-4 col-xl-4 order-2 mb-4">
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between pb-0">
           <div class="card-title mb-0">
@@ -137,7 +147,7 @@
           </ul>
         </div>
       </div>
-    </div> --}}
+    </div>
     <!--/ Attendance By Age -->
 
     <!-- Top Museums -->
@@ -189,9 +199,10 @@
 
   </div>
 @endsection
-{{-- <script>
-      var totalRevenueResult =  '<?php echo $total_revenue ?>';
-      var attendanceByCountry = '<?php echo $attendance_by_country ?>'
-      var totalByCount = {{$total_by_count}}
+<script>
+      var totalRevenueResult =  '<?php echo $analitics_by_month ?>';
       var attendanceByAge = '<?php echo $attendance_by_age_arr ?>'
-</script> --}}
+      var attendanceByCountry = '<?php echo $attendance_by_country ?>'
+      // console.log(totalRevenueResult)
+
+</script>

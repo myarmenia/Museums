@@ -91,14 +91,14 @@ class AuthController extends BaseController
             return response()->json(['success' => false, 'message' => translateMessageApi('google-duplicate-email')],500);
         }
 
-        $googleUser = $user->firstOrCreate([
+        $googleUser = User::where('email', $email)->firstOrCreate([
             'name' => $payload['given_name'],
             'surname' => $payload['family_name'],
             'email' => $email,
             'google_id' => $payload['sub'],
             'status' => 1,
         ]);
-       
+
         if(!$googleUser->hasRole('visitor')){
             $googleUser->assignRole('visitor');
         }

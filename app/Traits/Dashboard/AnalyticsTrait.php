@@ -65,12 +65,12 @@ trait AnalyticsTrait
         $united = [];
         $united = PurchaseUnitedTickets::whereIn('purchased_item_id', $purchased_item_id);
 
-        $groupedData = $this->analytic_report_financial($analytic, $united, $top_museums);
+        $groupedData = $this->analytic_financial($analytic, $united, $top_museums);
         return $groupedData;
 
     }
 
-    public function analytic_report_financial($analytic, $united, $top_museums = null)
+    public function analytic_financial($analytic, $united, $top_museums = null)
     {
       $analytic = $analytic
         ->groupBy('museum_id')
@@ -125,7 +125,7 @@ trait AnalyticsTrait
 
         return [
           'total_prices' => $total_prices,
-          'museum_names' => $museum_names
+          'item_names' => $museum_names
         ];
 
     }
