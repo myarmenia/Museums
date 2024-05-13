@@ -95,7 +95,7 @@ trait ReportTrait
   {
     $report = $report
       ->groupBy('museum_id', 'type')
-      ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
+      ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'))
       ->get();
 
     $united = $united->groupBy('museum_id')
@@ -123,7 +123,7 @@ trait ReportTrait
   {
     $report = $report
       ->groupBy('museum_id', 'type')
-      ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'), \DB::raw('SUM(quantity) as quantity'))
+      ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
       ->get();
 
     $united = $united->groupBy('museum_id')
@@ -153,7 +153,7 @@ trait ReportTrait
   {
     $report = $report
       ->groupBy('museum_id', 'type')
-      ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(quantity) as quantity'))
+      ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
       ->get();
 
     $united = $united->groupBy('museum_id')
