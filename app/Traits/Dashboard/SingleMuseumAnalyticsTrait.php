@@ -11,89 +11,82 @@ use Illuminate\Support\Facades\DB;
 trait SingleMuseumAnalyticsTrait
 {
 
-
-
-
-
-
-  public function totalRevenue($museum_id)
+  public function analyticsByMonth($museum_id)
   {
     $currentYear = now()->year;
 
-    $purchases = Purchase::where('status', 1)->whereYear('created_at', $currentYear)->pluck('id');
-    $purchased_items = PurchasedItem::whereIn('purchase_id', $purchases);
+    $purchases_ids = Purchase::where('status', 1)->whereYear('created_at', $currentYear)->pluck('id');
+    $purchased_items = PurchasedItem::whereIn('purchase_id', $purchases_ids);
 
     $analytic = $purchased_items->where('museum_id', $museum_id)->where('type', '!=', 'united');
 
-    $purchased_items = PurchasedItem::whereIn('purchase_id', $purchases);
-    $purchased_item_id = $purchased_items->where('museum_id', $museum_id)->where('type', 'united')->pluck('id');
+    $purchased_items = PurchasedItem::whereIn('purchase_id', $purchases_ids);
+    $purchased_item_ids = $purchased_items->where('type', 'united')->pluck('id');
 
 
     $united = [];
-    $united = PurchaseUnitedTickets::whereIn('purchased_item_id', $purchased_item_id);
+    $united = PurchaseUnitedTickets::whereIn('purchased_item_id', $purchased_item_ids)->where('museum_id', $museum_id);
 
-    $groupedData = $this->analytic_report_financial($analytic, $united);
+    $groupedData = $this->analytic_financial_by_month($analytic, $united);
     return $groupedData;
 
   }
 
-  public function analytic_report_financial($analytic, $united)
+  public function analytic_financial_by_month($analytic, $united)
   {
-    $analytic = $analytic
-      ->groupBy('museum_id')
-      ->select('museum_id', \DB::raw('SUM(total_price) as total_price'))
-      ->get();
-
-    $united = $united->groupBy('museum_id')
-      ->select('museum_id', \DB::raw('SUM(total_price) as total_price'))
-      ->get();
 
 
+      $analytic = $analytic->selectRaw('MONTH(created_at) as month, SUM(total_price) as total_price')
+        ->whereYear('created_at', date('Y'))
+        ->groupByRaw('MONTH(created_at)')
+        ->get();
 
-    $analytic = $analytic->toArray();
-    $united = $united->toArray();
+      $united = $united->selectRaw('MONTH(created_at) as month, SUM(total_price) as total_price')
+        ->whereYear('created_at', date('Y'))
+        ->groupByRaw('MONTH(created_at)')
+        ->get();
 
-    // if ($top_museums) {
-    //   return array_merge($analytic, $united);
-    // }
 
-    return $this->analyticgroupByMuseumId(array_merge($analytic, $united));
+      $analytic = $analytic->toArray();
+      $united = $united->toArray();
+
+
+      return $this->analyticgroupByMonth(array_merge($analytic, $united));
 
   }
-  public function analyticgroupByMuseumId($data)
+  public function analyticgroupByMonth($data)
   {
 
-    $groupedData = [];
+      $groupedData = [
+          '1' => 0,
+          '2' => 0,
+          '3' => 0,
+          '4' => 0,
+          '5' => 0,
+          '6' => 0,
+          '7' => 0,
+          '8' => 0,
+          '9' => 0,
+          '10' => 0,
+          '11' => 0,
+          '12' => 0
+      ];
 
-    // Iterate through each item in the original data
-    foreach ($data as $item) {
-      $museumId = $item['museum_id'];
-      $price = $item['total_price'];
+      foreach ($data as $key => $item) {
+          $month_number = $item['month'];
 
-      // Check if museum_id exists in $groupedData array
-      if (isset($groupedData[$museumId])) {
-        // If museum_id exists, add the price to the existing sum
-        $groupedData[$museumId] += $price;
-      } else {
-        // If museum_id doesn't exist, create a new entry with the price
-        $groupedData[$museumId] = $price;
+          if (isset($groupedData[$month_number])) {
+              $groupedData[$month_number] += $item['total_price'];
+          }
+          else {
+              $groupedData[$month_number] = $item['total_price'];
+          }
       }
-    }
 
-    $museum_ids = array_keys($groupedData);
-    $total_prices = array_values($groupedData);
-
-    $museum_names = [];
-
-    foreach ($museum_ids as $key => $value) {
-      $museum_name = MuseumTranslation::where(['museum_id' => $value, 'lang' => 'am'])->first()->name;
-      array_push($museum_names, $museum_name);
-    }
-
-    return [
-      'total_prices' => $total_prices,
-      'museum_names' => $museum_names
-    ];
+      return [
+        'total_prices' => array_values($groupedData),
+        'item_names' => getMonths()
+      ];
 
   }
 
