@@ -61,10 +61,14 @@ class ReturnTicketService
           $totalPrice = 0;
         } else {
           $oneTicketPrice = (int) $purchasePrice / (int) $purchaseQunatity;
-          $totalPrice = $purchasePrice - $oneTicketPrice;
+          $totalPrice = (int) $purchaseItem->returned_total_price + $oneTicketPrice;
         }
+        $returnedQuantity = $purchaseItem->returned_quantity + 1;
+        $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $oneTicketPrice;
 
-        $purchaseItem->update(['quantity' => $purchaseQunatity-1, 'total_price' => $totalPrice]);
+        $purchaseItem->update(['returned_quantity' => $returnedQuantity, 'returned_total_price' => $totalPrice]);
+        $purchaseItem->purchase->update(['returned_amount' => $purchaseNewAmount]);
+
         DB::commit();
         if ($ticket) {
           return ['success' => true];
