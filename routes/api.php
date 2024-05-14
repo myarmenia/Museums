@@ -29,7 +29,6 @@ use App\Http\Controllers\API\User\DeleteUserController;
 use App\Http\Controllers\API\User\ListActiveQR;
 use App\Http\Controllers\API\User\OrderHistoryController;
 use App\Http\Controllers\API\User\SendQRToMailController;
-use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
 use App\Http\Controllers\API\Museum\SinggleMuseumEventsController;
 use App\Http\Controllers\API\Museum\SingleMuseumEventsController;
@@ -96,10 +95,6 @@ Route::group(['middleware' => ['api']], function ($router) {
           Route::get('delete-user', DeleteUserController::class);
         });
 
-    });
-
-    Route::group(['prefix' => 'email'], function ($router) {
-        Route::post('clientQuestion', SendYourQuestionController::class);
     });
 
     Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLink']);
