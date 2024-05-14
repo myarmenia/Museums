@@ -58,17 +58,9 @@ use App\Http\Controllers\return_ticket\ReturnTicketController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\pages\AccountSettingsAccount;
-use App\Http\Controllers\pages\AccountSettingsNotifications;
-use App\Http\Controllers\pages\AccountSettingsConnections;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
-use App\Http\Controllers\cards\CardBasic;
-use App\Http\Controllers\icons\Boxicons;
-use App\Http\Controllers\form_layouts\VerticalForm;
-use App\Http\Controllers\form_layouts\HorizontalForm;
 use App\Http\Controllers\IncrementController;
-use App\Http\Controllers\tables\Basic as TablesBasic;
 
 // authentication
 Auth::routes(['register' => false]);
@@ -93,25 +85,6 @@ Route::group(['middleware' => ['auth']], function () {
   // Route::resource('roles', RoleController::class);
   Route::resource('users', UserController::class);
   Route::get('users-visitors', [UserController::class, 'users_visitors'])->name('users_visitors');
-
-
-  // pages
-  Route::get('/pages/account-settings-account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account');
-  Route::get('/pages/account-settings-notifications', [AccountSettingsNotifications::class, 'index'])->name('pages-account-settings-notifications');
-  Route::get('/pages/account-settings-connections', [AccountSettingsConnections::class, 'index'])->name('pages-account-settings-connections');
-
-  // cards
-  Route::get('/cards/basic', [CardBasic::class, 'index'])->name('cards-basic');
-
-  // icons
-  Route::get('/icons/boxicons', [Boxicons::class, 'index'])->name('icons-boxicons');
-
-  // form layouts
-  Route::get('/form/layouts-vertical', [VerticalForm::class, 'index'])->name('form-layouts-vertical');
-  Route::get('/form/layouts-horizontal', [HorizontalForm::class, 'index'])->name('form-layouts-horizontal');
-
-  // tables
-  Route::get('/tables/basic', [TablesBasic::class, 'index'])->name('tables-basic');
 
   Route::post('change-status', [ChangeStatusController::class, 'change_status'])->name('change_status');
   Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class, 'index'])->name('delete_item');
