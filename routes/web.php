@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\Banner\BannerEditController;
 use App\Http\Controllers\Admin\Banner\BannerListController;
 use App\Http\Controllers\Admin\Banner\BannerStoreController;
 use App\Http\Controllers\Admin\Banner\BannerUpdateController;
-use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ChangeStatusController;
 use App\Http\Controllers\Admin\ChangeStyleController;
 use App\Http\Controllers\Admin\DeleteItemController;
@@ -19,7 +18,6 @@ use App\Http\Controllers\Admin\EducationalPrograms\GetCalendarDataController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\GetDayReservationsController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveStoreController;
 use App\Http\Controllers\Admin\EducationalPrograms\Reserve\ReserveUpdateController;
-use App\Http\Controllers\Admin\Events\EventConfigComponentController;
 use App\Http\Controllers\Admin\Events\EventConfigController;
 use App\Http\Controllers\Admin\Events\EventCreateController;
 use App\Http\Controllers\Admin\Events\EventEditController;
@@ -39,7 +37,6 @@ use App\Http\Controllers\Admin\Tickets\SubscriptionTicketController;
 use App\Http\Controllers\Admin\Tickets\UnitedTicketController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\News\NewsController;
-use App\Http\Controllers\Admin\Product\CreateController;
 use App\Http\Controllers\Admin\Product\ProductCreateController;
 use App\Http\Controllers\Admin\Product\ProductEditController;
 use App\Http\Controllers\Admin\Product\ProductListController;
@@ -57,7 +54,6 @@ use App\Http\Controllers\Corporative\CorporativeSaleController;
 use App\Http\Controllers\Dashboard\AnalyticsController;
 use App\Http\Controllers\Dashboard\SingleMuseumAnalyticsController;
 use App\Http\Controllers\museum\MuseumController;
-use App\Http\Controllers\NodeApiController;
 use App\Http\Controllers\return_ticket\ReturnTicketController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
@@ -66,11 +62,8 @@ use App\Http\Controllers\pages\AccountSettingsAccount;
 use App\Http\Controllers\pages\AccountSettingsNotifications;
 use App\Http\Controllers\pages\AccountSettingsConnections;
 use App\Http\Controllers\authentications\LoginBasic;
-use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
 use App\Http\Controllers\cards\CardBasic;
-use App\Http\Controllers\extended_ui\PerfectScrollbar;
-use App\Http\Controllers\extended_ui\TextDivider;
 use App\Http\Controllers\icons\Boxicons;
 use App\Http\Controllers\form_elements\BasicInput;
 use App\Http\Controllers\form_elements\InputGroups;
@@ -78,7 +71,6 @@ use App\Http\Controllers\form_layouts\VerticalForm;
 use App\Http\Controllers\form_layouts\HorizontalForm;
 use App\Http\Controllers\IncrementController;
 use App\Http\Controllers\tables\Basic as TablesBasic;
-use Illuminate\Http\Request;
 
 // authentication
 Auth::routes(['register' => false]);
@@ -90,7 +82,6 @@ Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])
 
 
 // Route::post('/web/login-check', [AuthController::class, 'login'])->name('web-login-check');
-Route::get('/test-qr', [NodeApiController::class, 'test']);
 Route::group(['middleware' => ['auth']], function () {
   // Main Page Route
   Route::group(['middleware' => ['role:super_admin|general_manager|chief_accountant']], function () {
@@ -113,10 +104,6 @@ Route::group(['middleware' => ['auth']], function () {
 
   // cards
   Route::get('/cards/basic', [CardBasic::class, 'index'])->name('cards-basic');
-
-  // extended ui
-  Route::get('/extended/ui-perfect-scrollbar', [PerfectScrollbar::class, 'index'])->name('extended-ui-perfect-scrollbar');
-  Route::get('/extended/ui-text-divider', [TextDivider::class, 'index'])->name('extended-ui-text-divider');
 
   // icons
   Route::get('/icons/boxicons', [Boxicons::class, 'index'])->name('icons-boxicons');
