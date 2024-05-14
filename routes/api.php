@@ -46,7 +46,6 @@ use App\Http\Controllers\API\Shop\SingleProductController;
 use App\Http\Controllers\API\Student\DashboardController;
 use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
-use App\Http\Controllers\Email\SendFeedbackController;
 use App\Http\Controllers\Turnstile\CheckQRController;
 use App\Http\Controllers\Turnstile\TurnstileLoginController;
 use App\Http\Controllers\Turnstile\TurnstileRegisterController;
@@ -101,7 +100,6 @@ Route::group(['middleware' => ['api']], function ($router) {
     });
 
     Route::group(['prefix' => 'email'], function ($router) {
-        Route::post('feedback', SendFeedbackController::class);
         Route::post('clientQuestion', SendYourQuestionController::class);
     });
 
