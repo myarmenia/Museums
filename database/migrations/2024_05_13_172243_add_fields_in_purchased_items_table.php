@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('purchased_items', function (Blueprint $table) {
-          $table->integer('returned_quantity')->defoult(0)->after('total_price');
-          $table->integer('returned_total_price')->defoult(0)->after('returned_quantity');
+          $table->integer('returned_quantity')->default(0)->after('total_price');
+          $table->integer('returned_total_price')->default(0)->after('returned_quantity');
         });
     }
 
