@@ -65,8 +65,6 @@ use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
 use App\Http\Controllers\cards\CardBasic;
 use App\Http\Controllers\icons\Boxicons;
-use App\Http\Controllers\form_elements\BasicInput;
-use App\Http\Controllers\form_elements\InputGroups;
 use App\Http\Controllers\form_layouts\VerticalForm;
 use App\Http\Controllers\form_layouts\HorizontalForm;
 use App\Http\Controllers\IncrementController;
@@ -107,10 +105,6 @@ Route::group(['middleware' => ['auth']], function () {
 
   // icons
   Route::get('/icons/boxicons', [Boxicons::class, 'index'])->name('icons-boxicons');
-
-  // form elements
-  Route::get('/forms/basic-inputs', [BasicInput::class, 'index'])->name('forms-basic-inputs');
-  Route::get('/forms/input-groups', [InputGroups::class, 'index'])->name('forms-input-groups');
 
   // form layouts
   Route::get('/form/layouts-vertical', [VerticalForm::class, 'index'])->name('form-layouts-vertical');
