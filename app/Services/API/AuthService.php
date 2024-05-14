@@ -4,6 +4,7 @@ namespace App\Services\API;
 use App\Models\API\VerifyUser;
 use App\Models\Country;
 use App\Models\User;
+use Carbon\Carbon;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Arr;
 use App\Mail\SendVerifyToken;
@@ -227,12 +228,14 @@ class AuthService
 
         if($user){
             $updatedUser = auth('api')->user();
+            $updatedUser['birth_date'] = Carbon::createFromFormat('Y.m.d', $updatedUser->birth_date)->toDateString();
             $updatedUser['card_count'] = $updatedUser->carts()->get()->count(); 
+            $updatedUser['country_key'] = $updatedUser->country ? $updatedUser->country->key : null;
+            
             return $updatedUser;
         }
 
         return $user;
-
         
     }
 
