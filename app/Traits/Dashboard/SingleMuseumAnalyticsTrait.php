@@ -36,7 +36,7 @@ trait SingleMuseumAnalyticsTrait
   {
 
 
-      $analytic = $analytic->selectRaw('MONTH(created_at) as month, SUM(total_price) as total_price')
+      $analytic = $analytic->selectRaw('MONTH(created_at) as month, SUM(total_price - returned_total_price) as total_price')
         ->whereYear('created_at', date('Y'))
         ->groupByRaw('MONTH(created_at)')
         ->get();
