@@ -261,7 +261,7 @@ trait CartStoreTrait
 
     foreach ($museums as $key => $museum) {
       $price = $museum->standart_tickets ? $museum->standart_tickets->price : 0;
-      $discont_price = $price - ($price * $coefficient);
+      $discont_price = round($price - ($price * $coefficient));
       $total_price += $discont_price;
       $data['united'][$key] = [
         'museum_id' => $museum->id,
