@@ -21,42 +21,60 @@ trait AnalyticsAttendanceByCountry
 
     $purchases = Purchase::where('status', 1)->whereYear('created_at', $currentYear)->with('user', 'person_purchase')->get();
 
-    // ========== for single useum ====================
-    if($museum_id != null){
-        $purchased_items = $purchases->pluck('purchased_items')->flatten()->where('museum_id', $museum_id)->pluck('purchase_id')->toArray();
-        $purchase_united_tickets = $purchases->pluck('purchased_items')->flatten()
-          ->pluck('purchase_united_tickets')->flatten()->where('museum_id', $museum_id)
-          ->pluck('purchased_item')->pluck('purchase_id')->toArray();
-
-        $purchases_ids = array_merge($purchased_items, $purchase_united_tickets);
-        $purchases = Purchase::whereIn('id', $purchases_ids)->get();
-    }
-    // ========== end for single useum ====================
 
     $aggregatedByCountry = [];
     $countryNames[0] = 'Այլ';
 
 
-
     foreach ($purchases as $purchase) {
       // Determine the country_id based on 'user' or 'person_purchase' relation
       $countryId = $purchase->user->country_id ?? ($purchase->person_purchase->country_id ?? 0);
+        if($museum_id != null){
+            // ========== for single useum ====================
+            $item_ids = PurchasedItem::where(['type' => 'united', 'purchase_id' => $purchase->id])->pluck('id');
+            $item = PurchasedItem::where(['museum_id' => $museum_id, 'purchase_id' => $purchase->id])
+            ->select(\DB::raw('SUM(total_price - returned_total_price) as total_price'))
+            ->pluck('total_price')->toArray();
 
+            $united_item = PurchaseUnitedTickets::whereIn('purchased_item_id', $item_ids)->where('museum_id', $museum_id)
+            ->select(\DB::raw('SUM(total_price) as total_price'))
+            ->pluck('total_price')->toArray();
 
-      if (isset($countryNames[$countryId])) {
-        if (isset($aggregatedByCountry[$countryId])) {
-          $aggregatedByCountry[$countryId] += $purchase->amount;
-        } else {
-          $aggregatedByCountry[$countryId] = $purchase->amount;
+            $new_arr = array_sum($item) + array_sum($united_item);
+
+              if (isset($countryNames[$countryId])) {
+                if (isset($aggregatedByCountry[$countryId])) {
+                  $aggregatedByCountry[$countryId] += $new_arr;
+                } else {
+                  $aggregatedByCountry[$countryId] = $new_arr;
+                }
+              } else {
+                if (isset($aggregatedByCountry[0])) {
+                  $aggregatedByCountry[0] += $new_arr;
+                } else {
+                  $aggregatedByCountry[0] = $new_arr;
+                }
+
+              }
         }
-      } else {
-        if (isset($aggregatedByCountry[0])) {
-          $aggregatedByCountry[0] += $purchase->amount;
-        } else {
-          $aggregatedByCountry[0] = $purchase->amount;
+        else{
+            if (isset($countryNames[$countryId])) {
+              if (isset($aggregatedByCountry[$countryId])) {
+                $aggregatedByCountry[$countryId] += $purchase->amount - $purchase->returned_amount;
+              } else {
+                $aggregatedByCountry[$countryId] = $purchase->amount - $purchase->returned_amount;
+              }
+            } else {
+              if (isset($aggregatedByCountry[0])) {
+                $aggregatedByCountry[0] += $purchase->amount - $purchase->returned_amount;
+              } else {
+                $aggregatedByCountry[0] = $purchase->amount - $purchase->returned_amount;
+              }
+
+            }
         }
 
-      }
+
     }
 
     $aggregatedByCountryWithName = [];

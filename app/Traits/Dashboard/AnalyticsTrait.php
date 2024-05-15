@@ -20,17 +20,29 @@ trait AnalyticsTrait
       $currentYear = now()->year;
       $purchases_ids = Purchase::where('status', 1)->whereYear('created_at', $currentYear)->pluck('id');
       $analytic = PurchasedItem::whereIn('purchase_id', $purchases_ids);
+      $purchase_united_tickets = [];
 
       if ($museum_id != null) {
-        $analytic = $analytic->where('museum_id', $museum_id);
+          $analytic_for_single = PurchasedItem::whereIn('purchase_id', $purchases_ids)->where('museum_id', $museum_id);
+          $purchased_items_ids = $analytic->pluck('id');
+
+          $purchase_united_tickets = PurchaseUnitedTickets::where('museum_id', $museum_id)->whereIn('purchased_item_id', $purchased_items_ids)
+            ->select(\DB::raw('SUM(total_price) as total_price'), \DB::raw('SUM(quantity ) as quantity'))
+            ->get()->toArray();
+
+          $analytic = $analytic_for_single
+            ->groupBy('type')
+            ->select(\DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
+            ->get()->toArray();
+      }
+      else{
+          $analytic = $analytic
+            ->groupBy('type')
+            ->select(\DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
+            ->get()->toArray();
       }
 
-      $analytic = $analytic
-        ->groupBy('type')
-        ->select(\DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'), \DB::raw('SUM(quantity) as quantity'))
-        ->get();
-
-      $analytic = $this->groupTypeKey($analytic);
+      $analytic = $this->groupTypeKey(array_merge($purchase_united_tickets, $analytic));
 
       return $analytic;
 
@@ -41,7 +53,9 @@ trait AnalyticsTrait
 
       $result = [];
       foreach ($data as $key => $value) {
-        $result[$value->type] = $value;
+
+        $type = isset($value['type']) ? $value['type'] : 'united';
+        $result[$type] = $value;
       }
 
       return $result;
@@ -74,7 +88,7 @@ trait AnalyticsTrait
     {
       $analytic = $analytic
         ->groupBy('museum_id')
-        ->select('museum_id', \DB::raw('SUM(total_price) as total_price'))
+        ->select('museum_id', \DB::raw('SUM(total_price - returned_total_price) as total_price'))
         ->get();
 
       $united = $united->groupBy('museum_id')
@@ -86,14 +100,16 @@ trait AnalyticsTrait
       $analytic = $analytic->toArray();
       $united = $united->toArray();
 
-      if($top_museums){
-        return array_merge($analytic, $united);
-      }
+      // if($top_museums){
+      //   // return array_merge($analytic, $united);
+      //   return $this->analyticgroupByTopMuseumId(array_merge($analytic, $united));
 
-      return $this->analyticgroupByMuseumId(array_merge($analytic, $united));
+      // }
+
+      return $this->analyticgroupByMuseumId(array_merge($analytic, $united), $top_museums);
 
     }
-    public function analyticgroupByMuseumId($data)
+    public function analyticgroupByMuseumId($data, $top_museums = null)
     {
 
         $groupedData = [];
@@ -111,6 +127,11 @@ trait AnalyticsTrait
             // If museum_id doesn't exist, create a new entry with the price
             $groupedData[$museumId] = $price;
           }
+        }
+
+        if ($top_museums) {
+            return $groupedData;
+
         }
 
         $museum_ids = array_keys($groupedData);

@@ -21,15 +21,6 @@ trait PaymentCompletionTrait
       $payment->purchase->update(['status' => 1]);
       $this->updateItemQuantity($payment->purchase_id);
 
-
-      // =============== if transaction from cart, delete cart items ======================
-      if ($payment->guard_type == 'cart') {
-        $user = $payment->purchase->user;
-        if ($user) {
-          $user->cart->delete();
-        }
-      }
-
       // =============== get QR via paymant purchase_id ======================
       $generate_qr = $this->getTokenQr($payment->purchase_id);
       if (count($generate_qr) > 0) {
@@ -37,6 +28,14 @@ trait PaymentCompletionTrait
         $email = $payment->purchase->email;
 
         $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
+      }
+
+      // =============== if transaction from cart, delete cart items ======================
+      if ($payment->guard_type == 'cart') {
+        $user = $payment->purchase->user;
+        if ($user) {
+          $user->carts->delete();
+        }
       }
 
     } else {

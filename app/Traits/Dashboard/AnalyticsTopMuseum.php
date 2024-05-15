@@ -16,29 +16,21 @@ trait AnalyticsTopMuseum
   {
       $museums = $this->totalRevenue('top');
 
-      usort($museums, function ($a, $b) {
-
-          $priceA = (int) $a['total_price'];
-          $priceB = (int) $b['total_price'];
-
-
-          if ($priceA == $priceB) {
-            return 0;
-          }
-          return ($priceA < $priceB) ? 1 : -1;
+      uasort($museums, function ($a, $b) {
+        return $b <=> $a;
       });
 
-      $top_museums = array_slice($museums, 0, 5);
+      $top_museums = [];
+      foreach ($museums as $key => $value) {
 
-      foreach ($top_museums as $key => $value) {
+          $top_museums[$key]['museum_name'] = Museum::find($key)->translationsForAdmin->name;
+        $top_museums[$key]['total_price'] = $value;
 
-        $top_museums[$key]['museum_name'] = Museum::find($value['museum_id'])->translationsForAdmin->name;
       }
 
-      
+      $top_museums = array_slice($top_museums, 0, 5);
+
       return $top_museums;
   }
-
-
 
 }
