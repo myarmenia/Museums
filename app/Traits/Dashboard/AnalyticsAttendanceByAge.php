@@ -57,7 +57,7 @@ trait AnalyticsAttendanceByAge
 
           if($museum_id != null){
                 // ========== for single museum ====================
-                $item_ids = PurchasedItem::where(['museum_id' => $museum_id, 'purchase_id' => $purchase->id])->pluck('id');
+                $item_ids = PurchasedItem::where(['type' => 'united', 'purchase_id' => $purchase->id])->pluck('id');
                 $item = PurchasedItem::where(['museum_id' => $museum_id, 'purchase_id' => $purchase->id])
                 ->select(\DB::raw('SUM(total_price - returned_total_price) as total_price'))
                 ->pluck('total_price')->toArray();
