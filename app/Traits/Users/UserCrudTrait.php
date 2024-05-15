@@ -2,7 +2,6 @@
 namespace App\Traits\Users;
 
 use App\Http\Requests\User\UserCreateOrUpdateRequest;
-use App\Mail\SendPassToEmployee;
 use App\Models\API\VerifyUser;
 use App\Models\MuseumStaff;
 use App\Services\Log\LogService;
@@ -239,8 +238,6 @@ trait UserCrudTrait
         'password' => $request->password,
         'email' => $email
       ];
-
-      Mail::send(new SendPassToEmployee($email, $data));
 
       $data = array_diff_key($input, array_flip((array) ['password', 'confirm-password', '_method']));
 

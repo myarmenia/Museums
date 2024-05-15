@@ -34,7 +34,10 @@ trait PaymentCompletionTrait
       if ($payment->guard_type == 'cart') {
         $user = $payment->purchase->user;
         if ($user) {
-          $user->carts->delete();
+
+          $user->carts->each(function ($cart) {
+              $cart->delete();
+          });
         }
       }
 
