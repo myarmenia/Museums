@@ -55,11 +55,35 @@ trait AnalyticsAttendanceByAge
           }
 
 
-          if ($ageGroup) {
-            $analytics[$ageGroup] += $purchase->amount;
-          } else {
-            $analytics['unknown'] += $purchase->price;
+          if($museum_id != null){
+                // ========== for single museum ====================
+                $item_ids = PurchasedItem::where(['museum_id' => $museum_id, 'purchase_id' => $purchase->id])->pluck('id');
+                $item = PurchasedItem::where(['museum_id' => $museum_id, 'purchase_id' => $purchase->id])
+                ->select(\DB::raw('SUM(total_price - returned_total_price) as total_price'))
+                ->pluck('total_price')->toArray();
+
+                $united_item = PurchaseUnitedTickets::whereIn('purchased_item_id', $item_ids)->where('museum_id', $museum_id)
+                ->select(\DB::raw('SUM(total_price) as total_price'))
+                ->pluck('total_price')->toArray();
+
+                $new_arr = array_sum($item) + array_sum($united_item);
+
+                if ($ageGroup) {
+                  $analytics[$ageGroup] += $new_arr;
+                } else {
+                  $analytics['unknown'] += $new_arr;
+                }
           }
+          else{
+              if ($ageGroup) {
+                $analytics[$ageGroup] += $purchase->amount - $purchase->returned_amount;
+              } else {
+                $analytics['unknown'] += $purchase->amount - $purchase->returned_amount;
+              }
+
+          }
+
+
         }
 
         return [

@@ -26,6 +26,7 @@
             $total_info = null;
 
             $sums = reportResult($data);
+            unset( $sums['canceled'] );
 
             $total_sums = array_sum(array_column($sums,'total_price'));
             $total_quantity = array_sum(array_column($sums,'quantity'));
@@ -128,7 +129,7 @@
 
                           </tr>
                       @else
-                          
+
                           <tr class="table-primary">
                               <td>Ընդամենը</td>
                               <td>  - - -  </td>
