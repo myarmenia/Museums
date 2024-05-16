@@ -21,7 +21,6 @@ use App\Http\Controllers\API\MuseumController;
 use App\Http\Controllers\API\NewsController;
 use App\Http\Controllers\API\Purchase\PaymentResultController;
 use App\Http\Controllers\API\Purchase\PurchaseStoreController;
-use App\Http\Controllers\API\SendOrderController;
 use App\Http\Controllers\API\TestController;
 use App\Http\Controllers\API\Tickets\SingleMuseumEventsTicketsController;
 use App\Http\Controllers\API\Tickets\TicketsController;
@@ -30,7 +29,6 @@ use App\Http\Controllers\API\User\DeleteUserController;
 use App\Http\Controllers\API\User\ListActiveQR;
 use App\Http\Controllers\API\User\OrderHistoryController;
 use App\Http\Controllers\API\User\SendQRToMailController;
-use App\Http\Controllers\Email\SendYourQuestionController;
 use App\Http\Controllers\API\Lessons\UserCurrentLessonController;
 use App\Http\Controllers\API\Museum\SinggleMuseumEventsController;
 use App\Http\Controllers\API\Museum\SingleMuseumEventsController;
@@ -46,7 +44,6 @@ use App\Http\Controllers\API\Shop\SingleProductController;
 use App\Http\Controllers\API\Student\DashboardController;
 use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
-use App\Http\Controllers\Email\SendFeedbackController;
 use App\Http\Controllers\Turnstile\CheckQRController;
 use App\Http\Controllers\Turnstile\TurnstileLoginController;
 use App\Http\Controllers\Turnstile\TurnstileRegisterController;
@@ -100,16 +97,10 @@ Route::group(['middleware' => ['api']], function ($router) {
 
     });
 
-    Route::group(['prefix' => 'email'], function ($router) {
-        Route::post('feedback', SendFeedbackController::class);
-        Route::post('clientQuestion', SendYourQuestionController::class);
-    });
-
     Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLink']);
     Route::post('check-forgot-token', [ForgotPasswordController::class, 'checkForgotToken']);
     Route::post('send-new-password', [ForgotPasswordController::class, 'sendNewPassword']);
     Route::post('resend-forgot', [ForgotPasswordController::class, 'resendForgot']);
-    Route::post('send-order', SendOrderController::class);
 
 
     Route::group(['prefix' => 'news'], function ($router) {
