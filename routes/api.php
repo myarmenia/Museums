@@ -195,7 +195,7 @@ Route::group(['prefix' => 'turnstile'], function ($router) {
     Route::group(['middleware' => ['setlang']], function ($router) {
 
       Route::get('museums', MuseumListController::class);
-      Route::post('check-qr', CheckQRController::class);
+      Route::get('check-qr', CheckQRController::class);
 
       // ================ for auth turnstile users =======================
       // Route::post('login', TurnstileLoginController::class);

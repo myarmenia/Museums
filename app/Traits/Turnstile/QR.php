@@ -3,6 +3,7 @@ namespace App\Traits\Turnstile;
 use App\Models\TicketAccess;
 use App\Models\TicketQr;
 use DateTime;
+use Illuminate\Support\Carbon;
 
 trait QR
 {
@@ -62,12 +63,20 @@ trait QR
     $now = new DateTime(); // Получаем текущее время
     $now_date = $now->format('Y-m-d H:i:s');
 
-    $access_period = $now->modify('+8 hours'); // Добавляем 8 часов
+
 
     if ($qr->type == 'subscription') {
-      $access_period = $now->modify('+365 days'); // Добавляем 365 days
+        $created_at = $qr->created_at;
+
+        $access_period = Carbon::parse($created_at)->addDays(365); // Добавляем 365 days
+        // $access_period = $now->modify('+365 days');
 
     }
+    else{
+
+        $access_period = $now->modify('+8 hours'); // Добавляем 8 часов
+    }
+
     $qr_access = TicketAccess::where('ticket_qr_id', $qr->id)->first();
 
 
