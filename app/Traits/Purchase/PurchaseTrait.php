@@ -81,6 +81,10 @@ trait PurchaseTrait
 
 
     if (isset($item['error'])) {
+      
+        $purchase->purchased_items->each(function ($item) {
+            $item->delete();
+        });
         $purchase->delete();
         return $item;
     }
@@ -140,7 +144,9 @@ trait PurchaseTrait
         if ($maked_data) {
           $row = $this->addItemInPurchasedItem($maked_data);
         } else {
-          $row = ['error' => 'ticket_not_available'];
+          $event = $this->getAvailableEventViaEventCobfig($value['id']);
+
+          $row = ['error' => 'ticket_not_available', 'name' => $event];
           break;
         }
 
@@ -420,7 +426,29 @@ trait PurchaseTrait
   public function getEventConfig($id)
   {
 
-    return EventConfig::where(['id' => $id, 'status' => 1])->whereColumn('visitors_quantity_limitation', '>', 'visitors_quantity')->first();
+    $event_config = EventConfig::where(['id' => $id, 'status' => 1])->whereColumn('visitors_quantity_limitation', '>', 'visitors_quantity')->first();
+    if($event_config){
+        $event = $this->getEvent($event_config->event_id);
+
+        if($event){
+          return $event_config;
+        }
+
+        return false;
+    }
+
+  }
+
+  public function getAvailableEventViaEventCobfig($id){
+    $event_config = EventConfig::where('id', $id)->first();
+    if($event_config){
+
+      return $event_config = EventConfig::where('id', $id)->first()->event->getCurrentTranslation->name;
+
+    }
+    else{
+      return false;
+    }
 
   }
 

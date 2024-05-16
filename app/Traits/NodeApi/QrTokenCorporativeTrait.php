@@ -44,7 +44,7 @@ trait QrTokenCorporativeTrait
 
                 $newData = [
                     'museum_id' => $purchase->museum_id,
-                    'purchased_item_id' => $purchase->purchase_id,
+                    'purchased_item_id' => $purchase->id,
                     'item_relation_id' => $purchase->item_relation_id,
                     'token' => $token,
                     'path' => $path,
@@ -58,8 +58,9 @@ trait QrTokenCorporativeTrait
                 $allData[] = $newData;
                 array_shift($data[$type]);
             }
+          
             $insert = TicketQr::insert($allData);
-
+ 
             if (!$insert) {
                 DB::rollBack();
                 return false;

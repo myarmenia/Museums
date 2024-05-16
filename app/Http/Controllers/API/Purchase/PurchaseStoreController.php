@@ -31,8 +31,9 @@ class PurchaseStoreController extends BaseController
       $purchase = $this->purchase($data);
 
       if (isset($purchase['error'])) {
-
-          return $this->sendError(__('messages.' . $purchase['error']));
+        
+          $name = isset($purchase['name']) ? $purchase['name'] : '';
+          return $this->sendError($name . ' ' . __('messages.' .  $purchase['error']));
       }
 
 
