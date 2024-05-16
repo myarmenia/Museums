@@ -61,7 +61,13 @@ trait QR
 
     $now = new DateTime(); // Получаем текущее время
     $now_date = $now->format('Y-m-d H:i:s');
-    $now_plus_8_hour = $now->modify('+8 hours'); // Добавляем 8 часов
+
+    $access_period = $now->modify('+8 hours'); // Добавляем 8 часов
+
+    if ($qr->type == 'subscription') {
+      $access_period = $now->modify('+365 days'); // Добавляем 365 days
+
+    }
     $qr_access = TicketAccess::where('ticket_qr_id', $qr->id)->first();
 
 
@@ -70,7 +76,7 @@ trait QR
           'ticket_qr_id' => $qr->id,
           'museum_id' => $qr->museum_id,
           'visited_date' => $now_date,
-          'access_period' => $now_plus_8_hour
+          'access_period' => $access_period
 
         ];
 
