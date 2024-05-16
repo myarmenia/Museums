@@ -47,10 +47,11 @@ class CorporativeSaleService
             $data['ttl_at'] = $newDate;
             $museumName = $this->getMuseumNameById($data['museum_id']);
             $data['museum_name'] = $museumName;
-            
+
             $corporative = CorporativeSale::create($data);
             if($corporative){
                 $mailData = [
+                    'company_name' => $data['name'],
                     'coupon' => $coupon,
                     'museum_name' => $museumName,
                     'ttl_at' => Carbon::parse($newDate)->format('Y-m-d'),
@@ -185,6 +186,7 @@ class CorporativeSaleService
 
             if($corporativeUpdate){
                 $mailData = [
+                    'company_name' => $data['name'],
                     'coupon' => $coupon,
                     'museum_name' => $museumName,
                     'ttl_at' => Carbon::parse($newDate)->format('Y-m-d'),
