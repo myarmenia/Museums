@@ -27,12 +27,14 @@ class ProductCantroller extends Controller
 
     $data = $this->model
                 ->filter($request->all())
-      ->orderBy('id', 'DESC')->paginate(12)->withQueryString();
+      ->orderBy('id', 'DESC')
+      ->where('status',1)
+      ->paginate(12)->withQueryString();
 
       return ShopShopResource::collection($data);
 
   }
-  
+
   public function productCategory(){
     $product_category = ProductCategory::all();
     return ProductCategoryListResource::collection($product_category);
