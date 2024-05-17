@@ -138,6 +138,7 @@ class CashierService
     public function showLastTicket()
     {
         $museumId = museumAccessId();
+        
         //get last ticket from db
 
         //return $data['url'], $data['created_at']

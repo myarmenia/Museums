@@ -113,7 +113,6 @@ class CashierController extends Controller
         $fileName = 'ticket-' . time() . '.pdf';
 
         Storage::put('public/pdf-file/' . $fileName, $pdf->output());
-
         return asset('storage/' .  'pdf-file/' . $fileName);
 
         }

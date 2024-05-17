@@ -25,7 +25,7 @@
             </div>
         </div>
     @else
-        <h3 class="mx-4">Տոմսը առկա չէ</h3>
+        <h3 class="mx-4">Տոմս առկա չէ</h3>
     @endif
 </div>
 </div>
