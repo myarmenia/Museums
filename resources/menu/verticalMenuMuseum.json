@@ -64,6 +64,12 @@
           "name": "Ապրանքներ",
           "slug": "cashier.product",
           "target": ""
+        },
+        {
+          "url": "cashier/show-ticket",
+          "name": "Վերջին տոմս",
+          "slug": "cashier.show-ticket",
+          "target": ""
         }
       ]
     },

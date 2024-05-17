@@ -48,11 +48,6 @@ class CashierController extends Controller
       return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
    }
 
-   public function createEducational(CashierEventRequest $request)
-   {
-      dd($request->all());
-   }
-
    public function getMuseumProduct(Request $request)
    {
       $product_category = ProductCategory::all();
@@ -63,5 +58,12 @@ class CashierController extends Controller
          'product_category' => $product_category,
       ])
          ->with('i', ($request->input('page', 1) - 1) * 5);
+   }
+
+   public function showLastTicket()
+   {
+      $data = $this->cashierService->showLastTicket();
+
+      return view('content.cashier.show-last-ticket', compact('data'));
    }
 }

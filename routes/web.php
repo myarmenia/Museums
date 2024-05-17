@@ -152,6 +152,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/corporative-ticket', [CashierController::class, 'corporativeTicket'])->name('cashier.buy.corporative');
     Route::get('/get-event-details/{id}', [CashierController::class, 'getEventDetails'])->name('cashier.eveent.details');
     Route::get('/products', [CashierController::class, 'getMuseumProduct'])->name('cashier.product');
+    Route::get('/show-ticket', [CashierController::class, 'showLastTicket'])->name('cashier.show-ticket');
     Route::post('/create-ticket', BuyTicketController::class)->name('cashier.add.ticket');
     Route::post('/create-educational', EducationalTicket::class)->name('cashier.add.educational');
     Route::post('/create-event', EventTicket::class)->name('cashier.add.event');
