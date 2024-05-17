@@ -69,6 +69,16 @@
                         <span>{{ $item['description_educational_programming'] }}</span>
                     </div>
                 @endif
+                @if ($item['type'] == "event")
+                    <div class="text-flex text-margin">
+                        <span>Անցկացվելու օր - </span>
+                        <span>{{ $item['action_date']['day'] }}</span>
+                    </div>
+                    <div class="text-flex text-margin">
+                        <span>Ժամ - </span>
+                        <span>{{ $item['action_date']['start'] }} - {{ $item['action_date']['end'] }}</span>
+                    </div>
+                @endif
 
                 <div class="text-flex text-margin">
                     <span>Գին - </span>
