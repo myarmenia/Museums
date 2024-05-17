@@ -135,5 +135,13 @@ class CashierService
         return Product::with('images')->where(['museum_id'=>$museumId, 'status' => 1])->where('quantity', '>', 0)->filter($data)->orderBy('id', 'DESC')->paginate(10)->withQueryString();
     }
 
+    public function showLastTicket()
+    {
+        $museumId = museumAccessId();
+        //get last ticket from db
+
+        //return $data['url'], $data['created_at']
+    }
+
    
 }
