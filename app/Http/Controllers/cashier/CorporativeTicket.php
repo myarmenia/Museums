@@ -40,8 +40,18 @@ class CorporativeTicket extends CashierController
 
             if ($purchaseItem) {
                 $purchaseId = $purchaseItem->purchase_id;
+                
                 $ticketCount = (int) $requestData['buy-ticket'];
+                
+                if(!$ticketCount){
+                    session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
+                        
+                    DB::rollBack();
+                    return redirect()->back();
+                }
+
                 if ($purchaseId) {
+
                     $addQr = $this->getTokenQr($purchaseId, $corporativeSale, $ticketCount);
                     if ($addQr) {
                         $pdfPath = $this->showReadyPdf($purchaseId, $addQr);

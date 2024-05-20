@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Museum;
 use App\Models\Product;
 use App\Models\Ticket;
+use App\Models\TicketPdf;
 use App\Traits\Purchase\PurchaseTrait;
 use Carbon\Carbon;
 
@@ -139,9 +140,9 @@ class CashierService
     {
         $museumId = museumAccessId();
         
-        //get last ticket from db
+        $data = TicketPdf::where('museum_id', $museumId)->orderBy('id', 'DESC')->first();
 
-        //return $data['url'], $data['created_at']
+        return $data;
     }
 
    
