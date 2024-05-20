@@ -9,7 +9,7 @@ class TicketPdf extends Model
 {
     use HasFactory;
 
-    protected $table = 'ticket_pdf';
+    protected $table = 'ticket_pdfs';
 
     protected $fillable = [
         'museum_id',

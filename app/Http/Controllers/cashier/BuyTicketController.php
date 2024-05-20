@@ -35,23 +35,31 @@ class BuyTicketController extends CashierController
 
             $ticketId = $ticket->id;
 
-            $guidId = GuideService::where('museum_id', $museumId)->first()->id;
-
+            $guid = GuideService::where('museum_id', $museumId)->first();
+            $haveValue = false;
             foreach ($requestData as $key => $item) {
                 if ($item) {
+                    $haveValue = true;
                     $newItem = [
                         "type" => $key,
                         "quantity" => (int) $item,
                     ];
                 
-                    if ($key === 'guide_other' || $key === 'guide_am') {
-                        $newItem["id"] = $guidId;
+                    if (($key === 'guide_other' || $key === 'guide_am') && $guid) {
+                        $newItem["id"] = $guid->id;
                     } else {
                         $newItem["id"] = $ticketId;
                     }
 
                     $data['items'][] = $newItem;
                 }
+            }
+            
+            if(!$haveValue){
+                session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
+                   
+                DB::rollBack();
+                return redirect()->back();
             }
 
             $addTicketPurchase = $this->purchase($data);

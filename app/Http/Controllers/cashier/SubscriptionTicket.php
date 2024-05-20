@@ -20,6 +20,13 @@ class SubscriptionTicket extends CashierController
             DB::beginTransaction();
             $requestData = (int) $request->input('aboniment-ticket');
 
+            if(!$requestData){
+                session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
+                    
+                DB::rollBack();
+                return redirect()->back();
+            }
+            
             $museumId = getAuthMuseumId();
 
             $subscription = TicketSubscriptionSetting::where(['museum_id' => $museumId, 'status' => 1])->first();

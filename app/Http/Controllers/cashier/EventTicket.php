@@ -37,8 +37,11 @@ class EventTicket extends CashierController
                 $data['status'] = 1;
                 $data['items'] = [];
 
+                $haveValue = false;
+
                 foreach ($requestData as $key => $item) {
                     if ($item) {
+                        $haveValue = true;
                         $event = $allEventConfig->find($key);
                         $visitorQuantity = (int) $event->visitors_quantity + (int) $item;
 
@@ -56,6 +59,12 @@ class EventTicket extends CashierController
 
                         $event->update(['visitors_quantity' => $visitorQuantity]);
                     }
+                }
+                if(!$haveValue){
+                    session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
+                       
+                    DB::rollBack();
+                    return redirect()->back();
                 }
 
                 $addTicketPurchase = $this->purchase($data);
