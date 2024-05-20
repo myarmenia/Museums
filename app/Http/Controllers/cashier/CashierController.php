@@ -9,6 +9,7 @@ use App\Models\EventConfig;
 use App\Models\Museum;
 use App\Models\Purchase;
 use App\Models\PurchasedItem;
+use App\Models\TicketPdf;
 use App\Models\TicketQr;
 use Illuminate\Http\Request;
 use Storage;
@@ -111,8 +112,15 @@ class CashierController extends Controller
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
         
         $fileName = 'ticket-' . time() . '.pdf';
+        $path = 'public/pdf-file/' . $fileName;
 
-        Storage::put('public/pdf-file/' . $fileName, $pdf->output());
+        Storage::put($path, $pdf->output());
+
+        // TicketPdf::create([
+        //     'museum_id' => $museumId,
+        //     'pdf_path' => $path
+        // ]);
+
         return asset('storage/' .  'pdf-file/' . $fileName);
 
         }

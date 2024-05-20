@@ -71,7 +71,7 @@
                 @endif
                 @if ($item['type'] == "event")
                     <div class="text-flex text-margin">
-                        <span>Անցկացվելու օր - </span>
+                        <span>Անցկացման օր - </span>
                         <span>{{ $item['action_date']['day'] }}</span>
                     </div>
                     <div class="text-flex text-margin">

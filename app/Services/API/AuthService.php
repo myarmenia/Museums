@@ -228,7 +228,9 @@ class AuthService
 
         if($user){
             $updatedUser = auth('api')->user();
-            $updatedUser['birth_date'] = Carbon::createFromFormat('Y.m.d', $updatedUser->birth_date)->toDateString();
+            if($updatedUser['birth_date']){
+                $updatedUser['birth_date'] = Carbon::createFromFormat('Y.m.d', $updatedUser->birth_date)->toDateString();
+            }
             $updatedUser['card_count'] = $updatedUser->carts()->get()->count(); 
             $updatedUser['country_key'] = $updatedUser->country ? $updatedUser->country->key : null;
             
