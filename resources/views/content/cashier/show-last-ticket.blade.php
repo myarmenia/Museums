@@ -16,12 +16,12 @@
     </div>
 
     @if ($data)
-        <div>
+        <div class="px-4 d-flex align-items-center">
             <div>
-                <button>Տեսնել</button>
+                <h6 >{{ $data->created_at }} - </h6>
             </div>
             <div>
-                <p>{{ $data->created_at }}</p>
+                <h6 ><a href="{{ route('get-file',['path'=>$data->pdf_path]) }}" target="_blank"> Տեսնել</a></h6 >
             </div>
         </div>
     @else

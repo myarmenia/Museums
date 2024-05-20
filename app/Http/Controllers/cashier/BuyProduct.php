@@ -28,8 +28,11 @@ class BuyProduct extends Controller
                 $data['status'] = 1;
                 $data['items'] = [];
 
+                $haveValue = false;
+
                 foreach ($requestData as $key => $countProduct) {
                     if ($countProduct = (int) $countProduct) {
+                        $haveValue = true;
                         if($p = $allMuseumProduct->find((int) $key)){
                             if ($p->quantity  < $countProduct) {
                                 session(['errorMessage' => 'Պետք է համապատասխանեն ապրանքի քանակ և մուտքագրված թիվ դաշտերը']);
@@ -46,6 +49,13 @@ class BuyProduct extends Controller
                             ];
                         }
                     }
+                }
+
+                if(!$haveValue){
+                    session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
+                       
+                    DB::rollBack();
+                    return redirect()->back();
                 }
 
                 $addTicketPurchase = $this->purchase($data);

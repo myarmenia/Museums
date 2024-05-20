@@ -116,10 +116,10 @@ class CashierController extends Controller
 
         Storage::put($path, $pdf->output());
 
-        // TicketPdf::create([
-        //     'museum_id' => $museumId,
-        //     'pdf_path' => $path
-        // ]);
+        TicketPdf::create([
+            'museum_id' => $museumId,
+            'pdf_path' => $path
+        ]);
 
         return asset('storage/' .  'pdf-file/' . $fileName);
 
