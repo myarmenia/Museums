@@ -29,6 +29,10 @@ class ReturnTicketService
          return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով տոմսը միասնական է որը վերադարձի ենթակա չէ։'];
       }
 
+      if($ticket && ($ticket->accesses->count() > 0)){
+        return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
+      }
+
       if ($ticket) {
         return ['success' => true, 'type' => getTranslateTicketTitl($ticket->type)];
       }
@@ -49,6 +53,11 @@ class ReturnTicketService
         DB::beginTransaction();
 
         $ticket = $this->getActiveTicket($token, $museumId);
+
+        if($ticket && ($ticket->accesses->count() > 0)){
+          session(['errorMessage' => 'Ինչ որ բան այն չէ']);
+          return ['success' => false];
+        }
 
         $ticket->update(['status' => TicketQr::STATUS_RETURNED]);
 

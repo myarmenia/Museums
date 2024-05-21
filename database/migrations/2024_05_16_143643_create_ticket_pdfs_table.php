@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('ticket_pdfs', function (Blueprint $table) {
             $table->id();
+            $table->string('pdf_path');
+            $table->integer('museum_id');
             $table->timestamps();
         });
     }

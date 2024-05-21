@@ -73,12 +73,18 @@ Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])
 
 // Route::post('/web/login-check', [AuthController::class, 'login'])->name('web-login-check');
 Route::group(['middleware' => ['auth']], function () {
+
+  //Welcome page
+  Route::get('/welcome',  function () {
+    return view('content.welcome.welcome');
+  })->name('welcome');
+
   // Main Page Route
   Route::group(['middleware' => ['role:super_admin|general_manager|chief_accountant']], function () {
       Route::get('/', AnalyticsController::class)->name('dashboard_analytics');
   });
 
-  Route::group(['middleware' => ['role:museum_admin|manager|content_manager']], function () {
+  Route::group(['middleware' => ['role:museum_admin|manager|content_manager', 'check_auth_have_museum' ]], function () {
     Route::get('/museum-dashboard', SingleMuseumAnalyticsController::class)->name('museum_dashboard_analytics');
   });
 
@@ -140,7 +146,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   });
 
-  Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|super_admin|general_manager|manager']], function () {
+  Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|super_admin|general_manager|manager', 'check_auth_have_museum']], function () {
     Route::get('/', [ChatController::class, 'index'])->name('chats');
     Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
     Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');

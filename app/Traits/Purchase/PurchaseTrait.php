@@ -81,7 +81,7 @@ trait PurchaseTrait
 
 
     if (isset($item['error'])) {
-      
+
         $purchase->purchased_items->each(function ($item) {
             $item->delete();
         });
