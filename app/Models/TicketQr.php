@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TicketQr extends Model
 {
@@ -41,6 +42,11 @@ class TicketQr extends Model
   public function corporative()
   {
     return $this->belongsTo(CorporativeSale::class, 'item_relation_id');
+  }
+
+  public function accesses(): HasMany
+  {
+      return $this->hasMany(TicketAccess::class, 'ticket_qr_id');
   }
 
   //add status constants
