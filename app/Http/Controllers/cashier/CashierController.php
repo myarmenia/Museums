@@ -5,9 +5,11 @@ namespace App\Http\Controllers\cashier;
 use App\Http\Controllers\Controller;
 use App\Models\EducationalProgram;
 use App\Models\Event;
+use App\Models\EventConfig;
 use App\Models\Museum;
 use App\Models\Purchase;
 use App\Models\PurchasedItem;
+use App\Models\TicketPdf;
 use App\Models\TicketQr;
 use Illuminate\Http\Request;
 use Storage;
@@ -48,7 +50,10 @@ class CashierController extends Controller
 
         if($qrs[0]->type == 'event' || $qrs[0]->type == 'educational'){
             if($qrs[0]->type == 'event'){
-                $itemDescription = Event::with('item_translations')->find($qrs[0]->item_relation_id);
+                $eventConfig = EventConfig::with('event.item_translations')->find($qrs[0]->item_relation_id);
+                $eventAllConfigs = EventConfig::where('event_id', $eventConfig->event->id)->get();
+                $itemDescription = $eventConfig->event;
+
             }elseif ($qrs[0]->type == 'educational') {
                 $itemDescription = EducationalProgram::with('item_translations')->find($qrs[0]->item_relation_id);
             }else{
@@ -72,6 +77,17 @@ class CashierController extends Controller
 
 
         foreach ($qrs as $qr) {
+            
+            if($qr['type'] == 'event'){
+                $configItem = $eventAllConfigs->where('id', $qr->item_relation_id)->first();
+
+                $event_day = [
+                    'day' => $configItem ->day,
+                    'start' => $configItem ->start_time,
+                    'end' => $configItem ->end_time,
+                ];
+            }
+            
             if(($qr['type'] == 'standart' || $qr['type'] == 'discount' || $qr['type'] == 'free') && $guids->count() > 0){
                 $purchaseGuid = [];
                 foreach ($guids as $guid) {
@@ -85,6 +101,7 @@ class CashierController extends Controller
                 'ticket_token' => $qr['ticket_token'],
                 'photo' => public_path(Storage::url($qr['path'])),
                 'description_educational_programming' => $itemDescriptionName? trim($itemDescriptionName)  : null,
+                'action_date' => $event_day ?? "",
                 'type' => $qr['type'],
                 'guid' => $purchaseGuid? $purchaseGuid : false,
                 'price' => $qr['price'],
@@ -95,8 +112,14 @@ class CashierController extends Controller
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
         
         $fileName = 'ticket-' . time() . '.pdf';
+        $path = 'public/pdf-file/' . $fileName;
 
-        Storage::put('public/pdf-file/' . $fileName, $pdf->output());
+        Storage::put($path, $pdf->output());
+
+        // TicketPdf::create([
+        //     'museum_id' => $museumId,
+        //     'pdf_path' => $path
+        // ]);
 
         return asset('storage/' .  'pdf-file/' . $fileName);
 

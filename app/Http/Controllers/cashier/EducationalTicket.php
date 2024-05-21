@@ -29,16 +29,25 @@ class EducationalTicket extends CashierController
 
             $allEducational = EducationalProgram::where(['museum_id' => $museumId, 'status' => 1])->get();
 
+            $haveValue = false;
             foreach ($requestData as $key => $item) {
                 $educational = $allEducational->find($key);
 
                 if ($educational && $item) {
+                    $haveValue = true;
                     $data['items'][] = [
                         "type" => 'educational',
                         "id" => $educational->id,
                         "quantity" => (int) $item
                     ];
                 }
+            }
+
+            if(!$haveValue){
+                session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
+                   
+                DB::rollBack();
+                return redirect()->back();
             }
 
             $addTicketPurchase = $this->purchase($data);

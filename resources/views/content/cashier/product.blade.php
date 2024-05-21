@@ -40,8 +40,8 @@
                     </div>
                     <button class="btn btn-primary">Փնտրել</button>
                 </div>
+            </form>
         </div>
-        </form>
         @if ($data->count())
             <form action="{{ route('cashier.add.product') }}" method="post">
 
