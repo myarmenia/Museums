@@ -58,7 +58,7 @@
                                         <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                             <tr>
                                                 <td><p>Ուժի մեջ է մինչև</p></td>
-                                                <td align="right"><p>{{$data['ttl_at']}}</p></td>
+                                                <td align="right"><p>{{ Carbon\Carbon::parse($data['ttl_at'])->format('d-m-Y') }}
                                             </tr>
                                         </table>
                                     </td>
