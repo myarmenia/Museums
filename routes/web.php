@@ -73,6 +73,12 @@ Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])
 
 // Route::post('/web/login-check', [AuthController::class, 'login'])->name('web-login-check');
 Route::group(['middleware' => ['auth']], function () {
+
+  //Welcome page
+  Route::get('/welcome',  function () {
+    return view('content.welcome.welcome');
+  })->name('welcome');
+
   // Main Page Route
   Route::group(['middleware' => ['role:super_admin|general_manager|chief_accountant']], function () {
       Route::get('/', AnalyticsController::class)->name('dashboard_analytics');

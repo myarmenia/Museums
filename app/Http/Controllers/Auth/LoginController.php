@@ -34,14 +34,14 @@ class LoginController extends Controller
   {
       if ($user->status) {
           if($user->isAdmin() ){
+            return redirect('/welcome');
+            // if ($user->isAdmin() == "admin") {
+            //     return redirect('/');
+            // }
+            // if ($user->isAdmin() == "museum") {
 
-              if ($user->isAdmin() == "admin") {
-                  return redirect('/');
-              }
-              if ($user->isAdmin() == "museum") {
-
-                  return redirect('/museum-dashboard');
-              }
+            //     return redirect('/museum-dashboard');
+            // }
 
           }else{
 
