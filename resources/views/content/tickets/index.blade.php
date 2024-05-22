@@ -76,7 +76,7 @@
               </div>
               <div class="card-body">
 
-                  <form action="{{ $guide_service == null ? route('guide_service_store') : route('guide_service_update', $guide_service->id)}}" method="post" class="ticket_settings">
+                  <form action="{{ $guide_service == null ? route('guide_service_store') : route('guide_service_update', $guide_service->id)}}" class="ticket_settings">
 
                       <div class="mb-3 row">
                           <label for="price_am" class="col col-form-label">Գինը հայերեն լեզվի համար <span class="required-field text-danger">*</span></label>

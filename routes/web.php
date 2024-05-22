@@ -235,12 +235,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['role:museum_admin|manager']], function () {
         Route::get('show', ShowTicketsController::class)->name('tickets_show');
             Route::group(['middleware' => ['model_access']], function () {
-            Route::post('ticket-standart', StandartTicketController::class)->name('ticket_standart_store');
-            Route::post('ticket-standart/{id}', StandartTicketController::class)->name('ticket_standart_update');
-            Route::post('ticket-subscription', SubscriptionTicketController::class)->name('ticket_subscription_store');
-            Route::post('ticket-subscription/{id}', SubscriptionTicketController::class)->name('ticket_subscription_update');
-            Route::post('guide-service', GuideServiceController::class)->name('guide_service_store');
-            Route::post('guide-service/{id}', GuideServiceController::class)->name('guide_service_update');
+            Route::post('ticket-standart', StandartTicketController::class)->name('ticket-store');
+            Route::post('ticket-standart/{id}', StandartTicketController::class)->name('ticket-update');
+            Route::post('ticket-subscription', SubscriptionTicketController::class)->name('ticket_subscription_settings-store');
+            Route::post('ticket-subscription/{id}', SubscriptionTicketController::class)->name('ticket_subscription_settings-update');
+            Route::post('guide-service', GuideServiceController::class)->name('guide_services-store');
+            Route::post('guide-service/{id}', GuideServiceController::class)->name('guide_services-update');
         });
     });
     Route::group(['middleware' => ['role:super_admin|general_manager']], function () {
