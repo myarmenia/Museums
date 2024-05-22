@@ -4,6 +4,7 @@ namespace App\Http\Resources\API\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class ListActiveQRResource extends JsonResource
 {
@@ -14,10 +15,20 @@ class ListActiveQRResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $base64String = null;
+        if (Storage::exists($this->path)) {
+            $qr_image = Storage::get($this->path);
+            $mimeType = Storage::mimeType($this->path);
+            $base64 = base64_encode($qr_image);
+            $base64String = 'data:' . $mimeType . ';base64,' . $base64;
+        }
+
+
         $data = [
           'id' => $this->id,
           'museum_id' => $this->museum_id ?? null,
           'path' => route('get-file', ['path' => $this->path]),
+          'path_base64' => $base64String,
           'type' => $this->type,
           'price' => $this->price,
           'color' => ticketColors()[$this->type]
