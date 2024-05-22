@@ -29,7 +29,7 @@
               </div>
               <div class="card-body">
 
-                  <form action="{{ $ticket_standart == null ? route('ticket_standart_store') : route('ticket_standart_update', $ticket_standart->id)}}" class="ticket_settings">
+                  <form action="{{ $ticket_standart == null ? route('ticket-store') : route('ticket-update', $ticket_standart->id)}}" class="ticket_settings">
 
                       <div class="mb-3">
                           <label for="standart_price" class="col col-form-label">Գին <span class="required-field text-danger">*</span></label>
@@ -48,7 +48,7 @@
                   </div>
               </div>
               <div class="card-body">
-                  <form action="{{ $ticket_subscription == null ? route('ticket_subscription_store') : route('ticket_subscription_update', $ticket_subscription->id)}}" class="ticket_settings">
+                  <form action="{{ $ticket_subscription == null ? route('ticket_subscription_settings-store') : route('ticket_subscription_settings-update', $ticket_subscription->id)}}" class="ticket_settings">
                       <div class="mb-3 row">
                           <label for="subscription_price" class="col col-form-label">Գին <span class="required-field text-danger">*</span></label>
                           <input class="form-control" placeholder="Գին" value="{{ $ticket_subscription != null ? $ticket_subscription->price : '' }}" id="subscription_price" name="price" />
@@ -76,7 +76,7 @@
               </div>
               <div class="card-body">
 
-                  <form action="{{ $guide_service == null ? route('guide_service_store') : route('guide_service_update', $guide_service->id)}}" class="ticket_settings">
+                  <form action="{{ $guide_service == null ? route('guide_services-store') : route('guide_services-update', $guide_service->id)}}" class="ticket_settings">
 
                       <div class="mb-3 row">
                           <label for="price_am" class="col col-form-label">Գինը հայերեն լեզվի համար <span class="required-field text-danger">*</span></label>
