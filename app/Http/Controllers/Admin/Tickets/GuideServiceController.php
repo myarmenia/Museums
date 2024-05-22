@@ -17,7 +17,7 @@ class GuideServiceController extends Controller
     return GuideService::class;
   }
 
-  public function __invoke(GuideServiceRequest $request)
+  public function __invoke(Request $request)
   {
 
     $guide_service = $this->itemUpdateOrCreate($request);

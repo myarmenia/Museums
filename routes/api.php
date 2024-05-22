@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\Events\EventListController;
-use App\Http\Controllers\Admin\Project\ProjectController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\Cart\DeleteItemController;
 use App\Http\Controllers\API\Cart\ItemsController;
