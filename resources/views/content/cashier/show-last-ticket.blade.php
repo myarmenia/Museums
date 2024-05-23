@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Ապրանքների - Վերջին տոմս')
+@section('title', 'Դրամարկղ - Վերջին տոմս')
 
 @section('content')
 @include('includes.alert')

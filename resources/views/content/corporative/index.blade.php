@@ -1,4 +1,7 @@
 @extends('layouts/contentNavbarLayout')
+
+@section('title', 'Կորպորատիվ - Ցանկ')
+
 @section('page-script')
     <script src="{{ asset('assets/js/delete-item.js') }}"></script>
 @endsection
