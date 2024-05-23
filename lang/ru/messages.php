@@ -8,7 +8,8 @@ return [
     'event_not_available' => 'Билет на мероприятие недоступен․',
     'ticket_not_available' => 'Билет недоступен.',
     'system_error' => 'В настоящее время операция не может быть выполнена․',
-    'ticket_not_selected' => 'Билет не выбран.'
-
+    'ticket_not_selected' => 'Билет не выбран.',
+    'email_success' => 'Письмо успешно отправлено.',
+    'error' => 'Что-то пошло не так :('
 
 ];
