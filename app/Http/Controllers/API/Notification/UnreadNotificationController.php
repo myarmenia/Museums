@@ -13,7 +13,7 @@ class UnreadNotificationController extends BaseController
 {
     public function __invoke(){
 
-        $notifications = DB::table('notifications')->get();
+        $notifications = DB::table('notifications')->orderBy('created_at', 'desc')->get();
 
         return $this->sendResponse(NotificationResource::collection($notifications), 'success', ['unread_notification_count' => $notifications->count()]);
     }

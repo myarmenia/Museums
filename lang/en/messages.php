@@ -8,7 +8,9 @@ return [
     'event_not_available' => 'The event ticket is not available․',
     'ticket_not_available' => 'The ticket is not available.',
     'system_error' => 'The operation cannot be performed at this time',
-    'ticket_not_selected' => 'Ticket is not selected.'
+    'ticket_not_selected' => 'Ticket is not selected.',
+    'email_success' => 'The email has been successfully sent.',
+    'error' => 'Something went wrong :('
 
 
 ];
