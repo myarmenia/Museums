@@ -18,16 +18,20 @@ trait SendQRToMail
       if(in_array($id, $list_qr_ids)){
 
           $qr = TicketQr::find($id);
-          $email = $user->email;
-          // $email = 'naromisho87@gmail.com';
+          // $email = $user->email;
+          $email = 'naromisho87@gmail.com';
+          try {
+              mail::send(new SendSingleQRToMail($qr, $email));
 
-          mail::send(new SendSingleQRToMail($qr, $email));
+              return true;
+          } catch (\Throwable $th) {
+              return false;
 
-          echo true;
-
+          }
       }
+      
       else{
-        echo false;
+        return false;
       }
 
 
