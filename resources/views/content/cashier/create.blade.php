@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Տոմսի - Ստեղծում')
+@section('title', 'Դրամարկղ - Տոմս')
 
 @section('page-script')
     <script src="{{ asset('assets/js/admin\cashier\cashier.js') }}"></script>
