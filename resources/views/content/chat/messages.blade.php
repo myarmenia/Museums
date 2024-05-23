@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Account settings - Account')
+@section('title', 'Հաղորդագրություն')
 @section('page-script')
     <script src="{{ asset('assets/js/admin/chat/send-message.js') }}"></script>
 @endsection
