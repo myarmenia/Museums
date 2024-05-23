@@ -16,7 +16,7 @@ class UnreadNotificationController extends BaseController
         $notifications = DB::table('notifications')->orderBy('created_at', 'desc')->paginate(10);
         $params = [
           'page_count' => $notifications->lastPage(),
-          'total_count'=>count($notifications),
+          'total_count' => $notifications->total(),
           'unread_notification_count' => $notifications->count()
         ];
 

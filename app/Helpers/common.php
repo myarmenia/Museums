@@ -400,6 +400,19 @@ if (!function_exists('getTranslateTicketTitl')) {
 
 }
 
+if (!function_exists('getAuthUserRoleInterface')) {
+  function getAuthUserRoleInterface()
+  {
+
+    if (auth()->user()->roles()->get()->where('interface', 'admin')->count()) {
+      return true;
+    };
+
+    return false;
+  }
+
+}
+
 
 
 

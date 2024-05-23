@@ -15,12 +15,15 @@ class CheckHaveMuseum
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $museumId = getAuthMuseumId();
-        if(!$museumId) {
-            session(['errorMessage' => 'Նախ ստեղծեք թանգարան']);
-            return redirect()->route('create-museum');
+        if (!getAuthUserRoleInterface()) {
+            $museumId = getAuthMuseumId();
+            if (!$museumId) {
+                session(['errorMessage' => 'Նախ ստեղծեք թանգարան']);
+                return redirect()->route('create-museum');
+            }
         }
         
         return $next($request);
+        
     }
 }
