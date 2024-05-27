@@ -1,4 +1,5 @@
 @extends('layouts/contentNavbarLayout')
+@section('title', 'Հաշվետվություն - Ցանկ')
 
  @section('title', 'Account settings - Account')
 @section('page-script')
