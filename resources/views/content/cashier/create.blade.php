@@ -59,7 +59,7 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
-                    <form data-name='standard' action="{{ route('cashier.add.ticket') }}" method="post">
+                    <form data-name='standard' class="form-cashier" action="{{ route('cashier.add.ticket') }}" method="post">
                         <div class="table-responsive text-nowrap">
                             <table class="table cashier-table">
                                 <thead>
@@ -137,14 +137,14 @@
                         </div>
                         <div class="mt-3 row justify-content-end">
                             <div class="col-sm-10 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary">Տպել</button>
+                                <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
                             </div>
                         </div>
                     </form>
                 </div>
                 @if (count($data['educational']))
                     <div class="tab-pane fade" id="navs-top-educational" role="tabpanel">
-                        <form data-name='educational' action="{{ route('cashier.add.educational') }}" method="post">
+                        <form data-name='educational' class="form-cashier" action="{{ route('cashier.add.educational') }}" method="post">
                             <div class="table-responsive text-nowrap">
                                 <table class="table cashier-table">
                                     <thead>
@@ -189,7 +189,7 @@
                             </div>
                             <div class="mt-3 row justify-content-end">
                                 <div class="col-sm-10 d-flex justify-content-end">
-                                    <button id='educational-button' type="submit" class="btn btn-primary">Տպել</button>
+                                    <button id='educational-button' type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
                                 </div>
                             </div>
                         </form>
@@ -197,7 +197,7 @@
                 @endif
                 @if (array_key_exists('events', $data))
                     <div class="tab-pane fade" id="navs-top-event" role="tabpanel">
-                        <form data-name='events' action="{{ route('cashier.add.event') }}" method="post">
+                        <form data-name='events' class="form-cashier" action="{{ route('cashier.add.event') }}" method="post">
                             <div class="table-responsive text-nowrap">
                                 <select id="event-select" name="event" class="form-select">
                                     <option value="">Ընտրեք միջոցառումը</option>
@@ -224,7 +224,7 @@
                             </div>
                             <div id="event-save" class="mt-3 row justify-content-end d-none">
                                 <div class="col-sm-10 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary">Տպել</button>
+                                    <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
                                 </div>
                             </div>
                         </form>
@@ -232,7 +232,7 @@
                 @endif
                 @if (array_key_exists('aboniment', $data))
                     <div class="tab-pane fade" id="navs-top-aboniment" role="tabpanel">
-                        <form data-name='aboniment' action="{{ route('cashier.add.subscription') }}" method="post">
+                        <form data-name='aboniment' class="form-cashier" action="{{ route('cashier.add.subscription') }}" method="post">
                             <div class="table-responsive text-nowrap">
                                 <table class="table cashier-table">
                                     <thead>
@@ -257,14 +257,14 @@
 
                             <div class="mt-3 row justify-content-end">
                                 <div class="col-sm-10 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary">Տպել</button>
+                                    <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 @endif
                 <div class="tab-pane fade" id="navs-top-corporative" role="tabpanel">
-                    <form data-name='corporative' action="{{ route('cashier.add.corporative') }}" method="post">
+                    <form data-name='corporative' class="form-cashier" action="{{ route('cashier.add.corporative') }}" method="post">
                         <div class="table-responsive text-nowrap">
                             <div class="d-flex">
                                 <input type="text" class="form-control" id="corporative-coupon-input"
@@ -292,7 +292,7 @@
 
                             <div class="mt-3 row justify-content-end">
                                 <div class="col-sm-10 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary">Հաստատել</button>
+                                    <button type="submit" class="btn btn-primary form-cashier-button">Հաստատել</button>
                                 </div>
                             </div>
                         </div>

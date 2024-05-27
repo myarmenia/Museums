@@ -1,11 +1,11 @@
 @if ($success = session()->pull('success'))
-    <div class="alert alert-success">
+    <div class="session-message alert alert-success">
         {{ $success }}
     </div>
 @endif
 
 @if ($errorMessage = session()->pull('errorMessage'))
-    <div class="alert alert-danger">
+    <div class="session-message alert alert-danger">
         {{ $errorMessage }}
     </div>
 @endif
