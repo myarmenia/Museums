@@ -1,31 +1,42 @@
 $(function () {
+  let mistakeQuantity = [];
 
-  $('.nav-tabs').on('click', function (event) {  
+  $('.nav-tabs').on('click', function (event) {
     let activeButton = $("ul.nav-tabs .nav-link.active");
     let activeTab = activeButton.closest("li");
     let activeTabId = activeTab.attr('data-name');
 
     let forms = $(".tab-content form");
-    
-    forms.each(function(form, index) {
+
+    mistakeQuantity = [];
+    $('#educational-button').prop('disabled', false);
+    $('#educational-error').attr('style', 'display: none !important');
+    $('.session-message').remove();
+    forms.each(function (form, index) {
       if ($(this).attr('data-name') !== activeTabId) {
         let classesRemove = $(this).find(".remove-value");
-        this.reset(); 
+        this.reset();
         classesRemove.each(function () {
           $(this).text(0);
         })
       }
     });
-});
+  });
 
-    $(document).on('input', '.form-control-validate', function() {
-      var inputValue = $(this).val();
-      if (!/^[1-9][0-9]*$/.test(inputValue)) {
-        $(this).val(inputValue.replace(/[^1-9]/g, ''));
-      }
-    });
 
-  if($('#pdf-path').val()){
+  $('.form-cashier').on('submit', function() {
+      $('.form-cashier-button').prop('disabled', true).text('ՈՒղարկվում է․․․');
+  });
+
+
+  $(document).on('input', '.form-control-validate', function () {
+    var inputValue = $(this).val();
+    if (!/^[1-9][0-9]*$/.test(inputValue)) {
+      $(this).val(inputValue.replace(/[^1-9]/g, ''));
+    }
+  });
+
+  if ($('#pdf-path').val()) {
     let path = $('#pdf-path').val();
     window.open(path, '_blank')
   }
@@ -97,26 +108,27 @@ $(function () {
     $('#ticket-total-price').text(parseInt($('#standard-ticket-price').text()) + parseInt($('#discount-price').text()) + parseInt($('#guide_am_price').text() || 0) + parseInt($('#guide_other_price').text() || 0));
   })
 
-  let mistakeQuantity = [];
+  console.log(mistakeQuantity, 777777777)
   $('input[name^="educational"]').on('input', function () {
+    console.log(mistakeQuantity, 999)
     let ticketCount = parseInt($(this).val()) || 0;
     let productId = $(this).attr('name').match(/\[(\d+)\]/)[1];
     let minQuantity = parseInt($(this).attr('min_quantity'));
     let maxQuantity = parseInt($(this).attr('max_quantity'));
-    if(ticketCount > 0){
-      if(ticketCount < minQuantity || ticketCount > maxQuantity){
+    if (ticketCount > 0) {
+      if (ticketCount < minQuantity || ticketCount > maxQuantity) {
         mistakeQuantity.push(productId);
         $('#educational-button').prop('disabled', true);
-      }else {
+      } else {
         mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
         $('#educational-button').prop('disabled', false);
       }
-    }else if (ticketCount == 0 || ticketCount == '' || ticketCount == null || ticketCount < 0) {
-       mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
-       $('#educational-button').prop('disabled', false);
+    } else if (ticketCount == 0 || ticketCount == '' || ticketCount == null || ticketCount < 0) {
+      mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
+      $('#educational-button').prop('disabled', false);
     }
 
-    if (ticketCount > 0) {    
+    if (ticketCount > 0) {
       let priceTicket = $(this).attr('price');
       let readyPrice = priceTicket * ticketCount;
       $('#educational-ticket-price_' + productId).text(readyPrice);
@@ -138,11 +150,11 @@ $(function () {
     });
     $('#educational-total-count').text(totalQuantity);
     $('#educational-total-price').text(totalPrice);
+    console.log(mistakeQuantity, 4444444)
 
-    if(mistakeQuantity.length > 0){
+    if (mistakeQuantity.length > 0) {
       $('#educational-error').attr('style', 'display: block !important; color:red;');
-      ;
-    }else {
+    } else {
       $('#educational-error').attr('style', 'display: none !important');
     }
   });
@@ -187,7 +199,7 @@ $(function () {
 
   $('#event-select').on('input', function () {
     let selectedId = $('#event-select').val();
-    if(selectedId){
+    if (selectedId) {
       $.ajax({
         type: "GET",
         url: '/cashier/get-event-details/' + selectedId,
@@ -202,8 +214,8 @@ $(function () {
           if (data.event_configs.length) {
             $('#event-total').attr('style', 'display: block !important; display:flex !important; justify-content: end !important');
             $('#event-save').attr('style', 'display: block !important; display:flex !important; margin-top: 1rem !important; justify-content: flex-end !important;');
-            
-             html = `<table class="table cashier-table">
+
+            html = `<table class="table cashier-table">
                         <thead>
                           <tr>
                               <th>Օր</th>
@@ -215,7 +227,7 @@ $(function () {
                           </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">`;
-  
+
             data.event_configs.map(element => {
               html += `<tr class='table-default'>
                             <td>${element.day}</td>
@@ -237,11 +249,11 @@ $(function () {
       html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
       $('#event-config').html(html);
     }
-   
+
   });
 
 
-  $(document).on('input', 'input[name^="event"]', function () { 
+  $(document).on('input', 'input[name^="event"]', function () {
     let ticketCount = $(this).val();
     let eventId = $(this).attr('name').match(/\[(\d+)\]/)[1];
     if (ticketCount > 0) {
