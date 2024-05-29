@@ -28,7 +28,8 @@ class CashierController extends Controller
 
         $purchaseItem = PurchasedItem::where('purchase_id', $purchaseId)->get();
         $purchaseItemIds = $purchaseItem->pluck('id');
-        $guids = $purchaseItem->where(['type' => 'guide', 'returned_quntity' => 0]);
+        $guids = $purchaseItem->where('type','guide')->where('returned_quntity', 0);
+
         $itemDescription = null;
         $itemDescriptionName = '';
     
@@ -87,7 +88,7 @@ class CashierController extends Controller
                     'end' => $configItem ->end_time,
                 ];
             }
-            
+
             if(($qr['type'] == 'standart' || $qr['type'] == 'discount' || $qr['type'] == 'free') && $guids->count() > 0){
                 $purchaseGuid = [];
                 foreach ($guids as $guid) {
