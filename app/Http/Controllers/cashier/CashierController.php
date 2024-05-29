@@ -28,7 +28,7 @@ class CashierController extends Controller
 
         $purchaseItem = PurchasedItem::where('purchase_id', $purchaseId)->get();
         $purchaseItemIds = $purchaseItem->pluck('id');
-        $guids = $purchaseItem->where('type', 'guide');
+        $guids = $purchaseItem->where(['type' => 'guide', 'returned_quntity' => 0]);
         $itemDescription = null;
         $itemDescriptionName = '';
     

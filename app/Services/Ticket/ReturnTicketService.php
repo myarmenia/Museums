@@ -2,6 +2,7 @@
 
 namespace App\Services\Ticket;
 
+use App\Models\Purchase;
 use App\Models\PurchasedItem;
 use App\Models\TicketQr;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +35,18 @@ class ReturnTicketService
       }
 
       if ($ticket) {
-        return ['success' => true, 'type' => getTranslateTicketTitl($ticket->type)];
+        $guides = false;
+        if($ticket->type == "free" || $ticket->type == "discount" || $ticket->type != "standart"){
+          $purchaseItemId = $ticket->purchased_item_id;
+          $purchaseId =  PurchasedItem::where('id', $purchaseItemId)->first()->purchase_id;
+          $guides = PurchasedItem::where(['purchase_id' => $purchaseId, 'type' => 'guide', 'returned_quantity' => 0])->count();
+
+          if($guides){
+            $guides = true;
+          }
+        }
+
+        return ['success' => true, 'guides' => $guides, 'type' => getTranslateTicketTitl($ticket->type)];
       }
     }
 
@@ -42,9 +54,11 @@ class ReturnTicketService
 
   }
 
-  public function removeToken($token)
+  public function removeToken($data)
   {
-    // $id = $this->extractIdFromToken($token);
+    $data = json_decode($data['json'], true);
+
+    $token = $data['dataId'];
 
     $museumId = getAuthMuseumId();
 
@@ -55,29 +69,63 @@ class ReturnTicketService
         $ticket = $this->getActiveTicket($token, $museumId);
 
         if($ticket && ($ticket->accesses->count() > 0)){
-          session(['errorMessage' => 'Ինչ որ բան այն չէ']);
-          return ['success' => false];
+          return ['success' => false, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
         }
 
-        $ticket->update(['status' => TicketQr::STATUS_RETURNED]);
+        if(!$data['ticketApprove'] && !$data['guideApprove']){
+          return ['success' => false, 'message' => 'Նշեք դաշտերից մեկը'];
+        }     
 
-        $purchasedItemId = $ticket->purchased_item_id;
-        $purchaseItem = PurchasedItem::where('id', $purchasedItemId)->first();
-        $purchaseQunatity = $purchaseItem->quantity;
-        $purchasePrice = $purchaseItem->total_price;
+        $removeGuid = false;
 
-        if($purchaseItem->type == "free"){
-          $totalPrice = 0;
-        } else {
-          $oneTicketPrice = (int) $purchasePrice / (int) $purchaseQunatity;
-          $totalPrice = (int) $purchaseItem->returned_total_price + $oneTicketPrice;
+        if($data['ticketApprove']){
+          $ticket->update(['status' => TicketQr::STATUS_RETURNED]);
+
+          $purchasedItemId = $ticket->purchased_item_id;
+          $purchaseItem = PurchasedItem::where('id', $purchasedItemId)->first();
+
+          $purchaseQunatity = $purchaseItem->quantity;
+          $purchasePrice = $purchaseItem->total_price;
+
+          if($purchaseItem->type == "free"){
+            $totalPrice = 0;
+            $oneTicketPrice = 0;
+          } else {
+            $oneTicketPrice = (int) $purchasePrice / (int) $purchaseQunatity;
+            $totalPrice = (int) $purchaseItem->returned_total_price + $oneTicketPrice;
+          }
+
+          $returnedQuantity = $purchaseItem->returned_quantity + 1;
+          $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $oneTicketPrice;
+
+          $purchaseItem->update(['returned_quantity' => $returnedQuantity, 'returned_total_price' => $totalPrice]);
+          $purchaseItem->purchase->update(['returned_amount' => $purchaseNewAmount]);
+
+          $countPurchaseItemsForRemoveGuids = PurchasedItem::where(['purchase_id'=> $purchaseItem->purchase_id, 'returned_quantity' => 0])->where('type', '!=', 'guide')->count();
+
+          if($countPurchaseItemsForRemoveGuids == 0){
+            $removeGuid = true;
+          }
+
         }
-        $returnedQuantity = $purchaseItem->returned_quantity + 1;
-        $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $oneTicketPrice;
 
-        $purchaseItem->update(['returned_quantity' => $returnedQuantity, 'returned_total_price' => $totalPrice]);
-        $purchaseItem->purchase->update(['returned_amount' => $purchaseNewAmount]);
+        if($data['guideApprove'] || $removeGuid){
+          $purchaseItemId = $ticket->purchased_item_id;
+          $purchaseId = PurchasedItem::where('id', $purchaseItemId)->first()->purchase_id;
+          $guides = PurchasedItem::where(['purchase_id' => $purchaseId, 'type' => 'guide', 'returned_quantity' => 0])->get();
+          $purchaseReturnedAmount = 0;
+          foreach ($guides as $key => $guid) {
+            $guidQuantity = $guid->quantity;
+            $guidPrice = $guid->total_price;
+            $purchaseReturnedAmount += $guidPrice;
+            $guid->update(['returned_quantity' => $guidQuantity, 'returned_total_price' => $guidPrice]);
+          }
 
+          $purchase = Purchase::where('id', $purchaseId)->first();
+          $purchaseReadyAmount = $purchase->returned_amount + $purchaseReturnedAmount;
+          $purchase->update(['returned_amount' => $purchaseReadyAmount]);
+        }
+        
         DB::commit();
         if ($ticket) {
           return ['success' => true];
