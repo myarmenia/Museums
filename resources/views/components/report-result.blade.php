@@ -23,13 +23,13 @@
             </tr>
         </thead>
         @php
-            $total_info = null;
+              $total_info = null;
 
-            $sums = reportResult($data);
-            unset( $sums['canceled'] );
+              $sums = reportResult($data);
+              $newSums = array_diff_key($sums, ['canceled' => '']);
 
-            $total_sums = array_sum(array_column($sums,'total_price'));
-            $total_quantity = array_sum(array_column($sums,'quantity'));
+              $total_sums = array_sum(array_column($newSums,'total_price'));
+              $total_quantity = array_sum(array_column($newSums,'quantity'));
         @endphp
 
         <tbody>
@@ -94,6 +94,7 @@
 
 
             {{-- ============================================================== --}}
+
             @if (request()->request_report_type != 'compare' && count($data) > 0)
                 @if (request()->input('report_type') == 'fin_quant' || request()->input('report_type') == null)
                         @php $total_info = $total_sums . ' / ' . $total_quantity;  @endphp
