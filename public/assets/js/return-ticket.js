@@ -71,12 +71,6 @@ $(function () {
       guideApprove = $('#checked-guide').prop('checked');
     }
 
-    let data = {
-      ticketApprove,
-      guideApprove,
-      dataId
-    }
-   
     if (dataId != '') {
       let url = 'return-ticket/remove';
       $.ajax({
