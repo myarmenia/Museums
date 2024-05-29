@@ -13,7 +13,7 @@ class DeleteUserController extends Controller
     public function __invoke(Request $request)
     {
         $user = auth('api')->user();
-        $user->forceDelete();
+        $user->delete();
         auth('api')->logout();
         return response()->json(['success' => true]);
 
