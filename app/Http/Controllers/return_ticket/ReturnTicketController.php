@@ -4,6 +4,7 @@ namespace App\Http\Controllers\return_ticket;
 
 use App\Http\Controllers\Controller;
 use App\Services\Ticket\ReturnTicketService;
+use Illuminate\Http\Request;
 
 class ReturnTicketController extends Controller
 {
@@ -25,9 +26,9 @@ class ReturnTicketController extends Controller
         return response()->json($token);
     }
 
-    public function removeTicket($token)
+    public function removeTicket(Request $request)
     {
-        $token = $this->returnTicketService->removeToken($token);
+        $token = $this->returnTicketService->removeToken($request->all());
 
         return response()->json($token);
     }

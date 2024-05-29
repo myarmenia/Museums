@@ -48,11 +48,12 @@ protected $hasRelationTranslation = ['item_translations'];
   public function similar_products($museum_id,$product_id){
     return $this->where([
                     ['museum_id','=',$museum_id],
-                    ['id','!=',$product_id]
+                    ['id','!=',$product_id],
+                    ['status','=',1],
                   ] )->get()->take(4);
   }
 
-  
+
 
 
 }

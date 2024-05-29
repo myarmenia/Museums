@@ -1,4 +1,5 @@
 @extends('layouts/contentNavbarLayout')
+@section('title', 'Տոմս - Ցանկ')
 @section('page-script')
     <script src="{{ asset('assets/js/admin/ticket/new-index.js') }}"></script>
 @endsection
