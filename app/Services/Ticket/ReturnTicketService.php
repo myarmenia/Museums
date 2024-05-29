@@ -2,6 +2,7 @@
 
 namespace App\Services\Ticket;
 
+use App\Models\EventConfig;
 use App\Models\PurchasedItem;
 use App\Models\TicketQr;
 use Illuminate\Support\Facades\DB;
@@ -72,6 +73,13 @@ class ReturnTicketService
           $oneTicketPrice = (int) $purchasePrice / (int) $purchaseQunatity;
           $totalPrice = (int) $purchaseItem->returned_total_price + $oneTicketPrice;
         }
+
+        if($purchaseItem->type == "event"){
+          $eventConfig =  EventConfig::where('id', $purchaseItem->item_relation_id)->first();
+          $countVisitors = (int) $eventConfig->visitors_quantity - 1;
+          $eventConfig->update(['visitors_quantity' => $countVisitors]);
+        }
+
         $returnedQuantity = $purchaseItem->returned_quantity + 1;
         $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $oneTicketPrice;
 
