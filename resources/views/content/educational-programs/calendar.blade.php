@@ -1,4 +1,5 @@
 @extends('layouts/contentNavbarLayout')
+@section('title', 'Այցելությունների օրացույց - Ցանկ')
 @section('page-script')
 
 

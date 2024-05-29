@@ -1,4 +1,5 @@
 @extends('layouts/contentNavbarLayout')
+@section('title', 'Կրթական ծրագրեր - Ցանկ')
 
 @section('page-script')
     <script src="{{ asset('assets/js/change-status.js') }}"></script>

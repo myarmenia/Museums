@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-
+@section('title', 'Միջոցառումներ - Ցանկ')
 @section('page-script')
 <script src="{{ asset('assets/js/change-status.js') }}"></script>
     <script src="{{ asset('assets/js/delete-item.js') }}"></script>

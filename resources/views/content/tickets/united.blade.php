@@ -1,4 +1,5 @@
 @extends('layouts/contentNavbarLayout')
+@section('title', 'Միասնական տոմս')
 @section('page-script')
     <script src="{{ asset('assets/js/admin/ticket/index.js') }}"></script>
 @endsection
