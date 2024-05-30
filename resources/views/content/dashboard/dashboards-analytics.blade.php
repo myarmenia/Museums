@@ -1,5 +1,5 @@
 @extends('layouts/contentNavbarLayout')
-
+@section('title', 'Վիճակագրություն')
 @section('title', 'Dashboard - Analytics')
 
 @section('vendor-style')
