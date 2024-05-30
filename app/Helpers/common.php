@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Chat;
 use App\Models\Country;
 use App\Models\EducationalProgram;
 use App\Models\Museum;
@@ -407,6 +408,23 @@ if (!function_exists('getAuthUserRoleInterface')) {
     if (auth()->user()->roles()->get()->where('interface', 'admin')->count()) {
       return true;
     };
+
+    return false;
+  }
+
+}
+
+if (!function_exists('museumHaveUnreadMessage')) {
+  function museumHaveUnreadMessage()
+  {
+
+    $museumId = getAuthMuseumId() ? getAuthMuseumId() : NULL;
+
+    $unreadMessage = Chat::where('museum_id', $museumId)->where('read', 0)->first();
+
+    if($unreadMessage) {
+      return true;
+    }
 
     return false;
   }
