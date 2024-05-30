@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 @section('page-script')
-    <script src="{{ asset('assets/js/admin/ticket/index.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/ticket/new-index.js') }}"></script>
 @endsection
 @section('content')
   <div class="message"></div>

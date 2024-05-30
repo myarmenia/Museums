@@ -78,7 +78,7 @@
                                                             {{ $program->status ? 'checked' : null }}>
                                                     </div>Կարգավիճակ
                                                 </a>
-                                                <a class="dropdown-item" href="{{route('educational_programs_edit', $program->id)}}"><i
+                                                <a class="dropdown-item" href="{{route('educational_programs-edit', $program->id)}}"><i
                                                     class="bx bx-edit-alt me-1"></i>Փոփոխել
                                                 </a>
                                                 <button type="button" class="dropdown-item click_delete_item"
