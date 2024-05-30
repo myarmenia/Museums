@@ -112,7 +112,7 @@
       "url": "educational-programs/list",
       "name": "Կրթական ծրագրեր",
       "icon": "menu-icon tf-icons bx bx-list-ul",
-      "slug": ["educational_programs_list", "educational_programs_create","educational_programs_edit"],
+      "slug": ["educational_programs_list", "educational_programs_create","educational_programs-edit"],
       "roles": [
         "museum_admin",
         "manager",

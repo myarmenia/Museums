@@ -180,8 +180,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
         Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
         Route::group(['middleware' => ['model_access']], function () {
-          Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs_update');
-          Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs_edit');
+          Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs-update');
+          Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs-edit');
         });
     });
 
