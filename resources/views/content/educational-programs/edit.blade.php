@@ -22,7 +22,7 @@
     </div>
     <div class="card-body">
 
-        <form action="{{route('educational_programs_update', $program->id)}}" method="post">
+        <form action="{{route('educational_programs-update', $program->id)}}" method="post">
             @method('put')
 
            @foreach (languages() as $lang)
