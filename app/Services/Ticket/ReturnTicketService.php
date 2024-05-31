@@ -41,7 +41,7 @@ class ReturnTicketService
           $purchaseItemId = $ticket->purchased_item_id;
           $purchaseId = PurchasedItem::where('id', $purchaseItemId)->first()->purchase_id;
           $guides = PurchasedItem::where(['purchase_id' => $purchaseId, 'type' => 'guide', 'returned_quantity' => 0])->count();
-
+// dd($guides);
           if ($guides) {
             $guides = true;
           }
@@ -108,7 +108,7 @@ class ReturnTicketService
           $purchaseItem->update(['returned_quantity' => $returnedQuantity, 'returned_total_price' => $totalPrice]);
           $purchaseItem->purchase->update(['returned_amount' => $purchaseNewAmount]);
 
-          $countPurchaseItemsForRemoveGuids = PurchasedItem::where(['purchase_id' => $purchaseItem->purchase_id, 'returned_quantity' => 0])->where('type', '!=', 'guide')->count();
+          $countPurchaseItemsForRemoveGuids = PurchasedItem::where('purchase_id', $purchaseItem->purchase_id)->whereColumn('quantity', '>', 'returned_quantity')->where('type', '!=', 'guide')->count();
 
           if ($countPurchaseItemsForRemoveGuids == 0) {
             $removeGuid = true;
@@ -132,6 +132,7 @@ class ReturnTicketService
           $purchaseReadyAmount = $purchase->returned_amount + $purchaseReturnedAmount;
           $purchase->update(['returned_amount' => $purchaseReadyAmount]);
         }
+    
 
         DB::commit();
         if ($ticket) {

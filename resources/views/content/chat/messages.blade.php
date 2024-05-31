@@ -13,15 +13,17 @@
     @include('includes.alert')
     @if ($data->deleted_at)
         <h2 class="text-muted fw-light pb-3" style="color:red">Տվյալ նամակագրություն ջնջված է</h2>
-    @elseif ($data->visitor && $data->visitor->deleted_at)
+    @elseif ($data->visitor_id && is_null($data->visitor))
         <h2 class="text-muted fw-light pb-3" style="color:red">Այցելուի հաշիվը ջնջված է</h2>
     @endif
 
-    <h4 class="py-3 mb-4 d-flex">
-        <span class="text-muted fw-light">Նամակագրություն {{ $data->email ?? ($data->visitor->email ?? '') }} -ի
-            հետ
-        </span>
-    </h4>
+    @if (!($data->visitor_id && is_null($data->visitor)))
+        <h4 class="py-3 mb-4 d-flex">
+            <span class="text-muted fw-light">Նամակագրություն {{ $data->email ?? ($data->visitor->email ?? '') }} -ի
+                հետ
+            </span>
+        </h4>
+    @endif
 
     <input type="hidden" id="chat_id" value="{{ $data->id }}">
     {{-- @dd($data); --}}
@@ -60,10 +62,9 @@
                         </div>
                     @endforeach
                 </div>
-                
                 @if(
                     is_null($data->deleted_at) && 
-                    (!isset($data->visitor) || is_null($data->visitor->deleted_at))
+                    ((!isset($data->visitor) && $data->email) || ($data->visitor_id && $data->visitor))
                 )
                     <div class="publisher bt-1 border-light">
                         <img class="avatar avatar-xs" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
