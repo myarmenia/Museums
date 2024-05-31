@@ -359,9 +359,9 @@ if (!function_exists('ticketTitles')) {
         'standart' => 'ստանդարտ տոմս стандартный билет standart ticket',
         'discount' => 'զեղչված տոմս билет со скидкой discounted ticket',
         'free' => 'անվճար տոմս бесплатный билет free ticket',
-        'united' => 'միջոցառման անվանումը  название события event name',
+        'united' => 'միասնական տոմս  единый билет combo ticket',
         'subscription' => 'աբոնեմենտ  абонемент abonement',
-        'event' => 'միջոցառման անվանումը  название события event name'
+        'event' => 'միջոցառման տոմս билет мероприятия event ticket'
       ];
   }
 }
