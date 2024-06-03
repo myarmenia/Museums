@@ -37,6 +37,10 @@ trait PaymentRegister
               $item_params->notice = $this->getNotice($item->type);
               $item_params->description = "Վաճառք";
 
+              if($item->type == 'product'){
+                  $item_params->notice = $item_params->notice . ' / '. $item->first()->product->translation('en')->name ?? '';
+              }
+
               array_push($payments, $item_params);
           }
       }
@@ -57,9 +61,7 @@ trait PaymentRegister
             }
       }
 
-
       $client = new Client(['verify' => false]);
-
 
       $response = $client->post('https://api.e-payments.am/group-payments/register', [
           'headers' => [

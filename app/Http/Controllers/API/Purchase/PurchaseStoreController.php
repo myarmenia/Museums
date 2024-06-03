@@ -31,7 +31,7 @@ class PurchaseStoreController extends BaseController
       $purchase = $this->purchase($data);
 
       if (isset($purchase['error'])) {
-        
+
           $name = isset($purchase['name']) ? $purchase['name'] : '';
           return $this->sendError($name . ' ' . __('messages.' .  $purchase['error']));
       }
@@ -44,7 +44,7 @@ class PurchaseStoreController extends BaseController
       }
       // ======================================================
 
-
+      
 
       $redirect_url = $this->register($purchase);
 
