@@ -30,6 +30,11 @@ class OrderHistoryResource extends JsonResource
           $names = $translations->where('lang', session("languages"))->pluck('name');
         }
 
+        if ($this->type == 'product') {
+            $product_name = $this->product->translation(session("languages"))->name;
+            $data['type'] = $product_name;
+        }
+
         $data['museum_name'] = $this->type == 'united' ? $names : [$this->museum->translation(session("languages"))->name];
 
         return $data;
