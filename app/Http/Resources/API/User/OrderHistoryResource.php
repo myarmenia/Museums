@@ -32,7 +32,7 @@ class OrderHistoryResource extends JsonResource
 
         if ($this->type == 'product') {
             $product_name = $this->product->translation(session("languages"))->name;
-            $data['type'] = $product_name;
+            $data['product_name'] = $product_name;
         }
 
         $data['museum_name'] = $this->type == 'united' ? $names : [$this->museum->translation(session("languages"))->name];
