@@ -40,7 +40,7 @@ trait PaymentRegister
               if($item->type == 'product'){
 
                 $product_name = $item->product->translation('am')->name;
-                $item_params->notice = $item_params->notice . ' / ' . $product_name ?? '';
+                $item_params->notice = $this->getNotice($item->type) . ' / ' . $product_name ?? '';
               }
 
               array_push($payments, $item_params);
