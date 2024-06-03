@@ -2,8 +2,6 @@
 namespace App\Traits\Payments;
 use App\Models\Payment;
 use App\Models\Product;
-use App\Models\ProductTranslation;
-use App\Models\PurchasedItem;
 use App\Models\PurchaseUnitedTickets;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
@@ -17,8 +15,8 @@ trait PaymentRegister
 
       $payments = [];
 
-      $data_items = $data->purchased_items()->where('type', '!=', 'united')->groupBy('museum_id','type')
-          ->select('museum_id',  \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
+      $data_items = $data->purchased_items()->where('type', '!=', 'united')->groupBy('item_relation_id','museum_id','type')
+          ->select('item_relation_id','museum_id',  \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price) as total_price'))
           ->get();
 
       $data_purchased_item = $data->purchased_items->where('type', 'united');
@@ -41,9 +39,9 @@ trait PaymentRegister
 
               if($item->type == 'product'){
 
-              $product_name = ProductTranslation::where(['product_id' => $item->first()->item_relation_id, 'lang' => 'en'])->first();
-              $item_params->notice = $item_params->notice . ' / ' . $product_name->name ?? '';
-        }
+                $product_name = $item->product->translation('am')->name;
+                $item_params->notice = $item_params->notice . ' / ' . $product_name ?? '';
+              }
 
               array_push($payments, $item_params);
           }
