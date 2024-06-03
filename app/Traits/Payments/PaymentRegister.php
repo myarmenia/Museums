@@ -1,6 +1,8 @@
 <?php
 namespace App\Traits\Payments;
 use App\Models\Payment;
+use App\Models\Product;
+use App\Models\ProductTranslation;
 use App\Models\PurchasedItem;
 use App\Models\PurchaseUnitedTickets;
 use GuzzleHttp\Client;
@@ -38,8 +40,10 @@ trait PaymentRegister
               $item_params->description = "Վաճառք";
 
               if($item->type == 'product'){
-                  $item_params->notice = $item_params->notice . ' / '. $item->first()->product->translation('en')->name ?? '';
-              }
+
+              $product_name = ProductTranslation::where(['product_id' => $item->first()->item_relation_id, 'lang' => 'en'])->first();
+              $item_params->notice = $item_params->notice . ' / ' . $product_name->name ?? '';
+        }
 
               array_push($payments, $item_params);
           }
