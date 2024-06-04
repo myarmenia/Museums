@@ -29,7 +29,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="javascript:void(0);">Հաշվետվություն</a>
+                    <a href="javascript:void(0);">Հաշվետվություն 88888</a>
                 </li>
             </ol>
         </nav>

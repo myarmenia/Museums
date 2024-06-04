@@ -2,14 +2,14 @@
   <table class="table table-bordered">
         <thead>
             <tr>
-                <th>No</th>
+                <th>No 55</th>
                 @if (request()->routeIs('reports'))
                   <th>Թանգարան</th>
                 @endif
-                <th>Ստանդարտ տ․</th>
+                <th>Ստանդարտ տ․ 99</th>
                 <th>Զեղչված տ․</th>
                 <th>Անվճար տ․</th>
-                <th>Միասնական տ․</th>
+                <th>Միասնական տ․ <br>ըստ թանգարանների</th>
                 <th>Աբոնեմենտ</th>
                 <th>Միջոցառման տ․</th>
                 <th>Կորպորատիվ</th>
