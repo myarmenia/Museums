@@ -150,9 +150,7 @@
             @foreach ($result as $data)
                 @php
                     $type = $data->purchased_item->type;
-                    $rand = $data->ticket_token;
-                    $code = $data->id . $rand;
-
+                    $code = $data->ticket_token;
                 @endphp
                 <div class="ticket-card">
                     <div class="card-div" >
@@ -161,6 +159,7 @@
                                 <img style="width: 33px; height: 43px;" src="{{ $message->embed('assets/img/logos/logo.png') }}" alt="logo">
                                 <p style="text-transform: uppercase; font-size: 12px; font-weight: 600; line-height: 13.6px; border-bottom: 1px solid black; padding-bottom: 5px;">{{ticketTitles()[$type]}}</p>
                             </div>
+
                             @if ($type == 'united')
                                   @php
                                       $united_museums = $data->purchased_item->united_museums();
@@ -171,6 +170,9 @@
                                       @endforeach
                                   @endif
                             @else
+                                @if ($type == 'event')
+                                  <p style="text-transform: font-weight: 600">{{$data->event_config->event->translation('en')->name}}</p>
+                                @endif
                                 @foreach (languages() as $lng)
                                     <div style="font-size: 12px; ine-height: 13.6px; margin-top: 6px; margin-left: 6px;">
                                         <p style="font-weight: 600; margin-bottom: 0">{{$data->museum->translation($lng)->name}}</p>
@@ -191,7 +193,7 @@
                                     <span>{{ $data->created_at != null && ($type == 'subsctiption' || $type == 'united') ? date('d-m-Y', strtotime($data->created_at)) : ''}} </span>
                                     <span>{{ $type == 'event' ? date('d-m-Y', strtotime($data->purchased_item->event_config->day)) : ''}}</span>
                                     <span>{{ $type == 'event' ? date('H:i', strtotime($data->purchased_item->event_config->start_tyme)) : ''}}</span>
-                                    <p style="margin-bottom: 0; font-size: 8px; color: #aaa">{{$code}}</p>
+                                    <p style="margin-bottom: 0; font-size: 10px; color: #aaa">{{$code}}</p>
                                 </div>
                             </div>
                         </div>

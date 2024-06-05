@@ -26,7 +26,7 @@ class ChangeStyleController extends Controller
     {
 
         // $generate_qr = $this->getTokenQr(1);
-        $generate_qr = TicketQr::whereIn('id',[1,13])->get();
+        $generate_qr = TicketQr::whereIn('id',[315])->get();
         // dd($generate_qr);
         $email = $request->email;
         $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
