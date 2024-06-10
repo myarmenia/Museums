@@ -17,18 +17,10 @@
                                 alt="Museum Logo" style="width: 130px; height: auto;">
                         </td>
                     </tr>
-                    <tr>
-                        <td style="padding: 20px; text-align: center;">
-                            <img src="https://museum.gorc-ka.am/assets/img/mail-img/hh.png" alt="HH-Zinanshan"
-                                style="width: 54px; height: 54px;">
-                            <p>ՀԱՅԱՍՏԱՆԻ ՀԱՆՐԱՊԵՏՈՒԹՅԱՆ ԿՐԹՈՒԹՅԱՆ, ԳԻՏՈՒԹՅԱՆ, ՄՇԱԿՈՒՅԹԻ ԵՎ ՍՊՈՐՏԻ
-                                ՆԱԽԱՐԱՐՈՒԹՅՈՒՆ</p>
-                        </td>
-                    </tr>
                     <tr style="">
                         <td style="padding: 20px;">
                             <div>
-                                <p>{{$text }}</p>
+                               <strong>Ձեր նամակի պատասխան</strong> <p>{{$text }}</p>
                             </div>
                         </td>
                     </tr>
