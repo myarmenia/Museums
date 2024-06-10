@@ -17,7 +17,7 @@ class OrderHistoryController extends BaseController
     public function __invoke(Request $request){
 
       $page = request()->page ?? 1;
-      $perPage = 2;
+      $perPage = 10;
 
       $order_history = $this->getorderHistory();
 
