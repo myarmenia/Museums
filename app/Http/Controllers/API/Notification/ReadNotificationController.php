@@ -13,7 +13,6 @@ class ReadNotificationController extends Controller
       $user = auth('api')->user();
       // dd($user->notifications());
 
-
       $user->notifications()->where('id', $notificationId)->update(['read_at' => now()]);
 
       return redirect()->route('unreadNotification');
