@@ -8,7 +8,7 @@ trait Paginator
   public function arrayPaginator($array, $request, $perPage)
   {
 
-    $page = $request['page'];
+    $page = request()->input('page', 1);
     $total = $array->count();
 
     $offset = ($page * $perPage) - $perPage;
