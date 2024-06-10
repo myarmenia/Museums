@@ -22,7 +22,7 @@ class OrderHistoryController extends BaseController
       $order_history = $this->getorderHistory();
 
       $orderHistoryResourceCollection = OrderHistoryResource::collection($order_history);
-      
+
       $order_history = $this->arrayPaginator($orderHistoryResourceCollection, $request, $perPage);
       $params = [
         'page_count' => $order_history->lastPage(),
@@ -30,8 +30,8 @@ class OrderHistoryController extends BaseController
         'unread_notification_count' => $order_history->count()
       ];
 
-
-      return $this->sendResponse($order_history->items(), 'success', $params);
+      $order_history = array_values($order_history->items());
+      return $this->sendResponse($order_history, 'success', $params);
     }
 
 
