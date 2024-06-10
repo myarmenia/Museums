@@ -189,6 +189,7 @@ class ChatService
         $chat = Chat::where(['visitor_id' => $authUserId, 'museum_id' => $museumId, 'id' => $data['chat_id']])->first();
 
         if($chat){
+            $chat->update(['read' => 0]);
             $messageData = [
                 'type' => Message::TYPE_VISITOR,
                 'text' => $data['text'],
