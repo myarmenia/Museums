@@ -35,7 +35,7 @@ trait PaymentRegister
               $item_params->account = "900018001322";
               $item_params->beneficiary_name = $item->museum->translationsForAdmin->name;
               $item_params->notice = $this->getNotice($item->type);
-              $item_params->description = "Վաճառք ";
+              $item_params->description = "Վաճառք";
 
               if($item->type == 'product'){
 
@@ -56,13 +56,13 @@ trait PaymentRegister
                 $item_params->account = "900018001322";
                 $item_params->beneficiary_name = $united_item->museum->translationsForAdmin->name;
                 $item_params->notice = $this->getNotice('united');
-                $item_params->description = "Վաճառք ";
+                $item_params->description = "Վաճառք";
 
                 array_push($payments, $item_params);
 
             }
       }
-dd($payments);
+
       $client = new Client(['verify' => false]);
 
       $response = $client->post('https://api.e-payments.am/group-payments/register', [
@@ -112,12 +112,14 @@ dd($payments);
 
     public function getNotice($type)
     {
+
+
         return $type == 'subscription' ? 'Աբոնեմենտ տոմս' :
               ($type == 'united' ? 'Միասնական տոմս' :
               ($type == 'event' ? 'Միջոցառման տոմս' :
               ($type == 'product' ? 'Թանգարանի ապրանք' : 'Թանգարանի տոմս')));
 
-      
+
     }
 
 }
