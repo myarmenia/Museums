@@ -45,7 +45,7 @@
           <div class="card my-3">
               <div class="d-flex justify-content-between align-items-center">
                   <div>
-                      <h6 class="card-header">Աբոնեմենտ</h6>
+                      <h6 class="card-header">Անդամակցության քարտ</h6>
                   </div>
               </div>
               <div class="card-body">
