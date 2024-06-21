@@ -48,7 +48,7 @@
                     <li data-name='aboniment' class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                             data-bs-target="#navs-top-aboniment" aria-controls="navs-top-aboniment"
-                            aria-selected="false">Աբոնեմենտ</button>
+                            aria-selected="false">Անդամակցության քարտ</button>
                     </li>
                 @endif
                 <li data-name='corporative' class="nav-item">
@@ -244,7 +244,7 @@
                                     </thead>
                                     <tbody class="table-border-bottom-0">
                                         <tr class='table-default'>
-                                            <td>Աբոնեմենտ</td>
+                                            <td>Անդամակցության քարտ</td>
                                             <td><input type="number" min="0" class="form-control form-control-validate"
                                                     onwheel="return false;" price="<?= $data['aboniment']['price'] ?>"
                                                     id="aboniment-ticket" name="aboniment-ticket" max="10"

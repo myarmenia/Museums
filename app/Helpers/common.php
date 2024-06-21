@@ -360,7 +360,7 @@ if (!function_exists('ticketTitles')) {
         'discount' => 'զեղչված տոմս билет со скидкой discounted ticket',
         'free' => 'անվճար տոմս бесплатный билет free ticket',
         'united' => 'միասնական տոմս  единый билет combo ticket',
-        'subscription' => 'աբոնեմենտ  абонемент abonement',
+        'subscription' => 'անդամակցության քարտ  абонемент abonement',
         'event' => 'միջոցառման տոմս билет мероприятия event ticket'
       ];
   }
@@ -373,7 +373,7 @@ if (!function_exists('getTranslateTicketTitl')) {
         'standart' => 'Ստանդարտ',
         'discount' => 'Զեղչված',
         'free' => 'Անվճար',
-        'subscription' => 'Աբոնեմենտ',
+        'subscription' => 'Անդամակցության քարտ',
         'united' => 'Միասնական',
         'educational' => 'Կրթական',
         'event' => 'Միջոցառում',

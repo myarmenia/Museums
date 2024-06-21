@@ -16,7 +16,7 @@ return [
     'discount' => 'Զեղչված',
     'free' => 'Անվճար',
     'united' => 'Միասնական',
-    'subscription' => 'Աբոնեմենտ',
+    'subscription' => 'Անդամակցության քարտ',
     'event' => 'Միջոցառում',
     'corporative' => 'Կորպորատիվ',
     'educational' => 'Կրթական ծրագիր',
@@ -25,4 +25,4 @@ return [
     'product' => 'Ապրանքներ'
 
 ];
- 
+
