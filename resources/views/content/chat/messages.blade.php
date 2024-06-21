@@ -29,6 +29,12 @@
       </h4>
 
     @endif
+    <div class="">
+        @if ($data->email && !$data->visitor)
+            <h5 class="card-title"><strong>Այս հաղորդագրությունը ուղարկվել է չգրանցված այցելուի կողմից, այդ
+                    պատճառով պատասխանը կուղարկվի նրա էլ․ հասցեին</strong></h5>
+        @endif
+    </div>
 
     <input type="hidden" id="chat_id" value="{{ $data->id }}">
     {{-- @dd($data); --}}
@@ -48,12 +54,7 @@
         <div class="page-content page-container" id="page-content">
             <div class="d-flex justify-content-center w-100">
                 <div class="w-100">
-                    <div class="">
-                        @if ($data->email && !$data->visitor)
-                            <h4 class="card-title"><strong>Այս հաղորդագրությունը ուղարկվել է չգրանցված այցելուի կողմից, այդ
-                                    պատճառով պատասխանը կուղարկվի նրա էլ․ հասցեին</strong></h4>
-                        @endif
-                    </div>
+
 
                     <div class="ps-container ps-theme-default ps-active-y p-4" id="chat-content"
                         style="overflow-y: scroll !important; height:400px !important;">
