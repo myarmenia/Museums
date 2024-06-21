@@ -14,15 +14,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
         uploadedImages.length = 0;
         uploadedImagesContainer.innerHTML=' '
 
-        console.log(fileInput.files.length+"888888")
+
         for (let i = 0; i < Math.min(fileInput.files.length, 4); i++) {
           const imageData = {
             url: window.URL.createObjectURL(fileInput.files[i]),
             fileName: fileInput.files[i].name
 
           };
-          console.log(imageData)
-          console.log(fileInput.files, 5555555555555)
+         
           uploadedImages.push(imageData);
 
           const imageContainer = document.createElement('div');
@@ -37,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
           imageContainer.appendChild(image);
 
 
-         
+
           uploadedImagesContainer.appendChild(imageContainer);
 
 

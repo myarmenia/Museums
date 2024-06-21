@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         uploadedImages.length = 0;
 
         // uploadedImagesContainer.innerHTML = '';
-console.log(fileInput.files.length+"888888")
+
         for (let i = 0; i < Math.min(fileInput.files.length, 4); i++) {
           const imageData = {
             url: window.URL.createObjectURL(fileInput.files[i]),
@@ -57,7 +57,7 @@ console.log(fileInput.files.length+"888888")
           imageContainer.appendChild(removeButton);
 
           uploadedImagesContainer.appendChild(imageContainer);
-       
+
           if(document.getElementById('photos_div')!=null){
 
             document.getElementById('photos_div').innerHTML!=='' ? document.getElementById('photos_div').innerHTML='' : null
