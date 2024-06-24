@@ -84,7 +84,7 @@ Route::group(['middleware' => ['auth']], function () {
       Route::get('/', AnalyticsController::class)->name('dashboard_analytics');
   });
 
-  Route::group(['middleware' => ['role:museum_admin|manager|content_manager', 'check_auth_have_museum' ]], function () {
+  Route::group(['middleware' => ['role:museum_admin|manager|content_manager|accountant', 'check_auth_have_museum' ]], function () {
     Route::get('/museum-dashboard', SingleMuseumAnalyticsController::class)->name('museum_dashboard_analytics');
   });
 
