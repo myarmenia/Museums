@@ -2,6 +2,7 @@
 namespace App\Traits\Turnstile;
 use App\Models\TicketAccess;
 use App\Models\TicketQr;
+use App\Models\Turnstile;
 use DateTime;
 use Illuminate\Support\Carbon;
 
@@ -12,31 +13,39 @@ trait QR
 
 
       // $turnstile_user = auth('turnstile')->user();
-      $qr = TicketQr::where([
-        "token" => $data['token'],
-        "museum_id" => $data['museum_id'],
-        'status' => 'active'
-      ])->first();
+      $turnstile = Turnstile::museum($data['mac'])->first();
 
-      if($qr){
-        if($qr->type == 'event'){
-          $date = $qr->event_config->day;
-        }
-        elseif($qr->type == 'corporative'){
-          $date = $qr->corporative->created_at;
+      if($turnstile){
+          $museum_id = $turnstile->museum_id;
 
-        }
-        else{
-          $date = $qr->created_at;
-        }
+          $qr = TicketQr::valid($data['qr'], $museum_id)->first();
+          // $qr = TicketQr::where([
+          //   "token" => $data['qr'],
+          //   "museum_id" => $data['museum_id'],
+          //   'status' => 'active'
+          // ])->first();
 
-        $check_date = $this->checkDate($date, $qr->type);
+          if($qr){
+            if($qr->type == 'event'){
+              $date = $qr->event_config->day;
+            }
+            elseif($qr->type == 'corporative'){
+              $date = $qr->corporative->created_at;
 
-        if($check_date){
-          $check_ticket_accesses = $this->checkTicketAccesses( $qr, null);
+            }
+            else{
+              $date = $qr->created_at;
+            }
 
-          return $check_ticket_accesses ? true : false;
-        }
+            $check_date = $this->checkDate($date, $qr->type);
+
+
+            if($check_date){
+              $check_ticket_accesses = $this->checkTicketAccesses( $qr, null);
+
+              return $check_ticket_accesses ? true : false;
+            }
+      }
 
 
     }
