@@ -8,27 +8,32 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
-class Turnstile extends Authenticatable implements JWTSubject
+class Turnstile extends Authenticatable
 {
     use HasFactory;
     protected $table = 'turnstiles';
 
     protected $guarded = [];
-    protected $hidden = ['password'];
 
-  public function getJWTIdentifier()
+    public function scopeMuseum($query, $mac)
     {
-      return $this->getKey();
+        return $query->where('mac', $mac);
     }
+    // protected $hidden = ['password'];
 
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
-    public function getJWTCustomClaims()
-    {
-      return [];
-    }
+    // public function getJWTIdentifier()
+    // {
+    //   return $this->getKey();
+    // }
+
+    // /**
+    //  * Return a key value array, containing any custom claims to be added to the JWT.
+    //  *
+    //  * @return array
+    //  */
+    // public function getJWTCustomClaims()
+    // {
+    //   return [];
+    // }
 
 }

@@ -23,10 +23,10 @@ class CheckQRRequest extends FormRequest
     public function rules(): array
     {
 
-      return [
-        'museum_id' => 'required',
-        'token' => 'required'
-      ];
+        return [
+          'mac' => 'required',
+          'qr' => 'required'
+        ];
 
     }
 

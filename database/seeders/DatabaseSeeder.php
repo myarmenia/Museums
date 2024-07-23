@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             RegionSeeder::class,
             TicketTypeSeeder::class,
             ProductCategorySeeder::class,
-            ProductCategoryTranslationSeeder::class
+            ProductCategoryTranslationSeeder::class,
+            TurnstilesSeeder::class
 
     ]);
     }
