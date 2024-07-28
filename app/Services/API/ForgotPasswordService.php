@@ -13,21 +13,27 @@ class ForgotPasswordService
 {
   public function sendResetLink($email)
   {
-    $user = User::where('email', $email)->first();
-    if ($user) {
-      $token = sha1(Str::random(80));
-      $email = $user->email;
-      PasswordReset::updateOrCreate(
-        ["email" => $email],
-        ["token" => $token]
-      );
+    try {
+      $user = User::where('email', $email)->whereHas('roles', function ($query) {
+        $query->where('name', 'visitor');
+      })->first();
 
-      Mail::send(new SendForgotToken($email, $token));
+      if ($user) {
+        if ($user->google_id) {
+          return ['success' => false, 'reason' => 'google-user-error-password'];
+        }
+        $token = mt_rand(10000, 99999);
+        $email = $user->email;
+        PasswordReset::updateOrCreate(
+          ["email" => $email],
+          ["token" => $token]
+        );
 
-      return response()->json(['success' => true, 'message' => translateMessageApi('password-reset-link-sent')], 200);
-    } else {
-      return response()->json(['error' => translateMessageApi('password-reset-link-sent')], 500);
-      // return response()->json(['error' => translateMessageApi('user-email-not-found')], 500);
+        Mail::send(new SendForgotToken($email, $token));
+      }
+      return ['success' => true];
+    } catch (\Throwable $th) {
+      return ['success' => false, 'reason' => 'something-went-wrong'];
     }
 
   }
@@ -56,4 +62,24 @@ class ForgotPasswordService
 
     return false;
   }
+
+  public function resendForgot($data)
+  {
+    $email = $data['email'];
+
+    if ($forgot = PasswordReset::where('email', $email)->first()) {
+      $token = mt_rand(10000, 99999);
+      $forgot->update([
+        'token' => $token
+      ]);
+
+      Mail::send(new SendForgotToken($email, $token));
+
+      return true;
+    }
+
+    return false;
+
+  }
+
 }

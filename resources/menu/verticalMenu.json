@@ -2,30 +2,17 @@
   "menu": [
     {
       "url": "/",
-      "name": "Dashboards",
+      "name": "Վիճակագրություն",
       "icon": "menu-icon tf-icons bx bx-home-circle",
-      "slug": "dashboard",
-      "roles": ["all"],
-      "badge": [
-        "danger",
-        "5"
-      ],
-      "submenu": [
-        {
-          "url": "/",
-          "name": "Analytics",
-          "slug": "dashboard-analytics"
-        }
+      "slug": "dashboard_analytics",
+      "roles": [
+        "super_admin",
+        "general_manager",
+        "chief_accountant"
       ]
+
     },
 
-    {
-      "name": "Project",
-      "icon": "menu-icon tf-icons bx bx-collection",
-      "slug": "project",
-      "roles": ["all"],
-      "url": "project"
-    },
     {
       "url": "/users",
       "name": "Օգտագործողներ",
@@ -56,301 +43,77 @@
       "name": "Թանգարաններ",
       "icon": "menu-icon tf-icons bx bx-museum",
       "slug": "museum",
-      "roles": ["all"],
+      "roles": ["super_admin", "general_manager"],
       "url": "museum"
     },
+    {
+      "name": "Հաղորդագրություններ",
+      "icon": "menu-icon tf-icons bx bx-message",
+      "slug": "chats",
+      "roles": ["super_admin", "general_manager"],
+      "url": "chats"
+    },
+    {
+      "url": "product/list",
+      "name": "Ապրանքներ",
+      "icon": "menu-icon tf-icons bx bx-purchase-tag",
+      "slug": "product_list",
+      "roles": [
+        "super_admin",
+        "general_manager"
+        ]
+
+    },
+
 
     {
       "name": "Նորություններ",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "general-news",
+      "slug": "news",
       "roles": ["general_manager","super_admin"],
-      "submenu": [
-        {
-          "url": "/news/news",
-          "name": "News",
-          "slug": "news"
-        }
+      "url": "/news/news"
 
-      ]
-    },
-
-
-    {
-      "name": "Account Settings",
-      "icon": "menu-icon tf-icons bx bx bx-dock-top",
-      "slug": "pages-account-settings",
-      "roles": [
-        "all"
-      ],
-      "submenu": [
-        {
-          "url": "pages/account-settings-account",
-          "name": "Account",
-          "slug": "pages-account-settings-account"
-        },
-        {
-          "url": "pages/account-settings-notifications",
-          "name": "Notifications",
-          "slug": "pages-account-settings-notifications"
-        },
-        {
-          "url": "pages/account-settings-connections",
-          "name": "Connections",
-          "slug": "pages-account-settings-connections"
-        }
-      ]
     },
     {
-      "name": "Authentications",
-      "icon": "menu-icon tf-icons bx bx-lock-open-alt",
-      "slug": "auth",
-      "roles": [
-        "all"
-      ],
-      "submenu": [
-        {
-          "url": "auth/login-basic",
-          "name": "Login",
-          "slug": "auth-login-basic",
-          "target": "_blank"
-        },
-        {
-          "url": "auth/register-basic",
-          "name": "Register",
-          "slug": "auth-register-basic",
-          "target": "_blank"
-        },
-        {
-          "url": "auth/forgot-password-basic",
-          "name": "Forgot Password",
-          "slug": "auth-forgot-password-basic",
-          "target": "_blank"
-        }
-
-      ]
-    },
-    {
-      "menuHeader": "Components"
-    },
-    {
-      "name": "Cards",
-      "icon": "menu-icon tf-icons bx bx-collection",
-      "slug": "cards-basic",
-      "roles": [
-        "all"
-      ],
-      "url": "cards/basic"
-    },
-    {
-      "name": "User interface",
+      "name": "Բանեռ",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "ui",
+      "slug": "banner_list",
       "roles": [
-        "all"
-      ],
-      "submenu": [
-        {
-          "url": "ui/accordion",
-          "name": "Accordion",
-          "slug": "ui-accordion"
-        },
-        {
-          "url": "ui/alerts",
-          "name": "Alerts",
-          "slug": "ui-alerts"
-        },
-        {
-          "url": "ui/badges",
-          "name": "Badges",
-          "slug": "ui-badges"
-        },
-        {
-          "url": "ui/buttons",
-          "name": "Buttons",
-          "slug": "ui-buttons"
-        },
-        {
-          "url": "ui/carousel",
-          "name": "Carousel",
-          "slug": "ui-carousel"
-        },
-        {
-          "url": "ui/collapse",
-          "name": "Collapse",
-          "slug": "ui-collapse"
-        },
-        {
-          "url": "ui/dropdowns",
-          "name": "Dropdowns",
-          "slug": "ui-dropdowns"
-        },
-        {
-          "url": "ui/footer",
-          "name": "Footer",
-          "slug": "ui-footer"
-        },
-        {
-          "url": "ui/list-groups",
-          "name": "List Groups",
-          "slug": "ui-list-groups"
-        },
-        {
-          "url": "ui/modals",
-          "name": "Modals",
-          "slug": "ui-modals"
-        },
-        {
-          "url": "ui/navbar",
-          "name": "Navbar",
-          "slug": "ui-navbar"
-        },
-        {
-          "url": "ui/offcanvas",
-          "name": "Offcanvas",
-          "slug": "ui-offcanvas"
-        },
-        {
-          "url": "ui/pagination-breadcrumbs",
-          "name": "Pagination & Breadcrumbs",
-          "slug": "ui-pagination-breadcrumbs",
-          "roles": [
-            "all"
-          ]
-        },
-        {
-          "url": "ui/progress",
-          "name": "Progress",
-          "slug": "ui-progress",
-          "roles": [
-            "all"
-          ]
-        },
-        {
-          "url": "ui/spinners",
-          "name": "Spinners",
-          "slug": "ui-spinners",
-          "roles": [
-            "all"
-          ]
-        },
-        {
-          "url": "ui/tabs-pills",
-          "name": "Tabs & Pills",
-          "slug": "ui-tabs-pills",
-          "roles": [
-            "all"
-          ]
-        },
-        {
-          "url": "ui/toasts",
-          "name": "Toasts",
-          "slug": "ui-toasts",
-          "roles": [
-            "all"
-          ]
-        },
-        {
-          "url": "ui/tooltips-popovers",
-          "name": "Tooltips & Popovers",
-          "slug": "ui-tooltips-popovers",
-          "roles": [
-            "all"
-          ]
-        },
-        {
-          "url": "ui/typography",
-          "name": "Typography",
-          "slug": "ui-typography",
-          "roles": [
-            "all"
-          ]
-        }
+        "super_admin",
+        "general_manager"
+    ],
+      "url": "banner/list"
+    },
+
+    {
+      "name": "Լոգավորում",
+      "icon": "menu-icon tf-icons bx bx-data",
+      "slug": "logs",
+      "roles": ["super_admin"],
+      "url": "logs"
+    },
+    {
+      "url": "tickets/united",
+      "name": "Միասնական տոմս",
+      "icon": "menu-icon tf-icons bx bxs-coupon",
+      "slug": "tickets_united",
+      "roles": [
+        "super_admin",
+        "general_manager"
       ]
     },
+
     {
-      "name": "Extended UI",
-      "icon": "menu-icon tf-icons bx bx-copy",
-      "slug": "extended",
+      "url": "reports/report",
+      "name": "Հաշվետվություն",
+      "icon": "menu-icon tf-icons bx bxs-report",
+      "slug": "reports",
       "roles": [
-        "all"
-      ],
-      "submenu": [
-        {
-          "url": "extended/ui-perfect-scrollbar",
-          "name": "Perfect scrollbar",
-          "slug": "extended-ui-perfect-scrollbar"
-        },
-        {
-          "url": "extended/ui-text-divider",
-          "name": "Text Divider",
-          "slug": "extended-ui-text-divider"
-        }
+        "super_admin",
+        "general_manager",
+        "chief_accountant"
       ]
-    },
-    {
-      "url": "icons/boxicons",
-      "icon": "menu-icon tf-icons bx bx-crown",
-      "name": "Boxicons",
-      "slug": "icons-boxicons",
-      "roles": [
-        "all"
-      ]
-    },
-    {
-      "menuHeader": "Forms & Tables"
-    },
-    {
-      "name": "Form Elements",
-      "icon": "menu-icon tf-icons bx bx-detail",
-      "slug": "forms",
-      "roles": [
-        "all"
-      ],
-      "submenu": [
-        {
-          "url": "forms/basic-inputs",
-          "name": "Basic Inputs",
-          "slug": "forms-basic-inputs"
-        },
-        {
-          "url": "forms/input-groups",
-          "name": "Input groups",
-          "slug": "forms-input-groups"
-        }
-      ]
-    },
-    {
-      "name": "Form Layouts",
-      "icon": "menu-icon tf-icons bx bx-detail",
-      "slug": "form-layouts",
-      "roles": [
-        "all"
-      ],
-      "submenu": [
-        {
-          "url": "form/layouts-vertical",
-          "name": "Vertical Form",
-          "slug": "form-layouts-vertical"
-        },
-        {
-          "url": "form/layouts-horizontal",
-          "name": "Horizontal Form",
-          "slug": "form-layouts-horizontal"
-        }
-      ]
-    },
-    {
-      "url": "tables/basic",
-      "icon": "menu-icon tf-icons bx bx-table",
-      "name": "Tables",
-      "slug": "tables-basic",
-      "roles": [
-        "all"
-      ]
-    },
-    {
-      "menuHeader": "Misc"
     }
+
   ]
 }

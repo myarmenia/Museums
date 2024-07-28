@@ -1,12 +1,13 @@
 <?php
 namespace App\Repositories\Museum;
+
 use App\Interfaces\Museum\MuseumRepositoryInterface;
 use App\Models\Museum;
 use App\Models\MuseumTranslation;
 
 
-
-class MuseumRepository implements MuseumRepositoryInterface{
+class MuseumRepository implements MuseumRepositoryInterface
+{
     public function getProject()
     {
         return Museum::get();
@@ -24,7 +25,7 @@ class MuseumRepository implements MuseumRepositoryInterface{
 
     public function getMuseumByUd($id)
     {
-        return Museum::with(['user','translations', 'phones', 'images', 'links', 'region'])->find($id);
+        return Museum::with(['user', 'translations', 'phones', 'images', 'links', 'region'])->find($id);
     }
 
     public function updateMuseum($data, $id)
@@ -36,5 +37,49 @@ class MuseumRepository implements MuseumRepositoryInterface{
     {
         return MuseumTranslation::where(['lang' => $lang, 'museum_id' => $id])->update($data);
     }
-    
+
+    public function getApiMuseum()
+    {
+        return Museum::has('standart_tickets')->with([
+            'images', 'region',
+            'translations' => function ($query) {
+                $query->where('lang', session('languages'))->get();
+            },
+        ])->get();
+    }
+
+    public function getMuseumByLangAndId($id)
+    {
+        return Museum::with([
+            'user', 'phones', 'images', 'links', 'region',
+            'museum_branches' => function ($query) {
+                $query->where('status', 1);
+            },
+            'museum_branches.links',
+            'translations' => function ($query) {
+                $query->where('lang', session('languages'))->get();
+            }
+        ])->find($id);
+    }
+
+    public function getMobileMuseumById($id)
+    {
+        return Museum::with([
+            'user', 'translations', 'phones', 'images', 'links', 
+            'region',
+            'museum_branches' => function ($query) {
+                $query->where('status', 1);
+            },
+            'products' => function ($query) {
+                $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
+            },
+            'educational_programs' => function ($query) {
+                $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
+            },
+            'events' => function ($query) {
+                $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
+            }
+        ])->find($id);
+    }
+
 }

@@ -13,9 +13,11 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-#/config/database.php
+/config/database.php
 
-/bootstrap/cache/
+# /bootstrap/cache/
+
+
 # /.phpunit.cache
 # /node_modules
 

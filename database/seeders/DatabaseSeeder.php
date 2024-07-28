@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
             CreateRolesSeeder::class,
             CountriesSeeder::class,
             RegionSeeder::class,
-        ]);
+            TicketTypeSeeder::class,
+            ProductCategorySeeder::class,
+            ProductCategoryTranslationSeeder::class,
+            TurnstilesSeeder::class
+
+    ]);
     }
 }

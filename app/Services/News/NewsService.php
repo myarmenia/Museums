@@ -5,6 +5,7 @@ use App\Models\Image;
 use App\Models\NewsTranslations;
 use App\Repositories\News\NewsRepository;
 use App\Services\FileUploadService;
+use App\Services\Log\LogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -47,7 +48,9 @@ class NewsService
             ];
 
             $news->images()->create($photoData);
+
         }
+
 
         return true;
     }
@@ -78,11 +81,13 @@ class NewsService
 
       if($news){
           if(isset($request['photo'])){
-            $image = Image::where('imageable_id',$id)->first();
-            if(Storage::exists($image->path)){
-              Storage::delete($image->path);
-              $image->delete();
-            }
+              foreach( $news->images as $item){
+                   if(Storage::exists($item->path)){
+                     Storage::delete($item->path);
+                   }
+                $item->delete();
+              }
+
             $path = FileUploadService::upload($request['photo'], 'news/'.$news->id);
             $photoData = [
                 'path' => $path,
@@ -100,6 +105,7 @@ class NewsService
           $newstranslate->update($lang);
 
         }
+
           session(['success' => 'Գործողությունը հաջողությամբ իրականացվեց']);
           return true;
       }

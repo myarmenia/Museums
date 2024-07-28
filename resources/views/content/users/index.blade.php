@@ -1,9 +1,7 @@
 @extends('layouts/contentNavbarLayout')
-
-@section('title', 'Account settings - Account')
+@section('title', 'Օգտագործողներ - Ցանկ')
 @section('page-script')
     <script src="{{ asset('assets/js/change-status.js') }}"></script>
-    <script src="{{ asset('assets/js/admin/users/student-is-present.js') }}"></script>
     <script src="{{ asset('assets/js/delete-item.js') }}"></script>
 @endsection
 
@@ -15,14 +13,14 @@
                 <li class="breadcrumb-item">
                     <a href="javascript:void(0);">Օգտագործողներ</a>
                 </li>
-                <li class="breadcrumb-item active">Ցուցակ</li>
+                <li class="breadcrumb-item active">Ցանկ</li>
             </ol>
         </nav>
     </h4>
     <div class="card">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-header">Օգտագործողների ցուցակ</h5>
+                <h5 class="card-header">Օգտագործողների ցանկ</h5>
             </div>
 
               <div>
@@ -73,32 +71,37 @@
                                 </td>
 
                                 <td>
-                                    <div class="dropdown action" data-id="{{ $user->id }}" data-tb-name="users">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
+                                  @if ((in_array('museum_admin', $user->getRoleNames()->toArray()) || in_array('super_admin', $user->getRoleNames()->toArray())) && Auth::id() == $user->id)
+                                      <i class="bx bx-stop-circle text-danger"></i>
+                                  @else
+                                      <div class="dropdown action" data-id="{{ $user->id }}" data-tb-name="users">
+                                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                              data-bs-toggle="dropdown">
+                                              <i class="bx bx-dots-vertical-rounded"></i>
+                                          </button>
 
-                                        <div class="dropdown-menu">
+                                          <div class="dropdown-menu">
 
-                                            <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input change_status" type="checkbox"
-                                                        role="switch" data-field-name="status"
-                                                        {{ $user->status ? 'checked' : null }}>
-                                                </div>Կարգավիճակ
-                                            </a>
-                                            <a class="dropdown-item" href="{{route('users.edit', $user->id)}}"><i
-                                                class="bx bx-edit-alt me-1"></i>Փոփոխել
-                                            </a>
-                                            <button type="button" class="dropdown-item click_delete_item"
-                                                data-bs-toggle="modal" data-bs-target="#smallModal"><i
-                                                    class="bx bx-trash me-1"></i>
-                                                Ջնջել
-                                            </button>
+                                              <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                                  <div class="form-check form-switch">
+                                                      <input class="form-check-input change_status" type="checkbox"
+                                                          role="switch" data-field-name="status"
+                                                          {{ $user->status ? 'checked' : null }}>
+                                                  </div>Կարգավիճակ
+                                              </a>
+                                              <a class="dropdown-item" href="{{route('users.edit', $user->id)}}"><i
+                                                  class="bx bx-edit-alt me-1"></i>Փոփոխել
+                                              </a>
+                                              <button type="button" class="dropdown-item click_delete_item"
+                                                  data-bs-toggle="modal" data-bs-target="#smallModal"><i
+                                                      class="bx bx-trash me-1"></i>
+                                                  Ջնջել
+                                              </button>
 
-                                        </div>
+                                          </div>
                                     </div>
+                                  @endif
+
                                 </td>
                             </tr>
                         @endforeach

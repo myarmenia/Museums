@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\News\NewsByIdResource;
 use App\Http\Resources\News\NewsResource;
 use App\Services\API\News\NewsService;
+use App\Traits\FilterTrait;
 use App\Traits\News\GetNewsTrait;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 class NewsController extends Controller
 {
   use GetNewsTrait;
+
     protected $newsService;
 
     public function __construct(NewsService $newsService)
@@ -25,9 +27,9 @@ class NewsController extends Controller
         {
 
         $addressRequest='api';
-        $news=$this->getAllNews($request->all(), $addressRequest);
-
-        return NewsResource::collection($news);
+        $data=$this->getAllNews($request->all(), $addressRequest);
+        $data=$data->where('status',1)->orderBy('id', 'DESC')->paginate(12)->withQueryString();
+        return NewsResource::collection($data);
 
     }
 

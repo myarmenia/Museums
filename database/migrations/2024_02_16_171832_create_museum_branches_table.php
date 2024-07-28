@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('museum_branches', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('museum_id');
-            $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
+            $table->foreign('museum_id')->references('id')->on('museums')->onDelete('cascade')->onUpdate('cascade');
             $table->string('email');
-            $table->string('phone_number');
+            $table->string('phone_number')->nullable();
             $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();

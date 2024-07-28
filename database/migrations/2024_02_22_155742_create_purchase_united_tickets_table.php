@@ -17,8 +17,9 @@ return new class extends Migration
             $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
 
             $table->unsignedBigInteger('purchased_item_id');
-            $table->foreign('purchased_item_id')->references('id')->on('purchased_items')->onUpdate('cascade');
-
+            $table->foreign('purchased_item_id')->references('id')->on('purchased_items')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('quantity');
+            $table->integer('total_price');
             $table->integer('price');
             $table->timestamps();
         });

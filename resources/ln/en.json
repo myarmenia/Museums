@@ -17,5 +17,11 @@
     "password-reset-link-sent": "If you filled your email right, please check it",
     "password-changed-successfully": "Password successfully changed",
     "activated-email": "To complete the registration, you need to activate your email.",
-    "wrong-role-for-login": "You do not have the appropriate permission to access the site"
+    "wrong-role-for-login": "You do not have the appropriate permission to access this website. Please check username or password.",
+    "wrong-code": "Code is incorrect.",
+    "general-name": "Museums of Armenia",
+    "google-duplicate-email": "You must use your email and password to access this account.",
+    "google-user-error-password": "You cannot change your password with this option."
+
+
 }

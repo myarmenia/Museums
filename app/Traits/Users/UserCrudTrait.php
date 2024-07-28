@@ -2,8 +2,9 @@
 namespace App\Traits\Users;
 
 use App\Http\Requests\User\UserCreateOrUpdateRequest;
-use App\Mail\SendPassToEmployee;
 use App\Models\API\VerifyUser;
+use App\Models\MuseumStaff;
+use App\Services\Log\LogService;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -35,19 +36,21 @@ trait UserCrudTrait
     if (Auth::user()->hasRole('super_admin')) {
       $roles = $request->route()->getName() == 'users_visitors' ? ['web'] : ['admin', 'super_admin'];
 
+      $data = $this->model()::whereHas('roles', function ($query) use ($roles) {
+          $query->whereIn('g_name', $roles);
+        }
+      );
+
     }
 
     if (Auth::user()->hasRole('museum_admin')) {
-      $roles = ['museum'];
+
+      $user_ids = Auth::user()->museum_staff_admin->pluck('user_id')->toArray();
+      $data = $this->model()::whereIn('id', $user_ids);
+ 
     }
 
-    $data = $data = $this->model()::whereHas('roles', function ($query) use ($roles) {
-        $query->whereIn('g_name', $roles);
-      }
-    );
-
     $data = $data->orderBy('id', 'DESC')->paginate(10)->withQueryString();
-
 
     return view("content.users.index", compact('data'))
       ->with('i', ($request->input('page', 1) - 1) * 10);
@@ -131,14 +134,46 @@ trait UserCrudTrait
     $user->assignRole($request->input('roles'));
 
     if ($user) {
+
+      if (Auth::user()->hasRole('museum_admin')) {
+
+          $museum = Auth::user()->museum;
+
+          $staff_user = [
+            'admin_id' => Auth::id(),
+            'user_id' => $user->id
+          ];
+
+          if($museum != null){
+            $staff_user['museum_id'] = $museum->id;
+          }
+
+          MuseumStaff::create($staff_user);
+      }
+
+      if (Auth::user()->hasRole('super_admin') && in_array('museum_admin', $request->input('roles') )) {
+
+        $staff_user = [
+          'admin_id' => $user->id,
+          'user_id' => $user->id
+        ];
+
+        MuseumStaff::create($staff_user);
+      }
+
       $email = $user->email;
       $data = [
         'password' => $request->password,
         'email' => $email
       ];
 
-      Mail::send(new SendPassToEmployee($email, $data));
+      // Mail::send(new SendPassToEmployee($email, $data));
+
+      $data = array_diff_key( $input, array_flip((array) ['password', 'confirm-password'] ));
+      LogService::store($data, $user->id, 'users', 'store');
+
     }
+
 
     return redirect()->route("users.index")
       ->with('success', 'User created successfully');
@@ -183,7 +218,6 @@ trait UserCrudTrait
     $input = $request->all();
     $input['status'] = isset($request->status) ? true : 0;
 
-
     if (!empty($input['password'])) {
       $input['password'] = Hash::make($input['password']);
 
@@ -205,7 +239,10 @@ trait UserCrudTrait
         'email' => $email
       ];
 
-      Mail::send(new SendPassToEmployee($email, $data));
+      $data = array_diff_key($input, array_flip((array) ['password', 'confirm-password', '_method']));
+
+      LogService::store($data, $user->id, 'users', 'update');
+
     }
 
     return redirect()->route('users.index')

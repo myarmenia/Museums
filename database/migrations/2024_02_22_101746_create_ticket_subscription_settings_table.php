@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('ticket_subscription_settings', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('museum_id');
+            $table->foreign('museum_id')->references('id')->on('museums')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('price');
             $table->integer('valid_time_days')->default(365);
-            $table->string('max_quantity');
-            $table->integer('coefficient');      // coefficient * ticket standart price
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

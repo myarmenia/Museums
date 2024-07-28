@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Requests\Auth\ResendVerifyRequest;
 use App\Http\Requests\SingupRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\API\AuthService;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Google_Client;
 
 class AuthController extends BaseController
 {
@@ -26,13 +25,14 @@ class AuthController extends BaseController
     {
         try {
             $data = $this->authService->login($request);
+            $status = $data['status'];
+            unset($data['status']);
+            // $readyData = [
+            //     'authUser' => $data['authUser'],
+            //     'access_token' => $data['token'],
+            // ];
 
-            $readyData = [
-                'authUser' => $data['authUser'],
-                'access_token' => $data['token'],
-            ];
-
-            return response()->json($readyData);
+            return response()->json($data, $status);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], $e->getCode());
         }
@@ -41,6 +41,9 @@ class AuthController extends BaseController
     public function me()
     {
         if($me = auth('api')->user()){
+            $me['card_count'] = $me->carts()->get()->count(); 
+            $me['country_key'] = $me->country ? $me->country->key : null;
+
             return response()->json($me);
         }
 
@@ -71,6 +74,43 @@ class AuthController extends BaseController
         // return response()->json($readyData);
     }
 
+    public function authGoogle(Request $request)
+    {
+        $token = $request->input('token');
+
+        $client = new Google_Client();
+        $client->setClientId(env('GOOGLE_CLIENT_ID'));
+        $client->setClientSecret(env('GOOGLE_CLIENT_SECRET'));
+        $payload = $client->verifyIdToken($token);
+
+        $email = $payload['email'];
+
+        $user = User::where('email', $email)->first();
+
+        if($user && $user->password){
+            return response()->json(['success' => false, 'message' => translateMessageApi('google-duplicate-email')],500);
+        }
+
+        $googleUser = User::where('email', $email)->firstOrCreate([
+            'name' => $payload['given_name'],
+            'surname' => $payload['family_name'],
+            'email' => $email,
+            'google_id' => $payload['sub'],
+            'status' => 1,
+        ]);
+
+        if(!$googleUser->hasRole('visitor')){
+            $googleUser->assignRole('visitor');
+        }
+
+        $googleUser['card_count'] = $googleUser->carts()->get()->count(); 
+        $googleUser['country_key'] = $googleUser->country ? $googleUser->country->key : null;
+
+        $token = JWTAuth::fromUser($googleUser);
+
+        return response()->json(['success' => true, 'access_token' => $token, 'authUser' => $googleUser]);
+    }
+
     // public function refresh()
     // {
     //     return $this->respondWithToken(auth('api')->refresh());
@@ -87,13 +127,38 @@ class AuthController extends BaseController
 
     public function checkVerifyToken(Request $request)
     {
-        $haveOrNot = $this->authService->checkVerifyToken($request->all());
+        $dataOrError = $this->authService->checkVerifyToken($request->all());
 
-        if($haveOrNot){
-            return response()->json(['success' => true, 'message' => translateMessageApi('status-active')]);
-         }
+        if($dataOrError){
+            return response()->json($dataOrError);
+        }
  
-         return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong')]);
+        return response()->json(['success' => false, 'message' => translateMessageApi('wrong-code')]);
 
+    }
+
+    public function resendVerify(ResendVerifyRequest $request)
+    {
+        $send = $this->authService->resendVerify($request->all());
+
+        if($send){
+            return response()->json(['success' => true, 'message' => translateMessageApi('email_verified')]);
+        }
+
+        return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong'), 500]);
+        
+    }
+
+    public function signupInfo(Request $request)
+    {
+        if(auth('api')->user()){
+            $addedData = $this->authService->signupInfo($request->all());
+
+            if($addedData){
+                return response()->json(['success' => true, 'message' => translateMessageApi('user-edit'), 'user' => $addedData]);
+            }
+        }
+
+        return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
     }
 }

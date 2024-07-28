@@ -13,7 +13,9 @@
     <div class="authentication-inner">
       <!-- Register -->
       <div class="card">
+
         <div class="card-body">
+
           <!-- Logo -->
           <div class="app-brand justify-content-center">
             {{-- <a href="{{url('/')}}" class="app-brand-link gap-2">
@@ -22,6 +24,7 @@
             </a> --}}
           </div>
           <!-- /Logo -->
+
 
           <form id="formAuthentication" class="mb-3" action="{{route('login')}}" method="post">
             <div class="mb-3">
@@ -39,7 +42,7 @@
             <div class="mb-3 form-password-toggle">
               <div class="d-flex justify-content-between">
                 <label class="form-label" for="password">Գաղտնաբառ</label>
-               
+
                 @if (Route::has('password.request'))
                 <a class="btn btn-link" href="{{ route('password.request') }}">
                     {{ __('Մոռացել եք գաղտնաբառը?') }}
@@ -63,6 +66,9 @@
               <button class="btn btn-primary d-grid w-100" type="submit">Մուտք</button>
             </div>
           </form>
+          @if(session('errorMessage'))
+          <div class="text-danger">{{ session('errorMessage') }}</div>
+        @endif
 
         </div>
       </div>

@@ -18,15 +18,15 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function edit(EditRequest $request)
+    public function edit(Request $request)
     {
         $user = $this->userService->edit($request->all());
 
         if($user){
-            return response()->json(['user' => $user, 'message' => translateMessageApi('user-edit')], 200);
+            return response()->json(['user' => $user, 'message' => translateMessageApi('user-edit'), 'success' => true], 200);
         }
 
-        return response()->json(translateMessageApi('something-went-wrong'), 500);
+        return response()->json(['message' => translateMessageApi('something-went-wrong'), 'success' => false], 500);
     }
 
     public function editPassword(ChangePasswordRequest $request)
@@ -37,7 +37,7 @@ class UserController extends Controller
             return response()->json(['success' => true, 'message' => translateMessageApi('password-changed')], 200);
         }
 
-        return response()->json(translateMessageApi('wrong-password'), 500);
+        return response()->json(['success' => false, 'message' => translateMessageApi('wrong-password')], 400);
 
     }
     

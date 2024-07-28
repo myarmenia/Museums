@@ -22,7 +22,9 @@ class ImageService
                     'main' => $photo->getClientOriginalName() == $mainPhotoName? true : false
                 ];
                 if($mainPhotoName){
-                    Image::where('imageable_id', $museum->id)->where('main', true)->delete();
+                    if($image = Image::where('imageable_id', $museum->id)->where('imageable_type', 'App\Models\Museum')->where('main', true)->first()){
+                        $image->delete();
+                    };
                 }  
 
                 $museum->images()->create($readyPhoto);

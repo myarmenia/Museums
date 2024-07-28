@@ -1,31 +1,76 @@
 {
   "menu": [
     {
-      "url": "/",
-      "name": "Dashboards",
+      "url": "/museum-dashboard",
+      "name": "Վիճակագրություն",
       "icon": "menu-icon tf-icons bx bx-home-circle",
-      "slug": "dashboard",
-      "roles": ["all"],
-      "badge": [
-        "danger",
-        "5"
-      ],
-      "submenu": [
-        {
-          "url": "/",
-          "name": "Analytics",
-          "slug": "dashboard-analytics"
-        }
+      "slug": "museum_dashboard_analytics",
+      "roles": [
+        "museum_admin",
+        "manager",
+        "content_manager",
+        "accountant"
       ]
     },
     {
       "name": "Թանգարան",
       "icon": "menu-icon tf-icons bx bx-museum",
-      "slug": "museum",
-      "url": "museum",
+      "slug": ["museum.edit", "create-museum"],
+      "url": "museum/create",
       "roles": [
         "museum_admin",
-        "content_manager"
+        "content_manager",
+        "manager"
+      ]
+    },
+    {
+      "name": "Տոմսի հետ վերադարձ",
+      "icon": "menu-icon tf-icons bx bxs-backpack",
+      "slug": "return-ticket",
+      "url": "return-ticket",
+      "roles": [
+        "museum_admin",
+        "manager"
+      ]
+    },
+    {
+      "name": "Հաղորդագրություններ",
+      "icon": "menu-icon tf-icons bx bx-message",
+      "slug": "chats",
+      "roles": ["museum_admin", "manager"],
+      "url": "chats"
+    },
+    {
+      "name": "Կորպորատիվ վաճառք",
+      "icon": "menu-icon tf-icons bx bx-command",
+      "slug": "corporative",
+      "roles": ["museum_admin", "manager"],
+      "url": "corporative"
+    },
+    {
+      "name": "Դրամարկղ",
+      "icon": "menu-icon tf-icons bx bx-wallet",
+      "slug": "cashier",
+      "roles": ["museum_admin", "cashier", "manager"],
+      "submenu": [
+        {
+          "url": "/cashier/tickets",
+          "name": "Տոմսեր",
+          "slug": "cashier.tickets",
+          "target": ""
+        },
+        {
+          "url": "cashier/products",
+          "name": "Ապրանքներ",
+          "slug": "cashier.product",
+          "target": ""
+        },
+        {
+          "url": "cashier/show-ticket",
+          "name": "Վերջին տոմս",
+          "slug": "cashier.show-ticket",
+          "target": ""
+        }
       ]
     },
     {
@@ -42,9 +87,82 @@
       "url": "musuem_branches/list",
       "name": "Մասնաճյուղեր",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "general-news",
-      "roles": ["museum_admin"]
+      "slug": "branches-list",
+      "roles": [
+        "museum_admin",
+        "content_manager",
+        "manager"
+      ]
 
+    },
+    {
+      "url": "product/list",
+      "name": "Ապրանքներ",
+      "icon": "menu-icon tf-icons bx bx-purchase-tag",
+      "slug": "product_list",
+      "roles": [
+        "museum_admin",
+        "content_manager",
+        "manager"
+      ]
+
+    },
+
+    {
+      "url": "educational-programs/list",
+      "name": "Կրթական ծրագրեր",
+      "icon": "menu-icon tf-icons bx bx-list-ul",
+      "slug": ["educational_programs_list", "educational_programs_create","educational_programs-edit"],
+      "roles": [
+        "museum_admin",
+        "manager",
+        "content_manager"
+      ]
+    },
+    {
+      "url": "educational-programs/calendar",
+      "name": "Այցելությունների օրացույց",
+      "icon": "menu-icon tf-icons bx bx-calendar",
+      "slug": "educational_programs_calendar",
+      "roles": [
+        "museum_admin",
+        "manager",
+        "cashier"
+      ]
+    },
+    {
+      "url": "events/list",
+      "name": "Միջոցառումներ",
+      "icon": "menu-icon tf-icons bx bx-party",
+      "slug": "event_list",
+      "roles": [
+        "museum_admin",
+        "manager",
+        "content_manager"
+      ]
+    },
+    {
+      "url": "tickets/show",
+      "name": "Տոմս",
+      "icon": "menu-icon tf-icons bx bxs-coupon",
+      "slug": "tickets_show",
+      "roles": [
+        "museum_admin",
+        "manager"
+      ]
+    },
+
+    {
+      "url": "museum/reports/report",
+      "name": "Հաշվետվություն",
+      "icon": "menu-icon tf-icons bx bxs-report",
+      "slug": "museum_reports",
+      "roles": [
+        "museum_admin",
+        "manager",
+        "accountant"
+      ]
     }
+
   ]
 }

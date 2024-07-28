@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('museum_id');
-            $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade');
+            $table->foreign('museum_id')->references('id')->on('museums')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('price');
+            $table->integer('visitors_quantity_limitation');
             $table->date('start_date');
             $table->date('end_date');
-            $table->boolean('status')->default(1);
+            $table->boolean('status')->default(false);
             $table->softDeletes();
             $table->timestamps();
+      
         });
     }
 

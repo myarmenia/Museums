@@ -27,15 +27,15 @@ class MuseumController extends Controller
             return redirect()->route('create-museum');
         };
         
-        $data = Museum::with(['user','translationsAdmin', 'phones', 'images', 'links'])->orderBy('id', 'DESC')->paginate(5);
+        $data = Museum::with(['user','translationsAdmin', 'phones', 'images', 'links'])->orderBy('id', 'DESC')->paginate(10);
 
         return view('content.museum.index', compact('data'))
-               ->with('i', ($request->input('page', 1) - 1) * 5);
+               ->with('i', ($request->input('page', 1) - 1) * 10);
     }
 
     public function create()
     {
-        if( $id = haveMuseum()) {
+        if( $id = museumAccessId()) {
             return redirect()->route('museum.edit', ['id' => $id]);
         };
         $regions = Region::all();
@@ -45,9 +45,9 @@ class MuseumController extends Controller
 
     public function addMuseum(MuseumRequest $request)
     {
-        $this->museumService->createMuseum($request->all());
+        $id = $this->museumService->createMuseum($request->all());
 
-        return redirect()->route('museum');
+        return redirect()->route('museum.edit', ['id' => $id]);
 
     }
 
