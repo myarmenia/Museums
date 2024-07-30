@@ -56,6 +56,8 @@ trait QR
             }
       }
 
+      return 'invalid mac';
+
 
     }
 
