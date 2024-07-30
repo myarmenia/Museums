@@ -35,26 +35,28 @@ trait QR
           // ])->first();
 
           if($qr){
-            if($qr->type == 'event'){
-              $date = $qr->event_config->day;
-            }
-            elseif($qr->type == 'corporative'){
-              $date = $qr->corporative->created_at;
+              if($qr->type == 'event'){
+                $date = $qr->event_config->day;
+              }
+              elseif($qr->type == 'corporative'){
+                $date = $qr->corporative->created_at;
 
-            }
-            else{
-              $date = $qr->created_at;
-            }
+              }
+              else{
+                $date = $qr->created_at;
+              }
 
-            $check_date = $this->checkDate($date, $qr->type);
+              $check_date = $this->checkDate($date, $qr->type);
 
 
-            if($check_date){
-              $check_ticket_accesses = $this->checkTicketAccesses( $qr, null);
+              if($check_date){
+                $check_ticket_accesses = $this->checkTicketAccesses( $qr, null);
 
-              return $check_ticket_accesses ? true : false;
-            }
-      }
+                return $check_ticket_accesses ? true : false;
+              }
+          }
+
+          return false;
 
 
       }
