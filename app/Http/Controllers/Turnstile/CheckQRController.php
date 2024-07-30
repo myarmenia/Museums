@@ -24,6 +24,11 @@ class CheckQRController extends BaseController
 
         $check = $this->check($request->all());
 
+        if($check == 'invalid scan'){
+            $data['valid'] = false;
+            return $this->sendError($check, $data);
+        }
+
         $data = $request->all();
         $data['data-time'] = Carbon::now()->format('d-m-Y H:i:s');
         $data['valid'] = $check;
