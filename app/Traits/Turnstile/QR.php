@@ -56,12 +56,10 @@ trait QR
             }
       }
 
-      return 'invalid mac';
 
+      }
 
-    }
-
-    return false;
+    return 'invalid mac';
   }
 
   public function checkDate($date, $type){
