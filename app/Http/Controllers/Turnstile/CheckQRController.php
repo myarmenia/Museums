@@ -28,19 +28,19 @@ class CheckQRController extends BaseController
         $data['data-time'] = Carbon::now()->format('d-m-Y H:i:s');
         $data['valid'] = $check;
 
-        if($check == 'invalid mac'){
+        if($check === 'invalid mac'){
             $data['mac'] = '';
             $data['qr'] = '';
             $data['valid'] = false;
             return $this->sendError($check, $data);
         }
 
-        if($check == 'invalid scan'){
+        if($check === 'invalid scan'){
             $data['valid'] = false;
             return $this->sendError($check, $data);
         }
 
-        
+
       return $check ? $this->sendResponse($data, 'QR code is valid') : $this->sendError('QR code is invalid', $data);
 
   }
