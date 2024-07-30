@@ -12,13 +12,22 @@ trait QR
   {
 
 
-      // $turnstile_user = auth('turnstile')->user();
+      $data_qr = explode('#', $data['qr']);
+      $qr_token =  $data_qr[0];
+      $qr_hash =  $data_qr[1];
+
+      // dd(hash('sha256', '75902282C81B39'));
+
+      if( hash('sha256', $qr_token) !== $qr_hash){
+        return 'invalid scan';
+      }
+
       $turnstile = Turnstile::museum($data['mac'])->first();
 
       if($turnstile){
           $museum_id = $turnstile->museum_id;
 
-          $qr = TicketQr::valid($data['qr'], $museum_id)->first();
+          $qr = TicketQr::valid($qr_token, $museum_id)->first();
           // $qr = TicketQr::where([
           //   "token" => $data['qr'],
           //   "museum_id" => $data['museum_id'],
