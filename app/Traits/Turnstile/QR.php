@@ -10,29 +10,87 @@ trait QR
 {
   public function check($data)
   {
+      // dd(count($data['qr']));
 
 
-      $data_qr = explode('#', $data['qr']);
-      $qr_token =  $data_qr[0];
-      $qr_hash =  $data_qr[1];
+      if(!$data['online'] ){
 
-      // dd(hash('sha256', '75902282C81B39'));
+        foreach ($data['qr'] as $value) {
+            $data_qr = explode('#', $value);
+            $check_qr = $this->checkQR($value, $data['mac']);
 
-      if( hash('sha256', $qr_token) !== $qr_hash){
+            // $qr_token = $data_qr[0];
+            // $qr_hash = count($data_qr) > 1 ? $data_qr[1] : null;
+            // $qr_reade_date = count($data_qr) > 2 ? $data_qr[2] : null;
+        }
+        return 'process finished';
+      }
+
+      return $this->checkQR($data['qr'][0], $data['mac']);
+
+
+
+    // if($qr_hash != null && hash('sha256', $qr_token) !== $qr_hash){
+      //   return 'invalid scan';
+      // }
+
+      // $turnstile = Turnstile::museum($data['mac'])->first();
+
+      // if($turnstile){
+      //     $museum_id = $turnstile->museum_id;
+
+      //     $qr = TicketQr::valid($qr_token, $museum_id)->first();
+
+
+      //     if($qr){
+      //         if($qr->type == 'event'){
+      //           $date = $qr->event_config->day;
+      //         }
+      //         elseif($qr->type == 'corporative'){
+      //           $date = $qr->corporative->created_at;
+
+      //         }
+      //         else{
+      //           $date = $qr->created_at;
+      //         }
+
+      //         $check_date = $this->checkDate($date, $qr->type);
+
+
+      //         if($check_date){
+      //           $check_ticket_accesses = $this->checkTicketAccesses( $qr, null);
+
+      //           return $check_ticket_accesses ? true : false;
+      //         }
+      //     }
+
+      //     return false;
+
+
+      // }
+
+    // return 'invalid mac';
+  }
+
+  public function checkQR($data_qr, $mac){
+
+      $data_qr = explode('#', $data_qr);
+
+      $qr_token = $data_qr[0];
+      $qr_hash = count($data_qr) > 1 ? $data_qr[1] : null;
+      $qr_reade_date = count($data_qr) > 2 ? $data_qr[2] : null;
+
+      if($qr_hash != null && hash('sha256', $qr_token) !== $qr_hash){
         return 'invalid scan';
       }
 
-      $turnstile = Turnstile::museum($data['mac'])->first();
+      $turnstile = Turnstile::museum($mac)->first();
 
       if($turnstile){
           $museum_id = $turnstile->museum_id;
 
           $qr = TicketQr::valid($qr_token, $museum_id)->first();
-          // $qr = TicketQr::where([
-          //   "token" => $data['qr'],
-          //   "museum_id" => $data['museum_id'],
-          //   'status' => 'active'
-          // ])->first();
+
 
           if($qr){
               if($qr->type == 'event'){
@@ -50,17 +108,14 @@ trait QR
 
 
               if($check_date){
-                $check_ticket_accesses = $this->checkTicketAccesses( $qr, null);
+                $check_ticket_accesses = $this->checkTicketAccesses( $qr, null, $qr_reade_date);
 
                 return $check_ticket_accesses ? true : false;
               }
           }
 
           return false;
-
-
-      }
-
+        }
     return 'invalid mac';
   }
 
@@ -78,10 +133,10 @@ trait QR
   }
 
 
-  public function checkTicketAccesses($qr, $status = null){
+  public function checkTicketAccesses($qr, $status = null, $date = null){
 
     $now = new DateTime(); // Получаем текущее время
-    $now_date = $now->format('Y-m-d H:i:s');
+    $now_date = $date ? $date : $now->format('Y-m-d H:i:s');
 
 
 
