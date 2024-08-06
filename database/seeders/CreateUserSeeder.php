@@ -54,14 +54,5 @@ class CreateUserSeeder extends Seeder
 
         $userVisitor->assignRole([$roleVisitor->id]);
 
-
-        $userVisitor = Turnstile::updateOrCreate(
-          ['name' => 'anun'],
-          [
-            'name' => 'anun',
-
-            'password' => bcrypt('123456')
-          ]
-        );
     }
 }

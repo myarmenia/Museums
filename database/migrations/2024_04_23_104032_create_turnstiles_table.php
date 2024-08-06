@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('museum_id');
             $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade')->onDelete('cascade');
             $table->string('mac')->unique();
+            $table->string('local_ip')->nullable();
             // $table->string('name')->unique();
             // $table->string('password');
             $table->timestamps();

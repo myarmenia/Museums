@@ -17,19 +17,22 @@ class TurnstilesSeeder extends Seeder
                           [
                             'id' => 1,
                             'museum_id' => 1,
-                            'mac' => '12:45:ab:33:30'
+                            'mac' => '12:45:ab:33:30',
+                            'local_ip' => '192.168.231.11'
                           ],
+
                           [
                             'id' => 2,
                             'museum_id' => 2,
-                            'mac' => '12:45:ab:33:32'
+                            'mac' => '84:FC:E6:00:D3:D4',
+                            'local_ip' => '192.168.231.12'
                           ]
 
         ];
 
 
         foreach ($turnstiles as $turnstile) {
-          Turnstile::updateOrCreate(['mac' => $turnstile['mac']], $turnstile);
+          Turnstile::updateOrCreate(['id' => $turnstile['id'], 'mac' => $turnstile['mac']], $turnstile);
         }
     }
 }
