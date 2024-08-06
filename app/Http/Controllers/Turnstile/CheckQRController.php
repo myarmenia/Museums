@@ -6,12 +6,13 @@ use App\Http\Controllers\API\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Turnstile\CheckQRRequest;
 use App\Traits\Turnstile\QR;
+use App\Traits\Turnstile\Settings;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class CheckQRController extends BaseController
 {
-    use QR;
+    use QR, Settings;
 
     public function __construct(Request $request)
     {
@@ -23,6 +24,7 @@ class CheckQRController extends BaseController
 
 
         $check = $this->check($request->all());
+        $this->updateLocalIp($request->mac, $request->local_ip);
 
         $data = $request->all();
         $data['data-time'] = Carbon::now()->format('d-m-Y H:i:s');
@@ -41,7 +43,7 @@ class CheckQRController extends BaseController
         }
 
         if ($check === 'process finished') {
-
+          unset($data['valid']);
           return  $this->sendResponse($data, $check);
         }
 
