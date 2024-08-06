@@ -43,6 +43,7 @@ use App\Http\Controllers\API\Shop\SingleProductController;
 use App\Http\Controllers\API\Student\DashboardController;
 use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
+use App\Http\Controllers\Turnstile\ActiveQrsController;
 use App\Http\Controllers\Turnstile\CheckQRController;
 use App\Http\Controllers\Turnstile\TurnstileLoginController;
 use App\Http\Controllers\Turnstile\TurnstileRegisterController;
@@ -195,8 +196,10 @@ Route::group(['prefix' => 'turnstile'], function ($router) {
 
       Route::get('museums', MuseumListController::class);
       Route::post('check-qr', CheckQRController::class);
+      Route::post('active-qrs', ActiveQrsController::class);
 
-      // ================ for auth turnstile users =======================
+
+    // ================ for auth turnstile users =======================
       // Route::post('login', TurnstileLoginController::class);
       // Route::post('register', TurnstileRegisterController::class);
       // Route::group(['middleware' => ['turnstile']], function () {});
