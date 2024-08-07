@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Turnstile;
 
+use App\Http\Controllers\API\BaseController;
 use App\Http\Controllers\Controller;
 use App\Traits\Turnstile\Managment;
 use Illuminate\Http\Request;
 
-class ManagmentController extends Controller
+class ManagmentController extends BaseController
 {
   use Managment;
   public function __invoke(Request $request)
   {
-      $result = $this->turnstile($request->all());
 
-      return $result ? $this->sendResponse($result, 'success') : $this->sendError('error');
+    $result = $this->turnstile($request->all());
+    // $result = true;
+    // return response()->json('response', $result);
+    return $this->sendResponse($result, $result ? 'success' : 'error') ;
   }
 }
