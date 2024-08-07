@@ -55,6 +55,7 @@ use App\Http\Controllers\Dashboard\AnalyticsController;
 use App\Http\Controllers\Dashboard\SingleMuseumAnalyticsController;
 use App\Http\Controllers\museum\MuseumController;
 use App\Http\Controllers\return_ticket\ReturnTicketController;
+use App\Http\Controllers\Turnstile\ManagmentController;
 use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -107,6 +108,8 @@ Route::group(['middleware' => ['auth']], function () {
       Route::get('/edit/{id}', [MuseumController::class, 'edit'])->name('museum.edit');
       Route::post('/update/{id}', [MuseumController::class, 'update'])->name('museum.update');
     });
+
+    Route::post('/managment-to-turnstil', ManagmentController::class);
 
   });
 

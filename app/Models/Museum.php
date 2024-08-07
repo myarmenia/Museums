@@ -121,13 +121,11 @@ class Museum extends Model
     {
       return $this->hasOne(TicketSubscriptionSetting::class);
     }
-    public function getphones()
+
+
+    public function turnstile(): HasOne
     {
-      // dd($this->id);
-      [
-        "37898999","37898998"
-      ];
-        // return PhoneNumber::where('museum_id',$this->id)->get();
+      return $this->hasOne(Turnstile::class)->where('local_ip', '!=', null);
     }
 
 

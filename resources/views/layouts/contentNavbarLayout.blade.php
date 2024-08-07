@@ -26,6 +26,7 @@ $container = ($container ?? 'container-xxl');
     @endif
 
 
+
     <!-- Layout page -->
     <div class="layout-page">
       <!-- BEGIN: Navbar-->

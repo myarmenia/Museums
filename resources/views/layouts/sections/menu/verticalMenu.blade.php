@@ -102,5 +102,5 @@
             @endif
         @endforeach
     </ul>
-
+    <button class="btn btn-danger py-3  close fw-bold fs-4" id="openDoor">Բացել</button>
 </aside>
