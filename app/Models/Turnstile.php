@@ -19,6 +19,11 @@ class Turnstile extends Authenticatable
     {
         return $query->where('mac', $mac);
     }
+
+    public function museum()
+    {
+      return $this->belongsTo(Museum::class, 'museum_id');
+    }
     // protected $hidden = ['password'];
 
     // public function getJWTIdentifier()
