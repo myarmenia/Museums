@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
     var button = this;
     var isOpen = button.innerText === "Բացել";
 
-    button.innerText = isOpen ? "Փակել" : "Բացել";
-    button.classList.toggle("btn-danger", !isOpen);
-    button.classList.toggle("btn-primary", isOpen);
+    // button.innerText = isOpen ? "Փակել" : "Բացել";
+    // button.classList.toggle("btn-danger", !isOpen);
+    // button.classList.toggle("btn-primary", isOpen);
 
     var payload = {
       action: isOpen ? "open" : "close"
@@ -25,10 +25,32 @@ document.addEventListener('DOMContentLoaded', function (e) {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Success:', data);
+        console.log(data.data)
+          if (data.data){
+            resultAction.innerText = isOpen ? "Դուռը բացվեց" : "";
+              button.classList.toggle("btn-danger", !isOpen);
+              button.classList.toggle("btn-primary", isOpen);
+              resultActionText.innerText = isOpen ? "Փակել" : "Բացել";
+          }
+          else{
+            resultAction.innerText = 'Սխալ է տեղի ունեցել'
+            setTimeout(() => {
+              resultAction.innerText = ''
+              // button.classList.toggle("btn-danger", isOpen);
+              // resultActionText.innerText = "Բացել";
+            }, 2000);
+
+          }
+
       })
       .catch((error) => {
-        console.error('Error:', error);
+          resultAction.innerText = 'Սխալ է տեղի ունեցել'
+          setTimeout(() => {
+            resultAction.innerText = ''
+            // button.classList.toggle("btn-danger", isOpen);
+            // resultActionText.innerText = "Բացել";
+          }, 2000);
+
       });
 
   })
