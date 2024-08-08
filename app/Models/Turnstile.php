@@ -20,7 +20,7 @@ class Turnstile extends Authenticatable
         return $query->where('mac', $mac);
     }
 
-    public function museum()
+    public function get_museum()
     {
       return $this->belongsTo(Museum::class, 'museum_id');
     }

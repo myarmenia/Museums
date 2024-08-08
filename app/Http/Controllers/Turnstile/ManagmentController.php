@@ -13,8 +13,8 @@ class ManagmentController extends BaseController
   public function __invoke(Request $request)
   {
 
-    $result = $this->turnstile($request->all());
-    // $result = true;
+    // $result = $this->turnstile($request->all());
+    $result = false;
     // return response()->json('response', $result);
     return $this->sendResponse($result, $result ? 'success' : 'error') ;
   }
