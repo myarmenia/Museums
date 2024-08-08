@@ -86,7 +86,7 @@ trait QR
     $qr_reade_date = count($data_qr) > 2 ? $data_qr[2] : null;
 
     if ($qr_hash != null && $qr_hash !== '_' && hash('sha256', $qr_token) !== $qr_hash) {
-      
+
       return 'invalid scan';
     }
 
@@ -96,7 +96,6 @@ trait QR
       $museum_id = $turnstile->museum_id;
 
       $qr = TicketQr::valid($qr_token, $museum_id)->first();
-
 
       if ($qr) {
         if ($qr->type == 'event') {
@@ -142,10 +141,8 @@ trait QR
   public function checkTicketAccesses($qr, $status = null, $date = null)
   {
 
-    $now = new DateTime(); // Получаем текущее время
-    $now_date = $date ? $date : $now->format('Y-m-d H:i:s');
-
-
+    $date = new DateTime(null);
+    $now_date = $date->format('Y-m-d H:i:s');
 
     if ($qr->type == 'subscription') {
       $created_at = $qr->created_at;
@@ -155,11 +152,10 @@ trait QR
 
     } else {
 
-      $access_period = $now->modify('+8 hours'); // Добавляем 8 часов
+      $access_period = $date->modify('+8 hours'); // Добавляем 8 часов
     }
 
     $qr_access = TicketAccess::where('ticket_qr_id', $qr->id)->first();
-
 
     if (!$qr_access) {
       $data = [
