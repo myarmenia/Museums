@@ -104,7 +104,7 @@ trait QR
 
       if ($qr) {
         if ($qr->type == 'event') {
-          // **
+
           $date = $qr->event_config->day;
         } elseif ($qr->type == 'corporative') {
           $date = $qr->corporative->created_at;
@@ -158,7 +158,7 @@ trait QR
 
     } else {
 
-      $access_period = $date->modify(' hours'); // Добавляем 8 часов
+      $access_period = $date->modify('+8 hours'); // Добавляем 8 часов
     }
 
     $qr_access = TicketAccess::where('ticket_qr_id', $qr->id)->first();
