@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits\Turnstile;
 
+use App\Models\QrBlackList;
 use App\Models\TicketAccess;
 use App\Models\TicketQr;
 use App\Models\Turnstile;
@@ -22,6 +23,10 @@ trait QR
 
         if ($check_qr === 'invalid mac') {
           break;
+        }
+
+        if (!$check_qr) {
+          $this->addQrBlackList($data_qr[0], $data['mac']);
         }
 
       }
@@ -99,6 +104,7 @@ trait QR
 
       if ($qr) {
         if ($qr->type == 'event') {
+          // **
           $date = $qr->event_config->day;
         } elseif ($qr->type == 'corporative') {
           $date = $qr->corporative->created_at;
@@ -152,7 +158,7 @@ trait QR
 
     } else {
 
-      $access_period = $date->modify('+8 hours'); // Добавляем 8 часов
+      $access_period = $date->modify(' hours'); // Добавляем 8 часов
     }
 
     $qr_access = TicketAccess::where('ticket_qr_id', $qr->id)->first();
@@ -180,7 +186,26 @@ trait QR
 
   }
 
+  public function addQrBlackList($qr, $mac)
+  {
 
+    $qr_from_black_list = QrBlackList::where('qr', $qr)->first();
+
+    if ($qr_from_black_list == null) {
+      QrBlackList::create(['qr' => $qr, 'mac' => $mac]);
+    }
+
+  }
+
+  public function getSingleMuseumQrBlackList($mac)
+  {
+
+    $list = QrBlackList::where('mac', $mac)->pluck('qr')->toArray();
+    $data['black_list'] = $list;
+
+    return $data;
+
+  }
 
 
 }
