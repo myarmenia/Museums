@@ -431,6 +431,20 @@ if (!function_exists('museumHaveUnreadMessage')) {
 
 }
 
+// ===============
+if (!function_exists('getEventType')) {
+  function getEventType()
+  {
+
+      return ['basic','temporary'];
+
+    };
+
+
+  
+
+}
+
 
 
 
