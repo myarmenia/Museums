@@ -41,7 +41,7 @@ class AuthController extends BaseController
     public function me()
     {
         if($me = auth('api')->user()){
-            $me['card_count'] = $me->carts()->get()->count(); 
+            $me['card_count'] = $me->carts()->get()->count();
             $me['country_key'] = $me->country ? $me->country->key : null;
 
             return response()->json($me);
@@ -103,7 +103,7 @@ class AuthController extends BaseController
             $googleUser->assignRole('visitor');
         }
 
-        $googleUser['card_count'] = $googleUser->carts()->get()->count(); 
+        $googleUser['card_count'] = $googleUser->carts()->get()->count();
         $googleUser['country_key'] = $googleUser->country ? $googleUser->country->key : null;
 
         $token = JWTAuth::fromUser($googleUser);
@@ -132,7 +132,7 @@ class AuthController extends BaseController
         if($dataOrError){
             return response()->json($dataOrError);
         }
- 
+
         return response()->json(['success' => false, 'message' => translateMessageApi('wrong-code')]);
 
     }
@@ -146,7 +146,7 @@ class AuthController extends BaseController
         }
 
         return response()->json(['success' => false, 'message' => translateMessageApi('something-went-wrong'), 500]);
-        
+
     }
 
     public function signupInfo(Request $request)

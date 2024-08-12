@@ -31,7 +31,24 @@
         </div>
         <div class="card-body">
 
+
             <form action="{{ route('event_store') }}" method="post" enctype="multipart/form-data">
+              <div class="mb-3 row">
+                <label for="region" class="col-md-2 col-form-label"> Տեսակ <span class="required-field">*</span></label>
+                <div class="col-md-10">
+                    <select id="defaultSelect" name="style" class="form-select">
+                        <option value="" disabled>Ընտրեք տեսակ</option>
+                        <option value="basic">Հիմնային</option>
+                        <option value="temporary">Ժամանակավոր</option>
+                    </select>
+                    @error('product_category_id')
+                        <div class="justify-content-end">
+                            <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                            </div>
+                        </div>
+                    @enderror
+                </div>
+              </div>
 
               @foreach (languages() as $lang)
                 <div class="mb-3 row">
