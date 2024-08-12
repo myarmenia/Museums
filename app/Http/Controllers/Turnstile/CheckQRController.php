@@ -26,13 +26,12 @@ class CheckQRController extends BaseController
         $check = $this->check($request->all());
         $this->updateLocalIp($request->mac, $request->local_ip);
 
-        $data = $request->all();
+        // $data = $request->all();
+        $data['onlin'] = $request->online;
         $data['data-time'] = Carbon::now()->format('d-m-Y H:i:s');
         $data['valid'] = true;
 
         if($check === 'invalid mac'){
-            $data['mac'] = '';
-            $data['qr'] = '';
             $data['valid'] = false;
             return $this->sendError($check, $data);
         }
