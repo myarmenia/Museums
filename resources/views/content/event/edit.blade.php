@@ -39,6 +39,24 @@
                 @method('put')
                 <input type = "hidden" name = "museum_id" value="{{ $data->museum_id }}">
 
+                <div class="mb-3 row">
+                  <label for="region" class="col-md-2 col-form-label"> Տեսակ <span class="required-field">*</span></label>
+                  <div class="col-md-10">
+                      <select id="defaultSelect" name="style" class="form-select">
+                          <option value = "" disabled >Ընտրեք տեսակ</option>
+                          <option value = "basic" {{ $data->style == "basic" ? "selected" : null }}>Հիմնային</option>
+                          <option value = "temporary" {{ $data->style == "temporary" ? "selected" : null }}> Ժամանակավոր </option>
+                      </select>
+                      @error('product_category_id')
+                          <div class="justify-content-end">
+                              <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                              </div>
+                          </div>
+                      @enderror
+                  </div>
+                </div>
+
+
                 @foreach (languages() as $lang)
                     <div class="mb-3 row">
                         <label for="name-{{ $lang }}" class="col-md-2 col-form-label">Անվանում {{ $lang }}
@@ -183,22 +201,17 @@
               </div>
 
         </form>
-
-
-
-              <x-edit-event-config :data="$data"  ></x-edit-event-config>
-
-
-
-
-
-
+        @if ($data->style=="basic")
+          <x-edit-event-config :data="$data"  ></x-edit-event-config>
+        @endif
    {{-- ============Միջոցառման օրերի կարգավորումներ============= --}}
-        <div class="m-3 row">
-          <label for="email" class="col-form-label">Միջոցառման օրերի կարգավորումներ
-              <button id="add_event_config" data-id="{{ $data->id }}" data-conf-count='0' class="btn btn-primary mx-3">+</button>
-          </label>
-        </div>
+      @if ($data->style=="basic")
+          <div class="m-3 row">
+            <label for="email" class="col-form-label">Միջոցառման օրերի կարգավորումներ
+                <button id="add_event_config" data-id="{{ $data->id }}" data-conf-count='0' class="btn btn-primary mx-3">+</button>
+            </label>
+          </div>
+      @endif
 
     </div>
     {{-- =============Միջոցառման օրերի կարգավորումներ sections=============== --}}
