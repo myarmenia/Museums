@@ -206,8 +206,8 @@ trait QR
   public function getSingleMuseumQrBlackList($mac)
   {
 
-      $list = QrBlackList::where('mac', $mac)->orderByDesc('id')->take(4)->pluck('qr')->toArray();
-      $latestIds = QrBlackList::where('mac', $mac)->orderByDesc('id')->take(4)->pluck('id');
+      $list = QrBlackList::where('mac', $mac)->orderByDesc('id')->take(50)->pluck('qr')->toArray();
+      $latestIds = QrBlackList::where('mac', $mac)->orderByDesc('id')->take(50)->pluck('id');
 
       // Удаляем все записи, кроме тех, у которых ID в списке последних 50
       QrBlackList::where('mac', $mac)
