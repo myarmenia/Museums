@@ -28,7 +28,7 @@ class CheckQRController extends BaseController
 
         // $data = $request->all();
         $data['onlin'] = $request->online;
-        $data['data-time'] = Carbon::now()->format('d-m-Y H:i:s');
+        $data['data-time'] = Carbon::now()->timestamp;
         $data['valid'] = true;
 
         if($check === 'invalid mac'){
