@@ -14,11 +14,12 @@ class SingleEventResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
       return [
         'museum_id'=> $this->museum_id,
         'museum_name'=> $this->museum->translation(session('languages'))->name,
         'museum_phones'=>$this->museum->phones->pluck('number'),
-    
+        'style' =>$this->style,
         'price' => $this->price,
         'name' => $this->translation(session('languages'))->name,
         'description' =>$this->translation(session('languages'))->description,
