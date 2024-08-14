@@ -27,8 +27,8 @@ class CheckQRController extends BaseController
         $this->updateLocalIp($request->mac, $request->local_ip);
 
         // $data = $request->all();
-        $data['onlin'] = $request->online;
-        $data['data-time'] = Carbon::now()->format('d-m-Y H:i:s');
+        $data['online'] = $request->online;
+        $data['data-time'] = Carbon::now()->timestamp;
         $data['valid'] = true;
 
         if($check === 'invalid mac'){

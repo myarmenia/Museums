@@ -86,12 +86,12 @@ trait QR
 
     // "893AD83C829E71#6e2dd53cc2adeaa52123d424da1451d9e23d3b1340d8cf7f747e71af2b5f274f#1723445813#2024-08-12 09:20:36"
     // "qr-token#qr-hash(sha256)#timestampe-qr-created_at#qr-reader-date"
-    
+
     $data_qr = explode('#', $data_qr);
 
     $qr_token = $data_qr[0];
     $qr_hash = count($data_qr) > 1 ? $data_qr[1] : null;
-    $qr_reade_date = count($data_qr) > 3 ? $data_qr[3] : null;
+    $qr_reade_date = count($data_qr) > 3 && count($data_qr) != '_' ? $data_qr[3] : null;
 
     if ($qr_hash != null && $qr_hash !== '_' && hash('sha256', $qr_token) !== $qr_hash) {
 
@@ -150,9 +150,10 @@ trait QR
   public function checkTicketAccesses($qr, $status = null, $date = null)
   {
 
-    $date = new DateTime(null);
+    $new_date = new DateTime();
+    $date = $date == null ? $new_date : $new_date->setTimestamp($date);
 
-    $date =  $date->modify('+4 hours');  // +4 hour to UTC
+    $date = $date->modify('+4 hours');  // +4 hour to UTC
     $now_date = $date->format('Y-m-d H:i:s');
 
     if ($qr->type == 'subscription') {
@@ -205,10 +206,17 @@ trait QR
   public function getSingleMuseumQrBlackList($mac)
   {
 
-    $list = QrBlackList::where('mac', $mac)->pluck('qr')->toArray();
-    $data['black_list'] = $list;
+      $list = QrBlackList::where('mac', $mac)->orderByDesc('id')->take(50)->pluck('qr')->toArray();
+      $latestIds = QrBlackList::where('mac', $mac)->orderByDesc('id')->take(50)->pluck('id');
 
-    return $data;
+      // Удаляем все записи, кроме тех, у которых ID в списке последних 50
+      QrBlackList::where('mac', $mac)
+            ->whereNotIn('id', $latestIds)
+            ->delete();
+
+      $data['black_list'] = $list;
+
+      return $data;
 
   }
 
