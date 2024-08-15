@@ -212,7 +212,10 @@ $(function () {
           $('#event-total-count').text(0);
           $('#event-total-price').text(0);
           let html = ``;
-          if (data.event_configs.length) {
+
+          if (data.event_configs.length == 0 && data.style == 'basic'){
+            html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
+          }else{
             $('#event-total').attr('style', 'display: block !important; display:flex !important; justify-content: end !important');
             $('#event-save').attr('style', 'display: block !important; display:flex !important; margin-top: 1rem !important; justify-content: flex-end !important;');
 
@@ -251,10 +254,8 @@ $(function () {
             html += `</tbody></table>`
 
             data.style == 'basic' ? html += `<input type="hidden" name="style" value="basic">` : html += `<input type="hidden"  name="style" value="temporary">`
+            }
 
-          } else {
-            html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
-          }
           $('#event-config').html(html);
         }
       });
