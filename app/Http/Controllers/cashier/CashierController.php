@@ -97,8 +97,8 @@ class CashierController extends Controller
               $configItem = $event->where('id', $qr->item_relation_id)->first();
 
               $event_day = [
-                'start' => $event->start_date,
-                'end' => $event->end_date,
+                'start' => $configItem->start_date,
+                'end' => $configItem->end_date,
               ];
             }
 
