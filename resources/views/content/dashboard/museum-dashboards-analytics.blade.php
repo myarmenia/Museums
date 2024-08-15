@@ -20,7 +20,7 @@
         $ticketTypes = array_diff(reportTypes(), ["canceled"]);
       @endphp
       @foreach ($ticketTypes as $key => $item)
-          <div class="col-lg-2 col-md-2 mb-4 {{$key != 0 || $key != 5 ? 'mx-3' : ''}}">
+          <div class="col-lg-2  col-md-2 mb-4 {{$key != 0 || $key != 5 ? 'mx-3' : ''}}">
               <div class="card">
                 <div class="card-body">
                   <div class="card-title d-flex align-items-start justify-content-between">
