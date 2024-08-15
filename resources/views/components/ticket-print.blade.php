@@ -71,6 +71,13 @@
                 @endif
                 @if ($item['type'] == "event")
                     <div class="text-flex text-margin">
+                        <span>Վավեր է․  </span>
+                        <span>{{ $item['action_date']['start'] }} - {{ $item['action_date']['end'] }}</span>
+                    </div>
+                @endif
+
+                @if ($item['type'] == "event-config")
+                    <div class="text-flex text-margin">
                         <span>Անցկացման օր - </span>
                         <span>{{ $item['action_date']['day'] }}</span>
                     </div>

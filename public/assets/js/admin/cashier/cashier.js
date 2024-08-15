@@ -205,6 +205,7 @@ $(function () {
         url: '/cashier/get-event-details/' + selectedId,
         cache: false,
         success: function (data) {
+          console.log(data.style + ' ///////')
           $('#event-total').attr('style', 'display: none !important ');
           $('#event-save').attr('style', 'display: none !important');
           $('#event-config').text('');
@@ -217,28 +218,40 @@ $(function () {
 
             html = `<table class="table cashier-table">
                         <thead>
-                          <tr>
-                              <th>Օր</th>
-                              <th>Սկիզբ</th>
-                              <th>Վերջ</th>
-                              <th>Հասանելի տեղեր</th>
-                              <th>Քանակ</th>
+                          <tr>`+
+                              (data.style == 'basic' ? `<th>Օր</th>` : ``) +
+                              `<th>Սկիզբ</th>
+                              <th>Վերջ</th>` +
+                              (data.style == 'basic' ? `<th>Հասանելի տեղեր</th>` : ``) +
+                              `<th>Քանակ</th>
                               <th>Արժեք</th>
                           </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">`;
+            data.style == 'basic' ?
+                data.event_configs.map(element => {
+                  html += `<tr class='table-default'>
+                                <td>${element.day}</td>
+                                <td>${element.start_time}</td>
+                                <td>${element.end_time}</td>
+                                <td>${element.visitors_quantity_limitation - element.visitors_quantity} մարդ</td>
+                                <td><input type="number" min="0" class="form-control form-control-validate" onwheel="return false;" price="${element['price']}"
+                                  id="event_${element['id']}" name="event[${element['id']}]"></td>
+                                <td id = 'event-ticket-price_${element['id']}' class='remove-value'>0</td>
+                            </tr>`;
+                }) :
+                html += `<tr class='table-default'>
+                                <td>${data.start_date}</td>
+                                <td>${data.end_date}</td>
+                                <td><input type="number" min="0" class="form-control form-control-validate" onwheel="return false;" price="${data.price}"
+                                  id="event_${data.id}" name="event[${data.id}]"></td>
+                                <td id = 'event-ticket-price_${data.id}' class='remove-value'>0</td>
+                            </tr>`;
 
-            data.event_configs.map(element => {
-              html += `<tr class='table-default'>
-                            <td>${element.day}</td>
-                            <td>${element.start_time}</td>
-                            <td>${element.end_time}</td>
-                            <td>${element.visitors_quantity_limitation - element.visitors_quantity} մարդ</td>
-                            <td><input type="number" min="0" class="form-control form-control-validate" onwheel="return false;" price="${element['price']}"
-                              id="event_${element['id']}" name="event[${element['id']}]"></td>
-                            <td id = 'event-ticket-price_${element['id']}' class='remove-value'>0</td>
-                        </tr>`;
-            });
+            html += `</tbody></table>`
+
+            data.style == 'basic' ? html += `<input type="hidden" name="style" value="basic">` : html += `<input type="hidden"  name="style" value="temporary">`
+
           } else {
             html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
           }

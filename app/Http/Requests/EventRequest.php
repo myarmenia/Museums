@@ -22,15 +22,18 @@ class EventRequest extends FormRequest
      */
     public function rules(): array
     {
-      // dd($this);
+
       $array= [
         'start_date'=>'required|date|before:end_date',
         'end_date' => "required|date|after:start_date",
         'price'=> 'required|integer|gt:0',
-        'visitors_quantity_limitation'=> 'required|integer|gt:0',
+        // 'visitors_quantity_limitation'=> 'required|integer|gt:0',
         'translate.*.name' => 'required',
         'translate.*.description' => 'required',
     ];
+      if($this->style=="basic"){
+        $array['visitors_quantity_limitation']='required|integer|gt:0';
+      }
 
       if(Request::method()=="POST"){
         $array['photo'] = 'required|image';
