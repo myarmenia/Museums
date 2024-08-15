@@ -64,6 +64,7 @@ class ReportExport implements FromCollection, WithHeadings, WithMapping, WithSty
       'Անվճար տ․',
       'Միասնական տ․ ըստ թանգարանների',
       'Անդամակցության քարտ',
+      'Ցուցադրություն',
       'Միջոցառման տ․',
       'Կորպորատիվ',
       'Կրթական ծրագիր',
