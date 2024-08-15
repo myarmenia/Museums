@@ -94,7 +94,7 @@ class CashierController extends Controller
             }
 
             if ($qr['type'] == 'event') {
-              $configItem = $eventAllConfigs->where('id', $qr->item_relation_id)->first();
+              $configItem = $event->where('id', $qr->item_relation_id)->first();
 
               $event_day = [
                 'start' => $event->start_date,
