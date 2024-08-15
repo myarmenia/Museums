@@ -9,7 +9,7 @@ trait MuseumTrait
   {
 
 
-      if (request()->type == 'event') {
+      if (request()->type == 'event' || request()->type == 'event-config') {
 
           $request['status'] = 1;
       }

@@ -170,8 +170,11 @@
                                       @endforeach
                                   @endif
                             @else
-                                @if ($type == 'event')
+                                @if ($type == 'event-config')
                                   <p style="text-transform: font-weight: 600">{{$data->event_config->event->translation('en')->name}}</p>
+                                @endif
+                                @if ($type == 'event')
+                                  <p style="text-transform: font-weight: 600">{{$data->event->translation('en')->name}}</p>
                                 @endif
                                 @foreach (languages() as $lng)
                                     <div style="font-size: 12px; ine-height: 13.6px; margin-top: 6px; margin-left: 6px;">
@@ -191,8 +194,8 @@
                                 </div>
                                 <div style="width: 50%; text-align: end; align-content: content">
                                     <span>{{ $data->created_at != null && ($type == 'subsctiption' || $type == 'united') ? date('d-m-Y', strtotime($data->created_at)) : ''}} </span>
-                                    <span>{{ $type == 'event' ? date('d-m-Y', strtotime($data->purchased_item->event_config->day)) : ''}}</span>
-                                    <span>{{ $type == 'event' ? date('H:i', strtotime($data->purchased_item->event_config->start_time)) : ''}}</span>
+                                    <span>{{ $type == 'event-config' ? date('d-m-Y', strtotime($data->purchased_item->event_config->day)) : ($type == 'event' ? date('d-m-Y', strtotime($data->purchased_item->event->start_date)) . ' - ' . date('d-m-Y', strtotime($data->purchased_item->event->end_date)) : '')}}</span>
+                                    <span>{{ $type == 'event-config' ? date('H:i', strtotime($data->purchased_item->event_config->start_time)) : ''}}</span>
                                     <p style="margin-bottom: 0; font-size: 10px; color: #aaa">{{$code}}</p>
                                 </div>
                             </div>

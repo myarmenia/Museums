@@ -116,8 +116,9 @@ trait PaymentRegister
 
         return $type == 'subscription' ? 'Անդամակցության քարտ' :
               ($type == 'united' ? 'Միասնական տոմս' :
-              ($type == 'event' ? 'Միջոցառման տոմս' :
-              ($type == 'product' ? 'Թանգարանի ապրանք' : 'Թանգարանի տոմս')));
+              ($type == 'event' ? 'Ժամանակավոր ցուցադրման տոմս' :
+              ($type == 'event-config' ? 'Միջոցառման տոմս' :
+              ($type == 'product' ? 'Թանգարանի ապրանք' : 'Թանգարանի տոմս'))));
 
 
     }

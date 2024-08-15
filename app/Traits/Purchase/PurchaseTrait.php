@@ -133,6 +133,26 @@ trait PurchaseTrait
 
       //  ============================================================
 
+      //  ===================== event-config ================================
+
+
+      if ($value['type'] == 'event-config') {
+
+        $maked_data = $this->makeEventConfigData($value);
+        unset($maked_data['id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+        } else {
+          $event = $this->getAvailableEventViaEventCobfig($value['id']);
+
+          $row = ['error' => 'ticket_not_available', 'name' => $event];
+          break;
+        }
+
+      }
+      //  ===============================================================================
+
       //  ===================== event ================================
 
 
@@ -144,9 +164,8 @@ trait PurchaseTrait
         if ($maked_data) {
           $row = $this->addItemInPurchasedItem($maked_data);
         } else {
-          $event = $this->getAvailableEventViaEventCobfig($value['id']);
 
-          $row = ['error' => 'ticket_not_available', 'name' => $event];
+          $row = ['error' => 'undefined_event', 'name' => ''];
           break;
         }
 
@@ -347,7 +366,7 @@ trait PurchaseTrait
 
   }
 
-  public function makeEventData($data)
+  public function makeEventConfigData($data)
   {
 
     $event_config = $this->getEventConfig($data['id']);
@@ -372,6 +391,24 @@ trait PurchaseTrait
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
 
+
+    return $data;
+  }
+
+  public function makeEventData($data)
+  {
+
+    $event = $this->getEvent($data['id']);
+
+    if (!$event) {
+      return false;
+    }
+
+    $data['museum_id'] = $event->museum->id;
+    $total_price = $event->price * $data['quantity'];
+
+    $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
 
     return $data;
   }
