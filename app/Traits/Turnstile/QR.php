@@ -113,8 +113,8 @@ trait QR
             $end_date = $qr->event_config->day;
 
         } elseif ($qr->type == 'event') {
-            $date = $qr->basic_event->start_date;
-            $end_date = $qr->basic_event->end_date;
+            $date = $qr->event->start_date;
+            $end_date = $qr->event->end_date;
 
         } elseif ($qr->type == 'corporative') {
           $date = $qr->corporative->created_at;
