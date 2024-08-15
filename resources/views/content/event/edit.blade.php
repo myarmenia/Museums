@@ -4,6 +4,7 @@
 @section('page-script')
     <script src="{{ asset('assets/js/admin\news\index.js') }}"></script>
     <script src="{{ asset('assets/js/admin\event\index.js') }}"></script>
+    <script src="{{ asset('assets/js/admin/event/change_event_style.js') }}"></script>
 @endsection
 
 
@@ -42,10 +43,10 @@
                 <div class="mb-3 row">
                   <label for="region" class="col-md-2 col-form-label"> Տեսակ <span class="required-field">*</span></label>
                   <div class="col-md-10">
-                      <select id="defaultSelect" name="style" class="form-select">
+                      <select id="defaultSelect" name="style" class="form-select"  onchange="changeEventType()">
                           <option value = "" disabled >Ընտրեք տեսակ</option>
-                          <option value = "basic" {{ $data->style == "basic" ? "selected" : null }}>Հիմնային</option>
-                          <option value = "temporary" {{ $data->style == "temporary" ? "selected" : null }}> Ժամանակավոր </option>
+                          <option value = "basic" {{ $data->style == "basic" ? "selected" : null }}>Միջոցառում</option>
+                          <option value = "temporary" {{ $data->style == "temporary" ? "selected" : null }}> Ժամանակավոր ցուցադրություն </option>
                       </select>
                       @error('product_category_id')
                           <div class="justify-content-end">
@@ -127,7 +128,7 @@
                 </div>
 
 
-                <div class="mb-3 row">
+                <div class="mb-3 row" id="ticket_max_quantity" style="display:{{ $data->style == 'temporary' ? 'none' : 'flex' }}">
                     <label for="phone_number" class="col-md-2 col-form-label">Տոմսերի առավելագույն քանակ մեկ օրվա համար
                         <span class="required-field text-danger">*</span>
                     </label>

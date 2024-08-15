@@ -58,6 +58,7 @@
                             <th>No</th>
                             <th>Նկար</th>
                             <th>Անվանում</th>
+                            <th>Տեսակ</th>
                             <th>Կարգավիճակ</th>
                             <th>Ստեղծման ամսաթիվը</th>
                             @if (museumAccessId()!=null)
@@ -80,6 +81,7 @@
                                     @endif
                                 </td>
                                 <td>{{ $item->translation("am")->name}}</td>
+                                <td>{{ $item->style=="basic"? "Միջոցառում" : "Ժամանակավոր ցուցադրություն" }}</td>
                                 <td class="status">
                                   @if ($item->status)
                                       <span class="badge bg-label-success me-1">Ակտիվ</span>
