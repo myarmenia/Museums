@@ -377,6 +377,7 @@ if (!function_exists('getTranslateTicketTitl')) {
         'united' => 'Միասնական',
         'educational' => 'Կրթական',
         'event' => 'Միջոցառում',
+        'event-config' => 'Ցուցադրություն',
         'corporative' => 'Կորպորատիվ',
         'guide' => 'Էքսկուրսիա',
         'product' => 'Ապրանք'
@@ -441,7 +442,7 @@ if (!function_exists('getEventType')) {
     };
 
 
-  
+
 
 }
 
