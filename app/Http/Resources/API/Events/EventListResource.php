@@ -15,11 +15,12 @@ class EventListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+      
         return [
           'id' =>$this->id,
           'museum_id'=> $this->museum_id,
           'museum_name'=> $this->museum->translation(session('languages'))->name,
-
+          'style'=>$this->style,
           'price' => $this->price,
           'name' => $this->translation(session('languages'))->name,
           'description' =>$this->translation(session('languages'))->description,
