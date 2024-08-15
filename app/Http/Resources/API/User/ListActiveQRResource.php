@@ -44,8 +44,11 @@ class ListActiveQRResource extends JsonResource
             if ($this->type == 'subscription') {
                 $data['date'] = date('d-m-Y', strtotime($this->created_at));
             }
-            if ($this->type == 'event') {
+            if ($this->type == 'event-config') {
                 $data['date'] = date('d-m', strtotime($this->event_config->day)) . '|' . date('H:i', strtotime($this->event_config->start_time)) . '-' . date('H:i', strtotime($this->event_config->end_time));
+            }
+            if ($this->type == 'event') {
+              $data['date'] = date('d-m', strtotime($this->event->start_date)) . '-' . date('d-m', strtotime($this->event->end_date));
             }
 
             $data['museum_address'] = $this->museum->getCurrentTranslation[0]->address;

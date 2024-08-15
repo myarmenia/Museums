@@ -42,9 +42,14 @@ class PurchasedItem extends Model
     {
         return $this->belongsTo(EventConfig::class, 'item_relation_id');
     }
+
+    public function event()
+    {
+      return $this->belongsTo(Event::class, 'item_relation_id');
+    }
     public function standart_ticket()
     {
-      // return EventConfig::where('id', $this->item_relation_id)->first();
+     
       return $this->belongsTo(Ticket::class, 'item_relation_id');
 
     }

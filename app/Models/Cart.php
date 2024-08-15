@@ -47,5 +47,11 @@ class Cart extends Model
 
   }
 
+  public function event()
+  {
+    return $this->belongsTo(Event::class, 'item_relation_id');
+
+  }
+
 
 }

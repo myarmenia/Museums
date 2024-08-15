@@ -31,9 +31,9 @@ class ReturnTicketService
         return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով տոմսը միասնական է որը վերադարձի ենթակա չէ։'];
       }
 
-      if ($ticket && ($ticket->accesses->count() > 0)) {
-        return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
-      }
+      // if ($ticket && ($ticket->accesses->count() > 0)) {
+      //   return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
+      // }
 
       if ($ticket) {
         $guides = false;
@@ -41,7 +41,7 @@ class ReturnTicketService
           $purchaseItemId = $ticket->purchased_item_id;
           $purchaseId = PurchasedItem::where('id', $purchaseItemId)->first()->purchase_id;
           $guides = PurchasedItem::where(['purchase_id' => $purchaseId, 'type' => 'guide', 'returned_quantity' => 0])->count();
-// dd($guides);
+          // dd($guides);
           if ($guides) {
             $guides = true;
           }
@@ -49,9 +49,11 @@ class ReturnTicketService
 
         return ['success' => true, 'guides' => $guides, 'type' => getTranslateTicketTitl($ticket->type)];
       }
+
+      return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով տոմս չի գտնվել կամ տոմսն օգտագործված է։'];
     }
 
-    return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով տվյալ չի գտնվել։'];
+    return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով տոմս չի գտնվել։'];
 
   }
 
@@ -69,7 +71,11 @@ class ReturnTicketService
 
         $ticket = $this->getActiveTicket($token, $museumId);
 
-        if ($ticket && ($ticket->accesses->count() > 0)) {
+        // if ($ticket && ($ticket->accesses->count() > 0)) {
+        //   return ['success' => false, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
+        // }
+
+        if ($ticket == null) {
           return ['success' => false, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
         }
 
@@ -132,7 +138,7 @@ class ReturnTicketService
           $purchaseReadyAmount = $purchase->returned_amount + $purchaseReturnedAmount;
           $purchase->update(['returned_amount' => $purchaseReadyAmount]);
         }
-    
+
 
         DB::commit();
         if ($ticket) {

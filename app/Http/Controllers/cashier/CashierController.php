@@ -32,7 +32,7 @@ class CashierController extends Controller
 
         $itemDescription = null;
         $itemDescriptionName = '';
-    
+
         $museumTranslation = $museum->translations->keyBy('lang');
 
         $data = [
@@ -40,7 +40,7 @@ class CashierController extends Controller
                 'am' => $museumTranslation['am']->name,
                 'ru' => $museumTranslation['ru']->name,
                 'en' => $museumTranslation['en']->name,
-            ],   
+            ],
         ];
 
         if($ticketQrs){
@@ -49,11 +49,15 @@ class CashierController extends Controller
             $qrs = TicketQr::whereIn('purchased_item_id', $purchaseItemIds)->get();
         }
 
-        if($qrs[0]->type == 'event' || $qrs[0]->type == 'educational'){
-            if($qrs[0]->type == 'event'){
+        if($qrs[0]->type == 'event' || $qrs[0]->type == 'event-config' || $qrs[0]->type == 'educational'){
+            if($qrs[0]->type == 'event-config'){
                 $eventConfig = EventConfig::with('event.item_translations')->find($qrs[0]->item_relation_id);
                 $eventAllConfigs = EventConfig::where('event_id', $eventConfig->event->id)->get();
                 $itemDescription = $eventConfig->event;
+
+            }elseif ($qrs[0]->type == 'event') {
+                $event = Event::where('id', $qrs[0]->item_relation_id)->get();
+                $itemDescription = Event::with('item_translations')->find($qrs[0]->item_relation_id);
 
             }elseif ($qrs[0]->type == 'educational') {
                 $itemDescription = EducationalProgram::with('item_translations')->find($qrs[0]->item_relation_id);
@@ -78,8 +82,8 @@ class CashierController extends Controller
 
 
         foreach ($qrs as $qr) {
-            
-            if($qr['type'] == 'event'){
+
+            if($qr['type'] == 'event-config'){
                 $configItem = $eventAllConfigs->where('id', $qr->item_relation_id)->first();
 
                 $event_day = [
@@ -89,13 +93,22 @@ class CashierController extends Controller
                 ];
             }
 
+            if ($qr['type'] == 'event') {
+              $configItem = $eventAllConfigs->where('id', $qr->item_relation_id)->first();
+
+              $event_day = [
+                'start' => $event->start_date,
+                'end' => $event->end_date,
+              ];
+            }
+
             if(($qr['type'] == 'standart' || $qr['type'] == 'discount' || $qr['type'] == 'free') && $guids->count() > 0){
                 $purchaseGuid = [];
                 foreach ($guids as $guid) {
                     $purchaseGuid[] = $guid['total_price'];
                 }
             }else {
-                $purchaseGuid = false; 
+                $purchaseGuid = false;
             }
 
             $data['data'][] = [
@@ -111,7 +124,7 @@ class CashierController extends Controller
         }
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
-        
+
         $fileName = 'ticket-' . time() . '.pdf';
         $path = 'public/pdf-file/' . $fileName;
 

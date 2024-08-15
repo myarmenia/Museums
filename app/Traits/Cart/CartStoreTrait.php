@@ -49,9 +49,9 @@ trait CartStoreTrait
               }
             }
 
-            if ($value['type'] == 'event') {
+            if ($value['type'] == 'event-config') {
 
-                $maked_data = $this->makeEventData($value);
+                $maked_data = $this->makeEventConfigData($value);
                 unset($maked_data['id']);
 
                 if ($maked_data) {
@@ -60,6 +60,19 @@ trait CartStoreTrait
                     $row = ['error' => 'ticket_not_available'];
                     break;
                 }
+            }
+
+            if ($value['type'] == 'event') {
+
+              $maked_data = $this->makeEventData($value);
+              unset($maked_data['id']);
+
+              if ($maked_data) {
+                $row = $this->updateOrCreateEvent($maked_data);
+              } else {
+                $row = ['error' => 'ticket_not_available'];
+                break;
+              }
             }
 
             if ($value['type'] == 'standart' || $value['type'] == 'discount' || $value['type'] == 'free' || $value['type'] == 'subscription') {
@@ -179,7 +192,7 @@ trait CartStoreTrait
     return $data;
   }
 
-  public function makeEventData($data)
+  public function makeEventConfigData($data)
   {
 
     $event_config = $this->getEventConfig($data['id']);
@@ -208,6 +221,34 @@ trait CartStoreTrait
     }
 
     $total_price = $event_config->price * $quantity;
+
+    $data['quantity'] = $quantity;
+    $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
+
+
+    return $data;
+  }
+
+  public function makeEventData($data)
+  {
+
+    $event = $this->getEvent($data['id']);
+
+    if (!$event) {
+      return false;
+    }
+
+    $data['museum_id'] = $event->museum->id;
+    $hasEvent = $this->getAuthUser()->carts()->where('item_relation_id', $data['id'])->first();
+
+    if ($hasEvent) {
+      $quantity = $data['quantity'] + $hasEvent->quantity;
+    } else {
+      $quantity = $data['quantity'];
+    }
+
+    $total_price = $event->price * $quantity;
 
     $data['quantity'] = $quantity;
     $data['total_price'] = $total_price;

@@ -39,6 +39,11 @@ class TicketQr extends Model
     return $this->belongsTo(EventConfig::class, 'item_relation_id');
   }
 
+  public function event()
+  {
+    return $this->belongsTo(Event::class, 'item_relation_id')->where('style', 'basic');
+  }
+
   public function corporative()
   {
     return $this->belongsTo(CorporativeSale::class, 'item_relation_id');

@@ -83,7 +83,7 @@ trait QR
 
   public function checkQR($data_qr, $mac)
   {
-
+    // example
     // "893AD83C829E71#6e2dd53cc2adeaa52123d424da1451d9e23d3b1340d8cf7f747e71af2b5f274f#1723445813#2024-08-12 09:20:36"
     // "qr-token#qr-hash(sha256)#timestampe-qr-created_at#qr-reader-date"
 
@@ -102,13 +102,20 @@ trait QR
 
     if ($turnstile) {
       $museum_id = $turnstile->museum_id;
+      $end_date = null;
 
       $qr = TicketQr::valid($qr_token, $museum_id)->first();
 
       if ($qr) {
-        if ($qr->type == 'event') {
+        if ($qr->type == 'event-config') {
 
-          $date = $qr->event_config->day;
+            $date = $qr->event_config->day;
+            $end_date = $qr->event_config->day;
+
+        } elseif ($qr->type == 'event') {
+            $date = $qr->basic_event->start_date;
+            $end_date = $qr->basic_event->end_date;
+
         } elseif ($qr->type == 'corporative') {
           $date = $qr->corporative->created_at;
 
@@ -116,7 +123,7 @@ trait QR
           $date = $qr->created_at;
         }
 
-        $check_date = $this->checkDate($date, $qr->type);
+        $check_date = $this->checkDate($date, $end_date, $qr->type);
 
 
         if ($check_date) {
@@ -132,65 +139,87 @@ trait QR
     return 'invalid mac';
   }
 
-  public function checkDate($date, $type)
+  public function checkDate($date, $end_date = null, $type)
   {
     $checked_date = new DateTime($date);
     $checked_date->setTime(0, 0, 0);
+
+    $checked_end_date = new DateTime($end_date);
+    $checked_end_date->setTime(0, 0, 0);
 
     $today = new DateTime();
     $today->setTime(0, 0, 0);
 
     $checked_date_plus_one_year = $type != 'event' ? $checked_date->modify('+1 year') : $checked_date;
+    // $checked_date_plus_one_year = $type != 'event' ? $checked_date->modify('+1 year') : $checked_date;
 
-    return $type != 'event' ? ($today <= $checked_date_plus_one_year ? true : false) : ($today == $checked_date_plus_one_year ? true : false);
+
+    return $type != 'event' ? ($today <= $checked_date_plus_one_year ? true : false) : (($today >= $checked_date && $today <= $checked_end_date) ? true : false);
 
   }
-
 
   public function checkTicketAccesses($qr, $status = null, $date = null)
   {
 
-    $new_date = new DateTime();
-    $date = $date == null ? $new_date : $new_date->setTimestamp($date);
+      $new_date = new DateTime();
+      $date = $date == null ? $new_date : $new_date->setTimestamp($date);
 
-    $date = $date->modify('+4 hours');  // +4 hour to UTC
-    $now_date = $date->format('Y-m-d H:i:s');
+      $date = $date->modify('+4 hours');  // +4 hour to UTC
+      $now_date = $date->format('Y-m-d H:i:s');
 
-    if ($qr->type == 'subscription') {
-      $created_at = $qr->created_at;
-
-      $access_period = Carbon::parse($created_at)->addDays(365); // Добавляем 365 days
-      // $access_period = $now->modify('+365 days');
-
-    } else {
-
-      $access_period = $date->modify('+8 hours'); // Добавляем 8 часов
-    }
-
-    $qr_access = TicketAccess::where('ticket_qr_id', $qr->id)->first();
-
-    if (!$qr_access) {
-      $data = [
-        'ticket_qr_id' => $qr->id,
-        'museum_id' => $qr->museum_id,
+      $update = $qr->update([
+        'status' => 'used',
         'visited_date' => $now_date,
-        'access_period' => $access_period
+      ]);
 
-      ];
-
-      if ($status) {
-        $data['status'] = $status;
-      }
-
-      TicketAccess::create($data);
-      return true;
-
-    } else {
-      return $now_date <= $qr_access->access_period ? true : false;
-    }
-
-
+      return $update;
   }
+
+
+  // public function checkTicketAccesses($qr, $status = null, $date = null)
+  // {
+
+  //   $new_date = new DateTime();
+  //   $date = $date == null ? $new_date : $new_date->setTimestamp($date);
+
+  //   $date = $date->modify('+4 hours');  // +4 hour to UTC
+  //   $now_date = $date->format('Y-m-d H:i:s');
+
+  //   if ($qr->type == 'subscription') {
+  //     $created_at = $qr->created_at;
+
+  //     $access_period = Carbon::parse($created_at)->addDays(365); // Добавляем 365 days
+  //     // $access_period = $now->modify('+365 days');
+
+  //   } else {
+
+  //     $access_period = $date->modify('+8 hours'); // Добавляем 8 часов
+  //   }
+
+  //   $qr_access = TicketAccess::where('ticket_qr_id', $qr->id)->first();
+
+  //   if (!$qr_access) {
+  //     $data = [
+  //       'ticket_qr_id' => $qr->id,
+  //       'museum_id' => $qr->museum_id,
+  //       'visited_date' => $now_date,
+  //       'access_period' => $access_period
+
+  //     ];
+
+  //     if ($status) {
+  //       $data['status'] = $status;
+  //     }
+
+  //     TicketAccess::create($data);
+  //     return true;
+
+  //   } else {
+  //     return $now_date <= $qr_access->access_period ? true : false;
+  //   }
+
+
+  // }
 
   public function addQrBlackList($qr, $mac)
   {
