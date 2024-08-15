@@ -376,8 +376,8 @@ if (!function_exists('getTranslateTicketTitl')) {
         'subscription' => 'Անդամակցության քարտ',
         'united' => 'Միասնական',
         'educational' => 'Կրթական',
-        'event' => 'Միջոցառում',
-        'event-config' => 'Ցուցադրություն',
+        'event' => 'Ցուցադրություն',
+        'event-config' => 'Միջոցառում',
         'corporative' => 'Կորպորատիվ',
         'guide' => 'Էքսկուրսիա',
         'product' => 'Ապրանք'
