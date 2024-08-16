@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www/Museum
 
-COPY museum.gorc-ka.am /var/www/Museum
+COPY . /var/www/Museum
 
 RUN composer install
 
