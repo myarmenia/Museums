@@ -102,8 +102,8 @@
             @endif
         @endforeach
     </ul>
-    <button class="btn btn-danger py-1  close fw-bold fs-4 d-flex flex-column" id="openDoor">
-        <div id="resultActionText">Բացել</div>
+    {{-- <button class="btn btn-danger py-1  close fw-bold fs-4 d-flex flex-column" id="openDoor">
+        <div id="resultActionText">Բացել 1</div>
         <div id="resultAction" class="fs-6"></div>
-    </button>
+    </button> --}}
 </aside>
