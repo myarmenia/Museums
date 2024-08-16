@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: webex:latest
-#    container_name: php
+#    container_name: php######
     restart: always
 #    command: bash -c "php artisan migrate && php artisan db:seed && php artisan serve --host=0.0.0.0"
     command: bash -c "php artisan migrate && php artisan serve --host=0.0.0.0"
