@@ -24,7 +24,7 @@ class EventTicket extends CashierController
 
       $museumId = getAuthMuseumId();
       $eventKeys = array_keys($requestData);
-  
+
       if ($request->input('style') == 'basic') {  //for event with event_configs
 
         $allEventConfig = EventConfig::where('status', 1)->whereIn('id', $eventKeys)->get();
@@ -58,7 +58,7 @@ class EventTicket extends CashierController
                 "quantity" => (int) $item
               ];
 
-              $event->update(['visitors_quantity' => $visitorQuantity]);
+
             }
           }
           if (!$haveValue) {
@@ -69,6 +69,8 @@ class EventTicket extends CashierController
           }
 
           $addTicketPurchase = $this->purchase($data);
+
+          $event->update(['visitors_quantity' => $visitorQuantity]);
 
           if ($addTicketPurchase) {
             $addQr = $this->getTokenQr($addTicketPurchase->id);
