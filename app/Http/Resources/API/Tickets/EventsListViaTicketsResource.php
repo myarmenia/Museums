@@ -27,7 +27,8 @@ class EventsListViaTicketsResource extends JsonResource
           'event_configs' => EventConfigResource::collection($configs),
           'start_date' => date('d-m-Y', strtotime($this->start_date)),
           'end_date' => date('d-m-Y', strtotime($this->end_date)),
-          'price' => $this->price
+          'price' => $this->price,
+          'style' => $this->style
 
         ];
     }
