@@ -25,8 +25,8 @@ class EventsListViaTicketsResource extends JsonResource
           'museum_id' => $this->museum_id,
           'name' => $this->translation(session('languages'))->name,
           'event_configs' => EventConfigResource::collection($configs),
-          'start_date' => $this->museum->start_date,
-          'end_date' => $this->museum->end_date,
+          'start_date' => $this->start_date,
+          'end_date' => $this->end_date,
           'price' => $this->price
 
         ];
