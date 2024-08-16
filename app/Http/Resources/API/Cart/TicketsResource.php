@@ -32,7 +32,7 @@ class TicketsResource extends JsonResource
         }
 
         if ($this->type == 'event') {
-          $data['date'] = date('m-d-Y', strtotime($this->event->start_date)) . '-' . date('m-d-Y', strtotime($this->event->end_date));
+          $data['date'] = date('m-d-Y', strtotime($this->event->start_date)) . '   ' . date('m-d-Y', strtotime($this->event->end_date));
         }
 
         return $data;
