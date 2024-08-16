@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: webex:latest
+#    container_name: php
+    restart: always
+#    command: bash -c "php artisan migrate && php artisan db:seed && php artisan serve --host=0.0.0.0"
+    command: bash -c "php artisan serve --host=0.0.0.0"
+#    command: tail -f /dev/null
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+
+#  nginx:
+#    image: nginx:latest
+#    container_name: nginx
+#    restart: always
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    volumes:
+#      - ./nginx.conf:/etc/nginx/conf.d/museums.conf
+#    depends_on:
+#      - app
+#    networks:
+#      - app-network
+
+networks:
+  app-network:
+    driver: bridge
