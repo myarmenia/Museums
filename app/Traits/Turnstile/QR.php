@@ -38,47 +38,6 @@ trait QR
     return $this->checkQR($data['qr'][0], $data['mac']);
 
 
-
-    // if($qr_hash != null && hash('sha256', $qr_token) !== $qr_hash){
-    //   return 'invalid scan';
-    // }
-
-    // $turnstile = Turnstile::museum($data['mac'])->first();
-
-    // if($turnstile){
-    //     $museum_id = $turnstile->museum_id;
-
-    //     $qr = TicketQr::valid($qr_token, $museum_id)->first();
-
-
-    //     if($qr){
-    //         if($qr->type == 'event'){
-    //           $date = $qr->event_config->day;
-    //         }
-    //         elseif($qr->type == 'corporative'){
-    //           $date = $qr->corporative->created_at;
-
-    //         }
-    //         else{
-    //           $date = $qr->created_at;
-    //         }
-
-    //         $check_date = $this->checkDate($date, $qr->type);
-
-
-    //         if($check_date){
-    //           $check_ticket_accesses = $this->checkTicketAccesses( $qr, null);
-
-    //           return $check_ticket_accesses ? true : false;
-    //         }
-    //     }
-
-    //     return false;
-
-
-    // }
-
-    // return 'invalid mac';
   }
 
   public function checkQR($data_qr, $mac)
@@ -131,6 +90,10 @@ trait QR
 
           return $check_ticket_accesses ? true : false;
         }
+        else{
+            $this->changeTicketStatus($qr, $date);
+        }
+
       }
 
       return false;
@@ -167,12 +130,36 @@ trait QR
       $date = $date->modify('+4 hours');  // +4 hour to UTC
       $now_date = $date->format('Y-m-d H:i:s');
 
+      $status = $qr->type != 'subscription' ? 'used' : 'active';
+
       $update = $qr->update([
-        'status' => 'used',
+        'status' => $status,
         'visited_date' => $now_date,
       ]);
 
       return $update;
+  }
+
+  public function changeTicketStatus($qr, $date)
+  {
+    $today = new DateTime();
+    $today->setTime(0, 0, 0);
+
+    $checked_date = new DateTime($date);
+    $checked_date->setTime(0, 0, 0);
+
+    if(($qr->type == 'event' || 'event-config') &&  $today < $checked_date){
+      $status = 'active';
+    }
+    else{
+      $status = 'expired';
+    }
+
+    $update = $qr->update([
+      'status' => $status,
+    ]);
+
+    return $update;
   }
 
 
