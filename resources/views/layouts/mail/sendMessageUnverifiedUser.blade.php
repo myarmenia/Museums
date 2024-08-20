@@ -13,7 +13,7 @@
                     style="max-width: 500px; background-color: white;">
                     <tr>
                         <td style="padding: 20px;">
-                            <img src="https://museum.gorc-ka.am/assets/img/mail-img/mobile-museum-logo.png"
+                            <img src="https://manage.museumsarmenia.am/assets/img/mail-img/mobile-museum-logo.png"
                                 alt="Museum Logo" style="width: 130px; height: auto;">
                         </td>
                     </tr>
