@@ -11,7 +11,7 @@ trait UpdateItemQuantityTrait
   public function updateItemQuantity($purchase_id)
   {
 
-    $array_types = ['product', 'event'];
+    $array_types = ['product', 'event-config'];
 
     $purchase = Purchase::find($purchase_id);
     $items = $purchase->purchased_items->whereIn('type', $array_types)->toArray();
@@ -22,7 +22,7 @@ trait UpdateItemQuantityTrait
           case 'product':
             $this->updateProductQuantity($item);
             break;
-          case 'event':
+          case 'event-config':
             $this->updateEventConfigeQuantity($item);
             break;
         }
@@ -35,7 +35,7 @@ trait UpdateItemQuantityTrait
   {
 
     $product = Product::find($item['item_relation_id']);
-   
+
     $quantity = $product->quantity - $item['quantity'];
     $product->update(['quantity' => $quantity]);
   }
