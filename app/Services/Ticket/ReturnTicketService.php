@@ -20,6 +20,7 @@ class ReturnTicketService
 
     $token = (int) $token;
     $ticket = null;
+    $currentDate = Carbon::now();
 
     $museumId = getAuthMuseumId();
 
@@ -31,9 +32,9 @@ class ReturnTicketService
         return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով տոմսը միասնական է որը վերադարձի ենթակա չէ։'];
       }
 
-      // if ($ticket && ($ticket->accesses->count() > 0)) {
-      //   return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
-      // }
+      if ($ticket && $ticket->visited_date != null) {
+        return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
+      }
 
       if ($ticket) {
         $guides = false;
@@ -44,6 +45,27 @@ class ReturnTicketService
           // dd($guides);
           if ($guides) {
             $guides = true;
+          }
+        }
+        if($ticket->type == 'event-config'){
+            if($ticket->event_config == null){
+              return ['success' => false, 'type' => null, 'message' => 'Ինչ որ բան այն չէ։'];
+            }
+
+            $ticketDate = $ticket->event_config->day;
+            if($ticketDate < $currentDate && $ticketDate != null){
+                return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով տոմսի միջոցառման ժամկետն ավարտվել է։'];
+            }
+        }
+
+        if ($ticket->type == 'event') {
+          if ($ticket->event == null) {
+            return ['success' => false, 'type' => null, 'message' => 'Ինչ որ բան այն չէ։'];
+          }
+
+          $ticketDate = $ticket->event->end_date;
+          if ($ticketDate < $currentDate && $ticketDate !=null) {
+            return ['success' => false, 'type' => null, 'message' => 'Տվյալ թոքենով տոմսի ցուցադրության ժամկետն ավարտվել է։'];
           }
         }
 
@@ -71,9 +93,9 @@ class ReturnTicketService
 
         $ticket = $this->getActiveTicket($token, $museumId);
 
-        // if ($ticket && ($ticket->accesses->count() > 0)) {
-        //   return ['success' => false, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
-        // }
+        if ($ticket && $ticket->visited_date != null) {
+          return ['success' => false, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
+        }
 
         if ($ticket == null) {
           return ['success' => false, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
@@ -102,7 +124,7 @@ class ReturnTicketService
             $totalPrice = (int) $purchaseItem->returned_total_price + $oneTicketPrice;
           }
 
-          if($purchaseItem->type == "event"){
+          if($purchaseItem->type == "event-config"){
             $eventConfig =  EventConfig::where('id', $purchaseItem->item_relation_id)->first();
             $countVisitors = (int) $eventConfig->visitors_quantity - 1;
             $eventConfig->update(['visitors_quantity' => $countVisitors]);

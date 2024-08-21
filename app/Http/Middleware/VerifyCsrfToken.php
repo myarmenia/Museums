@@ -15,6 +15,7 @@ class VerifyCsrfToken extends Middleware
     'https://manage.museumsarmenia.am/*',
     'http://manage.museumsarmenia.am/*',
     'https://museum.gorc-ka.am/*',
-    'http://museum.gorc-ka.am/*'
+    'http://museum.gorc-ka.am/*',
+    'http://localhost:8000/*'
   ];
 }

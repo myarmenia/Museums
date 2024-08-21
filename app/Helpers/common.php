@@ -346,9 +346,10 @@ if (!function_exists('ticketColors')) {
         'free' => '#16EA91',
         'united' => 'linear-gradient(to bottom right, #9c78b1, #16acea7d)',
         'subscription' => '#16ACEA',
-        'event' => '#9C78B1'
+        'event' => '#9C78B1',
+        'event-config' => '#9C78B1'
 
-      ];
+    ];
   }
 }
 
@@ -361,8 +362,10 @@ if (!function_exists('ticketTitles')) {
         'free' => 'անվճար տոմս бесплатный билет free ticket',
         'united' => 'միասնական տոմս  единый билет combo ticket',
         'subscription' => 'անդամակցության քարտ  абонемент abonement',
-        'event' => 'միջոցառման տոմս билет мероприятия event ticket'
-      ];
+        'event' => 'ցուցադրության տոմս билет показа exhibition ticket',
+        'event-config' => 'միջոցառման տոմս билет мероприятия event ticket'
+
+    ];
   }
 }
 
