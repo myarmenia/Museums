@@ -78,8 +78,15 @@ class TicketTypeSeeder extends Seeder
               'min_quantity' => 1,
               'max_quantity' => 10
 
-            ]
+            ],
+            [
+              'id' => 9,
+              'name' => 'event-config',
+              'coefficient' => 1,
+              'min_quantity' => 1,
+              'max_quantity' => 10
 
+            ]
 
         ];
 
