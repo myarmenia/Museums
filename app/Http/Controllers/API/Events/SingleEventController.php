@@ -12,7 +12,7 @@ class SingleEventController extends BaseController
 {
     public function __invoke($event_id){
 
-      $single_event = Event::find($event_id);
+      $single_event = Event::where(['id' => $event_id, 'status' => 1, 'online_sales' => 1])->first();
       return $this->sendResponse(new SingleEventResource($single_event),'success');
 
     }

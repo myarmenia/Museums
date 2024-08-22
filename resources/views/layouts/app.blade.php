@@ -77,7 +77,7 @@
         </main>
     </div>
 
-    <script src="{{ asset('assets/js/admin/turnstile-managment.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/admin/turnstile-managment.js') }}"></script> --}}
 
 </body>
 </html>
