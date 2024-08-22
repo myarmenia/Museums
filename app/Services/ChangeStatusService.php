@@ -23,7 +23,7 @@ class ChangeStatusService
         ->where('id', $request->id)
         ->update([$request->field_name => $status]);
 
-        if($request->tb_name == 'events' ){
+        if($request->tb_name == 'events' && $request->field_name == 'status'){
           $event = Event::find($request->id);
           if($event->status==1){
             $instance = app(ChangeStatusService::class);

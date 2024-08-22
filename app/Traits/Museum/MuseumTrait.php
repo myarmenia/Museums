@@ -22,6 +22,8 @@ trait MuseumTrait
   public function getMuseumEvents($request)
   {
     $request['status'] = 1;
+    $request['online_sales'] = 1;
+
     return Event::filter($request->all())->get();
 
   }

@@ -11,12 +11,12 @@
                 <table width="600px" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background-color: white;">
                     <tr>
                         <td style="padding: 20px; text-align: left;">
-                            <img src="https://museum.gorc-ka.am/assets/img/mail-img/mobile-museum-logo.png" alt="Museum Logo" style="width: 130px; height: auto;">
+                            <img src="https://manage.museumsarmenia.am/assets/img/mail-img/mobile-museum-logo.png" alt="Museum Logo" style="width: 130px; height: auto;">
                         </td>
                     </tr>
                     <tr>
                         <td style="padding: 20px; text-align: center;">
-                            <img src="https://museum.gorc-ka.am/assets/img/mail-img/hh.png" alt="HH-Zinanshan" style="width: 54px; height: 54px;">
+                            <img src="https://manage.museumsarmenia.am/assets/img/mail-img/hh.png" alt="HH-Zinanshan" style="width: 54px; height: 54px;">
                             <p >ՀԱՅԱՍՏԱՆԻ ՀԱՆՐԱՊԵՏՈՒԹՅԱՆ ԿՐԹՈՒԹՅԱՆ, ԳԻՏՈՒԹՅԱՆ, ՄՇԱԿՈՒՅԹԻ ԵՎ ՍՊՈՐՏԻ
                                 ՆԱԽԱՐԱՐՈՒԹՅՈՒՆ</p>
                         </td>

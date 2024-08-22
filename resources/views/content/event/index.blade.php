@@ -82,12 +82,19 @@
                                 </td>
                                 <td>{{ $item->translation("am")->name}}</td>
                                 <td>{{ $item->style=="basic"? "Միջոցառում" : "Ժամանակավոր ցուցադրություն" }}</td>
-                                <td class="status">
-                                  @if ($item->status)
-                                      <span class="badge bg-label-success me-1">Ակտիվ</span>
-                                  @else
-                                      <span class="badge bg-label-danger me-1">Ապաակտիվ</span>
-                                  @endif
+                                <td class="statuses">
+                                  <div class="status">
+                                    @if ($item->status)
+                                        <span class="badge bg-label-success me-1">Ակտիվ</span>
+                                    @else
+                                        <span class="badge bg-label-danger me-1">Ապաակտիվ</span>
+                                    @endif
+                                  </div>
+                                  <div class="online_sales mt-1">
+                                    <span class="badge {{$item->online_sales ? 'bg-label-success' : 'bg-label-danger' }} me-1  ">Առցանց վաճառք 77</span>
+
+                                  </div>
+
                               </td>
 
 
@@ -100,13 +107,20 @@
                                           <i class="bx bx-dots-vertical-rounded"></i>
                                       </button>
                                       <div class="dropdown-menu">
-                                        <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                          <div class="form-check form-switch">
-                                              <input class="form-check-input change_status" type="checkbox"
-                                                  role="switch" data-field-name="status"
-                                                  {{ $item['status'] ? 'checked' : null }}>
-                                          </div>Կարգավիճակ
-                                      </a>
+                                          <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input change_status" type="checkbox"
+                                                    role="switch" data-field-name="status"
+                                                    {{ $item['status'] ? 'checked' : null }}>
+                                            </div>Կարգավիճակ
+                                          </a>
+                                          <a class="dropdown-item d-flex" href="javascript:void(0);">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input change_status" type="checkbox"
+                                                    role="switch" data-field-name="online_sales"
+                                                    {{ $item['online_sales'] ? 'checked' : null }}>
+                                            </div>Առցանց վաճառք
+                                          </a>
                                           <a class="dropdown-item" href="{{route('event_edit',$item['id'])}}"><i
                                                   class="bx bx-edit-alt me-1"></i>Խմբագրել</a>
                                           <button type="button" class="dropdown-item click_delete_item"

@@ -31,8 +31,7 @@ trait PaymentRegister
           if($item->total_price > 0){
               $item_params = new stdClass();
               $item_params->amount = $item->total_price;
-              // $item_params->account = $item->museum->account_number;
-              $item_params->account = "900018001322";
+              $item_params->account = $item->museum->account_number;
               $item_params->beneficiary_name = $item->museum->translationsForAdmin->name;
               $item_params->notice = $this->getNotice($item->type);
               $item_params->description = "Վաճառք";
@@ -52,8 +51,7 @@ trait PaymentRegister
 
                 $item_params = new stdClass();
                 $item_params->amount = $united_item->total_price;
-                // $item_params->account = $united_item->museum->account_number;
-                $item_params->account = "900018001322";
+                $item_params->account = $united_item->museum->account_number;
                 $item_params->beneficiary_name = $united_item->museum->translationsForAdmin->name;
                 $item_params->notice = $this->getNotice('united');
                 $item_params->description = "Վաճառք";

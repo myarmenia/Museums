@@ -14,6 +14,7 @@ class EventListController extends Controller
 
   }
   public function __invoke(Request $request){
+    
     $data = Event::where([
                   ['id','>',0],
                   ['museum_id','=',museumAccessId()]

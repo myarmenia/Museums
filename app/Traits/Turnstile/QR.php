@@ -38,47 +38,6 @@ trait QR
     return $this->checkQR($data['qr'][0], $data['mac']);
 
 
-
-    // if($qr_hash != null && hash('sha256', $qr_token) !== $qr_hash){
-    //   return 'invalid scan';
-    // }
-
-    // $turnstile = Turnstile::museum($data['mac'])->first();
-
-    // if($turnstile){
-    //     $museum_id = $turnstile->museum_id;
-
-    //     $qr = TicketQr::valid($qr_token, $museum_id)->first();
-
-
-    //     if($qr){
-    //         if($qr->type == 'event'){
-    //           $date = $qr->event_config->day;
-    //         }
-    //         elseif($qr->type == 'corporative'){
-    //           $date = $qr->corporative->created_at;
-
-    //         }
-    //         else{
-    //           $date = $qr->created_at;
-    //         }
-
-    //         $check_date = $this->checkDate($date, $qr->type);
-
-
-    //         if($check_date){
-    //           $check_ticket_accesses = $this->checkTicketAccesses( $qr, null);
-
-    //           return $check_ticket_accesses ? true : false;
-    //         }
-    //     }
-
-    //     return false;
-
-
-    // }
-
-    // return 'invalid mac';
   }
 
   public function checkQR($data_qr, $mac)
@@ -109,12 +68,12 @@ trait QR
       if ($qr) {
         if ($qr->type == 'event-config') {
 
-            $date = $qr->event_config->day;
-            $end_date = $qr->event_config->day;
+          $date = $qr->event_config->day;
+          $end_date = $qr->event_config->day;
 
         } elseif ($qr->type == 'event') {
-            $date = $qr->event->start_date;
-            $end_date = $qr->event->end_date;
+          $date = $qr->event->start_date;
+          $end_date = $qr->event->end_date;
 
         } elseif ($qr->type == 'corporative') {
           $date = $qr->corporative->created_at;
@@ -130,7 +89,10 @@ trait QR
           $check_ticket_accesses = $this->checkTicketAccesses($qr, null, $qr_reade_date);
 
           return $check_ticket_accesses ? true : false;
+        } else {
+          $this->changeTicketStatus($qr, $date);
         }
+
       }
 
       return false;
@@ -150,29 +112,52 @@ trait QR
     $today = new DateTime();
     $today->setTime(0, 0, 0);
 
-    $checked_date_plus_one_year = $type != 'event' ? $checked_date->modify('+1 year') : $checked_date;
+    $checked_date_plus_one_year = $type != 'event' && $type != 'event-config' ? $checked_date->modify('+1 year') : $checked_date;
     // $checked_date_plus_one_year = $type != 'event' ? $checked_date->modify('+1 year') : $checked_date;
 
 
-    return $type != 'event' ? ($today <= $checked_date_plus_one_year ? true : false) : (($today >= $checked_date && $today <= $checked_end_date) ? true : false);
+    return $type != 'event' && $type != 'event-config' ? ($today <= $checked_date_plus_one_year ? true : false) : (($today >= $checked_date && $today <= $checked_end_date) ? true : false);
 
   }
 
   public function checkTicketAccesses($qr, $status = null, $date = null)
   {
 
-      $new_date = new DateTime();
-      $date = $date == null ? $new_date : $new_date->setTimestamp($date);
+    $new_date = new DateTime();
+    $date = $date == null ? $new_date : $new_date->setTimestamp($date);
 
-      $date = $date->modify('+4 hours');  // +4 hour to UTC
-      $now_date = $date->format('Y-m-d H:i:s');
+    $date = $date->modify('+4 hours');  // +4 hour to UTC
+    $now_date = $date->format('Y-m-d H:i:s');
 
-      $update = $qr->update([
-        'status' => 'used',
-        'visited_date' => $now_date,
-      ]);
+    $status = $qr->type != 'subscription' ? 'used' : 'active';
 
-      return $update;
+    $update = $qr->update([
+      'status' => $status,
+      'visited_date' => $now_date,
+    ]);
+
+    return $update;
+  }
+
+  public function changeTicketStatus($qr, $date)
+  {
+    $today = new DateTime();
+    $today->setTime(0, 0, 0);
+
+    $checked_date = new DateTime($date);
+    $checked_date->setTime(0, 0, 0);
+
+    if (($qr->type == 'event' || 'event-config') && $today < $checked_date) {
+      $status = 'active';
+    } else {
+      $status = 'expired';
+    }
+
+    $update = $qr->update([
+      'status' => $status,
+    ]);
+
+    return $update;
   }
 
 
@@ -235,17 +220,17 @@ trait QR
   public function getSingleMuseumQrBlackList($mac)
   {
 
-      $list = QrBlackList::where('mac', $mac)->orderByDesc('id')->take(50)->pluck('qr')->toArray();
-      $latestIds = QrBlackList::where('mac', $mac)->orderByDesc('id')->take(50)->pluck('id');
+    $list = QrBlackList::where('mac', $mac)->orderByDesc('id')->take(50)->pluck('qr')->toArray();
+    $latestIds = QrBlackList::where('mac', $mac)->orderByDesc('id')->take(50)->pluck('id');
 
-      // Удаляем все записи, кроме тех, у которых ID в списке последних 50
-      QrBlackList::where('mac', $mac)
-            ->whereNotIn('id', $latestIds)
-            ->delete();
+    // Удаляем все записи, кроме тех, у которых ID в списке последних 50
+    QrBlackList::where('mac', $mac)
+      ->whereNotIn('id', $latestIds)
+      ->delete();
 
-      $data['black_list'] = $list;
+    $data['black_list'] = $list;
 
-      return $data;
+    return $data;
 
   }
 
