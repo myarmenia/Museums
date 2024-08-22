@@ -76,16 +76,16 @@ Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])
 Route::group(['middleware' => ['auth']], function () {
 
   //Welcome page
-  Route::get('/welcome',  function () {
+  Route::get('/welcome', function () {
     return view('content.welcome.welcome');
   })->name('welcome');
 
   // Main Page Route
   Route::group(['middleware' => ['role:super_admin|general_manager|chief_accountant']], function () {
-      Route::get('/', AnalyticsController::class)->name('dashboard_analytics');
+    Route::get('/', AnalyticsController::class)->name('dashboard_analytics');
   });
 
-  Route::group(['middleware' => ['role:museum_admin|manager|content_manager|accountant', 'check_auth_have_museum' ]], function () {
+  Route::group(['middleware' => ['role:museum_admin|manager|content_manager|accountant', 'check_auth_have_museum']], function () {
     Route::get('/museum-dashboard', SingleMuseumAnalyticsController::class)->name('museum_dashboard_analytics');
   });
 
@@ -93,7 +93,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::resource('users', UserController::class);
   Route::get('users-visitors', [UserController::class, 'users_visitors'])->name('users_visitors');
 
-  Route::post('change-status', [ChangeStatusController::class, 'change_status'])->name('change_status');
+  Route::post('/change-status', [ChangeStatusController::class, 'change_status'])->name('change_status');
   Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class, 'index'])->name('delete_item');
   Route::get('logs', [LogController::class, 'index'])->name('logs');
   Route::get('reports/{request_report_type}', [ReportsForSuperAdminController::class, 'index'])->name('reports');
@@ -176,16 +176,16 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::group(['prefix' => 'educational-programs'], function () {
     Route::group(['middleware' => ['role:museum_admin|manager|content_manager|cashier']], function () {
-        Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
+      Route::get('list', EducationalProgramListController::class)->name('educational_programs_list');
     });
 
     Route::group(['middleware' => ['role:content_manager|museum_admin|manager']], function () {
-        Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
-        Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
-        Route::group(['middleware' => ['model_access']], function () {
-          Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs-update');
-          Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs-edit');
-        });
+      Route::get('create', EducationalProgramCreateController::class)->name('educational_programs_create');
+      Route::post('store', EducationalProgramStoreController::class)->name('educational_programs_store');
+      Route::group(['middleware' => ['model_access']], function () {
+        Route::put('update/{id}', EducationalProgramUpdateController::class)->name('educational_programs-update');
+        Route::get('edit/{id}', EducationalProgramEditController::class)->name('educational_programs-edit');
+      });
     });
 
     Route::group(['middleware' => ['role:museum_admin|manager|cashier']], function () {
@@ -212,10 +212,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('edit/{id}', EventEditController::class)->name('event_edit');
     Route::put('update/{id}', EventUpdateController::class)->name('event_update');
 
-      Route::get('config/component/{id}/{value}', [IncrementController::class,'increment']);
-      Route::post('event-config',[EventConfigController::class,'store'])->name('event_config_store');
-      Route::post('/event-config-update',[EventConfigController::class,'update'])->name('event_config_update');
-      // Route::post('/call-edit-component',EventConfigComponentController::class)->name('edit_component');
+    Route::get('config/component/{id}/{value}', [IncrementController::class, 'increment']);
+    Route::post('event-config', [EventConfigController::class, 'store'])->name('event_config_store');
+    Route::post('/event-config-update', [EventConfigController::class, 'update'])->name('event_config_update');
+    // Route::post('/call-edit-component',EventConfigComponentController::class)->name('edit_component');
 
 
 
@@ -236,20 +236,20 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::group(['prefix' => 'tickets'], function () {
     Route::group(['middleware' => ['role:museum_admin|manager']], function () {
-        Route::get('show', ShowTicketsController::class)->name('tickets_show');
-            Route::group(['middleware' => ['model_access']], function () {
-            Route::post('ticket-standart', StandartTicketController::class)->name('ticket-store');
-            Route::post('ticket-standart/{id}', StandartTicketController::class)->name('ticket-update');
-            Route::post('ticket-subscription', SubscriptionTicketController::class)->name('ticket_subscription_settings-store');
-            Route::post('ticket-subscription/{id}', SubscriptionTicketController::class)->name('ticket_subscription_settings-update');
-            Route::post('guide-service', GuideServiceController::class)->name('guide_services-store');
-            Route::post('guide-service/{id}', GuideServiceController::class)->name('guide_services-update');
-        });
+      Route::get('show', ShowTicketsController::class)->name('tickets_show');
+      Route::group(['middleware' => ['model_access']], function () {
+        Route::post('ticket-standart', StandartTicketController::class)->name('ticket-store');
+        Route::post('ticket-standart/{id}', StandartTicketController::class)->name('ticket-update');
+        Route::post('ticket-subscription', SubscriptionTicketController::class)->name('ticket_subscription_settings-store');
+        Route::post('ticket-subscription/{id}', SubscriptionTicketController::class)->name('ticket_subscription_settings-update');
+        Route::post('guide-service', GuideServiceController::class)->name('guide_services-store');
+        Route::post('guide-service/{id}', GuideServiceController::class)->name('guide_services-update');
+      });
     });
     Route::group(['middleware' => ['role:super_admin|general_manager']], function () {
-        Route::get('united', ShowUnitedTicketController::class)->name('tickets_united');
-        Route::post('ticket-united', UnitedTicketController::class)->name('ticket_united_store');
-        Route::post('ticket-united/{id}', UnitedTicketController::class)->name('ticket_united_update');
+      Route::get('united', ShowUnitedTicketController::class)->name('tickets_united');
+      Route::post('ticket-united', UnitedTicketController::class)->name('ticket_united_store');
+      Route::post('ticket-united/{id}', UnitedTicketController::class)->name('ticket_united_update');
     });
   });
 
