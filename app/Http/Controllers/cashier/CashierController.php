@@ -113,7 +113,8 @@ class CashierController extends Controller
 
             $data['data'][] = [
                 'ticket_token' => $qr['ticket_token'],
-                'photo' => public_path(Storage::url($qr['path'])),
+                // 'photo' => public_path(Storage::url($qr['path'])),
+                'photo' => Storage::disk('local')->path($qr['path']),
                 'description_educational_programming' => $itemDescriptionName? trim($itemDescriptionName)  : null,
                 'action_date' => $event_day ?? "",
                 'type' => $qr['type'],
