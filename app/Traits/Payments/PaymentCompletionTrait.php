@@ -46,20 +46,17 @@ trait PaymentCompletionTrait
 
     }
 
-    // window.location = 'museums://TicketCongrats/". $response ."'
 
-    // echo $payment->guard_name == 'mobile' ?
-    //           "<script type='text/javascript'>
-    //               window.location = 'museums://TicketCongrats'
-    //           </script>" :
-    //           "<script type='text/javascript'>
-    //               window.location = 'http://museumfront.gorc-ka.am/am/'
+    // $redirect_url = $payment->redirect_url . "?result=$response";
+    // echo "<script type='text/javascript'>
+    //                 window.location = '$redirect_url'
     //           </script>";
-    $redirect_url = $payment->redirect_url . "?result=$response";
+
+    $redirect_url = 'https://museumsarmenia.am/am/'. "?result=$response";
     echo "<script type='text/javascript'>
                     window.location = '$redirect_url'
               </script>";
-
+ 
 
 
   }
