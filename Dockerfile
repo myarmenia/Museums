@@ -19,9 +19,9 @@ RUN apt-get update && apt-get install -y \
     git \
     && apt install composer -y
 
-WORKDIR /var/www/Museum
+WORKDIR /home/webex/Museum/
 
-COPY . /var/www/Museum
+COPY . /home/webex/Museum/
 
 RUN composer install
 
