@@ -22,7 +22,7 @@ jobs:
     - name: Deploy to server via SSH and Docker Compose
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-          cd /home/webex/Museum/museum.gorc-ka.am &&
+          cd /home/webex/Museum/Museums &&
           git checkout . && git pull origin main
           docker-compose down &&
           docker rmi -f webex &&
