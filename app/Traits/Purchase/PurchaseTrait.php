@@ -370,12 +370,13 @@ trait PurchaseTrait
   {
 
     $event_config = $this->getEventConfig($data['id']);
+    $event = $event_config->event;
 
     if (!$event_config) {
       return false;
     }
 
-    if (!$event_config->event->status) {
+    if (!$event->status) {
       return false;
     }
 
@@ -385,8 +386,10 @@ trait PurchaseTrait
       return false;
     }
 
-    $data['museum_id'] = $event_config ? $event_config->event->museum->id : false;
-    $total_price = $event_config->price * $data['quantity'];
+    $data['museum_id'] = $event_config ? $event->museum->id : false;
+    // $total_price = $event_config->price * $data['quantity'];
+    $total_price = isset($data['sub_type']) && $data['sub_type'] == 'standart' ? $event->price * $data['quantity'] : $event->discount_price * $data['quantity'];
+
 
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
@@ -405,7 +408,7 @@ trait PurchaseTrait
     }
 
     $data['museum_id'] = $event->museum->id;
-    $total_price = $event->price * $data['quantity'];
+    $total_price = isset($data['sub_type']) && $data['sub_type'] == 'standart' ? $event->price * $data['quantity'] : $event->discount_price * $data['quantity'];
 
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
