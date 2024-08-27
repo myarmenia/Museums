@@ -130,14 +130,10 @@ class CashierController extends Controller
                 'guid' => $purchaseGuid? $purchaseGuid : false,
                 'price' => $qr['price'],
                 'created_at' => $qr['created_at'],
+                'sub_type' => $qr['type'] == 'event-config' ? $qr->event_config->event->sub_type : ($qr['type'] == 'event' ? $qr->event->sub_type : null)
             ];
 
-            if ($qr['type'] == 'event-config') {
-               $data['data'][] = ['sub_type' => $qr->event_config->event->sub_type];
-            }
-            if ($qr['type'] == 'event') {
-              $data['data'][] = ['sub_type' => $qr->event->sub_type];
-            }
+            
         }
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
