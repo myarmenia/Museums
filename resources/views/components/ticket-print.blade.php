@@ -66,7 +66,7 @@
                 @if ($item['sub_type'])
                     <div class="text-flex text-margin">
                         <span>Տոմսի Տեսակ - </span>
-                        <span>&nbsp;{{ $item['sub_type'] == 'standart' ?  }}</span>
+                        <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ' : ( $item['sub_type'] == 'discount' ? 'Զեղչված' : 'Անվճար' )}}</span>
                     </div>
                 @endif
                 @if ($item['description_educational_programming'])
