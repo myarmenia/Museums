@@ -216,7 +216,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('event-config', [EventConfigController::class, 'store'])->name('event_config_store');
     Route::post('/event-config-update', [EventConfigController::class, 'update'])->name('event_config_update');
     // Route::post('/call-edit-component',EventConfigComponentController::class)->name('edit_component');
-
+    Route::get('event-config-delete/{id}', [EventConfigController::class, 'delete'])->name('event-config-delete');
 
 
 
