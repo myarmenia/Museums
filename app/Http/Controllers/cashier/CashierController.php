@@ -29,7 +29,9 @@ class CashierController extends Controller
         $purchaseItem = PurchasedItem::where('purchase_id', $purchaseId)->get();
         $purchaseItemIds = $purchaseItem->pluck('id');
         $guids = $purchaseItem->where('type','guide')->where('returned_quntity', 0);
-        $event_guids = $purchaseItem->where('sub_type', 'guide_price_am')->orWhere('sub_type', 'guide_price_other')->where('returned_quntity', 0);
+        $event_guids = $purchaseItem->where('returned_quntity', 0)
+                    ->whereIn('sub_type', ['guide_price_am', 'guide_price_other']);
+
 
         $itemDescription = null;
         $itemDescriptionName = '';
@@ -129,6 +131,13 @@ class CashierController extends Controller
                 'price' => $qr['price'],
                 'created_at' => $qr['created_at'],
             ];
+
+            if ($qr['type'] == 'event-config') {
+               $data['data'][] = ['sub_type' => $qr->event_config->event->sub_type];
+            }
+            if ($qr['type'] == 'event') {
+              $data['data'][] = ['sub_type' => $qr->event->sub_type];
+            }
         }
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
