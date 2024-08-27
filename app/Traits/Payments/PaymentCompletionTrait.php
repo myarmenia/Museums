@@ -19,18 +19,25 @@ trait PaymentCompletionTrait
       $response = 'OK';
 
         LogService::store($data, 1, 'e-pay', 'store');
+
+
+      // =============== get QR via paymant purchase_id ======================
+      if($payment->purchase->status == 0){
+        
+        $generate_qr = $this->getTokenQr($payment->purchase_id);
+        if (count($generate_qr) > 0) {
+
+          $email = $payment->purchase->email;
+
+          $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
+        }
+
+      }
+
+
       // =============== update purchase status to 1 ======================
       $payment->purchase->update(['status' => 1]);
       $this->updateItemQuantity($payment->purchase_id);
-
-      // =============== get QR via paymant purchase_id ======================
-      $generate_qr = $this->getTokenQr($payment->purchase_id);
-      if (count($generate_qr) > 0) {
-
-        $email = $payment->purchase->email;
-
-        $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
-      }
 
       // =============== if transaction from cart, delete cart items ======================
       if ($payment->guard_type == 'cart') {
