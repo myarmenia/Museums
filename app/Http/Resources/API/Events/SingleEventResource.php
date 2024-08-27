@@ -22,6 +22,7 @@ class SingleEventResource extends JsonResource
         'museum_phones'=>$this->museum->phones->pluck('number'),
         'style' =>$this->style,
         'price' => $this->price,
+        'discount_price'=>$this->discount_price
         'name' => $this->translation(session('languages'))->name,
         'description' =>$this->translation(session('languages'))->description,
         'start_date'=> $this->start_date,
