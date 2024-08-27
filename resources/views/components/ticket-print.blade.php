@@ -63,7 +63,7 @@
                     <span>Տեսակ - </span>
                     <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }}</span>
                 </div>
-                @if ($item['sub_type'])
+                @if (isset($item['sub_type']))
                     <div class="text-flex text-margin">
                         <span>Տոմսի Տեսակ - </span>
                         <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ' : ( $item['sub_type'] == 'discount' ? 'Զեղչված' : 'Անվճար' )}}</span>
