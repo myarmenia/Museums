@@ -64,4 +64,12 @@ class EventConfigController extends Controller
       return response()->json(["message"=>  'updated']);
 
     }
+    public function delete($id){
+
+      $event_configs=EventConfig::where('event_id',$id)->get();
+      foreach($event_configs as $item){
+        $item->delete;
+      }
+      return true
+    }
 }
