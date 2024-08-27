@@ -21,7 +21,7 @@ class EventTicket extends CashierController
       DB::beginTransaction();
 
       $requestData = $request->input('event');
-
+dd($requestData);
       $museumId = getAuthMuseumId();
       $eventKeys = array_keys($requestData);
 
