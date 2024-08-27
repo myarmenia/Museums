@@ -9,11 +9,10 @@ function changeEventType() {
         url: url,
         cache: false,
         success: function (data) {
-          let message = ''
-          let type = ''
-          if (data.result) {
-            message = 'Գործողությունը հաստատված է։'
-            type = 'success'
+
+          if (data.message == 'deleted') {
+            $('#events_config_append').html('')
+
 
 
           }
