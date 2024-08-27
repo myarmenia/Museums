@@ -68,8 +68,9 @@ class EventConfigController extends Controller
 
       $event_configs=EventConfig::where('event_id',$id)->get();
       foreach($event_configs as $item){
-        $item->delete;
+
+        $item->delete();
       }
-      return true
+      return response()->json(['message'=>'deleted']);
     }
 }
