@@ -4,6 +4,7 @@ namespace App\Traits\Payments;
 use App\Mail\SendQRTiketsToUsersEmail;
 use App\Models\Payment;
 use App\Models\Purchase;
+use App\Services\Log\LogService;
 use Mail;
 
 trait PaymentCompletionTrait
@@ -17,6 +18,7 @@ trait PaymentCompletionTrait
     if ($payment->group_payment_status == 'success' && $payment->status == 'confirmed') {
       $response = 'OK';
 
+        LogService::store($data, 1, 'e-pay', 'store');
       // =============== update purchase status to 1 ======================
       $payment->purchase->update(['status' => 1]);
       $this->updateItemQuantity($payment->purchase_id);
@@ -56,7 +58,7 @@ trait PaymentCompletionTrait
     echo "<script type='text/javascript'>
                     window.location = '$redirect_url'
               </script>";
- 
+
 
 
   }

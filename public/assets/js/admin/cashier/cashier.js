@@ -218,6 +218,39 @@ $(function () {
           }else{
             $('#event-total').attr('style', 'display: block !important; display:flex !important; justify-content: end !important');
             $('#event-save').attr('style', 'display: block !important; display:flex !important; margin-top: 1rem !important; justify-content: flex-end !important;');
+            let guidTotalCont = ''
+            let guidCont = ''
+            if (data.guide_price_am || data.guide_price_other){
+                  guidTotalCont = `<div class="me-2">
+                                        <span class="remove-value total_event_guid_quantity" id="git-total-count">088</span>
+                                        <span>Էքսկուրսավար</span>
+                                    </div>`
+
+              guidCont = `<table class="table cashier-table">
+                            <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
+                                ${data.guide_price_am ?
+                                    `<tr class='table-default'>
+                                        <td>Էքսկուրսավար(հայերեն)</td>
+                                        <td>
+                                            <input type="number" onwheel="return false;"
+                                                price="${data.guide_price_am}" min="0"
+                                                class="form-control form-control-validate event_guid" id="guide_price_am" name="guide_price_am">
+                                        </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id='event_guide_price_am'>0</td>
+                                      </tr>` : ``}
+                                       ${data.guide_price_other ?
+                                        `<tr class='table-default'>
+                                            <td>Էքսկուրսավար(այլ)</td>
+                                            <td><input type="number" onwheel="return false;"
+                                                    price="${data.guide_price_other}" min="0"
+                                                    class="form-control form-control-validate event_guid" id="guide_price_other" name="guide_price_other">
+                                            </td>
+                                            <td class="remove-value event_guide_row_price ticket_price" id='event_guide_price_other'>0</td>
+                                        </tr>` : ``}
+                                    </tbody></dable>`
+            }
+
+            document.querySelector('.event-total-cont').innerHTML = guidTotalCont;
 
             html = `<table class="table cashier-table">
                         <thead>
@@ -238,20 +271,53 @@ $(function () {
                                 <td>${element.start_time}</td>
                                 <td>${element.end_time}</td>
                                 <td>${element.visitors_quantity_limitation - element.visitors_quantity} մարդ</td>
-                                <td><input type="number" min="0" class="form-control form-control-validate" onwheel="return false;" price="${element['price']}"
-                                  id="event_${element['id']}" name="event[${element['id']}]"></td>
-                                <td id = 'event-ticket-price_${element['id']}' class='remove-value'>0</td>
+                                <td class="d-flex">
+                                    <div>
+                                      <label for="event_${element['id']}" class="col col-form-label">Ստանդարտ </label>
+                                      <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.price}"
+                                          id="event_${element['id']}_standart" name="event[${element['id']}][standart]" data-id="${element['id']}">
+                                    </div>
+                                    ${data.discount_price ?
+                                    `<div>
+                                      <label for="event_${element['id']}" class="col col-form-label">Զեղչված </label>
+                                      <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.discount_price}"
+                                          id="event_${element['id']}_discount" name="event[${element['id']}][discount]" data-id="${element['id']}">
+                                    </div>
+                                    <div>
+                                      <label for="event_${element['id']}" class="col col-form-label">Անվճար </label>
+                                      <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="0"
+                                          id="event_${element['id']}_free" name="event[${element['id']}][free]" data-id="${element['id']}">
+                                    </div>` : ``}
+                                </td>
+                                <td id = 'event-ticket-price_${element['id']}' class='remove-value ticket_price'>0</td>
                             </tr>`;
+
                 }) :
                 html += `<tr class='table-default'>
                                 <td>${data.start_date}</td>
                                 <td>${data.end_date}</td>
-                                <td><input type="number" min="0" class="form-control form-control-validate" onwheel="return false;" price="${data.price}"
-                                  id="event_${data.id}" name="event[${data.id}]"></td>
-                                <td id = 'event-ticket-price_${data.id}' class='remove-value'>0</td>
-                            </tr>`;
+                                <td>
+                                    <div>
+                                      <label for="event_${data.id}" class="col col-form-label">Ստանդարտ </label>
+                                      <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.price}"
+                                          id="event_${data.id}_standart" name="event[${data.id}][standart]" data-id="${data.id}">
+                                    </div>
+                                    ${data.discount_price ?
+                                    `<div>
+                                      <label for="event_${data.id}" class="col col-form-label">Զեղչված </label>
+                                      <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.discount_price}"
+                                          id="event_${data.id}_discount" name="event[${data.id}][discount]" data-id="${data.id}">
+                                    </div>
+                                    <div>
+                                      <label for="event_${data.id}" class="col col-form-label">Անվճար </label>
+                                      <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="0}"
+                                          id="event_${data.id}_free" name="event[${data.id}][free]" data-id="${data.id}">
+                                    </div>`: ``}
+                                </td>
+                                <td id = 'event-ticket-price_${data.id}' class='remove-value ticket_price'>0</td>
+                        </tr>`;
 
-            html += `</tbody></table>`
+            html += `</tbody></table>${guidCont}`
 
             data.style == 'basic' ? html += `<input type="hidden" name="style" value="basic">` : html += `<input type="hidden"  name="style" value="temporary">`
             }
@@ -267,33 +333,88 @@ $(function () {
   });
 
 
-  $(document).on('input', 'input[name^="event"]', function () {
-    let ticketCount = $(this).val();
-    let eventId = $(this).attr('name').match(/\[(\d+)\]/)[1];
-    if (ticketCount > 0) {
-      let priceTicket = $(this).attr('price');
-      let readyPrice = priceTicket * ticketCount;
-      $('#event-ticket-price_' + eventId).text(readyPrice);
-    } else {
-      $('#event-ticket-price_' + eventId).text(0);
-    }
+  $(document).on('input', '.event_ticket', function () {
+      let eventId = $(this).attr('data-id');
+      let rowTotalQuantity = 0
+      let rowTotalPrice = 0
+      // let totalPrice = arseFloat($('#event-total-price').text())
+      let totalQuantity = 0
 
-    let totalQuantity = 0;
-    let totalPrice = 0;
-    $('input[name^="event"]').each(function () {
-      let event = parseFloat($(this).val());
-      let eventPrice = event * parseFloat($(this).attr('price'));
-      if (!isNaN(event)) {
-        totalQuantity += event;
-      }
-      if (!isNaN(eventPrice)) {
-        totalPrice += eventPrice;
-      }
-    });
-    $('#event-total-count').text(totalQuantity);
-    $('#event-total-price').text(totalPrice);
+        $('input[data-id="' + eventId +'"]').each(function () {
+            // console.log(666666)
+            let eachTicketCount = parseFloat($(this).val());
+
+            let eachTicketPrice = eachTicketCount * $(this).attr('price');
+            if (!isNaN(eachTicketCount)) {
+              rowTotalQuantity += eachTicketCount;
+            }
+            if (!isNaN(eachTicketPrice)) {
+              rowTotalPrice += eachTicketPrice;
+            }
+        });
+
+
+      $('#event-ticket-price_' + eventId).text(rowTotalPrice);
+
+      $('input[name^="event"]').each(function () {
+        let event = parseFloat($(this).val());
+        let eventPrice = event * parseFloat($(this).attr('price'));
+        if (!isNaN(event)) {
+          totalQuantity += event;
+        }
+        // if (!isNaN(eventPrice)) {
+        //   totalPrice += eventPrice;
+        // }
+      });
+
+      $('#event-total-count').text(totalQuantity);
+      // $('#event-total-price').text(totalPrice);
+    totalPrice()
   });
 
+
+  // $(document).on('input', '.event_guid', function () {
+
+  //   let eventGuidPrice = $(this).attr('price')
+  //   let eventGuidQuantity = parseFloat($(this).val())
+  //   let eventGuidId = $(this).attr('id')
+
+  //   let totalEventGuidQuantity = 0
+  //   let totalEventGuidPrice = parseFloat($('#event-total-price').text())
+  //   let thisGuidPrice = eventGuidPrice * eventGuidQuantity
+
+
+  //   $('#event_' + eventGuidId).html(thisGuidPrice)
+  //   totalEventGuidPrice += thisGuidPrice
+  //   $('.event_guid').each(function () {
+  //       let quantity = parseFloat($(this).val())
+  //       // let price = quantity * $(this).attr('price')
+  //       // console.log(quantity)
+  //       // if (!isNaN(price)) {
+  //       //   totalEventGuidPrice += price
+  //       // }
+  //       if (!isNaN(quantity)) {
+  //         totalEventGuidQuantity += quantity
+  //       }
+
+  //       $('.total_event_guid_quantity').text(totalEventGuidQuantity)
+  //       // $('#event-total-price').text(totalEventGuidPrice);
+
+  //   });
+  //   totalPrice()
+
+  // })
+
+  function totalPrice(){
+      let totalPrice = 0
+      $('.ticket_price').each(function () {
+        console.log($(this).text() * 1 + '--aaaaaaaa')
+        totalPrice += $(this).text()*1
+      })
+    console.log(totalPrice + ' ------------/////')
+
+    $('#event-total-price').text(totalPrice);
+  }
 
 
 

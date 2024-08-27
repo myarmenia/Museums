@@ -210,12 +210,13 @@
                                 <div id="event-config"> </div>
                             </div>
                             <div id='event-total' class="d-flex justify-content-end d-none">
-                                <div class="d-flex">
+                                <div class="d-flex ">
                                     <div class="me-3">Ընդհանուր</div>
                                     <div class="me-2">
                                         <span class="remove-value" id="event-total-count">0</span>
                                         <span>տոմս</span>
                                     </div>
+                                    <div class="event-total-cont"></div>
                                     <div class="me-2">
                                         <span class="remove-value" id="event-total-price">0</span>
                                         <span>դրամ</span>
