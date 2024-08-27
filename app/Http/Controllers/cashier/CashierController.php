@@ -29,6 +29,7 @@ class CashierController extends Controller
         $purchaseItem = PurchasedItem::where('purchase_id', $purchaseId)->get();
         $purchaseItemIds = $purchaseItem->pluck('id');
         $guids = $purchaseItem->where('type','guide')->where('returned_quntity', 0);
+        $event_guids = $purchaseItem->where('sub_type', 'guide_price_am')->orWhere('sub_type', 'guide_price_other')->where('returned_quntity', 0);
 
         $itemDescription = null;
         $itemDescriptionName = '';
@@ -107,7 +108,13 @@ class CashierController extends Controller
                 foreach ($guids as $guid) {
                     $purchaseGuid[] = $guid['total_price'];
                 }
-            }else {
+            }elseif($qr['type'] == 'event' || $qr['type'] == 'event-config'){
+                $purchaseGuid = [];
+                foreach ($event_guids as $guid) {
+                  $purchaseGuid[] = $guid['total_price'];
+                }
+            }
+            else {
                 $purchaseGuid = false;
             }
 

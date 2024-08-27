@@ -50,7 +50,7 @@ class BuyTicketController extends CashierController
                         "type" => $key,
                         "quantity" => (int) $item,
                     ];
-                
+
                     if (($key === 'guide_other' || $key === 'guide_am') && $guid) {
                         $newItem["id"] = $guid->id;
                     } else {
@@ -63,7 +63,7 @@ class BuyTicketController extends CashierController
 
             if(!$haveValue){
                 session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
-                   
+
                 DB::rollBack();
                 return redirect()->back();
             }
@@ -77,7 +77,7 @@ class BuyTicketController extends CashierController
                     $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
 
                     session(['success' => 'Տոմսերը ավելացված է']);
-                   
+
                     DB::commit();
                     return redirect()->back()->with('pdfFile', $pdfPath);
                 }
