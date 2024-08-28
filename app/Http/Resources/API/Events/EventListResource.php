@@ -26,7 +26,7 @@ class EventListResource extends JsonResource
 
         $price_array[1]=[
           "price"=>$this->discount_price,
-          "sub_type"=>'discount_price'
+          "sub_type"=>'discount'
         ];
       }
 
