@@ -21,7 +21,7 @@
         }
 
         .ticket-info {
-            font-size: 16px;
+            font-size: 14px;
             display: flex;
             flex-direction: column;
         }
@@ -32,7 +32,7 @@
         }
 
         .pdf-tmp {
-            margin-top: -40px;
+            margin-top: -50px;
             width: 100%;
         }
 

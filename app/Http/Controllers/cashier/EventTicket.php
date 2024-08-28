@@ -39,6 +39,7 @@ class EventTicket extends CashierController
           $data['items'] = [];
 
           $haveValue = false;
+          $dataForUpdateEventConfigs = [];
 
           foreach ($requestData as $key => $item) {
             if ($item) {
@@ -65,6 +66,11 @@ class EventTicket extends CashierController
                   }
 
               }
+
+              $dataForUpdateEventConfigs[$key]['event_config'] = $event_config;
+              $dataForUpdateEventConfigs[$key]['visitor_quantity'] = $visitorQuantity;
+
+
 
             }
           }
@@ -94,9 +100,14 @@ class EventTicket extends CashierController
 
           $addTicketPurchase = $this->purchase($data);
 
-          $event_config->update(['visitors_quantity' => $visitorQuantity]);
+
 
           if ($addTicketPurchase) {
+            foreach ($dataForUpdateEventConfigs as $config_value) {
+                $config_value['event_config']->update(['visitors_quantity' => $config_value['visitor_quantity']]);
+            }
+
+
             $addQr = $this->getTokenQr($addTicketPurchase->id);
 
             if ($addQr) {
@@ -122,7 +133,7 @@ class EventTicket extends CashierController
           $requestDataValue = array_values($requestData)[0];
           $data['purchase_type'] = 'offline';
           $data['status'] = 1;
-          
+
           foreach ($requestDataValue as $sub_type => $ticket_quantity) {
             if ($ticket_quantity != null) {
               $data['items'][] = [
