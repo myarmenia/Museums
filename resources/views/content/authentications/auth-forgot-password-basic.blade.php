@@ -30,6 +30,7 @@
               {{ session('status') }}
           </div>
       @endif
+   
           <h6 class="mb-2">Գաղտնաբառի վերականգնում 🔒</h6>
           <p class="mb-4">Մուտքագրեք Ձեր էլ․հասցեն </p>
           <form id="formAuthentication" class="mb-3" action="{{ route('password.email') }}" method="post">
