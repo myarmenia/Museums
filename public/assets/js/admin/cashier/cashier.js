@@ -222,7 +222,7 @@ $(function () {
             let guidCont = ''
             if (data.guide_price_am || data.guide_price_other){
                   guidTotalCont = `<div class="me-2">
-                                        <span class="remove-value total_event_guid_quantity" id="git-total-count">088</span>
+                                        <span class="remove-value total_event_guid_quantity" id="git-total-count">0</span>
                                         <span>Էքսկուրսավար</span>
                                     </div>`
 
@@ -296,7 +296,7 @@ $(function () {
                 html += `<tr class='table-default'>
                                 <td>${data.start_date}</td>
                                 <td>${data.end_date}</td>
-                                <td>
+                                <td class="d-flex">
                                     <div>
                                       <label for="event_${data.id}" class="col col-form-label">Ստանդարտ </label>
                                       <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.price}"
@@ -337,11 +337,10 @@ $(function () {
       let eventId = $(this).attr('data-id');
       let rowTotalQuantity = 0
       let rowTotalPrice = 0
-      // let totalPrice = arseFloat($('#event-total-price').text())
       let totalQuantity = 0
 
         $('input[data-id="' + eventId +'"]').each(function () {
-            // console.log(666666)
+
             let eachTicketCount = parseFloat($(this).val());
 
             let eachTicketPrice = eachTicketCount * $(this).attr('price');
@@ -353,7 +352,6 @@ $(function () {
             }
         });
 
-
       $('#event-ticket-price_' + eventId).text(rowTotalPrice);
 
       $('input[name^="event"]').each(function () {
@@ -362,56 +360,50 @@ $(function () {
         if (!isNaN(event)) {
           totalQuantity += event;
         }
-        // if (!isNaN(eventPrice)) {
-        //   totalPrice += eventPrice;
-        // }
+
       });
 
       $('#event-total-count').text(totalQuantity);
-      // $('#event-total-price').text(totalPrice);
-    totalPrice()
+
+      totalPrice()
   });
 
 
-  // $(document).on('input', '.event_guid', function () {
+  $(document).on('input', '.event_guid', function () {
 
-  //   let eventGuidPrice = $(this).attr('price')
-  //   let eventGuidQuantity = parseFloat($(this).val())
-  //   let eventGuidId = $(this).attr('id')
+    let eventGuidPrice = $(this).attr('price')
+    let eventGuidQuantity = parseFloat($(this).val())
+    let eventGuidId = $(this).attr('id')
 
-  //   let totalEventGuidQuantity = 0
-  //   let totalEventGuidPrice = parseFloat($('#event-total-price').text())
-  //   let thisGuidPrice = eventGuidPrice * eventGuidQuantity
+    let totalEventGuidQuantity = 0
+    let totalEventGuidPrice = parseFloat($('#event-total-price').text())
+    let thisGuidPrice = eventGuidPrice * eventGuidQuantity
 
 
-  //   $('#event_' + eventGuidId).html(thisGuidPrice)
-  //   totalEventGuidPrice += thisGuidPrice
-  //   $('.event_guid').each(function () {
-  //       let quantity = parseFloat($(this).val())
-  //       // let price = quantity * $(this).attr('price')
-  //       // console.log(quantity)
-  //       // if (!isNaN(price)) {
-  //       //   totalEventGuidPrice += price
-  //       // }
-  //       if (!isNaN(quantity)) {
-  //         totalEventGuidQuantity += quantity
-  //       }
+    $('#event_' + eventGuidId).html(thisGuidPrice)
+    totalEventGuidPrice += thisGuidPrice
+    $('.event_guid').each(function () {
+        let quantity = parseFloat($(this).val())
 
-  //       $('.total_event_guid_quantity').text(totalEventGuidQuantity)
-  //       // $('#event-total-price').text(totalEventGuidPrice);
+        if (!isNaN(quantity)) {
+          totalEventGuidQuantity += quantity
+        }
 
-  //   });
-  //   totalPrice()
+        $('.total_event_guid_quantity').text(totalEventGuidQuantity)
 
-  // })
+    });
+
+    totalPrice()
+
+  })
+
 
   function totalPrice(){
       let totalPrice = 0
       $('.ticket_price').each(function () {
-        console.log($(this).text() * 1 + '--aaaaaaaa')
+
         totalPrice += $(this).text()*1
       })
-    console.log(totalPrice + ' ------------/////')
 
     $('#event-total-price').text(totalPrice);
   }

@@ -22,9 +22,22 @@ trait QrTokenTrait
             'guide',
         ];
 
+        $unusedSubTypes = [
+          'guide_price_am',
+          'guide_price_other',
+        ];
+
         try {
             DB::beginTransaction();
-            $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->whereNotIn('type', $unusedTypes)->get();
+            // $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->whereNotIn('type', $unusedTypes)->whereNotIn('sub_type', $unusedSubTypes)->get();
+            $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)
+                ->whereNotIn('type', $unusedTypes)
+                ->where(function ($query) use ($unusedSubTypes) {
+                  $query->whereNotIn('sub_type', $unusedSubTypes)
+                    ->orWhereNull('sub_type');
+                })
+                ->get();
+
             $purchasesKeys = [];
             foreach ($allPurchases as $key => $item) {
                 $purchasesKeys[$item->type] = array_key_exists($item->type, $purchasesKeys)

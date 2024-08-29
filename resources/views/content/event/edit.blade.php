@@ -282,5 +282,12 @@
         </div>
       </form>
     </div>
+    <script>
+      let url = "{{ route('event-config-delete',$data->id) }}"
+      console.log(url)
+     
+
+    </script>
 @endsection
 <x-modal-delete></x-modal-delete>
+

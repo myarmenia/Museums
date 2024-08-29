@@ -21,7 +21,7 @@
         }
 
         .ticket-info {
-            font-size: 16px;
+            font-size: 14px;
             display: flex;
             flex-direction: column;
         }
@@ -32,7 +32,7 @@
         }
 
         .pdf-tmp {
-            margin-top: -40px;
+            margin-top: -50px;
             width: 100%;
         }
 
@@ -63,6 +63,12 @@
                     <span>Տեսակ - </span>
                     <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }}</span>
                 </div>
+                @if (isset($item['sub_type']) && $item['sub_type'] != null)
+                    <div class="text-flex text-margin">
+                        <span>Տոմսի Տեսակ - </span>
+                        <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ' : ( $item['sub_type'] == 'discount' ? 'Զեղչված' : 'Անվճար' )}}</span>
+                    </div>
+                @endif
                 @if ($item['description_educational_programming'])
                     <div class="text-flex text-margin">
                         <span>Անվանում - </span>

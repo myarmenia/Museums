@@ -388,7 +388,14 @@ trait PurchaseTrait
 
     $data['museum_id'] = $event_config ? $event->museum->id : false;
     // $total_price = $event_config->price * $data['quantity'];
-    $total_price = isset($data['sub_type']) && $data['sub_type'] == 'standart' ? $event->price * $data['quantity'] : $event->discount_price * $data['quantity'];
+    if(isset($data['sub_type'])){
+      $total_price =  $data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] :
+                      ($data['sub_type'] == 'standart' ? $event->price * $data['quantity'] :
+                        ($data['sub_type'] == 'free' ? 0 * $data['quantity'] :
+                          ($data['sub_type'] == 'guide_price_am' ? $event->guide_price_am * $data['quantity'] :
+                            ($data['sub_type'] == 'guide_price_other' ? $event->guide_price_other * $data['quantity'] : $event->discount_price * $data['quantity']))));
+
+    }
 
 
     $data['total_price'] = $total_price;
@@ -408,7 +415,17 @@ trait PurchaseTrait
     }
 
     $data['museum_id'] = $event->museum->id;
-    $total_price = isset($data['sub_type']) && $data['sub_type'] == 'standart' ? $event->price * $data['quantity'] : $event->discount_price * $data['quantity'];
+    // $total_price = isset($data['sub_type']) && $data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] : $event->price * $data['quantity'];
+
+    if (isset($data['sub_type'])) {
+      $total_price = $data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] :
+        ($data['sub_type'] == 'standart' ? $event->price * $data['quantity'] :
+          ($data['sub_type'] == 'free' ? 0 * $data['quantity'] :
+            ($data['sub_type'] == 'guide_price_am' ? $event->guide_price_am * $data['quantity'] :
+              ($data['sub_type'] == 'guide_price_other' ? $event->guide_price_other * $data['quantity'] : $event->discount_price * $data['quantity']))));
+
+    }
+
 
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];

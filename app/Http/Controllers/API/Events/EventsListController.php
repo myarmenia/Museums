@@ -26,8 +26,8 @@ class EventsListController extends BaseController
                 ->filter($request->all())
       ->where(['status' => 1, 'online_sales' => 1])
       ->orderBy('id', 'DESC')->paginate(12)->withQueryString();
-      $museums=Museum::all();
-      $museum_list=MuseumListResource::collection($museums);
+      $museums = Museum::all();
+      $museum_list = MuseumListResource::collection($museums);
       return $this->sendResponse(EventListResource::collection($data),'success',['page_count' => $data->lastPage(),'museum_list'=>$museum_list]);
 
 
