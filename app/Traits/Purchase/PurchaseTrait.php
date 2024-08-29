@@ -144,7 +144,7 @@ trait PurchaseTrait
         if ($maked_data) {
           $row = $this->addItemInPurchasedItem($maked_data);
         } else {
-          $event = $this->getAvailableEventViaEventCobfig($value['id']);
+          $event = $this->getAvailableEventViaEventConfig($value['id']);
 
           $row = ['error' => 'ticket_not_available', 'name' => $event];
           break;
@@ -496,7 +496,7 @@ trait PurchaseTrait
 
   }
 
-  public function getAvailableEventViaEventCobfig($id){
+  public function getAvailableEventViaEventConfig($id){
     $event_config = EventConfig::where('id', $id)->first();
     if($event_config){
 

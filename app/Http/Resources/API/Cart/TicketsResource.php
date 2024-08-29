@@ -19,6 +19,7 @@ class TicketsResource extends JsonResource
               'id' => $this->id,
               'ticket_id' => $this->item_relation_id,
               'type' => $this->type,
+              'sub_type' => $this->sub_type,
               'museum_name' => $this->type == 'united' ? '' : $this->museum->translation(session("languages"))->name,
               'quantity' => $this->quantity,
               'total_price' => $this->total_price
