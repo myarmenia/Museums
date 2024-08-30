@@ -44,7 +44,7 @@
       "name": "Կորպորատիվ վաճառք",
       "icon": "menu-icon tf-icons bx bx-command",
       "slug": "corporative",
-      "roles": ["museum_admin", "manager"],
+      "roles": ["museum_admin", "manager","accountant"],
       "url": "corporative"
     },
     {
@@ -164,7 +164,7 @@
       ]
     }
 
- 
+
 
   ]
 }

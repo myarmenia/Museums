@@ -32,7 +32,7 @@
         }
 
         .pdf-tmp {
-            margin-top: -50px;
+            margin-top: -100px;
             width: 100%;
         }
 
@@ -60,54 +60,54 @@
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['en'] }}</h4>
             <div class="ticket-info">
                 <div class="text-flex text-margin">
-                    <span>Տեսակ - </span>
-                    <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }}</span>
+                    <span>Տեսակ/Type - </span>
+                    <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }} / {{ getTranslateTicketTitl_en($item['type']) }}</span>
                 </div>
                 @if (isset($item['sub_type']) && $item['sub_type'] != null)
                     <div class="text-flex text-margin">
-                        <span>Տոմսի Տեսակ - </span>
-                        <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ' : ( $item['sub_type'] == 'discount' ? 'Զեղչված' : 'Անվճար' )}}</span>
+                        <span>Տոմսի Տեսակ/Ticket type - </span>
+                        <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ( $item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : 'Անվճար/Free' )}}</span>
                     </div>
                 @endif
                 @if ($item['description_educational_programming'])
                     <div class="text-flex text-margin">
-                        <span>Անվանում - </span>
-                        <span>{{ $item['description_educational_programming'] }}</span>
+                        <span>Անվանում/Name - </span>
+                        <span>{{ $item['description_educational_programming'] }} / {{ $item['description_educational_programming_en'] }} </span>
                     </div>
                 @endif
                 @if ($item['type'] == "event")
                     <div class="text-flex text-margin">
-                        <span>Վավեր է․  </span>
+                        <span>Վավեր է․/Valid time  </span>
                         <span>{{ $item['action_date']['start'] }} - {{ $item['action_date']['end'] }}</span>
                     </div>
                 @endif
 
                 @if ($item['type'] == "event-config")
                     <div class="text-flex text-margin">
-                        <span>Անցկացման օր - </span>
+                        <span>Անցկացման օր/Date - </span>
                         <span>{{ $item['action_date']['day'] }}</span>
                     </div>
                     <div class="text-flex text-margin">
-                        <span>Ժամ - </span>
+                        <span>Ժամ/Time - </span>
                         <span>{{ $item['action_date']['start'] }} - {{ $item['action_date']['end'] }}</span>
                     </div>
                 @endif
 
                 <div class="text-flex text-margin">
-                    <span>Գին - </span>
-                    <span>{{ $item['price'] }}դր․</span>
+                    <span>Գին/Price - </span>
+                    <span>{{ $item['price'] }}դր․/AMD</span>
                 </div>
 
                 @if ($item['guid'])
                     @foreach ($item['guid'] as $price)
                         <div class="text-flex text-margin">
-                            <span>էքսկուրսավար - </span>
-                            <span>{{ $price }}</span>
+                            <span>էքսկուրսավար/Guide - </span>
+                            <span>{{ $price }}դր․/AMD</span>
                         </div>
                     @endforeach
                 @endif
                 <div class="text-flex text-margin">
-                    <span>Ստեղծվել է - </span>
+                    <span>Ստեղծվել է/Created  - </span>
                     <span>{{ $item['created_at'] }}</span>
                 </div>
             </div>

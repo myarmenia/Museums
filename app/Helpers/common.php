@@ -404,6 +404,41 @@ if (!function_exists('getTranslateTicketTitl')) {
   }
 
 }
+if (!function_exists('getTranslateTicketTitl')) {
+  function getTranslateTicketTitl_en($title)
+  {
+      $titles = [
+        'standart' => 'Standart',
+        'discount' => 'Discount',
+        'free' => 'Free',
+        'subscription' => 'Subscription',
+        'united' => 'Combo',
+        'educational' => 'Educational',
+        'event' => 'Exhibition',
+        'event-config' => 'Event',
+        'corporative' => 'Corporative',
+        'guide' => 'Guide',
+        'product' => 'Product'
+
+      ];
+
+      //check have $title in $titles
+      if (isset($titles[$title])) {
+          return $titles[$title];
+      } else {
+        return $title;
+      }
+  }
+
+  if (!function_exists('getMonths')) {
+    function getMonths()
+    {
+      return ['Հունվար', 'Փետրվար', 'Մարտ', 'Ապրիլ', 'Մայիս', 'Հունիս', 'Հուլիս', 'Օգօստոս', 'Սեպտեմբեր', 'Հոկտեմբեր', 'Նոյեմբեր','Դեկտեմբեր'];
+    }
+
+  }
+
+}
 
 if (!function_exists('getAuthUserRoleInterface')) {
   function getAuthUserRoleInterface()
