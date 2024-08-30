@@ -3,8 +3,8 @@
 namespace App\Http\Resources\API\User;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ListActiveQRResource extends JsonResource
 {
@@ -31,7 +31,7 @@ class ListActiveQRResource extends JsonResource
           'path_base64' => $base64String,
           'type' => $this->type,
           'price' => $this->price,
-          'color' => ticketColors()[$this->type]
+          'color' => $this->type == 'event' || $this->type == 'event-config' ? 'event-' . ticketColors()[$this->sub_type] : ticketColors()[$this->type]
         ];
 
 

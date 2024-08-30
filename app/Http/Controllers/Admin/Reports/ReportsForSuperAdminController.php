@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Reports;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use App\Models\Museum;
 use App\Models\Payment;
 use App\Models\Purchase;
@@ -24,7 +25,7 @@ class ReportsForSuperAdminController extends Controller
 
   public function index(Request $request, $request_report_type)
   {
-  
+
     $request['status'] = 1;
     $data = $this->report($request->all(), $this->model, $request_report_type);
 
@@ -33,4 +34,18 @@ class ReportsForSuperAdminController extends Controller
     return view("content.reports.super-admin", compact('data', 'museums'));
 
   }
+
+  public function events(Request $request, $request_report_type)
+  {
+
+    $request['status'] = 1;
+    $data = $this->report($request->all(), $this->model, $request_report_type);
+
+    $events = Event::all();
+
+    return view("content.reports.super-admin", compact('data', 'events'));
+
+  }
+
+
 }

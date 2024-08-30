@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Museum;
 use App\Models\PurchasedItem;
 use App\Traits\Reports\CheckReportType;
+use App\Traits\Reports\EventReports;
 use App\Traits\Reports\ReportTrait;
 use Illuminate\Http\Request;
 
 class ReportsForMuseumAdminController extends Controller
 {
-  use ReportTrait, CheckReportType;
+  use ReportTrait, CheckReportType, EventReports;
   protected $model;
   public function __construct(PurchasedItem $model)
   {
@@ -29,6 +30,17 @@ class ReportsForMuseumAdminController extends Controller
     $data = $this->report($request->all(), $this->model, $request_report_type);
 
     return view("content.reports.museum-admin", compact('data'));
+
+  }
+
+  public function events(Request $request)
+  {
+    // $request['status'] = 1;
+    $museum_id = museumAccessId();
+
+    $data = $request->item_relation_id == null ? [] : $this->event_report($request->all(), $this->model);
+
+    return view("content.reports.museum-event", compact('data'));
 
   }
 }

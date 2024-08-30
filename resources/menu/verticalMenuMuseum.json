@@ -161,10 +161,24 @@
         "museum_admin",
         "manager",
         "accountant"
+      ],
+      "submenu": [
+        {
+          "url": "museum/reports/report",
+          "name": "Ընդհանուր",
+          "slug": ["museum_reports"]
+        },
+        {
+          "url": "museum/event-reports",
+          "name": "Միջոցառում",
+          "slug": [
+            "users_visitors",
+            "users.show"
+          ]
+        }
       ]
     }
 
- 
 
   ]
 }
