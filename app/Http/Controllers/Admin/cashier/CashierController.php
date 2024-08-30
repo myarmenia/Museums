@@ -20,6 +20,7 @@ class CashierController extends Controller
 
    public function index(Request $request)
    {
+
       $allData = $this->cashierService->getAllData();
 
       if($allData['success']) {

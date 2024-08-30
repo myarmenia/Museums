@@ -10,7 +10,7 @@ use App\Models\TicketPdf;
 use App\Traits\Purchase\PurchaseTrait;
 use Carbon\Carbon;
 
-class CashierService 
+class CashierService
 {
     use PurchaseTrait;
     // protected $chatRepository;
@@ -53,7 +53,7 @@ class CashierService
             $data['ticket']['guid-arm'] = $museum->guide->price_am;
             $data['ticket']['guid-other'] = $museum->guide->price_other;
         }
-        
+
         $data['educational'] = $this->customEducationalResource($museum->educational_programs);
         if($museum->aboniment){
             $data['aboniment'] = [
@@ -96,7 +96,7 @@ class CashierService
     public function checkCoupon($data)
     {
         $museumId = museumAccessId();
-       
+
         $corporative = $this->getMuseumCorporative($museumId, $data['coupon']);
         if($corporative){
             return ['success' => true, 'data' => [
@@ -139,11 +139,11 @@ class CashierService
     public function showLastTicket()
     {
         $museumId = museumAccessId();
-        
+
         $data = TicketPdf::where('museum_id', $museumId)->orderBy('id', 'DESC')->first();
 
         return $data;
     }
 
-   
+
 }

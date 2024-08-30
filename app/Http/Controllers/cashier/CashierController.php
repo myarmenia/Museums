@@ -35,7 +35,7 @@ class CashierController extends Controller
 
         $itemDescription = null;
         $itemDescriptionName = '';
-
+        $itemDescriptionName_en = '';
         $museumTranslation = $museum->translations->keyBy('lang');
 
         $data = [
@@ -68,7 +68,7 @@ class CashierController extends Controller
                 return false;
             }
             $desc = $itemDescription->item_translations->where('lang', 'am')->first()->name;
-
+            $desc_en = $itemDescription->item_translations->where('lang', 'en')->first()->name;
             $wordArr = explode(" ", $desc);
             foreach ($wordArr as $key => $word) {
                if($word){
@@ -80,6 +80,18 @@ class CashierController extends Controller
                    }
                }
             }
+            $wordArr_en = explode(" ", $desc_en);
+            foreach ($wordArr_en as $key_en => $word_en) {
+               if($word_en){
+                   if($key_en < 6){
+                       $itemDescriptionName_en .= $word_en.' ';
+                   }
+                   else{
+                       break;
+                   }
+               }
+            }
+
 
         }
 
@@ -125,6 +137,7 @@ class CashierController extends Controller
                 // 'photo' => public_path(Storage::url($qr['path'])),
                 'photo' => Storage::disk('local')->path($qr['path']),
                 'description_educational_programming' => $itemDescriptionName? trim($itemDescriptionName)  : null,
+                'description_educational_programming_en' => $itemDescriptionName_en? trim($itemDescriptionName_en)  : null,
                 'action_date' => $event_day ?? "",
                 'type' => $qr['type'],
                 'guid' => $purchaseGuid? $purchaseGuid : false,

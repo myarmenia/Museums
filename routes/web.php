@@ -231,7 +231,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   });
 
-  Route::group(['prefix' => 'corporative', 'middleware' => ['role:museum_admin|manager']], function () {
+  Route::group(['prefix' => 'corporative', 'middleware' => ['role:museum_admin|manager|accountant']], function () {
     Route::get('/', [CorporativeSaleController::class, 'index'])->name('corporative');
     Route::get('/create', [CorporativeSaleController::class, 'create'])->name('corporative.create');
     Route::post('/create', [CorporativeSaleController::class, 'addCorporative'])->name('corporative.add');

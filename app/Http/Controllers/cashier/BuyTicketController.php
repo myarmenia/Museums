@@ -27,11 +27,11 @@ class BuyTicketController extends CashierController
 
             $ticket = Ticket::where(['museum_id' => $museumId, 'status' => 1])->first();
 
-            if((is_null($requestData['standart']) && is_null($requestData['discount']) && is_null($requestData['free']))){
-                session(['errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։']);
+            // if((is_null($requestData['standart']) && is_null($requestData['discount']) && is_null($requestData['free']))){
+            //     session(['errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։']);
 
-                return redirect()->back();
-            }
+            //     return redirect()->back();
+            // }
 
             if (!$ticket) {
                 session(['errorMessage' => 'Դուք չունեք տոմս']);
