@@ -4,7 +4,7 @@
     // $total_price =
 @endphp
 <div class="row mb-12 g-6">
-{{dd( $data)}}
+{{-- {{dd( $data)}} --}}
     <div class="card pt-2">
       <img class="card-img-top img-thumbnail" style="width:200px; height:auto" src="{{ route('get-file', ['path' => $item->images[0]->path]) }}" alt="Card image cap">
       <div class="card-body">
