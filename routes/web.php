@@ -96,9 +96,16 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/change-status', [ChangeStatusController::class, 'change_status'])->name('change_status');
   Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class, 'index'])->name('delete_item');
   Route::get('logs', [LogController::class, 'index'])->name('logs');
+
   Route::get('reports/{request_report_type}', [ReportsForSuperAdminController::class, 'index'])->name('reports');
   Route::get('museum/reports/{request_report_type}', [ReportsForMuseumAdminController::class, 'index'])->name('museum_reports');
   Route::get('export-report-excel', [ExportExcelController::class, "export"])->name('export_report_excel');
+
+  // Route::get('event-reports/{request_report_type}', [ReportsForSuperAdminController::class, 'events'])->name('event_reports');
+
+  Route::get('museum/event-reports', [ReportsForMuseumAdminController::class, 'events'])->name('museum_event_reports');
+
+
 
   Route::group(['prefix' => 'museum'], function () {
     Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin|general_manager');

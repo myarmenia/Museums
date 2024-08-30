@@ -154,7 +154,10 @@
             {{-- @foreach ($result as $result) --}}
                 @php
                     $type = $result->purchased_item->type;
+                    $sub_type = $data->purchased_item->type;
                     $code = $data->ticket_token;
+                    $color = $type == 'event' || $type == 'event-config' ? 'event-' . $sub_type : $type;
+
                 @endphp
                 <div class="ticket-card">
                     <div class="card-div" >
@@ -197,7 +200,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-div-last-child" style="background: {{ticketColors()[$type]}}">
+                        <div class="card-div-last-child" style="background: {{ticketColors()[$color]}}">
 
                             <div id="qr_img_cont" >
                                 <div id="qr_img" class="{{ $type == 'united' ? 'qr_responsive' : ''}}">
