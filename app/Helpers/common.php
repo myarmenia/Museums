@@ -3,6 +3,7 @@
 use App\Models\Chat;
 use App\Models\Country;
 use App\Models\EducationalProgram;
+use App\Models\Event;
 use App\Models\Museum;
 use App\Models\MuseumStaff;
 use App\Models\TicketType;
@@ -347,7 +348,10 @@ if (!function_exists('ticketColors')) {
         'united' => 'linear-gradient(to bottom right, #9c78b1, #16acea7d)',
         'subscription' => '#16ACEA',
         'event' => '#9C78B1',
-        'event-config' => '#9C78B1'
+        'event-config' => '#9C78B1',
+        'event-standart' => '#9C78B1',
+        'event-discount' => '#eb9f28',
+        'event-free' => '#f1c88775',
 
     ];
   }
@@ -453,6 +457,16 @@ if (!function_exists('getAuthUserRoleInterface')) {
 
 }
 
+if (!function_exists('getAuthUserRoleInterfaceName')) {
+  function getAuthUserRoleInterfaceName()
+  {
+
+    return auth()->user()->roles()->first()->interface;
+  }
+
+}
+
+
 if (!function_exists('museumHaveUnreadMessage')) {
   function museumHaveUnreadMessage()
   {
@@ -479,11 +493,17 @@ if (!function_exists('getEventType')) {
 
     };
 
-
-
-
 }
 
+if (!function_exists('getMuseumAllEvents')) {
+    function getMuseumAllEvents($id)
+    {
+      $events = Event::where('museum_id', $id)->get();
+
+      return $events;
+
+    };
+}
 
 
 
