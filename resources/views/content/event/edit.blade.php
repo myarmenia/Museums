@@ -43,11 +43,11 @@
                 <div class="mb-3 row">
                   <label for="region" class="col-md-2 col-form-label"> Տեսակ <span class="required-field">*</span></label>
                   <div class="col-md-10">
-                      <select id="defaultSelect" name="style" class="form-select"  onchange="changeEventType()">
-                          <option value = "" disabled >Ընտրեք տեսակ</option>
-                          <option value = "basic" {{ $data->style == "basic" ? "selected" : null }}>Միջոցառում</option>
-                          <option value = "temporary" {{ $data->style == "temporary" ? "selected" : null }}> Ժամանակավոր ցուցադրություն </option>
-                      </select>
+                    <input class="form-control"
+                           placeholder="Տեսակ"
+                           value="{{  $data->style == 'basic' ? 'Միջոցառում' : "Ժամանակավոր ցուցադրություն" }}"
+                           name="style" disabled />
+                    
                       @error('product_category_id')
                           <div class="justify-content-end">
                               <div class="col-sm-10 text-danger fts-14">{{ $message }}
@@ -285,7 +285,7 @@
     <script>
       let url = "{{ route('event-config-delete',$data->id) }}"
       console.log(url)
-     
+
 
     </script>
 @endsection
