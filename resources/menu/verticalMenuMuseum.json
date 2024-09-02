@@ -156,7 +156,7 @@
       "url": "museum/reports/report",
       "name": "Հաշվետվություն",
       "icon": "menu-icon tf-icons bx bxs-report",
-      "slug": "museum_reports",
+      "slug": ["museum_reports","museum_event_reports"],
       "roles": [
         "museum_admin",
         "manager",
@@ -171,10 +171,7 @@
         {
           "url": "museum/event-reports",
           "name": "Միջոցառում",
-          "slug": [
-            "users_visitors",
-            "users.show"
-          ]
+          "slug": ["museum_event_reports"]
         }
       ]
     }

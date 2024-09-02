@@ -89,6 +89,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/museum-dashboard', SingleMuseumAnalyticsController::class)->name('museum_dashboard_analytics');
   });
 
+  Route::post('/get-event', function (Illuminate\Http\Request $request) {
+
+      $museum_id = $request->input('museum_id');
+      return response()->json(getMuseumAllEventsWithTranslation($museum_id, 'am'));
+  });
+
   // Route::resource('roles', RoleController::class);
   Route::resource('users', UserController::class);
   Route::get('users-visitors', [UserController::class, 'users_visitors'])->name('users_visitors');
@@ -101,12 +107,10 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('museum/reports/{request_report_type}', [ReportsForMuseumAdminController::class, 'index'])->name('museum_reports');
   Route::get('export-report-excel', [ExportExcelController::class, "export"])->name('export_report_excel');
 
-  // Route::get('event-reports/{request_report_type}', [ReportsForSuperAdminController::class, 'events'])->name('event_reports');
-
+  Route::get('event-reports', [ReportsForSuperAdminController::class, 'events'])->name('event_reports');
   Route::get('museum/event-reports', [ReportsForMuseumAdminController::class, 'events'])->name('museum_event_reports');
 
-
-
+  
   Route::group(['prefix' => 'museum'], function () {
     Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin|general_manager');
     Route::group(['middleware' => ['role:museum_admin|content_manager|manager']], function () {
