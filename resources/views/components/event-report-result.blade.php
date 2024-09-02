@@ -1,10 +1,18 @@
 @php
     $item = $data['item'];
     $data = $data['data'];
-    // $total_price =
+
+    $total_quantity = array_reduce($data, function ($carry, $item) {
+        return $carry + (isset($item['quantity']) ? (int)$item['quantity'] : 0);
+    }, 0);
+
+    $total_price = array_reduce($data, function ($carry, $item) {
+        return $carry + (isset($item['total_price']) ? (int)$item['total_price'] : 0);
+    }, 0);
+
 @endphp
 <div class="row mb-12 g-6">
-{{-- {{dd( $data)}} --}}
+
     <div class="card pt-2">
       <img class="card-img-top img-thumbnail" style="width:200px; height:auto" src="{{ route('get-file', ['path' => $item->images[0]->path]) }}" alt="Card image cap">
       <div class="card-body">
@@ -37,8 +45,9 @@
         <li class="list-group-item">Ընդամենը - {{$data['guide_price_oter']['total_price'] ?? 0}} դրամ</li>
       </ul>
       <div class="card-body">
-        <h4  class="card-link">Ընդամենը քանակ - 85000</h4>
-        <h5 class="card-link">Ընդամենը - {{$data['guide_price_oter']['total_price'] ?? 0}} դրամ</h5>
+        <h4 class="card-link">Ընդամենը -  {{$total_price}} դրամ</h4>
+        <h4  class="card-link">Ընդամենը քանակ - {{$total_quantity}}</h4>
+
       </div>
     </div>
 </div>
