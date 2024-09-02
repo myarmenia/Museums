@@ -23,7 +23,8 @@ class ListActiveQRResource extends JsonResource
             $base64String = 'data:' . $mimeType . ';base64,' . $base64;
         }
 
-        $color = $this->type == 'event' || $this->type == 'event-config' ? 'event-' . $this->sub_type : $this->type;
+         $color = $this->type == 'event' || $this->type == 'event-config' ? 'event-' . $this->purchased_item->sub_type : $this->type;
+
 
         $data = [
           'id' => $this->id,
