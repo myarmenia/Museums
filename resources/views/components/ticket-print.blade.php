@@ -32,7 +32,7 @@
         }
 
         .pdf-tmp {
-            margin-top: -100px;
+            margin-top: -70px;
             width: 100%;
         }
 
