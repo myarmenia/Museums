@@ -109,7 +109,7 @@
       "icon": "menu-icon tf-icons bx bxs-report",
       "slug": [
         "reports",
-        "museum_event_reports"
+        "event_reports"
       ],
       "roles": [
           "super_admin",
@@ -128,7 +128,7 @@
           "url": "event-reports",
           "name": "Միջոցառում",
           "slug": [
-            "museum_event_reports"
+            "event_reports"
           ]
         }
       ]
