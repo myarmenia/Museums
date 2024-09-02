@@ -502,7 +502,35 @@ if (!function_exists('getMuseumAllEvents')) {
 
       return $events;
 
-    };
+    }
+}
+
+if (!function_exists('getMuseumAllEventsWithTranslation')) {
+  function getMuseumAllEventsWithTranslation($id, $lang)
+  {
+    $events = Event::where('museum_id', $id)
+          ->with([
+            'item_translations' => function ($query) use ($lang) {
+              $query->where('lang', $lang);
+            }
+          ])
+          ->get();
+
+    return $events;
+
+  }
+
+}
+
+if (!function_exists('getAllMuseums')) {
+  function getAllMuseums()
+  {
+    $museums = Museum::all();
+
+    return $museums;
+
+  }
+
 }
 
 

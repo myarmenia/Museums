@@ -9,12 +9,15 @@ trait EventReports
   public function event_report($data, $model)
   {
 
+    if(!isset($data['item_relation_id']) || $data['item_relation_id'] == null){
+          return false;
+    }
+
+
     $interface = getAuthUserRoleInterfaceName();
-    $museum_id = $interface == 'museum' ? getAuthMuseumId() : null;
+    $museum_id = $interface == 'museum' ? getAuthMuseumId() : (isset($data['museum_id']) ? $data['museum_id'] : null);
 
     $type = $this->getEvantStyle($data['item_relation_id']) == 'basic' ? 'event-config' : 'event';
-    // $data['type'] = 'online';
-
 
     $data['status'] = 1;
     $data['museum_id'] = $museum_id;
@@ -25,11 +28,6 @@ trait EventReports
     });
 
     $report = $model->reportFilter($data)->where('type',  $type); //  purchased_items
-    // dd($purchase->get());
-    // if ($museum_id != null) {
-    //   $purchase = $purchase->where('museum_id', $museum_id);
-    // }
-
 
     $report_ids = $report->pluck('id');
     $canceled = TicketQr::where('status', 'returned')->where('type', $type)->whereIn('purchased_item_id', $report_ids);
@@ -37,7 +35,7 @@ trait EventReports
     $groupedData = $this->event_report_fin_quant($report, $canceled);
 
 
-    // dd($groupedData);
+
 
     return [
       'data' => reset($groupedData),
@@ -68,7 +66,6 @@ trait EventReports
       return $item;
     }, $canceled);
 
-    // dd($this->groupByMuseumId(array_merge($report, $canceled)));
 
     return $this->eventGroupByMuseumId(array_merge($report, $canceled));
 
