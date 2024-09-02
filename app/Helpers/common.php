@@ -408,7 +408,7 @@ if (!function_exists('getTranslateTicketTitl')) {
   }
 
 }
-if (!function_exists('getTranslateTicketTitl')) {
+if (!function_exists('getTranslateTicketTitl_en')) {
   function getTranslateTicketTitl_en($title)
   {
       $titles = [

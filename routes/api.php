@@ -212,5 +212,5 @@ Route::group(['prefix' => 'turnstile'], function ($router) {
   // Route::get('send-qr-to-mail/{id}', SendQRToMailController::class);
 
 });
-
+Route::post('buy-ticket',BuyTicketController::class);
 
