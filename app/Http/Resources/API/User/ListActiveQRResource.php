@@ -23,6 +23,7 @@ class ListActiveQRResource extends JsonResource
             $base64String = 'data:' . $mimeType . ';base64,' . $base64;
         }
 
+        $color = $this->type == 'event' || $this->type == 'event-config' ? 'event-' . $this->sub_type : $this->type;
 
         $data = [
           'id' => $this->id,
@@ -31,7 +32,7 @@ class ListActiveQRResource extends JsonResource
           'path_base64' => $base64String,
           'type' => $this->type,
           'price' => $this->price,
-          'color' => $this->type == 'event' || $this->type == 'event-config' ? 'event-' . ticketColors()[$this->sub_type] : ticketColors()[$this->type]
+          'color' => ticketColors()[$color]
         ];
 
 
