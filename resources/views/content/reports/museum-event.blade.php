@@ -3,7 +3,6 @@
 
  @section('title', 'Account settings - Account')
 @section('page-script')
-    {{-- <script src="{{ asset('assets/js/admin/report/single-museum.js') }}"></script> --}}
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
@@ -46,10 +45,10 @@
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
 
                         <div class="col-2">
-                            <select id="multiple-select-event" name="item_relation_id" class="form-select select-2" data-placeholder="Միջոցառում" value="{{ request()->input('event_id') ?? ''}}" >
+                            <select id="multiple-select-event" name="item_relation_id" class="form-select select-2" data-placeholder="Միջոցառում" value="{{ request()->input('item_relation_id') ?? ''}}" >
                                 <option disabled selected>Միջոցառում</option>
                                 @foreach (getMuseumAllEvents(museumAccessId()) as $event)
-                                    <option value="{{$event->id}}" {{ request()->input('event_id') == $event->id ? 'selected' : '' }}>{{$event->translation('am')->name}}</option>
+                                    <option value="{{$event->id}}" {{ request()->input('item_relation_id') == $event->id ? 'selected' : '' }}>{{$event->translation('am')->name}}</option>
                                 @endforeach
                             </select>
                         </div>

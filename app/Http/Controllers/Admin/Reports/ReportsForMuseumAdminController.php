@@ -35,9 +35,7 @@ class ReportsForMuseumAdminController extends Controller
 
   public function events(Request $request)
   {
-    // $request['status'] = 1;
     $museum_id = museumAccessId();
-
     $data = $request->item_relation_id == null ? [] : $this->event_report($request->all(), $this->model);
 
     return view("content.reports.museum-event", compact('data'));
