@@ -72,9 +72,13 @@ trait QrTokenTrait
                     ];
                     $addedItemsToken[]=$token;
                     $allData[] = $newData;
-                    array_shift($data[$type]);
+                    if(isset($data[$type])){
+                      array_shift($data[$type]);
+                    }
+
                 }
             }
+
             $insert = TicketQr::insert($allData);
 
             if (!$insert) {

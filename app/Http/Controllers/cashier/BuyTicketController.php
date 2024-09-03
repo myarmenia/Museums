@@ -22,7 +22,7 @@ class BuyTicketController extends CashierController
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
             $data['items'] = [];
-// dd($requestData);
+
             $museumId = getAuthMuseumId();
 
             $ticket = Ticket::where(['museum_id' => $museumId, 'status' => 1])->first();
@@ -85,10 +85,10 @@ class BuyTicketController extends CashierController
                         return redirect()->back()->with('pdfFile', $pdfPath);
                     }
                 }
-            
 
-            DB::commit();
-            DB::rollBack();
+
+
+            // DB::rollBack();
 
             return redirect()->back();
 
