@@ -53,7 +53,10 @@
 
     <div class="pdf-tmp">
         @foreach ($tickets['data'] as $item)
-            <div class="img"><img src="{{ $item['photo'] }}" class="qr-code"></div>
+        @if (isset($item['photo']))
+              <div class="img"><img src="{{ $item['photo'] }}" class="qr-code"></div>
+        @endif
+
             <span>{{ $item['ticket_token'] }}</span>
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['am'] }}</h4>
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['ru'] }}</h4>
