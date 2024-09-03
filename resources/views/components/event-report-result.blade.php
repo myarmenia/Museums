@@ -1,4 +1,5 @@
 @php
+
     $item = $data['item'];
     $data = $data['data'] ? $data['data'] : [];
 
@@ -9,7 +10,6 @@
     $total_price = array_reduce($data, function ($carry, $item) {
         return $carry + (isset($item['total_price']) ? (int)$item['total_price'] : 0);
     }, 0);
-
 
 @endphp
 <div class="row mb-12 g-6">

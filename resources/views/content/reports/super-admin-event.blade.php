@@ -61,13 +61,11 @@
           </div>
 
           <div class="col-2">
+            <input type="hidden" value="{{ request()->input('item_relation_id') ?? ''}}" id="selected-event-input">
             <select id="multiple-select-event" name="item_relation_id" class="form-select select-2"
-              data-placeholder="Միջոցառում" value="{{ request()->input('item_relation_id') ?? ''}}">
+              data-placeholder="Միջոցառում" >
                 <option disabled selected>Միջոցառում</option>
-                @foreach (getMuseumAllEvents(museumAccessId()) as $event)
-                  <option value="{{$event->id}}" {{ request()->input('item_relation_id') == $event->id ? 'selected' : ''
-                    }}>{{$event->translation('am')->name}}</option>
-                @endforeach
+
             </select>
           </div>
 
@@ -84,7 +82,7 @@
           </div>
           <div class="col-3 justify-content-end" style="display: flex; gap: 8px">
             <button class="btn btn-primary search">Հաշվետվություն</button>
-            <a class="btn btn-primary" href="{{ route('museum_reports', 'report') }}">Չեղարկել</a>
+            <a class="btn btn-primary" href="{{ route('event_reports') }}">Չեղարկել</a>
           </div>
 
         </div>

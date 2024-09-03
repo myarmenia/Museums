@@ -62,7 +62,7 @@
                         </div>
                         <div class="col-4 justify-content-end" style="display: flex; gap: 8px">
                             <button class="btn btn-primary search">Հաշվետվություն</button>
-                            <a class="btn btn-primary" href="{{ route('museum_reports', 'report') }}">Չեղարկել</a>
+                            <a class="btn btn-primary" href="{{ route('museum_event_reports') }}">Չեղարկել</a>
                         </div>
 
                     </div>
