@@ -37,11 +37,6 @@ trait EventReports
 
     $report = $model->where('type', $type)->where('returned_quantity', 0)->reportFilter($data); //  purchased_items
 
-//     $report_ids = $report->pluck('id');
-
-//     $canceled = TicketQr::where('status', 'returned')->where('type', $type)->whereIn('purchased_item_id', $report_ids);
-// dd($canceled->get());
-    // $groupedData = $this->event_report_fin_quant($report, $canceled);
     $groupedData = $this->event_report_fin_quant($report);
 
 
@@ -61,19 +56,7 @@ trait EventReports
       ->get();
 
 
-
-    // $canceled = $canceled->groupBy('museum_id')
-    //   ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
-    //   ->get();
-
     $report = $report->toArray();
-    // $canceled = $canceled->toArray();
-
-    // $canceled = array_map(function ($item) {
-    //   $item['type'] = 'canceled';
-    //   return $item;
-    // }, $canceled);
-// dd($this->eventGroupByMuseumId(array_merge($report)));
 
     return $this->eventGroupByMuseumId(array_merge($report));
 
