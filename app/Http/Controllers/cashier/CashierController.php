@@ -96,7 +96,7 @@ class CashierController extends Controller
         }
 
 
-        foreach ($qrs as $qr) {
+        foreach ($qrs as $key=>$qr) {
 
             if($qr['type'] == 'event-config'){
                 $configItem = $eventAllConfigs->where('id', $qr->item_relation_id)->first();
@@ -134,8 +134,6 @@ class CashierController extends Controller
 
             $data['data'][] = [
                 'ticket_token' => $qr['ticket_token'],
-                // 'photo' => public_path(Storage::url($qr['path'])),
-                'photo' => Storage::disk('local')->path($qr['path']),
                 'description_educational_programming' => $itemDescriptionName? trim($itemDescriptionName)  : null,
                 'description_educational_programming_en' => $itemDescriptionName_en? trim($itemDescriptionName_en)  : null,
                 'action_date' => $event_day ?? "",
@@ -148,7 +146,7 @@ class CashierController extends Controller
             if(!is_null($qr['path'])){
 
               $data['data'][$key]['photo'] = Storage::disk('local')->path($qr['path']);
-             
+
             }
 
 
