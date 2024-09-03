@@ -51,7 +51,7 @@ class CashierController extends Controller
         }else{
             $qrs = TicketQr::whereIn('purchased_item_id', $purchaseItemIds)->get();
         }
-// dd($qrs);
+
         if($qrs[0]->type == 'event' || $qrs[0]->type == 'event-config' || $qrs[0]->type == 'educational'){
             if($qrs[0]->type == 'event-config'){
                 $eventConfig = EventConfig::with('event.item_translations')->find($qrs[0]->item_relation_id);
@@ -96,7 +96,7 @@ class CashierController extends Controller
         }
 
 
-        foreach ($qrs as$key=> $qr) {
+        foreach ($qrs as $qr) {
 
             if($qr['type'] == 'event-config'){
                 $configItem = $eventAllConfigs->where('id', $qr->item_relation_id)->first();
@@ -134,20 +134,21 @@ class CashierController extends Controller
 
             $data['data'][] = [
                 'ticket_token' => $qr['ticket_token'],
-                // 'photo' => Storage::disk('local')->path($qr['path']),
+                // 'photo' => public_path(Storage::url($qr['path'])),
+                'photo' => Storage::disk('local')->path($qr['path']),
                 'description_educational_programming' => $itemDescriptionName? trim($itemDescriptionName)  : null,
                 'description_educational_programming_en' => $itemDescriptionName_en? trim($itemDescriptionName_en)  : null,
                 'action_date' => $event_day ?? "",
                 'type' => $qr['type'],
                 'guid' => $purchaseGuid? $purchaseGuid : false,
-                // 'price' => $qr['price'],
+                'price' => $qr['price'],
                 'created_at' => $qr['created_at'],
                 'sub_type' => $qr->purchased_item->sub_type
             ];
             if(!is_null($qr['path'])){
 
               $data['data'][$key]['photo'] = Storage::disk('local')->path($qr['path']);
-              $data['data'][$key]['price'] = $qr['price'];
+             
             }
 
 
