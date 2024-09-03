@@ -18,6 +18,7 @@ class EventTicket extends CashierController
   public function __invoke(Request $request)
   {
     try {
+
       DB::beginTransaction();
 
       $requestData = $request->input('event');

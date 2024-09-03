@@ -60,6 +60,7 @@ class BuyTicketController extends CashierController
                     $data['items'][] = $newItem;
                 }
             }
+            dd($data['items']);
 
             if(!$haveValue){
                 session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
@@ -88,8 +89,7 @@ class BuyTicketController extends CashierController
 
 
 
-            // DB::rollBack();
-
+            DB::rollBack();
             return redirect()->back();
 
         } catch (\Exception $e) {

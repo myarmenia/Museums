@@ -140,7 +140,7 @@ class CashierController extends Controller
 
             $data['data'][] = [
                 'ticket_token' => $qr['ticket_token'],
-                // 'photo' => Storage::disk('local')->path($qr['path']),
+                // 'photo' => Storage::disk('local')->path($qr['path']) ?? null,
                 'description_educational_programming' => $itemDescriptionName? trim($itemDescriptionName)  : null,
                 'description_educational_programming_en' => $itemDescriptionName_en? trim($itemDescriptionName_en)  : null,
                 'action_date' => $event_day ?? "",
@@ -153,6 +153,7 @@ class CashierController extends Controller
             if(!is_null($qr['path'])){
 
               $data['data'][0]['photo'] = Storage::disk('local')->path($qr['path']);
+              $data['data'][0]['price'] = $qr['price'];
 
             }
 
