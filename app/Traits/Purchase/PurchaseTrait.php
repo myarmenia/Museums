@@ -409,10 +409,10 @@ trait PurchaseTrait
       $total_price = $event->price * $data['quantity'];
     }
 
-    $total_price = isset($data['sub_type']) ?
-      ($data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] :
-        $event->price * $data['quantity']) :
-      $event->price * $data['quantity'];
+    // $total_price = isset($data['sub_type']) ?
+    //   ($data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] :
+    //     $event->price * $data['quantity']) :
+    //   $event->price * $data['quantity'];
 
 
     $data['total_price'] = $total_price;

@@ -42,8 +42,8 @@
       </ul>
       <ul class="list-group list-group-flush mt-2">
         <li class="list-group-item"><h5> Էքսկուրսիա օտար լեզու</h5></li>
-        <li class="list-group-item">Ընդամենը քանակ - {{$data['guide_price_oter']['quantity'] ?? 0}} </li>
-        <li class="list-group-item">Ընդամենը - {{$data['guide_price_oter']['total_price'] ?? 0}} դրամ</li>
+        <li class="list-group-item">Ընդամենը քանակ - {{$data['guide_price_other']['quantity'] ?? 0}} </li>
+        <li class="list-group-item">Ընդամենը - {{$data['guide_price_other']['total_price'] ?? 0}} դրամ</li>
       </ul>
       <div class="card-body">
         <h4 class="card-link">Ընդամենը -  {{$total_price}} դրամ</h4>
