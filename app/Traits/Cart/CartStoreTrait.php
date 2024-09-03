@@ -226,24 +226,20 @@ trait CartStoreTrait
     $data['museum_id'] = $event_config ? $event_config->event->museum->id : false;
     $hasEvent = $this->getAuthUser()->carts()->where(['item_relation_id' =>  $data['id'], 'type' => $data['type'], 'sub_type' => $data['sub_type']])->first();
 
-
+    if ($hasEvent) {
+      $quantity = $data['quantity'] + $hasEvent->quantity;
+    } else {
+      $quantity = $data['quantity'];
+    }
 
     // $total_price = $event_config->price * $quantity;
       $total_price = isset($data['sub_type']) ?
-                        ($data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] :
-                          $event->price * $data['quantity']) :
-                            $event->price * $data['quantity'];
-
-    if ($hasEvent) {
-      $quantity = $data['quantity'] + $hasEvent->quantity;
-      $sum_price = $total_price + $hasEvent->price;
-    } else {
-      $quantity = $data['quantity'];
-      $sum_price = $total_price;
-    }
+                        ($data['sub_type'] == 'discount' ? $event->discount_price * $quantity :
+                          $event->price * $quantity) :
+                            $event->price * $quantity;
 
     $data['quantity'] = $quantity;
-    $data['total_price'] = $sum_price;
+    $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
 
 
@@ -262,25 +258,20 @@ trait CartStoreTrait
     $data['museum_id'] = $event->museum->id;
     $hasEvent = $this->getAuthUser()->carts()->where(['item_relation_id' => $data['id'], 'type' => $data['type'], 'sub_type' => $data['sub_type']])->first();
 
-
+    if ($hasEvent) {
+      $quantity = $data['quantity'] + $hasEvent->quantity;
+    } else {
+      $quantity = $data['quantity'];
+    }
 
     // $total_price = $event->price * $quantity;
     $total_price = isset($data['sub_type']) ?
-                      ($data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] :
-                        $event->price * $data['quantity']) :
-                          $event->price * $data['quantity'];
-
-    if ($hasEvent) {
-      $quantity = $data['quantity'] + $hasEvent->quantity;
-      $sum_price = $total_price + $hasEvent->price;
-
-    } else {
-      $quantity = $data['quantity'];
-      $sum_price = $total_price;
-    }
+                      ($data['sub_type'] == 'discount' ? $event->discount_price * $quantity :
+                        $event->price * $quantity) :
+                          $event->price * $quantity;
 
     $data['quantity'] = $quantity;
-    $data['total_price'] = $sum_price;
+    $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
 
 
