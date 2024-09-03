@@ -22,7 +22,7 @@ class BuyTicketController extends CashierController
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
             $data['items'] = [];
-
+// dd($requestData);
             $museumId = getAuthMuseumId();
 
             $ticket = Ticket::where(['museum_id' => $museumId, 'status' => 1])->first();
@@ -60,7 +60,7 @@ class BuyTicketController extends CashierController
                     $data['items'][] = $newItem;
                 }
             }
-            dd($data['items']);
+        
 
             if(!$haveValue){
                 session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
@@ -88,8 +88,9 @@ class BuyTicketController extends CashierController
                 }
 
 
-
+            DB::commit();
             DB::rollBack();
+
             return redirect()->back();
 
         } catch (\Exception $e) {
