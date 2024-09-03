@@ -32,7 +32,7 @@
         }
 
         .pdf-tmp {
-            margin-top: 10px;
+            margin-top: 5px;
             width: 100%;
         }
 
@@ -102,7 +102,7 @@
                 </div>
 
               @endif
-               
+
 
                 @if ($item['guid'])
                     @foreach ($item['guid'] as $price)
