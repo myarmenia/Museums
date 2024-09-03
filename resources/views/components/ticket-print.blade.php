@@ -66,7 +66,7 @@
                     <span>Տեսակ/Type - </span>
                     <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }} / {{ getTranslateTicketTitl_en($item['type']) }}</span>
                 </div>
-                @if (isset($item['sub_type']) && $item['sub_type'] != null)
+                @if (isset($item['sub_type']) && $item['sub_type'] != null && $item['sub_type'] != 'guide_price_am' && $item['sub_type'] != 'guide_price_other')
                     <div class="text-flex text-margin">
                         <span>Տոմսի Տեսակ/Ticket type - </span>
                         <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ( $item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : 'Անվճար/Free' )}}</span>
