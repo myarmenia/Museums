@@ -95,14 +95,15 @@
                         <span>{{ $item['action_date']['start'] }} - {{ $item['action_date']['end'] }}</span>
                     </div>
                 @endif
-              @if (isset($item['price']))
-                <div class="text-flex text-margin">
-                  <span>Գին/Price - </span>
-                  <span>{{ $item['price'] }}դր․/AMD</span>
-                </div>
+                @if (isset($item['price']))
+                  @if (isset($item['photo']))
+                  <div class="text-flex text-margin">
+                      <span>Գին/Price - </span>
+                      <span>{{ $item['price'] }}դր․/AMD</span>
+                    </div>
 
-              @endif
-
+                  @endif
+                @endif
 
                 @if ($item['guid'])
                     @foreach ($item['guid'] as $price)
@@ -111,6 +112,14 @@
                             <span>{{ $price }}դր․/AMD</span>
                         </div>
                     @endforeach
+                @endif
+                @if ($item['type']=="guide")
+
+                    <div class="text-flex text-margin">
+                        <span>էքսկուրսավար/Guide - </span>
+                        <span>{{ $item['price'] }}դր․/AMD</span>
+                    </div>
+
                 @endif
                 <div class="text-flex text-margin">
                     <span>Ստեղծվել է/Created  - </span>
