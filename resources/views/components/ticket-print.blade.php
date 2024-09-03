@@ -32,7 +32,7 @@
         }
 
         .pdf-tmp {
-            margin-top: -70px;
+            margin-top: 10px;
             width: 100%;
         }
 
@@ -95,11 +95,14 @@
                         <span>{{ $item['action_date']['start'] }} - {{ $item['action_date']['end'] }}</span>
                     </div>
                 @endif
-
+              @if (isset($item['price']))
                 <div class="text-flex text-margin">
-                    <span>Գին/Price - </span>
-                    <span>{{ $item['price'] }}դր․/AMD</span>
+                  <span>Գին/Price - </span>
+                  <span>{{ $item['price'] }}դր․/AMD</span>
                 </div>
+
+              @endif
+               
 
                 @if ($item['guid'])
                     @foreach ($item['guid'] as $price)
