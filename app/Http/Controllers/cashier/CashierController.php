@@ -22,6 +22,7 @@ class CashierController extends Controller
 {
     public function showReadyPdf(int $purchaseId, $ticketQrs = null)
     {
+
         $purchaseData = Purchase::with('purchased_items.ticketQr')->where('id', $purchaseId)->first();
         $museumId = $purchaseData->museum_id;
         $museum = Museum::with('translations')->find($museumId);
@@ -32,7 +33,7 @@ class CashierController extends Controller
         $event_guids = $purchaseItem->where('returned_quntity', 0)
                     ->whereIn('sub_type', ['guide_price_am', 'guide_price_other']);
 
-
+// dd($guids, $event_guids, $event_guids);
         $itemDescription = null;
         $itemDescriptionName = '';
         $itemDescriptionName_en = '';
@@ -49,7 +50,9 @@ class CashierController extends Controller
         if($ticketQrs){
             $qrs = $ticketQrs;
         }else{
+
             $qrs = TicketQr::whereIn('purchased_item_id', $purchaseItemIds)->get();
+
         }
 
         if($qrs[0]->type == 'event' || $qrs[0]->type == 'event-config' || $qrs[0]->type == 'educational'){
@@ -63,14 +66,17 @@ class CashierController extends Controller
                 $itemDescription = Event::with('item_translations')->find($qrs[0]->item_relation_id);
 
             }elseif ($qrs[0]->type == 'educational') {
+
                 $itemDescription = EducationalProgram::with('item_translations')->find($qrs[0]->item_relation_id);
             }else{
+
                 return false;
             }
             $desc = $itemDescription->item_translations->where('lang', 'am')->first()->name;
             $desc_en = $itemDescription->item_translations->where('lang', 'en')->first()->name;
             $wordArr = explode(" ", $desc);
             foreach ($wordArr as $key => $word) {
+
                if($word){
                    if($key < 6){
                        $itemDescriptionName .= $word.' ';
@@ -134,8 +140,7 @@ class CashierController extends Controller
 
             $data['data'][] = [
                 'ticket_token' => $qr['ticket_token'],
-                // 'photo' => public_path(Storage::url($qr['path'])),
-                'photo' => Storage::disk('local')->path($qr['path']),
+                // 'photo' => Storage::disk('local')->path($qr['path']),
                 'description_educational_programming' => $itemDescriptionName? trim($itemDescriptionName)  : null,
                 'description_educational_programming_en' => $itemDescriptionName_en? trim($itemDescriptionName_en)  : null,
                 'action_date' => $event_day ?? "",
@@ -145,6 +150,12 @@ class CashierController extends Controller
                 'created_at' => $qr['created_at'],
                 'sub_type' => $qr->purchased_item->sub_type
             ];
+            if(!is_null($qr['path'])){
+
+              $data['data'][0]['photo'] = Storage::disk('local')->path($qr['path']);
+
+            }
+
 
 
         }
