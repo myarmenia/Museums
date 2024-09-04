@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\cashier\CashierController as CashierCashierController;
 use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\Cart\DeleteItemController;
@@ -43,6 +44,8 @@ use App\Http\Controllers\API\Shop\SingleProductController;
 use App\Http\Controllers\API\Student\DashboardController;
 use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
+use App\Http\Controllers\cashier\BuyTicketController;
+use App\Http\Controllers\cashier\CashierController;
 use App\Http\Controllers\Turnstile\ActiveQrsController;
 use App\Http\Controllers\Turnstile\CheckQRController;
 use App\Http\Controllers\Turnstile\QrBlackListController;
@@ -209,4 +212,5 @@ Route::group(['prefix' => 'turnstile'], function ($router) {
   // Route::get('send-qr-to-mail/{id}', SendQRToMailController::class);
 
 });
+Route::post('buy-ticket',BuyTicketController::class);
 

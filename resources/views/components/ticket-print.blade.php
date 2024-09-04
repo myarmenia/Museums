@@ -32,7 +32,7 @@
         }
 
         .pdf-tmp {
-            margin-top: -50px;
+            margin-top: 5px;
             width: 100%;
         }
 
@@ -53,61 +53,76 @@
 
     <div class="pdf-tmp">
         @foreach ($tickets['data'] as $item)
-            <div class="img"><img src="{{ $item['photo'] }}" class="qr-code"></div>
+        @if (isset($item['photo']))
+              <div class="img"><img src="{{ $item['photo'] }}" class="qr-code"></div>
+        @endif
+
             <span>{{ $item['ticket_token'] }}</span>
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['am'] }}</h4>
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['ru'] }}</h4>
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['en'] }}</h4>
             <div class="ticket-info">
                 <div class="text-flex text-margin">
-                    <span>Տեսակ - </span>
-                    <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }}</span>
+                    <span>Տեսակ/Type - </span>
+                    <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }} / {{ getTranslateTicketTitl_en($item['type']) }}</span>
                 </div>
-                @if (isset($item['sub_type']) && $item['sub_type'] != null)
+                @if (isset($item['sub_type']) && $item['sub_type'] != null && $item['sub_type'] != 'guide_price_am' && $item['sub_type'] != 'guide_price_other')
                     <div class="text-flex text-margin">
-                        <span>Տոմսի Տեսակ - </span>
-                        <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ' : ( $item['sub_type'] == 'discount' ? 'Զեղչված' : 'Անվճար' )}}</span>
+                        <span>Տոմսի Տեսակ/Ticket type - </span>
+                        <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ( $item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : 'Անվճար/Free' )}}</span>
                     </div>
                 @endif
                 @if ($item['description_educational_programming'])
                     <div class="text-flex text-margin">
-                        <span>Անվանում - </span>
-                        <span>{{ $item['description_educational_programming'] }}</span>
+                        <span>Անվանում/Name - </span>
+                        <span>{{ $item['description_educational_programming'] }} / {{ $item['description_educational_programming_en'] }} </span>
                     </div>
                 @endif
                 @if ($item['type'] == "event")
                     <div class="text-flex text-margin">
-                        <span>Վավեր է․  </span>
+                        <span>Վավեր է․/Valid time  </span>
                         <span>{{ $item['action_date']['start'] }} - {{ $item['action_date']['end'] }}</span>
                     </div>
                 @endif
 
                 @if ($item['type'] == "event-config")
                     <div class="text-flex text-margin">
-                        <span>Անցկացման օր - </span>
+                        <span>Անցկացման օր/Date - </span>
                         <span>{{ $item['action_date']['day'] }}</span>
                     </div>
                     <div class="text-flex text-margin">
-                        <span>Ժամ - </span>
+                        <span>Ժամ/Time - </span>
                         <span>{{ $item['action_date']['start'] }} - {{ $item['action_date']['end'] }}</span>
                     </div>
                 @endif
+                @if (isset($item['price']))
+                  @if (isset($item['photo']))
+                  <div class="text-flex text-margin">
+                      <span>Գին/Price - </span>
+                      <span>{{ $item['price'] }}դր․/AMD</span>
+                    </div>
 
-                <div class="text-flex text-margin">
-                    <span>Գին - </span>
-                    <span>{{ $item['price'] }}դր․</span>
-                </div>
+                  @endif
+                @endif
 
                 @if ($item['guid'])
                     @foreach ($item['guid'] as $price)
                         <div class="text-flex text-margin">
-                            <span>էքսկուրսավար - </span>
-                            <span>{{ $price }}</span>
+                            <span>էքսկուրսավար/Guide - </span>
+                            <span>{{ $price }}դր․/AMD</span>
                         </div>
                     @endforeach
                 @endif
+                @if ($item['type']=="guide")
+
+                    <div class="text-flex text-margin">
+                        <span>էքսկուրսավար/Guide - </span>
+                        <span>{{ $item['price'] }}դր․/AMD</span>
+                    </div>
+
+                @endif
                 <div class="text-flex text-margin">
-                    <span>Ստեղծվել է - </span>
+                    <span>Ստեղծվել է/Created  - </span>
                     <span>{{ $item['created_at'] }}</span>
                 </div>
             </div>

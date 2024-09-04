@@ -138,13 +138,22 @@ trait PurchaseTrait
 
       if ($value['type'] == 'event-config') {
 
-        $maked_data = $this->makeEventConfigData($value);
+        $summedQuantities = collect($data['items'])
+          ->groupBy(function ($q_item) {
+            return $q_item['type'] . '-' . ($q_item['sub_type'] ?? '') . '-' . $q_item['id'];
+          }) // Группировка
+          ->map(function ($group) {
+            return $group->sum('quantity');
+          }) // Суммирование
+          ->sum();
+
+        $maked_data = $this->makeEventConfigData($value, $summedQuantities);
         unset($maked_data['id']);
 
         if ($maked_data) {
           $row = $this->addItemInPurchasedItem($maked_data);
         } else {
-          $event = $this->getAvailableEventViaEventCobfig($value['id']);
+          $event = $this->getAvailableEventViaEventConfig($value['id']);
 
           $row = ['error' => 'ticket_not_available', 'name' => $event];
           break;
@@ -366,7 +375,7 @@ trait PurchaseTrait
 
   }
 
-  public function makeEventConfigData($data)
+  public function makeEventConfigData($data, $summedQuantities)
   {
 
     $event_config = $this->getEventConfig($data['id']);
@@ -382,7 +391,7 @@ trait PurchaseTrait
 
     $remainder = $event_config->visitors_quantity_limitation - $event_config->visitors_quantity;
 
-    if ($data['quantity'] > $remainder) {
+    if ($summedQuantities > $remainder) {
       return false;
     }
 
@@ -393,9 +402,17 @@ trait PurchaseTrait
                       ($data['sub_type'] == 'standart' ? $event->price * $data['quantity'] :
                         ($data['sub_type'] == 'free' ? 0 * $data['quantity'] :
                           ($data['sub_type'] == 'guide_price_am' ? $event->guide_price_am * $data['quantity'] :
-                            ($data['sub_type'] == 'guide_price_other' ? $event->guide_price_other * $data['quantity'] : $event->discount_price * $data['quantity']))));
+                            ($data['sub_type'] == 'guide_price_other' ? $event->guide_price_other * $data['quantity'] : $event->price * $data['quantity']))));
 
     }
+    else{
+      $total_price = $event->price * $data['quantity'];
+    }
+
+    // $total_price = isset($data['sub_type']) ?
+    //   ($data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] :
+    //     $event->price * $data['quantity']) :
+    //   $event->price * $data['quantity'];
 
 
     $data['total_price'] = $total_price;
@@ -422,8 +439,11 @@ trait PurchaseTrait
         ($data['sub_type'] == 'standart' ? $event->price * $data['quantity'] :
           ($data['sub_type'] == 'free' ? 0 * $data['quantity'] :
             ($data['sub_type'] == 'guide_price_am' ? $event->guide_price_am * $data['quantity'] :
-              ($data['sub_type'] == 'guide_price_other' ? $event->guide_price_other * $data['quantity'] : $event->discount_price * $data['quantity']))));
+              ($data['sub_type'] == 'guide_price_other' ? $event->guide_price_other * $data['quantity'] : $event->price * $data['quantity']))));
 
+    }
+    else{
+      $total_price = $event->price * $data['quantity'];
     }
 
 
@@ -496,7 +516,7 @@ trait PurchaseTrait
 
   }
 
-  public function getAvailableEventViaEventCobfig($id){
+  public function getAvailableEventViaEventConfig($id){
     $event_config = EventConfig::where('id', $id)->first();
     if($event_config){
 

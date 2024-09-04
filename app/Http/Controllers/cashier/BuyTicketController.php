@@ -22,12 +22,12 @@ class BuyTicketController extends CashierController
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
             $data['items'] = [];
-
+// dd($requestData);
             $museumId = getAuthMuseumId();
 
             $ticket = Ticket::where(['museum_id' => $museumId, 'status' => 1])->first();
 
-            if((is_null($requestData['standart']) && is_null($requestData['discount']) && is_null($requestData['free']))){
+            if((is_null($requestData['standart']) && is_null($requestData['discount']) && is_null($requestData['free']) && is_null($requestData['guide_am']) && is_null($requestData['guide_other']))){
                 session(['errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։']);
 
                 return redirect()->back();
@@ -60,6 +60,7 @@ class BuyTicketController extends CashierController
                     $data['items'][] = $newItem;
                 }
             }
+        
 
             if(!$haveValue){
                 session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
@@ -70,19 +71,26 @@ class BuyTicketController extends CashierController
 
             $addTicketPurchase = $this->purchase($data);
 
-            if ($addTicketPurchase) {
-                $addQr = $this->getTokenQr($addTicketPurchase->id);
 
-                if ($addQr) {
-                    $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
 
-                    session(['success' => 'Տոմսերը ավելացված է']);
+                if ($addTicketPurchase) {
 
-                    DB::commit();
-                    return redirect()->back()->with('pdfFile', $pdfPath);
+                    $addQr = $this->getTokenQr($addTicketPurchase->id);
+
+                    if ($addQr) {
+                        $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
+
+                        session(['success' => 'Տոմսերը ավելացված է']);
+
+                        DB::commit();
+                        return redirect()->back()->with('pdfFile', $pdfPath);
+                    }
                 }
-            }
+
+
+            DB::commit();
             DB::rollBack();
+
             return redirect()->back();
 
         } catch (\Exception $e) {
