@@ -18,12 +18,10 @@ trait PaymentCompletionTrait
     if ($payment->group_payment_status == 'success' && $payment->status == 'confirmed') {
       $response = 'OK';
 
-        LogService::store($data, 1, 'e-pay', 'store');
-
 
       // =============== get QR via paymant purchase_id ======================
       if($payment->purchase->status == 0){
-        
+
         $generate_qr = $this->getTokenQr($payment->purchase_id);
         if (count($generate_qr) > 0) {
 
