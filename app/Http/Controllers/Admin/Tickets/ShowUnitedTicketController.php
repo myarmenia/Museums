@@ -13,8 +13,9 @@ class ShowUnitedTicketController extends Controller
     {
 
       $ticket_united = $this->getUniteddeService();
+      $ticket_school = $this->getSchoolService();
 
-      return view("content.tickets.united", compact('ticket_united'));
+      return view("content.tickets.ticket", compact('ticket_united', 'ticket_school'));
 
 
     }

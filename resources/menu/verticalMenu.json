@@ -94,7 +94,7 @@
     },
     {
       "url": "tickets/united",
-      "name": "Միասնական տոմս",
+      "name": "Տոմս",
       "icon": "menu-icon tf-icons bx bxs-coupon",
       "slug": "tickets_united",
       "roles": [
