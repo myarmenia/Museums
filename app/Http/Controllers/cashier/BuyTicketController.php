@@ -27,6 +27,7 @@ class BuyTicketController extends CashierController
             $museumId = getAuthMuseumId();
 
             $ticket = Ticket::where(['museum_id' => $museumId, 'status' => 1])->first();
+            $school_ticket = TicketSchoolSetting::first(); //updated from admin and in table only one row  (dont created)
 
             $filteredData = array_filter($requestData, function ($value) {
               return !is_null($value);
@@ -45,10 +46,16 @@ class BuyTicketController extends CashierController
                 return redirect()->route('tickets_show');
             }
 
+
+            if (!$school_ticket) {
+              session(['errorMessage' => 'Իրավասու մամնի կողմից փոխհատուցման արժեքը դեռևս նշված չէ։']);
+
+              return redirect()->route('tickets_show');
+            }
+
             $ticketId = $ticket->id;
 
             $guid = GuideService::where('museum_id', $museumId)->first();
-            $school_ticket = TicketSchoolSetting::first();
 
             $haveValue = false;
             foreach ($requestData as $key => $item) {

@@ -416,7 +416,7 @@ if (!function_exists('getTranslateTicketTitl_en')) {
         'standart' => 'Standart',
         'discount' => 'Discount',
         'free' => 'Free',
-        'school' => 'Դպրոցական',
+        'school' => 'School',
         'subscription' => 'Subscription',
         'united' => 'Combo',
         'educational' => 'Educational',
