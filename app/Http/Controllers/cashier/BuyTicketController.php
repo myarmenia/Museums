@@ -50,7 +50,7 @@ class BuyTicketController extends CashierController
             if (!$school_ticket) {
               session(['errorMessage' => 'Իրավասու մամնի կողմից փոխհատուցման արժեքը դեռևս նշված չէ։']);
 
-              return redirect()->route('tickets_show');
+              return redirect()->back();
             }
 
             $ticketId = $ticket->id;
