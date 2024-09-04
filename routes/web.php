@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\Reports\ExportExcelController;
 use App\Http\Controllers\Admin\Reports\ReportsForMuseumAdminController;
 use App\Http\Controllers\Admin\Reports\ReportsForSuperAdminController;
 use App\Http\Controllers\Admin\Tickets\GuideServiceController;
+use App\Http\Controllers\Admin\Tickets\SchoolTicketController;
 use App\Http\Controllers\Admin\Tickets\ShowTicketsController;
 use App\Http\Controllers\Admin\Tickets\ShowUnitedTicketController;
 use App\Http\Controllers\Admin\Tickets\StandartTicketController;
@@ -110,7 +111,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('event-reports', [ReportsForSuperAdminController::class, 'events'])->name('event_reports');
   Route::get('museum/event-reports', [ReportsForMuseumAdminController::class, 'events'])->name('museum_event_reports');
 
-  
+
   Route::group(['prefix' => 'museum'], function () {
     Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin|general_manager');
     Route::group(['middleware' => ['role:museum_admin|content_manager|manager']], function () {
@@ -261,6 +262,9 @@ Route::group(['middleware' => ['auth']], function () {
       Route::get('united', ShowUnitedTicketController::class)->name('tickets_united');
       Route::post('ticket-united', UnitedTicketController::class)->name('ticket_united_store');
       Route::post('ticket-united/{id}', UnitedTicketController::class)->name('ticket_united_update');
+
+      Route::post('ticket-school', SchoolTicketController::class)->name('ticket_school_store');
+      Route::post('ticket-school/{id}', SchoolTicketController::class)->name('ticket_school_update');
     });
   });
 
