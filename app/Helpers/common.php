@@ -310,7 +310,7 @@ if (!function_exists('reportResult')) {
   function reportResult($data)
   {
 
-      $keys = ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product'];
+      $keys = ['standart', 'discount', 'free', 'school', 'united',  'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product'];
       $sums = [];
 
       foreach ($data as $array) {
@@ -334,7 +334,7 @@ if (!function_exists('reportResult')) {
 if (!function_exists('reportTypes')) {
   function reportTypes()
   {
-    return ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product'];
+    return ['standart', 'discount', 'free', 'school', 'united', 'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product'];
   }
 }
 
@@ -380,6 +380,7 @@ if (!function_exists('getTranslateTicketTitl')) {
         'standart' => 'Ստանդարտ',
         'discount' => 'Զեղչված',
         'free' => 'Անվճար',
+        'school' => 'Դպրոցական',
         'subscription' => 'Անդամակցության քարտ',
         'united' => 'Միասնական',
         'educational' => 'Կրթական',
@@ -415,6 +416,7 @@ if (!function_exists('getTranslateTicketTitl_en')) {
         'standart' => 'Standart',
         'discount' => 'Discount',
         'free' => 'Free',
+        'school' => 'Դպրոցական',
         'subscription' => 'Subscription',
         'united' => 'Combo',
         'educational' => 'Educational',

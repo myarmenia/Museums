@@ -12,6 +12,7 @@ use App\Models\Purchase;
 use App\Models\PurchasedItem;
 use App\Models\PurchaseUnitedTickets;
 use App\Models\Ticket;
+use App\Models\TicketSchoolSetting;
 use App\Models\TicketSubscriptionSetting;
 use App\Models\TicketUnitedSetting;
 use Illuminate\Support\Facades\Auth;
@@ -201,6 +202,26 @@ trait PurchaseTrait
 
       //  ===============================================================================
 
+      //  =================== school ====================================================
+
+
+      if ($value['type'] == 'school') {
+
+        $maked_data = $this->makeSchoolTicketData($value);
+        unset($maked_data['id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+
+      //  ===============================================================================
+
       //  =================== guide_am ================= guide_other ====================
 
 
@@ -318,6 +339,30 @@ trait PurchaseTrait
     return $data;
   }
 
+  public function makeSchoolTicketData($data)
+  {
+    $school_ticket = $this->getSchoolTicket($data['id']);
+
+    if (!$school_ticket) {
+      return false;
+    }
+
+    $muyseum_id = museumAccessId();
+
+    if (!$muyseum_id) {
+      return false;
+    }
+
+    $data['museum_id'] = $muyseum_id;
+
+    $total_price = $school_ticket->price * $data['quantity'];
+
+    $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
+
+    return $data;
+  }
+
   public function makeGuideData($data)
   {
     $type = $data['type'] == 'guide_am' ? 'price_am' : 'price_other';
@@ -409,11 +454,6 @@ trait PurchaseTrait
       $total_price = $event->price * $data['quantity'];
     }
 
-    // $total_price = isset($data['sub_type']) ?
-    //   ($data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] :
-    //     $event->price * $data['quantity']) :
-    //   $event->price * $data['quantity'];
-
 
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
@@ -432,7 +472,6 @@ trait PurchaseTrait
     }
 
     $data['museum_id'] = $event->museum->id;
-    // $total_price = isset($data['sub_type']) && $data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] : $event->price * $data['quantity'];
 
     if (isset($data['sub_type'])) {
       $total_price = $data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] :
@@ -556,6 +595,11 @@ trait PurchaseTrait
   public function getCorporative($id)
   {
     return CorporativeSale::where('id', $id)->first();
+  }
+
+  public function getSchoolTicket($id)
+  {
+    return TicketSchoolSetting::where('id', $id)->first();
   }
 
   public function createUnitedTickets($data)
