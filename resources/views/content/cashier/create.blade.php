@@ -93,6 +93,13 @@
                                         </td>
                                         <td class="remove-value" class="remove-value">0</td>
                                     </tr>
+                                    <tr class='table-default'>
+                                        <td>Դպրոցական</td>
+                                        <td><input type="number" min="0" class="form-control form-control-validate" id="school"
+                                                onwheel="return false;" name="school" value="{{ old('school') }}">
+                                        </td>
+                                        <td class="remove-value" class="remove-value"> - </td>
+                                    </tr>
                                 </tbody>
 
                                 @if (array_key_exists('guid-arm', $data['ticket']) && array_key_exists('guid-other', $data['ticket']))
