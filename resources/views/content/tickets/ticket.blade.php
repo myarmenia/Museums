@@ -57,7 +57,7 @@
 
                       <div class="mb-3 row">
                           <label for="price" class="col col-form-label">Դպրոցականների տոմսերի փոխհատուցման արժեք<span class="required-field text-danger"> *</span></label>
-                          <input class="form-control" placeholder="Դպրոցականների տոմսերի փոխհատուցման արժեք" value="{{ $ticket_school != null ? $ticket_school->percent : '' }}" id="price" name="price" />
+                          <input class="form-control" placeholder="Դպրոցականների տոմսերի փոխհատուցման արժեք" value="{{ $ticket_school != null ? $ticket_school->price : '' }}" id="price" name="price" />
                       </div>
 
                       <button type="submit" class="btn btn-primary">Պահպանել</button>
