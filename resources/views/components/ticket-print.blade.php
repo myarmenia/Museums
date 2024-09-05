@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,29 +9,22 @@
             padding: 0;
             font-family: DejaVu Sans;
         }
-
-
-
         .museum-name {
             font-size: 14px;
             font-weight: bold;
         }
-
         .text-margin {
             margin: 7px 0;
         }
-
         .ticket-info {
             font-size: 13px;
             display: flex;
             flex-direction: column;
         }
-
         .qr-code {
             width: 7cm;
             height: 7cm;
         }
-
         .page-break {
             page-break-after: always;
 
@@ -43,25 +35,20 @@
             overflow:auto;
 
         }
-
         .img {
             text-align: center;
             display: flex;
             justify-content: center;
 
         }
-
         .text-flex {
             display: flex;
         }
 
     </style>
 </head>
-
 <body>
-
-
-    <div class="pdf-tmp page-break">
+    <div class="pdf-tmp">
 
         @foreach ($tickets['data'] as $item)
             @if (isset($item['photo']))
