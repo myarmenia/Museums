@@ -135,7 +135,7 @@
                         <span>{{ $item['price'] }}դր․/AMD</span>
                     </div>
                 @endif
-                <div class="text-flex text-margin">
+                <div class="text-flex text-margin page-break">
                     <span>Ստեղծվել է/Created - </span>
                     <span>{{ $item['created_at'] }}</span>
                 </div>
