@@ -136,6 +136,7 @@ class CashierController extends Controller
                 'ticket_token' => $qr['ticket_token'],
                 'description_educational_programming' => $itemDescriptionName? trim($itemDescriptionName)  : null,
                 'description_educational_programming_en' => $itemDescriptionName_en? trim($itemDescriptionName_en)  : null,
+                'photo' => public_path(Storage::url($qr['path'])),
                 'action_date' => $event_day ?? "",
                 'type' => $qr['type'],
                 'guid' => $purchaseGuid? $purchaseGuid : false,
@@ -143,11 +144,11 @@ class CashierController extends Controller
                 'created_at' => $qr['created_at'],
                 'sub_type' => $qr->purchased_item->sub_type
             ];
-            if(!is_null($qr['path'])){
+            // if(!is_null($qr['path'])){
 
-              $data['data'][$key]['photo'] = Storage::disk('local')->path($qr['path']);
+            //   $data['data'][$key]['photo'] = Storage::disk('local')->path($qr['path']);
 
-            }
+            // }
 
 
 
