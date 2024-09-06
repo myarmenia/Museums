@@ -154,7 +154,11 @@ class CashierController extends Controller
 
         }
 
-        $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
+        $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait')
+        ->setOptions([
+          'isHtml5ParserEnabled' => true, // optional for advanced HTML parsing
+          ])
+        ->setWarnings(false);
 
         $fileName = 'ticket-' . time() . '.pdf';
         $path = 'public/pdf-file/' . $fileName;
