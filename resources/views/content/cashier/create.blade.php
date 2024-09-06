@@ -30,7 +30,7 @@
                     <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
                         data-bs-target="#navs-top-home" aria-controls="navs-top-home" aria-selected="true">Տոմս</button>
                 </li>
-             
+
                 @if (count($data['educational']))
                     <li data-name='educational' class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
@@ -92,6 +92,13 @@
                                                 onwheel="return false;" name="free" value="{{ old('free') }}">
                                         </td>
                                         <td class="remove-value" class="remove-value">0</td>
+                                    </tr>
+                                    <tr class='table-default'>
+                                        <td>Դպրոցական</td>
+                                        <td><input type="number" min="0" class="form-control form-control-validate" id="school"
+                                                onwheel="return false;" name="school" value="{{ old('school') }}">
+                                        </td>
+                                        <td class="remove-value" class="remove-value"> - </td>
                                     </tr>
                                 </tbody>
 

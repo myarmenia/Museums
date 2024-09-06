@@ -22,10 +22,24 @@ class EventTicket extends CashierController
       DB::beginTransaction();
 
       $requestData = $request->input('event');
-
       $museumId = getAuthMuseumId();
       $eventKeys = array_keys($requestData);
 
+      $allNull = true;
+
+        foreach ($requestData[$eventKeys[0]] as $value) {
+            if (!is_null($value)) {
+                $allNull = false;
+                break;
+            }
+        }
+
+      if ($allNull && is_null($request->guide_price_am) && is_null($request->guide_price_other) ) {
+        session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
+
+        DB::rollBack();
+        return redirect()->back();
+      }
       if ($request->input('style') == 'basic') {  //for event with event_configs
 
         $allEventConfig = EventConfig::where('status', 1)->whereIn('id', $eventKeys)->get();
@@ -122,9 +136,9 @@ class EventTicket extends CashierController
         }
       } else {  //for event temporary
         $event = Event::where(['museum_id' => $museumId, 'status' => 1, 'id' => $eventKeys])->first();
+        // dd($event);
         if ($event) {
-
-          if (in_array(null, $requestData, true)) {
+          if (in_array(null, $requestData, true) && is_null($request->guide_price_am) && is_null($request->guide_price_other) ) {
             session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
 
             DB::rollBack();
@@ -146,17 +160,7 @@ class EventTicket extends CashierController
             }
 
           }
-          // $quantity = $value = array_values($requestData)[0];
-
-          // $data['purchase_type'] = 'offline';
-          // $data['status'] = 1;
-          // $data['items'][] = [
-          //   "type" => 'event',
-          //   // "sub_type" => $sub_type,
-          //   "id" => $event->id,
-          //   "quantity" => (int) $quantity
-          // ];
-
+          
           if (isset($request->guide_price_am) && $request->guide_price_am != null) {
             $data['items'][] = [
               "type" => 'event',

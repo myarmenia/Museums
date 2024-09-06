@@ -4,6 +4,7 @@ namespace App\Http\Controllers\cashier;
 
 use App\Models\GuideService;
 use App\Models\Ticket;
+use App\Models\TicketSchoolSetting;
 use App\Traits\NodeApi\QrTokenTrait;
 use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
@@ -22,12 +23,18 @@ class BuyTicketController extends CashierController
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
             $data['items'] = [];
-// dd($requestData);
+
             $museumId = getAuthMuseumId();
 
             $ticket = Ticket::where(['museum_id' => $museumId, 'status' => 1])->first();
+            $school_ticket = TicketSchoolSetting::first(); //updated from admin and in table only one row  (dont created)
 
-            if((is_null($requestData['standart']) && is_null($requestData['discount']) && is_null($requestData['free']) && is_null($requestData['guide_am']) && is_null($requestData['guide_other']))){
+            $filteredData = array_filter($requestData, function ($value) {
+              return !is_null($value);
+            });
+
+
+            if (empty($filteredData)) {
                 session(['errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։']);
 
                 return redirect()->back();
@@ -39,9 +46,17 @@ class BuyTicketController extends CashierController
                 return redirect()->route('tickets_show');
             }
 
+
+            if (!$school_ticket) {
+              session(['errorMessage' => 'Իրավասու մամնի կողմից փոխհատուցման արժեքը դեռևս նշված չէ։']);
+
+              return redirect()->back();
+            }
+
             $ticketId = $ticket->id;
 
             $guid = GuideService::where('museum_id', $museumId)->first();
+
             $haveValue = false;
             foreach ($requestData as $key => $item) {
                 if ($item) {
@@ -52,15 +67,20 @@ class BuyTicketController extends CashierController
                     ];
 
                     if (($key === 'guide_other' || $key === 'guide_am') && $guid) {
+
                         $newItem["id"] = $guid->id;
-                    } else {
+                    }elseif($key === 'school'){
+
+                        $newItem["id"] = $school_ticket->id;
+                    }
+                     else {
                         $newItem["id"] = $ticketId;
                     }
 
                     $data['items'][] = $newItem;
                 }
             }
-        
+
 
             if(!$haveValue){
                 session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
