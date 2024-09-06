@@ -47,7 +47,7 @@ class BuyTicketController extends CashierController
             }
 
 
-            if (!$school_ticket) {
+            if (!$school_ticket && $request->school != null) {
               session(['errorMessage' => 'Իրավասու մամնի կողմից փոխհատուցման արժեքը դեռևս նշված չէ։']);
 
               return redirect()->back();
