@@ -136,7 +136,6 @@ class CashierController extends Controller
                 'ticket_token' => $qr['ticket_token'],
                 'description_educational_programming' => $itemDescriptionName? trim($itemDescriptionName)  : null,
                 'description_educational_programming_en' => $itemDescriptionName_en? trim($itemDescriptionName_en)  : null,
-                'photo' => Storage::disk('local')->path($qr['path']),
                 'action_date' => $event_day ?? "",
                 'type' => $qr['type'],
                 'guid' => $purchaseGuid? $purchaseGuid : false,
@@ -144,21 +143,18 @@ class CashierController extends Controller
                 'created_at' => $qr['created_at'],
                 'sub_type' => $qr->purchased_item->sub_type
             ];
-            // if(!is_null($qr['path'])){
+            if(!is_null($qr['path'])){
 
-            //   $data['data'][$key]['photo'] = Storage::disk('local')->path($qr['path']);
+              $data['data'][$key]['photo'] = Storage::disk('local')->path($qr['path']);
 
-            // }
+            }
 
 
 
         }
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
-        // ->setOptions([
-        //   'isHtml5ParserEnabled' => true, // optional for advanced HTML parsing
-        //   ])
-        // ->setWarnings(false);
+       
 
         $fileName = 'ticket-' . time() . '.pdf';
         $path = 'public/pdf-file/' . $fileName;
