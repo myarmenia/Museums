@@ -26,8 +26,7 @@
             height: 7cm;
         }
         .page-break {
-            page-break-after: always;
-
+                    page-break-after: always;
         }
         .pdf-tmp {
             width: 100%;
@@ -48,9 +47,11 @@
     </style>
 </head>
 <body>
+
     <div class="pdf-tmp">
 
-        @foreach ($tickets['data'] as $item)
+        @foreach ($tickets['data'] as $key=>$item)
+
             @if (isset($item['photo']))
                 <div class="img"><img src="{{ $item['photo'] }}" class="qr-code"></div>
             @endif
@@ -59,7 +60,7 @@
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['am'] }}</h4>
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['ru'] }}</h4>
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['en'] }}</h4>
-            <div class="ticket-info">
+            <div class="ticket-info {{ $key == count($tickets['data'])-1 ? '' : 'page-break' }}">
                 <div class="text-flex text-margin">
                     <span>Տեսակ/Type - </span>
                     <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }} /
@@ -122,7 +123,7 @@
                         <span>{{ $item['price'] }}դր․/AMD</span>
                     </div>
                 @endif
-                <div class="text-flex text-margin page-break">
+                <div class="text-flex text-margin">
                     <span>Ստեղծվել է/Created - </span>
                     <span>{{ $item['created_at'] }}</span>
                 </div>
