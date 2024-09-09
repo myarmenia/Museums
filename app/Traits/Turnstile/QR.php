@@ -89,7 +89,7 @@ trait QR
 
 
         if ($check_date) {
-          $check_ticket_accesses = $this->checkTicketAccesses($qr, null, $qr_reade_date, $online);
+          $check_ticket_accesses = $this->checkTicketAccesses($qr, null, $qr_reade_date, $online, $turnstile->ticket_redemption_time);
 
           return $check_ticket_accesses ? true : false;
         } else {
@@ -123,7 +123,7 @@ trait QR
 
   }
 
-  public function checkTicketAccesses($qr, $status = null, $date = null, $online)
+  public function checkTicketAccesses($qr, $status = null, $date = null, $online, $ticket_redemption_time)
   {
 
     $new_date = new DateTime();
@@ -134,8 +134,8 @@ trait QR
 
     $status = $qr->type != 'subscription' ? 'used' : 'active';
 
-    if($online){
-        $update = UpdateQRStatusJob::dispatch($qr->id, $now_date, $status)->delay(now()->addMinutes(2));
+    if($online && $ticket_redemption_time != null){
+        $update = UpdateQRStatusJob::dispatch($qr->id, $now_date, $status)->delay(now()->addMinutes($ticket_redemption_time));
     }
     else{
       $update = $qr->update([
