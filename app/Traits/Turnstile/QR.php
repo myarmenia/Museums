@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits\Turnstile;
 
+use App\Jobs\UpdateQRStatusJob;
 use App\Models\QrBlackList;
 use App\Models\TicketAccess;
 use App\Models\TicketQr;
@@ -14,12 +15,14 @@ trait QR
   {
     // dd(count($data['qr']));
 
+    $online = true;
 
     if (!$data['online']) {
+      $online = false;
 
       foreach ($data['qr'] as $value) {
         $data_qr = explode('#', $value);
-        $check_qr = $this->checkQR($value, $data['mac']);
+        $check_qr = $this->checkQR($value, $data['mac'], $online);
 
         if ($check_qr === 'invalid mac') {
           break;
@@ -35,12 +38,12 @@ trait QR
 
     }
 
-    return $this->checkQR($data['qr'][0], $data['mac']);
+    return $this->checkQR($data['qr'][0], $data['mac'], $online);
 
 
   }
 
-  public function checkQR($data_qr, $mac)
+  public function checkQR($data_qr, $mac, $online)
   {
     // example
     // "893AD83C829E71#6e2dd53cc2adeaa52123d424da1451d9e23d3b1340d8cf7f747e71af2b5f274f#1723445813#2024-08-12 09:20:36"
@@ -86,7 +89,7 @@ trait QR
 
 
         if ($check_date) {
-          $check_ticket_accesses = $this->checkTicketAccesses($qr, null, $qr_reade_date);
+          $check_ticket_accesses = $this->checkTicketAccesses($qr, null, $qr_reade_date, $online);
 
           return $check_ticket_accesses ? true : false;
         } else {
@@ -120,7 +123,7 @@ trait QR
 
   }
 
-  public function checkTicketAccesses($qr, $status = null, $date = null)
+  public function checkTicketAccesses($qr, $status = null, $date = null, $online)
   {
 
     $new_date = new DateTime();
@@ -131,10 +134,17 @@ trait QR
 
     $status = $qr->type != 'subscription' ? 'used' : 'active';
 
-    $update = $qr->update([
-      'status' => $status,
-      'visited_date' => $now_date,
-    ]);
+    if($online){
+        $update = UpdateQRStatusJob::dispatch($qr->id, $now_date, $status)->delay(now()->addMinutes(2));
+    }
+    else{
+      $update = $qr->update([
+        'status' => $status,
+        'visited_date' => $now_date,
+      ]);
+    }
+
+
 
     return $update;
   }
