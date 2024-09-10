@@ -33,6 +33,9 @@ class CashierService
         },
         'educational_programs' => function ($query) {
             $query->orderBy('id', 'DESC')->where('status', 1)->get();
+        },
+        'other_services' => function ($query){
+            $query->orderBy('id', 'DESC')->where('status', 1)->get();
         },])->find($museumId);
 
         if(!$ticketPrice = Ticket::where('museum_id', $museumId)->first()){
@@ -64,6 +67,9 @@ class CashierService
         if($museum->events->count()){
             $data['events'] = $museum->events;
         }
+        if($museum->other_services->count()){
+          $data['other_services'] = $museum->other_services;
+      }
 
         return ['success' => true, 'data' => $data];
     }

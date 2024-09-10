@@ -408,6 +408,18 @@ $(function () {
     $('#event-total-price').text(totalPrice);
   }
 
+ $("#otherServices").on('input',function(){
+
+  $.ajax({
+    type: "GET",
+    url: '/cashier/get-other-service/' + $(this).val(),
+    cache: false,
+    success: function (data) {
+
+      }
+    })
+
+ })
 
 
 });
