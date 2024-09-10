@@ -70,12 +70,12 @@ $(function(){
         contentType: false,
         type: 'post',
         beforeSend: function (x) {
-          console.log('befor sebd')
+          console.log('befor send')
         },
         success: function (data) {
 
           $('#config_div').css('display','none')
-          // if (method == 'post') {
+     
             if(data.message){
               window.location.reload();
             }

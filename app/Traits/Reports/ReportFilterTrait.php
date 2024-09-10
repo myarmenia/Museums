@@ -23,7 +23,7 @@ trait ReportFilterTrait
     $relationFilter = $this->relationFilter;
     $filterDateRangeFields = $this->filterDateRangeFields;
     $filterAgeRangeFields = $this->filterAgeRangeFields;
-    
+
 
     foreach ($filters as $field => $value) {
       if($value != null){

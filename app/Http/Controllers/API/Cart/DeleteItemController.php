@@ -16,10 +16,10 @@ class DeleteItemController extends BaseController
 
       $user = auth('api')->user();
 
-      $deleted = $this->deleteItem($user, $request->id);
+      $deleted = $request->id == 'all_items' ? $this->deleteAllItems($user) : $this->deleteItem($user, $request->id);
 
       $cart = $this->getCartItems($user);
-      $data['id'] = $request->id;
+      $data['id'] = $request->id == 'all_items' ? null : $request->id;
       $parrams['items_count'] = $cart->count();
 
       return $deleted ? $this->sendResponse($data, 'success', $parrams) : $this->sendError('error');

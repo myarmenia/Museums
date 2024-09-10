@@ -43,11 +43,11 @@
                 <div class="mb-3 row">
                   <label for="region" class="col-md-2 col-form-label"> Տեսակ <span class="required-field">*</span></label>
                   <div class="col-md-10">
-                      <select id="defaultSelect" name="style" class="form-select"  onchange="changeEventType()">
-                          <option value = "" disabled >Ընտրեք տեսակ</option>
-                          <option value = "basic" {{ $data->style == "basic" ? "selected" : null }}>Միջոցառում</option>
-                          <option value = "temporary" {{ $data->style == "temporary" ? "selected" : null }}> Ժամանակավոր ցուցադրություն </option>
-                      </select>
+                    <input class="form-control"
+                           placeholder="Տեսակ"
+                           value="{{  $data->style == 'basic' ? 'Միջոցառում' : "Ժամանակավոր ցուցադրություն" }}"
+                           name="style" disabled />
+                    
                       @error('product_category_id')
                           <div class="justify-content-end">
                               <div class="col-sm-10 text-danger fts-14">{{ $message }}
@@ -145,12 +145,12 @@
                     @enderror
                 </div>
                 <div class="mb-3 row">
-                    <label for="email" class="col-md-2 col-form-label">Գին
+                    <label for="email" class="col-md-2 col-form-label">Ստանդարտ Գին
                         <span class="required-field text-danger">*</span>
                     </label>
 
                     <div class="col-md-10">
-                        <input class="form-control" placeholder="Գինը" value="{{ $data->price ?? old('price') }}"
+                        <input class="form-control" placeholder="Ստանդարտ Գին" value="{{ $data->price ?? old('price') }}"
                             id="price" name="price" />
                     </div>
                     @error('price')
@@ -160,9 +160,58 @@
                         </div>
                     @enderror
                 </div>
+                <div class="mb-3 row" >
+                  <label for="email" class="col-md-2 col-form-label">Զեղչված Գին
+
+                  </label>
+
+                  <div class="col-md-10">
+                      <input class="form-control" placeholder="Զեղչված Գին" value="{{ $data->discount_price ?? old('discount_price') }}"
+                          id="discount_price" name="discount_price" />
+                  </div>
+                  @error("discount_price")
+                    <div class="mb-3 row justify-content-end">
+                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                        </div>
+                    </div>
+                  @enderror
+                </div>
+                <div class="mb-3 row" >
+                  <label for="email" class="col-md-2 col-form-label">Էքսկուրսավար(հայերեն)
+
+                  </label>
+
+                  <div class="col-md-10">
+                      <input class="form-control" placeholder="Հայալեզու էքսկուրսիաի գինը" value="{{ $data->guide_price_am ?? old('guide_price_am') }}"
+                          id="guide_price_am" name="guide_price_am" />
+                  </div>
+                  @error("guide_price_am")
+                    <div class="mb-3 row justify-content-end">
+                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                        </div>
+                    </div>
+                  @enderror
+                </div>
+                <div class="mb-3 row" >
+                  <label for="email" class="col-md-2 col-form-label">Էքսկուրսավար(այլ)
+
+                  </label>
+
+                  <div class="col-md-10">
+                      <input class="form-control" placeholder="Այլ լեզվով էքսկուրսիաի գինը" value="{{ $data->guide_price_other ?? old('guide_price_other') }}"
+                          id="guide_price_other" name="guide_price_other" />
+                  </div>
+                  @error("guide_price_other")
+                    <div class="mb-3 row justify-content-end">
+                        <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                        </div>
+                    </div>
+                  @enderror
+                </div>
+
 
                 <div class="mb-3 row">
-                    <label for="photo" class="col-md-2 col-form-label">Ապրանքի նկար
+                    <label for="photo" class="col-md-2 col-form-label">Միջոցառման նկար
                         <span class="required-field text-danger">*</span>
                     </label>
 
@@ -233,5 +282,12 @@
         </div>
       </form>
     </div>
+    <script>
+      let url = "{{ route('event-config-delete',$data->id) }}"
+      console.log(url)
+
+
+    </script>
 @endsection
 <x-modal-delete></x-modal-delete>
+

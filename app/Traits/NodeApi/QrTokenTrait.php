@@ -13,6 +13,7 @@ trait QrTokenTrait
 {
     public function getTokenQr(int $purchaseId): bool|object
     {
+
         $url = env('NODE_API_URL') . 'getQr';
 
         $allData = [];
@@ -22,11 +23,25 @@ trait QrTokenTrait
             'guide',
         ];
 
+        $unusedSubTypes = [
+          'guide_price_am',
+          'guide_price_other',
+        ];
+
         try {
             DB::beginTransaction();
-            $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->whereNotIn('type', $unusedTypes)->get();
+            // $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->whereNotIn('type', $unusedTypes)->whereNotIn('sub_type', $unusedSubTypes)->get();
+            $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->get();
+                $allPurchasesForQr = PurchasedItem::where('purchase_id', $purchaseId)
+                ->whereNotIn('type', $unusedTypes)
+                ->where(function ($query) use ($unusedSubTypes) {
+                  $query->whereNotIn('sub_type', $unusedSubTypes)
+                    ->orWhereNull('sub_type');
+                })
+                ->get();
+
             $purchasesKeys = [];
-            foreach ($allPurchases as $key => $item) {
+            foreach ($allPurchasesForQr as $key => $item) {
                 $purchasesKeys[$item->type] = array_key_exists($item->type, $purchasesKeys)
                     ? $purchasesKeys[$item->type] + $item->quantity
                     : $item->quantity;
@@ -39,8 +54,8 @@ trait QrTokenTrait
 
                 for ($i = 0; $i < $quantity; $i++) {
                     $type = $item->type;
-                    $token = $data[$type][0]['unique_token'];
-                    $path = $data[$type][0]['qr_path'];
+                    $token = $data[$type][0]['unique_token'] ?? null ;
+                    $path = $data[$type][0]['qr_path'] ?? null;
 
                     $newData = [
                         'museum_id' => $item->museum_id,
@@ -57,9 +72,13 @@ trait QrTokenTrait
                     ];
                     $addedItemsToken[]=$token;
                     $allData[] = $newData;
-                    array_shift($data[$type]);
+                    if(isset($data[$type])){
+                      array_shift($data[$type]);
+                    }
+
                 }
             }
+
             $insert = TicketQr::insert($allData);
 
             if (!$insert) {

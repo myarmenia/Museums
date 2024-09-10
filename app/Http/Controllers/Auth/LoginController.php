@@ -34,7 +34,9 @@ class LoginController extends Controller
   {
       if ($user->status) {
           if($user->isAdmin() ){
+            
             return redirect('/welcome');
+
             // if ($user->isAdmin() == "admin") {
             //     return redirect('/');
             // }

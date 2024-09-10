@@ -50,10 +50,9 @@
       "name": "Կորպորատիվ վաճառք",
       "icon": "menu-icon tf-icons bx bx-command",
       "slug": "corporative",
-      "roles": [
-        "museum_admin",
-        "manager"
-      ],
+
+      "roles": ["museum_admin", "manager","accountant"],
+
       "url": "corporative"
     },
     {
@@ -187,12 +186,25 @@
       "url": "museum/reports/report",
       "name": "Հաշվետվություն",
       "icon": "menu-icon tf-icons bx bxs-report",
-      "slug": "museum_reports",
+      "slug": ["museum_reports","museum_event_reports"],
       "roles": [
         "museum_admin",
         "manager",
         "accountant"
+      ],
+      "submenu": [
+        {
+          "url": "museum/reports/report",
+          "name": "Ընդհանուր",
+          "slug": ["museum_reports"]
+        },
+        {
+          "url": "museum/event-reports",
+          "name": "Միջոցառում",
+          "slug": ["museum_event_reports"]
+        }
       ]
     }
+
   ]
 }

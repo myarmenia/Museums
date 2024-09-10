@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\Reports\ExportExcelController;
 use App\Http\Controllers\Admin\Reports\ReportsForMuseumAdminController;
 use App\Http\Controllers\Admin\Reports\ReportsForSuperAdminController;
 use App\Http\Controllers\Admin\Tickets\GuideServiceController;
+use App\Http\Controllers\Admin\Tickets\SchoolTicketController;
 use App\Http\Controllers\Admin\Tickets\ShowTicketsController;
 use App\Http\Controllers\Admin\Tickets\ShowUnitedTicketController;
 use App\Http\Controllers\Admin\Tickets\StandartTicketController;
@@ -89,6 +90,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/museum-dashboard', SingleMuseumAnalyticsController::class)->name('museum_dashboard_analytics');
   });
 
+  Route::post('/get-event', function (Illuminate\Http\Request $request) {
+
+      $museum_id = $request->input('museum_id');
+      return response()->json(getMuseumAllEventsWithTranslation($museum_id, 'am'));
+  });
+
   // Route::resource('roles', RoleController::class);
   Route::resource('users', UserController::class);
   Route::get('users-visitors', [UserController::class, 'users_visitors'])->name('users_visitors');
@@ -96,9 +103,14 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/change-status', [ChangeStatusController::class, 'change_status'])->name('change_status');
   Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class, 'index'])->name('delete_item');
   Route::get('logs', [LogController::class, 'index'])->name('logs');
+
   Route::get('reports/{request_report_type}', [ReportsForSuperAdminController::class, 'index'])->name('reports');
   Route::get('museum/reports/{request_report_type}', [ReportsForMuseumAdminController::class, 'index'])->name('museum_reports');
   Route::get('export-report-excel', [ExportExcelController::class, "export"])->name('export_report_excel');
+
+  Route::get('event-reports', [ReportsForSuperAdminController::class, 'events'])->name('event_reports');
+  Route::get('museum/event-reports', [ReportsForMuseumAdminController::class, 'events'])->name('museum_event_reports');
+
 
   Route::group(['prefix' => 'museum'], function () {
     Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin|general_manager');
@@ -216,7 +228,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('event-config', [EventConfigController::class, 'store'])->name('event_config_store');
     Route::post('/event-config-update', [EventConfigController::class, 'update'])->name('event_config_update');
     // Route::post('/call-edit-component',EventConfigComponentController::class)->name('edit_component');
-
+    Route::get('event-config-delete/{id}', [EventConfigController::class, 'delete'])->name('event-config-delete');
 
 
 
@@ -224,7 +236,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   });
 
-  Route::group(['prefix' => 'corporative', 'middleware' => ['role:museum_admin|manager']], function () {
+  Route::group(['prefix' => 'corporative', 'middleware' => ['role:museum_admin|manager|accountant']], function () {
     Route::get('/', [CorporativeSaleController::class, 'index'])->name('corporative');
     Route::get('/create', [CorporativeSaleController::class, 'create'])->name('corporative.create');
     Route::post('/create', [CorporativeSaleController::class, 'addCorporative'])->name('corporative.add');
@@ -250,6 +262,9 @@ Route::group(['middleware' => ['auth']], function () {
       Route::get('united', ShowUnitedTicketController::class)->name('tickets_united');
       Route::post('ticket-united', UnitedTicketController::class)->name('ticket_united_store');
       Route::post('ticket-united/{id}', UnitedTicketController::class)->name('ticket_united_update');
+
+      Route::post('ticket-school', SchoolTicketController::class)->name('ticket_school_store');
+      Route::post('ticket-school/{id}', SchoolTicketController::class)->name('ticket_school_update');
     });
   });
 

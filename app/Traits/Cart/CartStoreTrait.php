@@ -51,7 +51,18 @@ trait CartStoreTrait
 
             if ($value['type'] == 'event-config') {
 
-                $maked_data = $this->makeEventConfigData($value);
+                $summedQuantities = collect($data['items'])
+                  ->groupBy(function ($q_item) {
+                    return $q_item['type'] . '-' . ($q_item['sub_type'] ?? '') . '-' . $q_item['id'];
+                  }) // Группировка
+                  ->map(function ($group) {
+                    return $group->sum('quantity');
+                  }) // Суммирование
+                    ->sum();
+
+
+
+                $maked_data = $this->makeEventConfigData($value, $summedQuantities);
                 unset($maked_data['id']);
 
                 if ($maked_data) {
@@ -128,7 +139,7 @@ trait CartStoreTrait
   public function updateOrCreateEvent($data)
   {
 
-    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'item_relation_id' => $data['item_relation_id'], 'type' => $data['type']], $data);
+    return Cart::updateOrCreate(['user_id' => $data['user_id'], 'item_relation_id' => $data['item_relation_id'], 'type' => $data['type'], 'sub_type' => $data['sub_type']], $data);
   }
 
 
@@ -192,10 +203,11 @@ trait CartStoreTrait
     return $data;
   }
 
-  public function makeEventConfigData($data)
+  public function makeEventConfigData($data, $summedQuantities)
   {
 
     $event_config = $this->getEventConfig($data['id']);
+    $event = $event_config->event;
 
     if (!$event_config) {
       return false;
@@ -207,12 +219,12 @@ trait CartStoreTrait
 
     $remainder = $event_config->visitors_quantity_limitation - $event_config->visitors_quantity;
 
-    if ($data['quantity'] > $remainder) {
+    if ($summedQuantities > $remainder) {
       return false;
     }
 
     $data['museum_id'] = $event_config ? $event_config->event->museum->id : false;
-    $hasEvent = $this->getAuthUser()->carts()->where(['item_relation_id' =>  $data['id'], 'type' => $data['type']])->first();
+    $hasEvent = $this->getAuthUser()->carts()->where(['item_relation_id' =>  $data['id'], 'type' => $data['type'], 'sub_type' => $data['sub_type']])->first();
 
     if ($hasEvent) {
       $quantity = $data['quantity'] + $hasEvent->quantity;
@@ -220,7 +232,11 @@ trait CartStoreTrait
       $quantity = $data['quantity'];
     }
 
-    $total_price = $event_config->price * $quantity;
+    // $total_price = $event_config->price * $quantity;
+      $total_price = isset($data['sub_type']) ?
+                        ($data['sub_type'] == 'discount' ? $event->discount_price * $quantity :
+                          $event->price * $quantity) :
+                            $event->price * $quantity;
 
     $data['quantity'] = $quantity;
     $data['total_price'] = $total_price;
@@ -240,7 +256,7 @@ trait CartStoreTrait
     }
 
     $data['museum_id'] = $event->museum->id;
-    $hasEvent = $this->getAuthUser()->carts()->where(['item_relation_id' => $data['id'], 'type' => $data['type']])->first();
+    $hasEvent = $this->getAuthUser()->carts()->where(['item_relation_id' => $data['id'], 'type' => $data['type'], 'sub_type' => $data['sub_type']])->first();
 
     if ($hasEvent) {
       $quantity = $data['quantity'] + $hasEvent->quantity;
@@ -248,7 +264,11 @@ trait CartStoreTrait
       $quantity = $data['quantity'];
     }
 
-    $total_price = $event->price * $quantity;
+    // $total_price = $event->price * $quantity;
+    $total_price = isset($data['sub_type']) ?
+                      ($data['sub_type'] == 'discount' ? $event->discount_price * $quantity :
+                        $event->price * $quantity) :
+                          $event->price * $quantity;
 
     $data['quantity'] = $quantity;
     $data['total_price'] = $total_price;

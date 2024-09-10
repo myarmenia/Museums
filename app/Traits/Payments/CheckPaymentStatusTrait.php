@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 
 trait CheckPaymentStatusTrait
 {
-  public function checkStatus(string $order_id)
+  public function checkStatus($order_id)
   {
 
       $client = new Client(['verify' => false]);

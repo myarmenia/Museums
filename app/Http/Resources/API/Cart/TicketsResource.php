@@ -19,6 +19,7 @@ class TicketsResource extends JsonResource
               'id' => $this->id,
               'ticket_id' => $this->item_relation_id,
               'type' => $this->type,
+              'sub_type' => $this->sub_type,
               'museum_name' => $this->type == 'united' ? '' : $this->museum->translation(session("languages"))->name,
               'quantity' => $this->quantity,
               'total_price' => $this->total_price
@@ -29,10 +30,13 @@ class TicketsResource extends JsonResource
 
         if($this->type == 'event-config'){
             $data['date'] = date('m.d.Y', strtotime($this->event_config->day)) . ' ' . date('H:i', strtotime($this->event_config->start_time)) . '-' . date('H:i', strtotime($this->event_config->end_time));
+            $data['name'] = $this->event_config->event->getCurrentTranslation->name;
         }
 
         if ($this->type == 'event') {
-          $data['date'] = date('m.d.Y', strtotime($this->event->start_date)) . '   ' . date('m.d.Y', strtotime($this->event->end_date));
+          $data['date'] = date('m.d.Y', strtotime($this->event->start_date)) . ' - ' . date('m.d.Y', strtotime($this->event->end_date));
+          $data['name'] = $this->event->getCurrentTranslation->name;
+
         }
 
         return $data;
