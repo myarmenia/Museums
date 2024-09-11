@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Admin\OtherServices;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OtherServices\OSRequest;
-use App\Traits\Museum\OtherServices;
+use App\Models\OtherService;
+use App\Traits\UpdateTrait;
 use Illuminate\Http\Request;
 
 class OSUpdateController extends Controller
 {
-  use OtherServices;
+  use UpdateTrait;
 
   public function model()
   {
-    return OtherServices::class;
+    return OtherService::class;
   }
   public function __invoke(OSRequest $request, string $id)
   {

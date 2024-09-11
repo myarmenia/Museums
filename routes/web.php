@@ -280,8 +280,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('create', OSCreateController::class)->name('other_services_create');
     Route::post('store', OSStoreController::class)->name('other_services_store');
     Route::group(['middleware' => ['model_access']], function () {
-      Route::put('update/{id}', OSUpdateController::class)->name('educational_programs-update');
-      Route::get('edit/{id}', OSEditController::class)->name('other_services_edit');
+      Route::put('update/{id}', OSUpdateController::class)->name('other_services-update');
+      Route::get('edit/{id}', OSEditController::class)->name('other_services-edit');
     });
   });
 

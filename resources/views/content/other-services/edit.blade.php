@@ -23,15 +23,15 @@
     </div>
     <div class="card-body">
 
-        <form action="{{route('other_services_update', $other_service->id)}}" method="post">
+        <form action="{{route('other_services-update', $other_service->id)}}" method="post">
             @method('put')
 
            @foreach (languages() as $lang)
                   <div class="mb-3 row">
-                      <label for="name-{{ $lang }}" class="col-md-2 col-form-label">Անվանում {{ $lang }} <span class="required-field text-danger">*</span></label>
+                      <label for="name-{{ $lang }}" class="col-md-2 col-form-label">Վերնագիր {{ $lang }} <span class="required-field text-danger">*</span></label>
 
                       <div class="col-md-10">
-                          <input class="form-control" placeholder="Անվանում" value="{{ $other_service->translation($lang)->name }}"
+                          <input class="form-control" placeholder="Վերնագիր" value="{{ $other_service->translation($lang)->name }}"
                               id="name-{{ $lang }}" name="translate[{{ $lang }}][name]" />
                       </div>
                   </div>

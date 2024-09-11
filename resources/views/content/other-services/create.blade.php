@@ -7,7 +7,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{route('other_services.index')}}">Այլ ծառայություններ</a>
+                <a href="{{route('other_services_list')}}">Այլ ծառայություններ</a>
             </li>
             <li class="breadcrumb-item active">Ստեղծել նոր ծառայություն</li>
 
@@ -23,16 +23,16 @@
     </div>
 
     <div class="card-body">
-        <form action="{{route('users.store')}}" method="post">
+        <form action="{{route('other_services_store')}}" method="post">
 
             @foreach (languages() as $lang)
               <div class="mb-3 row">
-                  <label for="name-{{ $lang}}" class="col-md-2 col-form-label">Անվանում {{ $lang }}
+                  <label for="name-{{ $lang}}" class="col-md-2 col-form-label">Վերնագիր {{ $lang }}
                     <span class="required-field text-danger">*</span>
                   </label>
                   <div class="col-md-10">
                       <input class="form-control"
-                            placeholder="Անվանումը {{ $lang }}"
+                            placeholder="Վերնագիր {{ $lang }}"
                             value="{{ old("translate.$lang.name") }}"
                             name="translate[{{ $lang }}][name]"
                             id="name-{{ $lang}}" name="name"
