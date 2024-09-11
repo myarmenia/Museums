@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('type');
             $table->integer('price');
             $table->boolean('status')->default(1);
+            $table->boolean('ticket')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
