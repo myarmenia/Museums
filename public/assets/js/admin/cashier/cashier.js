@@ -199,6 +199,7 @@ $(function () {
 
   $('#event-select').on('input', function () {
     let selectedId = $('#event-select').val();
+    console.log('/cashier/get-event-details/' + selectedId)
     if (selectedId) {
       $.ajax({
         type: "GET",
@@ -410,16 +411,40 @@ $(function () {
 
  $("#otherServices").on('input',function(){
 
-  $.ajax({
-    type: "GET",
-    url: '/cashier/get-other-service/' + $(this).val(),
-    cache: false,
-    success: function (data) {
 
-      }
-    })
+      $.ajax({
+        type: "GET",
+        url: '/cashier/get-other-service/' + $(this).val(),
+        cache: false,
+        success: function (data) {
+        $('#otherServiceBlock').removeClass('d-none')
 
- })
+          console.log(data)
+          let content = `<table class="table cashier-table">
+                          <thead>
+                            <tr>
+                            <th>Անուն</th>
+                            <th>Քանակ</th>
+                            <th>Արժեք</th>
+                            </tr>
+                          </thead>
+                            <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
+                                <tr class="table-default">
+                                        <td>Ծառայություն</td>
+                                        <td>
+                                            <input type="number" onwheel="return false;" price="200012" min="0" class="form-control form-control-validate event_guid" id="other-service-price" name="other-service-price">
+                                        </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id="event_guide_price_am">0</td>
+                                      </tr>
+
+                                    </tbody><input type="hidden" name="style" value="temporary"></table>`
+
+                            $('#other-service-config').html(content)
+
+          }
+        })
+
+  })
 
 
 });

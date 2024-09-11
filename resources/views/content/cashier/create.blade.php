@@ -327,27 +327,29 @@
                               @endforeach
                           </select>
 
-                          <div id="event-config"> </div>
+                          <div id="other-service-config"> </div>
                       </div>
-                      <div id='event-total' class="d-flex justify-content-end d-none">
-                          <div class="d-flex ">
-                              <div class="me-3">Ընդհանուր</div>
-                              <div class="me-2">
-                                  <span class="remove-value" id="event-total-count">0</span>
-                                  <span>տոմս</span>
-                              </div>
-                              <div class="event-total-cont"></div>
-                              <div class="me-2">
-                                  <span class="remove-value" id="event-total-price">0</span>
-                                  <span>դրամ</span>
-                              </div>
-                          </div>
-                      </div>
-                      <div id="event-save" class="mt-3 row justify-content-end d-none">
-                          <div class="col-sm-10 d-flex justify-content-end">
-                              <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
-                          </div>
-                      </div>
+                      <div id="otherServiceBlock" class="d-none" >
+                        <div id='other-service-total' class="d-flex justify-content-end">
+                            <div class="d-flex " >
+                                <div class="me-3">Ընդհանուր</div>
+                                <div class="me-2">
+                                    <span class="remove-value" id="event-total-count">0</span>
+                                    <span>տոմս</span>
+                                </div>
+                                <div class="event-total-cont"></div>
+                                <div class="me-2">
+                                    <span class="remove-value" id="event-total-price">0</span>
+                                    <span>դրամ</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="other-service-save" class="mt-3 row justify-content-end" >
+                            <div class="col-sm-10 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                            </div>
+                        </div>
+                    </div>
                   </form>
               </div>
             @endif
