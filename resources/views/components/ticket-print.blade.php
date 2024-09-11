@@ -100,9 +100,17 @@
                         <span>{{ $item['action_date']['start'] }} - {{ $item['action_date']['end'] }}</span>
                     </div>
                 @endif
+                @if ($item['type'] == 'other_service')
+                    <div class="text-flex text-margin">
+                        <span>Ծառայության անվանումը/Service name - </span>
+                        <span>{{ $item['service_name_am'] }}/{{ $item['service_name_en'] }}</span>
+                    </div>
+
+                @endif
+
 
                 @if (isset($item['price']))
-                    @if (isset($item['photo']))
+                    @if (!isset($item['guid']))
                         <div class="text-flex text-margin">
                             <span>Գին/Price - </span>
                             <span>{{ $item['price'] }}դր․/AMD</span>

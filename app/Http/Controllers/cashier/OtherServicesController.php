@@ -28,21 +28,16 @@ class OtherServicesController extends CashierController
 
             $museumId = getAuthMuseumId();
 
-            $otherService = OtherService::where(['museum_id' => $museumId, 'status' => 1])->first();
 
-            if (! $otherService) {
-                session(['errorMessage' => 'Դուք չունեք տոմս']);
 
-                return redirect()->route('tickets_show');
-            }
 
-             $otherServiceId = $otherService->id;
+
 
             $data['items'][0]['type'] = "other_service";
                     $data['items'][0]['quantity']=1;
-                    $data['items'][0]['id']=$otherServiceId;
+                    $data['items'][0]['id']=$request->other_service;
 
-// dd($data);
+
             $addPurchase = $this->purchase($data);
 
                 if ( $addPurchase) {

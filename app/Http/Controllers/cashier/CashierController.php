@@ -151,7 +151,12 @@ class CashierController extends Controller
               $data['data'][$key]['photo'] = Storage::disk('local')->path($qr['path']);
 
             }
-         
+
+            if($qr['type']=="other_service"){
+              $data['data'][$key]['service_name_am'] = $qr->purchased_item->other_service->translation('am');
+              $data['data'][$key]['service_name_en'] = $qr->purchased_item->other_service->translation('en');
+            }
+
 
 
 
