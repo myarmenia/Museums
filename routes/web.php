@@ -26,6 +26,11 @@ use App\Http\Controllers\Admin\Events\EventStoreController;
 use App\Http\Controllers\Admin\Events\EventUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
+use App\Http\Controllers\Admin\OtherServices\OSCreateController;
+use App\Http\Controllers\Admin\OtherServices\OSEditController;
+use App\Http\Controllers\Admin\OtherServices\OSListController;
+use App\Http\Controllers\Admin\OtherServices\OSStoreController;
+use App\Http\Controllers\Admin\OtherServices\OSUpdateController;
 use App\Http\Controllers\Admin\Reports\ExportExcelController;
 use App\Http\Controllers\Admin\Reports\ReportsForMuseumAdminController;
 use App\Http\Controllers\Admin\Reports\ReportsForSuperAdminController;
@@ -267,6 +272,16 @@ Route::group(['middleware' => ['auth']], function () {
 
       Route::post('ticket-school', SchoolTicketController::class)->name('ticket_school_store');
       Route::post('ticket-school/{id}', SchoolTicketController::class)->name('ticket_school_update');
+    });
+  });
+
+  Route::group(['prefix' => 'other-services', 'middleware' => ['role:content_manager|museum_admin|manager', 'check_auth_have_museum']], function () {
+    Route::get('list', OSListController::class)->name('other_services_list');
+    Route::get('create', OSCreateController::class)->name('other_services_create');
+    Route::post('store', OSStoreController::class)->name('other_services_store');
+    Route::group(['middleware' => ['model_access']], function () {
+      Route::put('update/{id}', OSUpdateController::class)->name('educational_programs-update');
+      Route::get('edit/{id}', OSEditController::class)->name('other_services_edit');
     });
   });
 
