@@ -417,7 +417,7 @@ $(function () {
         url: '/cashier/get-other-service/' + $(this).val(),
         cache: false,
         success: function (data) {
-        $('#otherServiceBlock').removeClass('d-none')
+        $('#other-service-save').removeClass('d-none')
 
           console.log(data)
           let content = `<table class="table cashier-table">
@@ -430,14 +430,21 @@ $(function () {
                           </thead>
                             <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
                                 <tr class="table-default">
-                                        <td>Ծառայություն</td>
-                                        <td>
-                                            <input type="number" onwheel="return false;" price="200012" min="0" class="form-control form-control-validate event_guid" id="other-service-price" name="other-service-price">
-                                        </td>
-                                        <td class="remove-value event_guide_row_price ticket_price" id="event_guide_price_am">0</td>
+                                        <td>${data.item_translations[0].name}</td>
+                                         <td>
+                                             <input type="text" disabled onwheel="return false;" price="200012" value=1 class="form-control form-control-validate event_guid" id="other-service-price" name="other-service-price">
+                                         </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id="event_guide_price_am">${data.price }</td>
+                                      </tr>
+                                      <tr class="table-default">
+                                        <td>Անվճար տոմս</td>
+                                         <td>
+                                             <input type = "checkbox"    name="free_ticket">
+                                         </td>
+                                        <td
                                       </tr>
 
-                                    </tbody><input type="hidden" name="style" value="temporary"></table>`
+                                    </tbody></table>`
 
                             $('#other-service-config').html(content)
 

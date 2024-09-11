@@ -68,6 +68,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
 use App\Http\Controllers\cashier\OtherServices;
+use App\Http\Controllers\cashier\OtherServicesController;
 use App\Http\Controllers\IncrementController;
 
 // authentication
@@ -188,7 +189,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
     Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
     Route::get('get-other-service/{id}', [CashierController::class,'getOtherServiceDetails'])->name('cashier.otherService.details');;
-
+    Route::post('/create-other-service', OtherServicesController::class)->name('cashier.add.otherServices');
 
     // Route::get('/create', [CashierController::class, 'create'])->name('cashier.add');
 
