@@ -19,6 +19,7 @@
                 <th>Էքսկուրսիա</th>
                 <th>Չեղարկված</th>
                 <th>Ապրանքներ</th>
+                <th>Այլ ծառայություններ</th>
                 @if (request()->request_report_type == 'compare')
                   <th>Ամսաթիվ</th>
                 @endif
