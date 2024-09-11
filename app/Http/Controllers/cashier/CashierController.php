@@ -153,8 +153,8 @@ class CashierController extends Controller
             }
 
             if($qr['type']=="other_service"){
-              $data['data'][$key]['service_name_am'] = $qr->purchased_item->other_service->translation('am');
-              $data['data'][$key]['service_name_en'] = $qr->purchased_item->other_service->translation('en');
+              $data['data'][$key]['service_name_am'] = $qr->purchased_item->other_service->translation('am')->name;
+              $data['data'][$key]['service_name_en'] = $qr->purchased_item->other_service->translation('en')->name;
             }
 
 
