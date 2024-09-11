@@ -4,6 +4,7 @@ use App\Models\CorporativeSale;
 use App\Models\CorporativeVisitorCount;
 use App\Models\Event;
 use App\Models\Museum;
+use App\Models\OtherService;
 use App\Models\Product;
 use App\Models\Ticket;
 use App\Models\TicketPdf;
@@ -149,6 +150,19 @@ class CashierService
         $data = TicketPdf::where('museum_id', $museumId)->orderBy('id', 'DESC')->first();
 
         return $data;
+    }
+
+    public function getOtherServiceDetails($otherServiceId)
+    {
+        if($museumId = museumAccessId()) {
+            $otherService = OtherService::where("museum_id", $museumId)->find($otherServiceId);
+
+            return $otherService;
+        }
+
+        session(['errorMessage' => 'Ինչ որ բան այն չէ']);
+
+        return false;
     }
 
 

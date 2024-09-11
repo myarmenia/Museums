@@ -67,4 +67,15 @@ class CashierController extends Controller
 
       return view('content.cashier.show-last-ticket', compact('data'));
    }
+   public function getOtherServiceDetails($id)
+   {
+
+    $otherService = $this->cashierService->getOtherServiceDetails($id);
+
+      if ($otherService) {
+         return response()->json($otherService);
+      }
+
+      return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
+   }
 }
