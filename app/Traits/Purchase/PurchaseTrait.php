@@ -553,8 +553,6 @@ trait PurchaseTrait
 
     $data['museum_id'] = $ticket ? $ticket->museum->id : false;
 
-
-
     $total_price = $ticket->price * $data['quantity'];
 
     $data['total_price'] = $total_price;
