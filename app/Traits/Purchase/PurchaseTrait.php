@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\EventConfig;
 use App\Models\GuideService;
 use App\Models\Museum;
+use App\Models\OtherService;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchasedItem;
@@ -295,7 +296,6 @@ trait PurchaseTrait
 
       // =================================================================
 
-
       //  =================== other service ===============================
 
       if ($value['type'] == 'other_service') {
@@ -312,9 +312,8 @@ trait PurchaseTrait
         }
 
       }
-      ///////
-      //  ===============================================================================
 
+      //  ===============================================================================
 
 
     }
@@ -543,6 +542,26 @@ trait PurchaseTrait
     return $data;
   }
 
+  public function makeOtherServiceData($data)
+  {
+    $ticket = $this->getOtherServiceTicket($data['id']);
+
+    if (!$ticket) {
+      return false;
+    }
+
+    $data['museum_id'] = $ticket ? $ticket->museum->id : false;
+
+
+
+    $total_price = $ticket->price * $data['quantity'];
+
+    $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
+
+    return $data;
+  }
+
 
   public function getProduct($id, $quantity)
   {
@@ -621,6 +640,11 @@ trait PurchaseTrait
   public function getSchoolTicket($id)
   {
     return TicketSchoolSetting::where('id', $id)->first();
+  }
+
+  public function getOtherServiceTicket($id)
+  {
+    return OtherService::where(['id' => $id, 'status' => 1])->first();
   }
 
   public function createUnitedTickets($data)
