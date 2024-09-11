@@ -164,7 +164,7 @@
       "slug": [
         "other_services_list",
         "other_services_create",
-        "other_services_edit"
+        "other_services-edit"
       ],
       "roles": [
         "museum_admin",

@@ -34,14 +34,14 @@ trait UpdateTrait
 
       $item = $model::where('id', $id)->first();
 
-      if ($request['translate'] != null && $className == 'OtherService') {
+      if ($request['translate'] != null && $table_name == 'other_services') {
 
-        $type = $this->makeOtherServiceType($request['translate']['en']);
-        $data['type'] = $type;
+          $type = $this->makeOtherServiceType($request['translate']['en']['name']);
+          $data['type'] = $type;
       }
 
       $item->update($data);
-      
+
       if ($item) {
         if ($request['translate'] != null) {
           foreach ($request['translate'] as $key => $lang) {
@@ -95,5 +95,11 @@ trait UpdateTrait
       $conf->save();
 
     }
+  }
+
+  public function makeOtherServiceType($name_en)
+  {
+    $type = Str::slug($name_en, '_');
+    return strtolower($type);
   }
 }

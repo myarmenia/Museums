@@ -31,9 +31,9 @@ trait StoreTrait
         $data['museum_id'] = museumAccessId();
       }
 
-      if ($request['translate'] != null && $className == 'OtherService') {
+      if ($request['translate'] != null && $table_name == 'other_services') {
 
-          $type = $this->makeOtherServiceType($request['translate']['en']);
+          $type = $this->makeOtherServiceType($request['translate']['en']['name']);
           $data['type'] = $type;
       }
 
@@ -69,7 +69,8 @@ trait StoreTrait
 
 
   public function makeOtherServiceType($name_en){
-      return Str::slug($name_en, '_');
+      $type =  Str::slug($name_en, '_');
+      return strtolower($type);
   }
 
 }

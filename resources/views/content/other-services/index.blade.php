@@ -48,6 +48,7 @@
                     <tbody>
                         @if (count($data) > 0)
                             @foreach ($data as $key => $service)
+
                                 <tr>
                                     <td>{{ ++$key }}</td>
                                     <td>{{ $service->translation("am")->name }}</td>
@@ -75,7 +76,7 @@
                                                             {{ $service->status ? 'checked' : null }}>
                                                     </div>Կարգավիճակ
                                                 </a>
-                                                <a class="dropdown-item" href="{{route('other_services_edit', $service->id)}}"><i
+                                                <a class="dropdown-item" href="{{route('other_services-edit', $service->id)}}"><i
                                                     class="bx bx-edit-alt me-1"></i>Փոփոխել
                                                 </a>
                                                 <button type="button" class="dropdown-item click_delete_item"
