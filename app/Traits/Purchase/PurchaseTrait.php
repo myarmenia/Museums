@@ -542,6 +542,7 @@ trait PurchaseTrait
     return $data;
   }
 
+  //////////////////////////
   public function makeOtherServiceData($data)
   {
     $ticket = $this->getOtherServiceTicket($data['id']);
