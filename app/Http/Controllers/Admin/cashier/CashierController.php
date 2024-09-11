@@ -22,6 +22,7 @@ class CashierController extends Controller
    {
 
       $allData = $this->cashierService->getAllData();
+
       if($allData['success']) {
          $data = $allData['data'];
          return view('content.cashier.create', compact('data'));
