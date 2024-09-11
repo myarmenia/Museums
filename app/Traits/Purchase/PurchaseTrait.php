@@ -296,6 +296,27 @@ trait PurchaseTrait
       // =================================================================
 
 
+      //  =================== other service ===============================
+
+      if ($value['type'] == 'other_service') {
+
+        $maked_data = $this->makeOtherServiceData($value);
+        unset($maked_data['id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+      ///////
+      //  ===============================================================================
+
+
+
     }
 
     return $row;
