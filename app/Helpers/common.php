@@ -426,7 +426,7 @@ if (!function_exists('getTranslateTicketTitl_en')) {
         'corporative' => 'Corporative',
         'guide' => 'Guide',
         'product' => 'Product',
-        'other_service' => 'Այլ ծառայություններ'
+        'other_service' => 'Other services'
 
     ];
 
