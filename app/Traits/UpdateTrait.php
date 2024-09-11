@@ -34,7 +34,14 @@ trait UpdateTrait
 
       $item = $model::where('id', $id)->first();
 
+      if ($request['translate'] != null && $className == 'OtherService') {
+
+        $type = $this->makeOtherServiceType($request['translate']['en']);
+        $data['type'] = $type;
+      }
+
       $item->update($data);
+      
       if ($item) {
         if ($request['translate'] != null) {
           foreach ($request['translate'] as $key => $lang) {
