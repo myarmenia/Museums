@@ -70,7 +70,8 @@ class ReportExport implements FromCollection, WithHeadings, WithMapping, WithSty
       'Կրթական ծրագիր',
       'Էքսկուրսիա',
       'Չեղարկված',
-      'Ապրանքներ'
+      'Ապրանքներ',
+      'Այլ ծառայություններ'
     ];
 
     if ($this->role_group == 'admin') {
