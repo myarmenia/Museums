@@ -15,7 +15,10 @@
     {
       "name": "Թանգարան",
       "icon": "menu-icon tf-icons bx bx-museum",
-      "slug": ["museum.edit", "create-museum"],
+      "slug": [
+        "museum.edit",
+        "create-museum"
+      ],
       "url": "museum/create",
       "roles": [
         "museum_admin",
@@ -37,21 +40,30 @@
       "name": "Հաղորդագրություններ",
       "icon": "menu-icon tf-icons bx bx-message",
       "slug": "chats",
-      "roles": ["museum_admin", "manager"],
+      "roles": [
+        "museum_admin",
+        "manager"
+      ],
       "url": "chats"
     },
     {
       "name": "Կորպորատիվ վաճառք",
       "icon": "menu-icon tf-icons bx bx-command",
       "slug": "corporative",
+
       "roles": ["museum_admin", "manager","accountant"],
+
       "url": "corporative"
     },
     {
       "name": "Դրամարկղ",
       "icon": "menu-icon tf-icons bx bx-wallet",
       "slug": "cashier",
-      "roles": ["museum_admin", "cashier", "manager"],
+      "roles": [
+        "museum_admin",
+        "cashier",
+        "manager"
+      ],
       "submenu": [
         {
           "url": "/cashier/tickets",
@@ -77,11 +89,14 @@
       "url": "/users",
       "name": "Օգտագործողներ",
       "icon": "menu-icon tf-icons bx bx-user",
-      "slug": ["users.index", "users.create", "users.edit"],
+      "slug": [
+        "users.index",
+        "users.create",
+        "users.edit"
+      ],
       "roles": [
         "museum_admin"
       ]
-
     },
     {
       "url": "musuem_branches/list",
@@ -93,7 +108,6 @@
         "content_manager",
         "manager"
       ]
-
     },
     {
       "url": "product/list",
@@ -105,14 +119,16 @@
         "content_manager",
         "manager"
       ]
-
     },
-
     {
       "url": "educational-programs/list",
       "name": "Կրթական ծրագրեր",
       "icon": "menu-icon tf-icons bx bx-list-ul",
-      "slug": ["educational_programs_list", "educational_programs_create","educational_programs-edit"],
+      "slug": [
+        "educational_programs_list",
+        "educational_programs_create",
+        "educational_programs-edit"
+      ],
       "roles": [
         "museum_admin",
         "manager",
@@ -142,6 +158,21 @@
       ]
     },
     {
+      "url": "other-services/list",
+      "name": "Այլ ծառայություններ",
+      "icon": "menu-icon tf-icons bx bx-cog",
+      "slug": [
+        "other_services_list",
+        "other_services_create",
+        "other_services-edit"
+      ],
+      "roles": [
+        "museum_admin",
+        "manager",
+        "content_manager"
+      ]
+    },
+    {
       "url": "tickets/show",
       "name": "Տոմս",
       "icon": "menu-icon tf-icons bx bxs-coupon",
@@ -151,7 +182,6 @@
         "manager"
       ]
     },
-
     {
       "url": "museum/reports/report",
       "name": "Հաշվետվություն",
@@ -175,8 +205,6 @@
         }
       ]
     }
-
-
 
   ]
 }
