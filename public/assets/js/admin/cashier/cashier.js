@@ -436,13 +436,7 @@ $(function () {
                                          </td>
                                         <td class="remove-value event_guide_row_price ticket_price" id="event_guide_price_am">${data.price }</td>
                                       </tr>
-                                      <tr class="table-default">
-                                        <td>Անվճար տոմս</td>
-                                         <td>
-                                             <input type = "checkbox"    name="free_ticket">
-                                         </td>
-                                        <td
-                                      </tr>
+                                   
 
                                     </tbody></table>`
 
