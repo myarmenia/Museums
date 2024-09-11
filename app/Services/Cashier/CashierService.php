@@ -155,8 +155,9 @@ class CashierService
     public function getOtherServiceDetails($otherServiceId)
     {
         if($museumId = museumAccessId()) {
-            $otherService = OtherService::where("museum_id", $museumId)->find($otherServiceId);
-
+            $otherService = OtherService::with(['item_translations' => function($query) {
+              $query->where('lang', 'am');
+          }])->where('museum_id', $museumId)->find($otherServiceId);
             return $otherService;
         }
 
