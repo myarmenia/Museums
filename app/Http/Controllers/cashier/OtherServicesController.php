@@ -42,7 +42,7 @@ class OtherServicesController extends Controller
                     $data['items']['quantity']=1;
                     $data['items']['id']=$otherServiceId;
 
-
+// dd($data);
             $addPurchase = $this->purchase($data);
 
                 if ( $addPurchase) {
