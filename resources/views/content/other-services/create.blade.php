@@ -65,6 +65,16 @@
                 @enderror
             </div>
 
+            <div class="mb-3 row">
+                <label for="ticket" class="col-md-2 col-form-label"></label>
+                <div class="d-flex col-md-10">
+                    <div class="col-md-2 form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="ticket" name="ticket">
+                        <label class="form-check-label" for="ticket">Տոմս</label>
+                    </div>
+                </div>
+            </div>
+
             <div class="row justify-content-end">
                 <div class="col-sm-10">
                     <button type="submit" class="btn btn-primary">Ստեղծել</button>

@@ -20,6 +20,7 @@ class OSStoreController extends Controller
   public function __invoke(OSRequest $request)
   {
 
+    $request['ticket'] = isset($request->ticket) ? true : 0;
     $other_services = $this->itemStore($request);
 
     if ($other_services) {
