@@ -33,7 +33,8 @@ trait QrTokenTrait
         $purchasItemForOtherService = $allPurchases[0];
 
         if($purchasItemForOtherService->type=="other_service" && !$purchasItemForOtherService->other_service->ticket ){
-          array_push($unusedSubTypes,'other_service');
+
+          array_push($unusedTypes,'other_service');
         }
         try {
             DB::beginTransaction();
