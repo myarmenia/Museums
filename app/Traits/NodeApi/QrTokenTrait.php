@@ -28,10 +28,12 @@ trait QrTokenTrait
           'guide_price_other',
         ];
 
+
         try {
             DB::beginTransaction();
             // $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->whereNotIn('type', $unusedTypes)->whereNotIn('sub_type', $unusedSubTypes)->get();
             $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->get();
+
                 $allPurchasesForQr = PurchasedItem::where('purchase_id', $purchaseId)
                 ->whereNotIn('type', $unusedTypes)
                 ->where(function ($query) use ($unusedSubTypes) {
@@ -42,10 +44,19 @@ trait QrTokenTrait
 
             $purchasesKeys = [];
             foreach ($allPurchasesForQr as $key => $item) {
+
+              if($item->type == "other_service" && !$item->other_service->ticket){
+                continue;
+              }
+              else{
                 $purchasesKeys[$item->type] = array_key_exists($item->type, $purchasesKeys)
-                    ? $purchasesKeys[$item->type] + $item->quantity
-                    : $item->quantity;
+                ? $purchasesKeys[$item->type] + $item->quantity
+                : $item->quantity;
+              }
+
+
             }
+
             $data = $this->getReqQrToken($url, $purchasesKeys);
             $addedItemsToken = [];
             foreach ($allPurchases as $key => $item) {

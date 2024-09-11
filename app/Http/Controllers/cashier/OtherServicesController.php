@@ -11,7 +11,7 @@ use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class OtherServicesController extends Controller
+class OtherServicesController extends CashierController
 {
     //
     use PurchaseTrait;
@@ -38,9 +38,9 @@ class OtherServicesController extends Controller
 
              $otherServiceId = $otherService->id;
 
-            $data['items']['type'] = "other_service";
-                    $data['items']['quantity']=1;
-                    $data['items']['id']=$otherServiceId;
+            $data['items'][0]['type'] = "other_service";
+                    $data['items'][0]['quantity']=1;
+                    $data['items'][0]['id']=$otherServiceId;
 
 // dd($data);
             $addPurchase = $this->purchase($data);
