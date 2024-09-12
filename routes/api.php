@@ -37,7 +37,7 @@ use App\Http\Controllers\API\MuseumListController;
 use App\Http\Controllers\API\Notification\AllNotificationController;
 use App\Http\Controllers\API\Notification\ReadNotificationController;
 use App\Http\Controllers\API\Notification\UnreadNotificationController;
-use App\Http\Controllers\api\OtherService\OtherServiceController;
+use App\Http\Controllers\API\OtherService\OtherServiceController;
 use App\Http\Controllers\API\Product\ProductCantroller;
 use App\Http\Controllers\API\RegionListController;
 use App\Http\Controllers\API\Shop\ProductCantroller as ShopProductCantroller;
