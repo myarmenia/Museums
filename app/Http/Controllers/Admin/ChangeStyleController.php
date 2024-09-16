@@ -23,13 +23,13 @@ class ChangeStyleController extends CashierController
 
 
 
-    public function test_email(Request $request)
+    public function test_email(Request $request, $purchaseId, $email)
     {
 
-        // $generate_qr = $this->getTokenQr(1);
-        $generate_qr = TicketQr::whereIn('id',[315])->get();
+        $generate_qr = $this->getTokenQr($purchaseId);
+        // $generate_qr = TicketQr::whereIn('id',[315])->get();
         // dd($generate_qr);
-        $email = $request->email;
+        // $email = $email;
         $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
 
     }
