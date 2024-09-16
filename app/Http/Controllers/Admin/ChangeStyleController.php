@@ -40,9 +40,10 @@ class ChangeStyleController extends CashierController
           echo $result ?  "email sent successfully" : 'error';
 
         } catch (\Throwable $th) {
-
-            echo  'error';
+          throw $th;
         }
+
+
 
     }
 
