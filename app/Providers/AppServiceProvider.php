@@ -4,11 +4,10 @@ namespace App\Providers;
 
 
 use App\Interfaces\MuseumBranches\MuseumBranchesRepositoryInterface;
-
-use App\Interfaces\Project\ProjectRepositoryInterface;
+use App\Models\OtherService;
 use App\Repositories\MuseumBranches\MuseumBranchRepository;
-
-use App\Repositories\Project\ProjectRepository;
+use App\Repositories\OtherService\OtherServiceRepository;
+use App\Services\API\OtherService\OtherServService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,8 +18,11 @@ class AppServiceProvider extends ServiceProvider
    */
   public function register(): void
   {
-    $this->app->bind(ProjectRepositoryInterface::class, ProjectRepository::class);
+
     $this->app->bind(MuseumBranchesRepositoryInterface::class, MuseumBranchRepository::class);
+    $this->app->bind(OtherServService::class, function ($app): OtherServService {
+      return   new OtherServService($app->make(OtherServiceRepository::class));
+  });
 
   }
 

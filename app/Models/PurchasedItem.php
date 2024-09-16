@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Reports\ReportFilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -67,6 +68,10 @@ class PurchasedItem extends Model
     {
       return $this->hasMany(TicketQr::class);
 
+    }
+    public function other_service(): BelongsTo
+    {
+      return $this->belongsTo(OtherService::class ,'item_relation_id');
     }
 
 }

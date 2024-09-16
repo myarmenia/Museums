@@ -19,6 +19,7 @@ class OSUpdateController extends Controller
   public function __invoke(OSRequest $request, string $id)
   {
 
+    $request['ticket'] = isset($request->ticket) ? true : 0;
     $other_service = $this->itemUpdate($request, $id);
 
     if ($other_service) {

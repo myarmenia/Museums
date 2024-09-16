@@ -310,7 +310,7 @@ if (!function_exists('reportResult')) {
   function reportResult($data)
   {
 
-      $keys = ['standart', 'discount', 'free', 'school', 'united',  'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product'];
+      $keys = ['standart', 'discount', 'free', 'school', 'united',  'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product', 'other_service'];
       $sums = [];
 
       foreach ($data as $array) {
@@ -334,7 +334,7 @@ if (!function_exists('reportResult')) {
 if (!function_exists('reportTypes')) {
   function reportTypes()
   {
-    return ['standart', 'discount', 'free', 'school', 'united', 'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product'];
+    return ['standart', 'discount', 'free', 'school', 'united', 'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product', 'other_service'];
   }
 }
 
@@ -388,7 +388,8 @@ if (!function_exists('getTranslateTicketTitl')) {
         'event-config' => 'Միջոցառում',
         'corporative' => 'Կորպորատիվ',
         'guide' => 'Էքսկուրսիա',
-        'product' => 'Ապրանք'
+        'product' => 'Ապրանք',
+        'other_service' => 'Այլ ծառայություններ'
 
       ];
 
@@ -424,9 +425,10 @@ if (!function_exists('getTranslateTicketTitl_en')) {
         'event-config' => 'Event',
         'corporative' => 'Corporative',
         'guide' => 'Guide',
-        'product' => 'Product'
+        'product' => 'Product',
+        'other_service' => 'Other services'
 
-      ];
+    ];
 
       //check have $title in $titles
       if (isset($titles[$title])) {

@@ -22,11 +22,13 @@ class CashierController extends Controller
 {
     public function showReadyPdf(int $purchaseId, $ticketQrs = null)
     {
+
         $purchaseData = Purchase::with('purchased_items.ticketQr')->where('id', $purchaseId)->first();
         $museumId = $purchaseData->museum_id;
         $museum = Museum::with('translations')->find($museumId);
 
         $purchaseItem = PurchasedItem::where('purchase_id', $purchaseId)->get();
+
         $purchaseItemIds = $purchaseItem->pluck('id');
         $guids = $purchaseItem->where('type','guide')->where('returned_quntity', 0);
         $event_guids = $purchaseItem->where('returned_quntity', 0)
@@ -51,6 +53,7 @@ class CashierController extends Controller
         }else{
             $qrs = TicketQr::whereIn('purchased_item_id', $purchaseItemIds)->get();
         }
+
 
         if($qrs[0]->type == 'event' || $qrs[0]->type == 'event-config' || $qrs[0]->type == 'educational'){
             if($qrs[0]->type == 'event-config'){
@@ -149,12 +152,18 @@ class CashierController extends Controller
 
             }
 
+            if($qr['type']=="other_service"){
+              $data['data'][$key]['service_name_am'] = $qr->purchased_item->other_service->translation('am')->name;
+              $data['data'][$key]['service_name_en'] = $qr->purchased_item->other_service->translation('en')->name;
+            }
+
+
 
 
         }
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
-       
+
 
         $fileName = 'ticket-' . time() . '.pdf';
         $path = 'public/pdf-file/' . $fileName;

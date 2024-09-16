@@ -102,7 +102,11 @@
       "url": "musuem_branches/list",
       "name": "Մասնաճյուղեր",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "branches-list",
+      "slug": [
+          "branches-list",
+          "branches-create",
+          "branches-edi"
+      ],
       "roles": [
         "museum_admin",
         "content_manager",
@@ -113,7 +117,12 @@
       "url": "product/list",
       "name": "Ապրանքներ",
       "icon": "menu-icon tf-icons bx bx-purchase-tag",
-      "slug": "product_list",
+      "slug":
+          [
+          "product_list",
+          "product_create",
+          "product_edit"
+        ],
       "roles": [
         "museum_admin",
         "content_manager",
@@ -150,7 +159,12 @@
       "url": "events/list",
       "name": "Միջոցառումներ",
       "icon": "menu-icon tf-icons bx bx-party",
-      "slug": "event_list",
+      "slug":
+          [
+            "event_list",
+            "event_create",
+            "event_edit"
+          ],
       "roles": [
         "museum_admin",
         "manager",

@@ -18,6 +18,7 @@ class BuyTicketController extends CashierController
     public function __invoke(Request $request)
     {
         try {
+
             DB::beginTransaction();
             $requestData = $request->all();
             $data['purchase_type'] = 'offline';
@@ -108,7 +109,7 @@ class BuyTicketController extends CashierController
                 }
 
 
-            DB::commit();
+
             DB::rollBack();
 
             return redirect()->back();

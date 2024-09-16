@@ -28,10 +28,17 @@ trait QrTokenTrait
           'guide_price_other',
         ];
 
+        $hasTicket='';
+        $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->get();
+        $purchasItemForOtherService = $allPurchases[0];
+
+        if($purchasItemForOtherService->type=="other_service" && !$purchasItemForOtherService->other_service->ticket ){
+
+          array_push($unusedTypes,'other_service');
+        }
         try {
             DB::beginTransaction();
-            // $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->whereNotIn('type', $unusedTypes)->whereNotIn('sub_type', $unusedSubTypes)->get();
-            $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->get();
+
                 $allPurchasesForQr = PurchasedItem::where('purchase_id', $purchaseId)
                 ->whereNotIn('type', $unusedTypes)
                 ->where(function ($query) use ($unusedSubTypes) {
@@ -42,11 +49,18 @@ trait QrTokenTrait
 
             $purchasesKeys = [];
             foreach ($allPurchasesForQr as $key => $item) {
+
+
                 $purchasesKeys[$item->type] = array_key_exists($item->type, $purchasesKeys)
-                    ? $purchasesKeys[$item->type] + $item->quantity
-                    : $item->quantity;
+                ? $purchasesKeys[$item->type] + $item->quantity
+                : $item->quantity;
+
+
+
             }
+
             $data = $this->getReqQrToken($url, $purchasesKeys);
+
             $addedItemsToken = [];
             foreach ($allPurchases as $key => $item) {
                 $quantity = $item->quantity;

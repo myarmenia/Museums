@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,49 +10,56 @@
             padding: 0;
             font-family: DejaVu Sans;
         }
+
         .museum-name {
             font-size: 14px;
             font-weight: bold;
         }
+
         .text-margin {
             margin: 7px 0;
         }
+
         .ticket-info {
             font-size: 13px;
             display: flex;
             flex-direction: column;
         }
+
         .qr-code {
             width: 7cm;
             height: 7cm;
         }
+
         .page-break {
-                    page-break-after: always;
+            page-break-after: always;
         }
+
         .pdf-tmp {
             width: 100%;
             height: 100vh;
-            overflow:auto;
+            overflow: auto;
 
         }
+
         .img {
             text-align: center;
             display: flex;
             justify-content: center;
 
         }
+
         .text-flex {
             display: flex;
         }
-
     </style>
 </head>
+
 <body>
 
     <div class="pdf-tmp">
 
-        @foreach ($tickets['data'] as $key=>$item)
-
+        @foreach ($tickets['data'] as $key => $item)
             @if (isset($item['photo']))
                 <div class="img"><img src="{{ $item['photo'] }}" class="qr-code"></div>
             @endif
@@ -60,7 +68,7 @@
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['am'] }}</h4>
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['ru'] }}</h4>
             <h4 class="museum-name text-margin">{{ $tickets['museum_name']['en'] }}</h4>
-            <div class="ticket-info {{ $key == count($tickets['data'])-1 ? '' : 'page-break' }}">
+            <div class="ticket-info {{ $key == count($tickets['data']) - 1 ? '' : 'page-break' }}">
                 <div class="text-flex text-margin">
                     <span>Տեսակ/Type - </span>
                     <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }} /
@@ -99,14 +107,27 @@
                         <span>{{ $item['action_date']['start'] }} - {{ $item['action_date']['end'] }}</span>
                     </div>
                 @endif
+                @if ($item['type'] == 'other_service')
+                    <div class="text-flex text-margin">
+                        <span>Ծառայության անվանումը/Service name - </span>
+                        <span>{{ $item['service_name_am'] }}/{{ $item['service_name_en'] }}</span>
+                    </div>
+                @endif
+
 
                 @if (isset($item['price']))
-                    @if (isset($item['photo']))
+                    @if (isset($item['photo']) && $item['type'] !== 'other_service' && $item['type'] !== 'school')
                         <div class="text-flex text-margin">
                             <span>Գին/Price - </span>
                             <span>{{ $item['price'] }}դր․/AMD</span>
                         </div>
                     @endif
+                @endif
+                @if ($item['type'] == 'other_service')
+                    <div class="text-flex text-margin">
+                        <span>Գին/Price - </span>
+                        <span>{{ $item['price'] }}դր․/AMD</span>
+                    </div>
                 @endif
 
                 @if ($item['guid'])

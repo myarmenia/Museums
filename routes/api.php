@@ -37,6 +37,7 @@ use App\Http\Controllers\API\MuseumListController;
 use App\Http\Controllers\API\Notification\AllNotificationController;
 use App\Http\Controllers\API\Notification\ReadNotificationController;
 use App\Http\Controllers\API\Notification\UnreadNotificationController;
+use App\Http\Controllers\API\OtherService\OtherServiceController;
 use App\Http\Controllers\API\Product\ProductCantroller;
 use App\Http\Controllers\API\RegionListController;
 use App\Http\Controllers\API\Shop\ProductCantroller as ShopProductCantroller;
@@ -135,6 +136,9 @@ Route::group(['middleware' => ['api']], function ($router) {
       Route::get('product-category', [ShopProductCantroller::class, 'productCategory']);
       Route::get('product/{id}',SingleProductController::class);
 
+    });
+    Route::group(['prefix' => 'other-service'], function ($router) {
+      Route::get('list/{id}', [OtherServiceController::class, 'show']);
     });
 
 

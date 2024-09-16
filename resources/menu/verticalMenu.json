@@ -57,7 +57,12 @@
       "url": "product/list",
       "name": "Ապրանքներ",
       "icon": "menu-icon tf-icons bx bx-purchase-tag",
-      "slug": "product_list",
+      "slug":
+      [
+        "product_list",
+        "product_create",
+        "product_edit"
+      ],
       "roles": [
         "super_admin",
         "general_manager"
@@ -69,7 +74,11 @@
     {
       "name": "Նորություններ",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "news",
+      "slug":
+          ["news",
+          "news-create",
+          "news-edit"
+        ],
       "roles": ["general_manager","super_admin"],
       "url": "/news/news"
 
@@ -77,7 +86,11 @@
     {
       "name": "Բանեռ",
       "icon": "menu-icon tf-icons bx bx-box",
-      "slug": "banner_list",
+      "slug": [
+        "banner_list",
+        "banner_create",
+        "banner_edit"
+      ],
       "roles": [
         "super_admin",
         "general_manager"
