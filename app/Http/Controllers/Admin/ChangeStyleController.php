@@ -33,13 +33,14 @@ class ChangeStyleController extends CashierController
         try {
           $purchase = Purchase::find($purchaseId);
           $purchaseItemsIds = $purchase->purchased_items->pluck('id')->toArray();
-          $generate_qr = TicketQr::whereIn('purchase_item_id', $purchaseItemsIds)->get();
+          $generate_qr = TicketQr::whereIn('purchased_item_id', $purchaseItemsIds)->get();
 
           $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
 
           echo $result ?  "email sent successfully" : 'error';
 
         } catch (\Throwable $th) {
+          dd($th);
           throw $th;
         }
 
