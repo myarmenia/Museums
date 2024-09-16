@@ -27,7 +27,7 @@ class ChangeStyleController extends CashierController
     public function test_email(Request $request, $purchaseId, $email)
     {
 
-        // $generate_qr = $this->getTokenQr($purchaseId);
+        // for sernd online ticket to email via purchased_id and email (important)
 
 
         try {
