@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\cashier\CashierController;
 use App\Http\Controllers\Controller;
+use App\Models\Purchase;
 use App\Models\TicketQr;
 use App\Models\User;
 use App\Traits\NodeApi\QrTokenTrait;
@@ -26,19 +27,25 @@ class ChangeStyleController extends CashierController
     public function test_email(Request $request, $purchaseId, $email)
     {
 
-        $generate_qr = $this->getTokenQr($purchaseId);
-        // $generate_qr = TicketQr::whereIn('id',[315])->get();
-        // dd($generate_qr);
-        // $email = $email;
-        $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
+        // $generate_qr = $this->getTokenQr($purchaseId);
+
+
+        try {
+          $purchase = Purchase::find($purchaseId);
+          $purchaseItemsIds = $purchase->purchased_items->pluck('id')->toArray();
+          $generate_qr = TicketQr::whereIn('purchase_item_id', $purchaseItemsIds)->get();
+
+          $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
+
+          echo $result ?  "email sent successfully" : 'error';
+
+        } catch (\Throwable $th) {
+
+            echo  'error';
+        }
 
     }
 
 
-    public function showQrPdf($purchaseId){
-        // $qrs = TicketQr::whereIn('purchased_item_id', $purchaseItemIds)->get();
-        $pdfPath = $this->showReadyPdf($purchaseId);
-        return redirect()->back()->with('pdfFile', $pdfPath);
 
-    }
 }
