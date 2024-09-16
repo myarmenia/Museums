@@ -4,7 +4,6 @@ namespace App\Traits\Payments;
 use App\Mail\SendQRTiketsToUsersEmail;
 use App\Models\Payment;
 use App\Models\Purchase;
-use App\Services\Log\LogService;
 use Mail;
 
 trait PaymentCompletionTrait
