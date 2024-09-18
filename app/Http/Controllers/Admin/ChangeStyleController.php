@@ -53,7 +53,7 @@ class ChangeStyleController extends CashierController
         $purchase = Purchase::find($purchaseId);
         $purchaseItemsIds = $purchase->purchased_items->pluck('id')->toArray();
         $generate_qr = TicketQr::whereIn('purchased_item_id', $purchaseItemsIds)->get();
-        $pdfPath = $this->pdfTickets($generate_qr, 1);
+        $pdfPath = $this->pdfTickets($generate_qr, $purchase->museum_id, $purchase->id);
 
         $redirect_url = 'https://museumfront.gorc-ka.am/am/' . "?result=OK&pdf=$pdfPath";
         echo "<script type='text/javascript'>

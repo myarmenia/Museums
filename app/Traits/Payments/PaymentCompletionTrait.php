@@ -34,6 +34,7 @@ trait PaymentCompletionTrait
           if($payment->purchase->type == 'online' && $payment->guard_type != 'cart'){
               $purchasedId = $payment->purchase->id;
               $museumId = $payment->purchase->museum_id;
+              
               $pdfPath = $this->pdfTickets($generate_qr, $museumId, $purchasedId);
           }
 
@@ -71,7 +72,7 @@ trait PaymentCompletionTrait
     // echo "<script type='text/javascript'>
     //                 window.location = '$redirect_url'
     //           </script>";
-    
+
     // museumsarmenia.am
     $redirect_url = 'https://museumfront.gorc-ka.am/am/'. "?result=$response&pdf=$pdfPath";
     echo "<script type='text/javascript'>
