@@ -8,8 +8,10 @@
     <style>
 
       body{
-        color: black
+        color: black;
+        font-family: DejaVu Sans;
       }
+
       .cont{
         width: 50%;
         margin: 0 auto
