@@ -80,7 +80,7 @@ trait PaymentCompletionTrait
 
   public function pdfTickets($data, $museumId){
 
-      $pdf = Pdf::loadView('components.qr-tickets', ['tickets' => $data]);
+      $pdf = Pdf::loadView('components.qr-tickets', ['result' => $data]);
 
 
       $fileName = 'ticket-' . time() . '.pdf';
