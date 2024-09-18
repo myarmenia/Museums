@@ -31,8 +31,11 @@ trait PaymentCompletionTrait
           $email = $payment->purchase->email;
 
           // =============== 18.09.24 ===============================
-
-          $pdfPath = $this->pdfTickets($generate_qr,1);
+          if($payment->purchase->type == 'online' && $payment->guard_type != 'cart'){
+              $purchasedId = $payment->purchase->id;
+              $museumId = $payment->purchase->museum_id;
+              $pdfPath = $this->pdfTickets($generate_qr, $museumId, $purchasedId);
+          }
 
           // =============== 18.09.24 ===============================
 
@@ -68,8 +71,9 @@ trait PaymentCompletionTrait
     // echo "<script type='text/javascript'>
     //                 window.location = '$redirect_url'
     //           </script>";
-
-    $redirect_url = 'https://museumsarmenia.am/am/'. "?result=$response&pdf=$pdfPath";
+    
+    // museumsarmenia.am
+    $redirect_url = 'https://museumfront.gorc-ka.am/am/'. "?result=$response&pdf=$pdfPath";
     echo "<script type='text/javascript'>
                     window.location = '$redirect_url'
               </script>";
@@ -78,20 +82,28 @@ trait PaymentCompletionTrait
 
   }
 
-  public function pdfTickets($data, $museumId){
+  public function pdfTickets($data, $museumId, $purchasedId){
 
-      $pdf = Pdf::loadView('components.qr-tickets', ['result' => $data])->setPaper('a4','portrait');
+      $pdf = TicketPdf::find($purchasedId);
 
+      if($pdf == null){
+        $pdf = Pdf::loadView('components.qr-tickets', ['result' => $data])->setPaper('a4', 'portrait');
 
-      $fileName = 'ticket-' . time() . '.pdf';
-      $path = 'public/pdf-file/' . $fileName;
+        $fileName = 'ticket-' . time() . '.pdf';
+        $path = 'public/pdf-file/' . $fileName;
 
-      Storage::put($path, $pdf->output());
+        Storage::put($path, $pdf->output());
 
-      TicketPdf::create([
-        'museum_id' => $museumId,
-        'pdf_path' => $path
-      ]);
+        TicketPdf::create([
+          'museum_id' => $museumId,
+          'pdf_path' => $path
+        ]);
+      }
+      else{
+        $path =  $pdf->pdf_path;
+        $fileName = explode('public/pdf-file/', $path)[1];
+      }
+
 
       return asset('storage/' . 'pdf-file/' . $fileName);
 

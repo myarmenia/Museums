@@ -145,7 +145,7 @@
             <img src="https://manage.museumsarmenia.am/assets/img/mail-img/mobile-museum-logo.png" alt="museum-log" id="logo">
 
             <div style="text-align: center; align-item: center">
-                <p style="margin: 12px auto; font-weight: 600; text-align: center; width: 60%">ՀԱՅԱՍՏԱՆԻ ՀԱՆՐԱՊԵՏՈՒԹՅԱՆ ԿՐԹՈՒԹՅԱՆ, ԳԻՏՈՒԹՅԱՆ, ՄՇԱԿՈՒՅԹԻ ԵՎ ՍՊՈՐՏԻ
+                <p style="margin: 12px auto; font-weight: 400; text-align: center; width: 60%">ՀԱՅԱՍՏԱՆԻ ՀԱՆՐԱՊԵՏՈՒԹՅԱՆ ԿՐԹՈՒԹՅԱՆ, ԳԻՏՈՒԹՅԱՆ, ՄՇԱԿՈՒՅԹԻ ԵՎ ՍՊՈՐՏԻ
                     ՆԱԽԱՐԱՐՈՒԹՅՈՒՆ</p>
             </div>
 
@@ -161,7 +161,7 @@
                         <div class="card-div-first-child">
                             <div style="display: flex; align-items: center;">
                                 <img style="width: 33px; height: 43px;" src="https://manage.museumsarmenia.am/assets/img/mail-img/mobile-museum-logo.png" alt="logo">
-                                <p style="text-transform: uppercase; font-size: 12px; font-weight: 600; line-height: 13.6px; border-bottom: 1px solid black; padding-bottom: 5px;">{{ticketTitles()[$type]}}</p>
+                                <p style="text-transform: uppercase; font-size: 12px; font-weight: 400; line-height: 13.6px; border-bottom: 1px solid black; padding-bottom: 5px;">{{ticketTitles()[$type]}}</p>
                             </div>
 
                             @if ($type == 'united')
@@ -170,19 +170,19 @@
                                   @endphp
                                   @if (count($united_museums) > 0)
                                       @foreach ($united_museums as $museum)
-                                          <p style="font-weight: 600; margin: 10px 0">{{$museum->translation('en')->name}}</p>
+                                          <p style="font-weight: 400; margin: 10px 0">{{$museum->translation('en')->name}}</p>
                                       @endforeach
                                   @endif
                             @else
                                 @if ($type == 'event-config')
-                                  <p style="text-transform: font-weight: 600">{{$data->event_config->event->translation('en')->name}}</p>
+                                  <p style="text-transform: font-weight: 400">{{$data->event_config->event->translation('en')->name}}</p>
                                 @endif
                                 @if ($type == 'event')
-                                  <p style="text-transform: font-weight: 600">{{$data->event->translation('en')->name}}</p>
+                                  <p style="text-transform: font-weight: 400">{{$data->event->translation('en')->name}}</p>
                                 @endif
                                 @foreach (languages() as $lng)
                                     <div style="font-size: 12px; ine-height: 13.6px; margin-top: 6px; margin-left: 6px;">
-                                        <p style="font-weight: 600; margin-bottom: 0">{{$data->museum->translation($lng)->name}}</p>
+                                        <p style="font-weight: 400; margin-bottom: 0">{{$data->museum->translation($lng)->name}}</p>
                                         <span  style="font-size: 10px">
                                             <img src="https://manage.museumsarmenia.am/assets/img/icons/address.png" >
                                             {{$data->museum->translation($lng)->address}}
@@ -193,7 +193,7 @@
 
                             <div id="price_cont">
                                 <div style="width: 50%">
-                                  <span style="font-weight: 600">{{$data->price}} </span>
+                                  <span style="font-weight: 400">{{$data->price}} </span>
                                   <span >AMD</span>
                                 </div>
                                 <div style="width: 50%; text-align: end; align-content: content">
