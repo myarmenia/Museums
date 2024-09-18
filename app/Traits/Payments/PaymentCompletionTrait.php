@@ -4,7 +4,10 @@ namespace App\Traits\Payments;
 use App\Mail\SendQRTiketsToUsersEmail;
 use App\Models\Payment;
 use App\Models\Purchase;
+use App\Models\TicketPdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Mail;
+use Storage;
 
 trait PaymentCompletionTrait
 {
@@ -16,6 +19,7 @@ trait PaymentCompletionTrait
 
     if ($payment->group_payment_status == 'success' && $payment->status == 'confirmed') {
       $response = 'OK';
+      $pdfPath = null;
 
 
       // =============== get QR via paymant purchase_id ======================
@@ -25,6 +29,13 @@ trait PaymentCompletionTrait
         if (count($generate_qr) > 0) {
 
           $email = $payment->purchase->email;
+
+          // =============== 18.09.24 ===============================
+
+          $pdfPath = $this->pdfTickets($generate_qr,1);
+
+          // =============== 18.09.24 ===============================
+
 
           $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
         }
@@ -58,12 +69,31 @@ trait PaymentCompletionTrait
     //                 window.location = '$redirect_url'
     //           </script>";
 
-    $redirect_url = 'https://museumsarmenia.am/am/'. "?result=$response";
+    $redirect_url = 'https://museumsarmenia.am/am/'. "?result=$response?pdf=$pdfPath";
     echo "<script type='text/javascript'>
                     window.location = '$redirect_url'
               </script>";
 
 
+
+  }
+
+  public function pdfTickets($data, $museumId){
+
+      $pdf = Pdf::loadView('layouts.mail.send-qr-ticket', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
+
+
+      $fileName = 'ticket-' . time() . '.pdf';
+      $path = 'public/pdf-file/' . $fileName;
+
+      Storage::put($path, $pdf->output());
+
+      TicketPdf::create([
+        'museum_id' => $museumId,
+        'pdf_path' => $path
+      ]);
+
+      return asset('storage/' . 'pdf-file/' . $fileName);
 
   }
 

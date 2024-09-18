@@ -289,6 +289,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('change-style/{type}', [ChangeStyleController::class, "change_style"])->name('change_style');
   Route::get('test-email/{purchase_id}/{email}', [ChangeStyleController::class, "test_email"])->name('test_email');  //important
+  Route::get('test-pdfTickets/{purchase_id}', [ChangeStyleController::class, "testPdfTickets"])->name('est_pdfTickets');  //important
 
 
 });

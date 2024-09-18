@@ -8,12 +8,13 @@ use App\Models\Purchase;
 use App\Models\TicketQr;
 use App\Models\User;
 use App\Traits\NodeApi\QrTokenTrait;
+use App\Traits\Payments\PaymentCompletionTrait;
 use Illuminate\Http\Request;
 use App\Mail\SendQRTiketsToUsersEmail;
 use Mail;
 class ChangeStyleController extends CashierController
 {
-    use QrTokenTrait;
+    use QrTokenTrait, PaymentCompletionTrait;
     public function change_style(Request $request, $type)
     {
         session()->put('style', $type);
@@ -45,6 +46,19 @@ class ChangeStyleController extends CashierController
         }
 
 
+
+    }
+
+    public function testPdfTickets(Request $request, $purchaseId){
+        $purchase = Purchase::find($purchaseId);
+        $purchaseItemsIds = $purchase->purchased_items->pluck('id')->toArray();
+        $generate_qr = TicketQr::whereIn('purchased_item_id', $purchaseItemsIds)->get();
+        $pdfPath = $this->pdfTickets($generate_qr, 1);
+
+        $redirect_url = 'https://museumfront.gorc-ka.am/am/' . "?result=OK?pdf=$pdfPath";
+        echo "<script type='text/javascript'>
+                        window.location = '$redirect_url'
+                  </script>";
 
     }
 
