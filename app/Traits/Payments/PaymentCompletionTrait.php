@@ -69,7 +69,7 @@ trait PaymentCompletionTrait
     //                 window.location = '$redirect_url'
     //           </script>";
 
-    $redirect_url = 'https://museumsarmenia.am/am/'. "?result=$response?pdf=$pdfPath";
+    $redirect_url = 'https://museumsarmenia.am/am/'. "?result=$response&pdf=$pdfPath";
     echo "<script type='text/javascript'>
                     window.location = '$redirect_url'
               </script>";
@@ -80,7 +80,7 @@ trait PaymentCompletionTrait
 
   public function pdfTickets($data, $museumId){
 
-      $pdf = Pdf::loadView('components.qr-tickets', ['result' => $data]);
+      $pdf = Pdf::loadView('components.qr-tickets', ['result' => $data])->setPaper('a4','portrait');
 
 
       $fileName = 'ticket-' . time() . '.pdf';
