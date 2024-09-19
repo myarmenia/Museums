@@ -142,7 +142,7 @@
 
     <div class="cont" >
         <section style="background: #e3e2e059; padding: 30px 40px">
-            <img src="https://manage.museumsarmenia.am/assets/img/mail-img/mobile-museum-logo.png" alt="museum-log" id="logo">
+            <img src="{{asset('assets/img/mail-img/mobile-museum-logo.png')}}" alt="museum-log" id="logo">
 
             <div style="text-align: center; align-item: center">
                 <p style="margin: 12px auto; font-weight: 400; text-align: center; width: 60%">ՀԱՅԱՍՏԱՆԻ ՀԱՆՐԱՊԵՏՈՒԹՅԱՆ ԿՐԹՈՒԹՅԱՆ, ԳԻՏՈՒԹՅԱՆ, ՄՇԱԿՈՒՅԹԻ ԵՎ ՍՊՈՐՏԻ
@@ -160,7 +160,7 @@
                     <div class="card-div" >
                         <div class="card-div-first-child">
                             <div style="display: flex; align-items: center;">
-                                <img style="width: 33px; height: 43px;" src="https://manage.museumsarmenia.am/assets/img/mail-img/mobile-museum-logo.png" alt="logo">
+                                <img style="width: 33px; height: 43px;" src="{{asset('assets/img/mail-img/mobile-museum-logo.png')}}" alt="logo">
                                 <p style="text-transform: uppercase; font-size: 12px; font-weight: 400; line-height: 13.6px; border-bottom: 1px solid black; padding-bottom: 5px;">{{ticketTitles()[$type]}}</p>
                             </div>
 
@@ -184,7 +184,7 @@
                                     <div style="font-size: 12px; ine-height: 13.6px; margin-top: 6px; margin-left: 6px;">
                                         <p style="font-weight: 400; margin-bottom: 0">{{$data->museum->translation($lng)->name}}</p>
                                         <span  style="font-size: 10px">
-                                            <img src="https://manage.museumsarmenia.am/assets/img/icons/address.png" >
+                                            <img src="{{asset('assets/img/icons/address.png')}}" >
                                             {{$data->museum->translation($lng)->address}}
                                         </span>
                                     </div>
