@@ -85,7 +85,7 @@ trait PaymentCompletionTrait
 
   public function pdfTickets($data, $museumId, $purchasedId = null){
 
-      $pdf = TicketPdf::find($purchasedId);
+      $pdf = TicketPdf::where('purchased_item_id', $purchasedId)->first();
 
       if($pdf == null){
         $pdf = Pdf::loadView('components.qr-tickets', ['result' => $data])->setPaper('a4', 'portrait');
