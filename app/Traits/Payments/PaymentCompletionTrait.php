@@ -34,7 +34,7 @@ trait PaymentCompletionTrait
           if($payment->purchase->type == 'online' && $payment->guard_type != 'cart'){
               $purchasedId = $payment->purchase->id;
               $museumId = $payment->purchase->museum_id;
-              
+
               $pdfPath = $this->pdfTickets($generate_qr, $museumId, $purchasedId);
           }
 
@@ -74,7 +74,7 @@ trait PaymentCompletionTrait
     //           </script>";
 
     // museumsarmenia.am
-    $redirect_url = 'https://museumfront.gorc-ka.am/am/'. "?result=$response&pdf=$pdfPath";
+    $redirect_url = 'https://museumsarmenia.am/am/'. "?result=$response&pdf=$pdfPath";
     echo "<script type='text/javascript'>
                     window.location = '$redirect_url'
               </script>";
@@ -83,7 +83,7 @@ trait PaymentCompletionTrait
 
   }
 
-  public function pdfTickets($data, $museumId, $purchasedId){
+  public function pdfTickets($data, $museumId, $purchasedId = null){
 
       $pdf = TicketPdf::find($purchasedId);
 
@@ -97,6 +97,7 @@ trait PaymentCompletionTrait
 
         TicketPdf::create([
           'museum_id' => $museumId,
+          'purchased_item_id' =>$purchasedId,
           'pdf_path' => $path
         ]);
       }
