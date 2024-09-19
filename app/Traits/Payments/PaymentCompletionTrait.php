@@ -74,7 +74,7 @@ trait PaymentCompletionTrait
     //           </script>";
 
     // museumsarmenia.am
-    $redirect_url = 'https://museumfront.gorc-ka.am/am/'. "?result=$response&pdf=$pdfPath";
+    $redirect_url = 'https://museumsarmenia.am/am/'. "?result=$response&pdf=$pdfPath";
     echo "<script type='text/javascript'>
                     window.location = '$redirect_url'
               </script>";
