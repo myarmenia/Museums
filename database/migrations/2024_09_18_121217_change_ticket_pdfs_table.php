@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('ticket_pdfs', function (Blueprint $table) {
 
             $table->unsignedBigInteger('purchased_id')->nullable()->after('museum_id');
-            $table->foreign('purchased_id')->references('id')->on('purchased_items')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('purchased_id')->references('id')->on('purchases')->onDelete('cascade')->onUpdate('cascade');
             $table->integer('museum_id')->nullable()->change();
 
         });
