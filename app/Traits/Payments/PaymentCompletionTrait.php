@@ -34,7 +34,7 @@ trait PaymentCompletionTrait
           if($payment->purchase->type == 'online' && $payment->guard_type != 'cart'){
               $purchasedId = $payment->purchase->id;
               $museumId = $payment->purchase->museum_id;
-              
+
               $pdfPath = $this->pdfTickets($generate_qr, $museumId, $purchasedId);
           }
 
@@ -83,7 +83,7 @@ trait PaymentCompletionTrait
 
   }
 
-  public function pdfTickets($data, $museumId, $purchasedId){
+  public function pdfTickets($data, $museumId, $purchasedId = null){
 
       $pdf = TicketPdf::find($purchasedId);
 
@@ -97,6 +97,7 @@ trait PaymentCompletionTrait
 
         TicketPdf::create([
           'museum_id' => $museumId,
+          'purchased_item_id' =>$purchasedId,
           'pdf_path' => $path
         ]);
       }
