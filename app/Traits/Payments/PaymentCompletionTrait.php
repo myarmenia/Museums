@@ -5,6 +5,8 @@ use App\Mail\SendQRTiketsToUsersEmail;
 use App\Models\Payment;
 use App\Models\Purchase;
 use App\Models\TicketPdf;
+use App\Models\TicketQr;
+use App\Services\Log\LogService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Mail;
 use Storage;
@@ -17,6 +19,9 @@ trait PaymentCompletionTrait
     Payment::where('payment_order_id', $order_id)->update($data);
     $payment = $this->getPayment($order_id);
     $pdfPath = null;
+
+    // ============= test ================
+    LogService::store(null, 1, 'payment Completion', 'store');
 
     if ($payment->group_payment_status == 'success' && $payment->status == 'confirmed') {
       $response = 'OK';
@@ -63,8 +68,12 @@ trait PaymentCompletionTrait
 
       // =============== 18.09.24 ===============================
       if ($payment->purchase->type == 'online' && $payment->guard_type != 'cart') {
-        $purchasedId = $payment->purchase->id;
-        $museumId = $payment->purchase->museum_id;
+          $purchasedId = $payment->purchase->id;
+          $museumId = $payment->purchase->museum_id;
+
+          $purchase = Purchase::find($purchasedId);
+          $purchaseItemsIds = $purchase->purchased_items->pluck('id')->toArray();
+          $generate_qr = TicketQr::whereIn('purchased_item_id', $purchaseItemsIds)->get();
 
         $pdfPath = $this->pdfTickets($generate_qr, $museumId, $purchasedId);
       }
