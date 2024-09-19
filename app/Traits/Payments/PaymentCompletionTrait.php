@@ -30,12 +30,12 @@ trait PaymentCompletionTrait
           $email = $payment->purchase->email;
 
           // =============== 18.09.24 ===============================
-          if($payment->purchase->type == 'online' && $payment->guard_type != 'cart'){
-              $purchasedId = $payment->purchase->id;
-              $museumId = $payment->purchase->museum_id;
+          // if($payment->purchase->type == 'online' && $payment->guard_type != 'cart'){
+          //     $purchasedId = $payment->purchase->id;
+          //     $museumId = $payment->purchase->museum_id;
 
-              $pdfPath = $this->pdfTickets($generate_qr, $museumId, $purchasedId);
-          }
+          //     $pdfPath = $this->pdfTickets($generate_qr, $museumId, $purchasedId);
+          // }
 
           // =============== 18.09.24 ===============================
 
@@ -60,6 +60,16 @@ trait PaymentCompletionTrait
           });
         }
       }
+
+      // =============== 18.09.24 ===============================
+      if ($payment->purchase->type == 'online' && $payment->guard_type != 'cart') {
+        $purchasedId = $payment->purchase->id;
+        $museumId = $payment->purchase->museum_id;
+
+        $pdfPath = $this->pdfTickets($generate_qr, $museumId, $purchasedId);
+      }
+
+      // =============== 18.09.24 ===============================
 
     } else {
       $response = 'Diny';
