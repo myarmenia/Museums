@@ -16,11 +16,10 @@ trait PaymentCompletionTrait
 
     Payment::where('payment_order_id', $order_id)->update($data);
     $payment = $this->getPayment($order_id);
+    $pdfPath = null;
 
     if ($payment->group_payment_status == 'success' && $payment->status == 'confirmed') {
       $response = 'OK';
-      $pdfPath = null;
-
 
       // =============== get QR via paymant purchase_id ======================
       if($payment->purchase->status == 0){
