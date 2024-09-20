@@ -73,7 +73,7 @@ trait QR
       $end_date = null;
 
       $qr = TicketQr::valid($qr_token, $museum_ids)->first();
-      
+
       // ============= 21.09.24 ========================
       if($qr->visited_date != null &&  $qr->type != 'subscription'){
 
@@ -195,6 +195,7 @@ trait QR
 
 
     return $update;
+    
   }
 
   public function changeTicketStatus($qr, $date)
