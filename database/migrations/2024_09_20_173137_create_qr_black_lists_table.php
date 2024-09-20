@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('ticket_pdfs', function (Blueprint $table) {
-          $table->integer('purchased_items')->nullable()->after('local_ip'); // add only minutes
-
+        Schema::create('qr_black_lists', function (Blueprint $table) {
+            $table->id();
+            $table->string('mac');
+            $table->string('qr');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('turnstiles', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('qr_black_lists');
     }
 };

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade')->onDelete('cascade');
             $table->string('mac');
             $table->string('local_ip')->nullable();
+            $table->integer('ticket_redemption_time')->nullable();
             $table->timestamps();
         });
     }
