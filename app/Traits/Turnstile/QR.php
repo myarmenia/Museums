@@ -60,13 +60,19 @@ trait QR
       return 'invalid scan';
     }
 
-    $turnstile = Turnstile::museum($mac)->first();
+    // $turnstile = Turnstile::museum($mac)->first();   //old
 
-    if ($turnstile) {
-      $museum_id = $turnstile->museum_id;
+    $turnstile = Turnstile::museum($mac)->first();  // for ticket_redemption_time
+    $museum_ids = Turnstile::museum($mac)->pluck('museum_id')->toArray();  // 20.09.24
+
+
+    // if ($turnstile) {   //old
+    if (count($museum_ids) > 0) {
+
+      // $museum_id = $turnstile->museum_id;  // old
       $end_date = null;
 
-      $qr = TicketQr::valid($qr_token, $museum_id)->first();
+      $qr = TicketQr::valid($qr_token, $museum_ids)->first();
 
       if ($qr) {
         if ($qr->type == 'event-config') {
