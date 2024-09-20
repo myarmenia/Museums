@@ -138,18 +138,45 @@ trait QR
     $date = $date->modify('+4 hours');  // +4 hour to UTC
     $now_date = $date->format('Y-m-d H:i:s');
 
-    $status = $qr->type != 'subscription' ? 'used' : 'active';
 
-    if($online && $ticket_redemption_time != null){
-        $update = UpdateQRStatusJob::dispatch($qr->id, $now_date, $status)->delay(now()->addMinutes($ticket_redemption_time));
+    // ============= 21.09.24 ===================
+    $visited_date = $qr->visited_date;
+    $status = 'active';
+
+    if($visited_date == null){
+      $visited_date = $now_date;
     }
-    else{
-      $update = $qr->update([
-        'status' => $status,
-        'visited_date' => $now_date,
-      ]);
+    
+    $valid_time = $visited_date->addHour();
+
+    if ($valid_time->lessThan(Carbon::now())) {
+      // Если прошел 1 час или больше
+      $status = $qr->type != 'subscription' ? 'used' : 'active';
+      echo 'Прошло больше 1 часа';
     }
 
+    $update = $qr->update([
+      'status' => $status,
+      'visited_date' => $now_date,
+    ]);
+
+
+    // ========== start old ============
+
+
+    // $status = $qr->type != 'subscription' ? 'used' : 'active';
+
+    // if($online && $ticket_redemption_time != null){
+    //     $update = UpdateQRStatusJob::dispatch($qr->id, $now_date, $status)->delay(now()->addMinutes($ticket_redemption_time));
+    // }
+    // else{
+    //   $update = $qr->update([
+    //     'status' => $status,
+    //     'visited_date' => $now_date,
+    //   ]);
+    // }
+
+    // ========== end old ============
 
 
     return $update;
