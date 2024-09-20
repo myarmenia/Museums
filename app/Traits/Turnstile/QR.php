@@ -146,8 +146,8 @@ trait QR
     if($visited_date == null){
       $visited_date = $now_date;
     }
-    
-    $valid_time = $visited_date->addHour();
+
+    $valid_time = Carbon::parse($visited_date)->addHour();
 
     if ($valid_time->lessThan(Carbon::now())) {
       // Если прошел 1 час или больше
