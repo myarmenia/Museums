@@ -54,13 +54,18 @@ class TicketQr extends Model
       return $this->hasMany(TicketAccess::class, 'ticket_qr_id');
   }
 
-  public function scopeValid($query, $qr, $museum_id)
+  public function scopeValid($query, $qr, $museum_ids)
   {
+    // return $query->where([
+    //         "token" => $qr,
+    //         "museum_id" => $museum_id,
+    //         'status' => 'active'
+    //       ]);
+
     return $query->where([
-            "token" => $qr,
-            "museum_id" => $museum_id,
-            'status' => 'active'
-          ]);
+        "token" => $qr,
+        'status' => 'active'
+    ])->whereIn('museum_id', $museum_ids);
   }
 
 
