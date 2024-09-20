@@ -22,6 +22,7 @@ class TicketQr extends Model
         'status',
         'type',
         'price',
+        'visited_date'
     ];
 
   public function museum()
