@@ -75,7 +75,7 @@ trait QR
       $qr = TicketQr::valid($qr_token, $museum_ids)->first();
 
       // ============= 21.09.24 ========================
-      if($qr->visited_date != null &&  $qr->type != 'subscription'){
+      if($qr && $qr->visited_date != null &&  $qr->type != 'subscription'){
 
         $visited_date = $qr->visited_date;
         $valid_time = Carbon::parse($visited_date)->addHour();
@@ -195,7 +195,7 @@ trait QR
 
 
     return $update;
-    
+
   }
 
   public function changeTicketStatus($qr, $date)
