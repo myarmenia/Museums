@@ -73,6 +73,21 @@ trait QR
       $end_date = null;
 
       $qr = TicketQr::valid($qr_token, $museum_ids)->first();
+      
+      // ============= 21.09.24 ========================
+      if($qr->visited_date != null &&  $qr->type != 'subscription'){
+
+        $visited_date = $qr->visited_date;
+        $valid_time = Carbon::parse($visited_date)->addHour();
+
+        if ($valid_time->lessThan(Carbon::now())) {
+          $update = $qr->update(['status' => 'used']);
+          return false;
+
+        }
+      }
+      // ============= 21.09.24 ========================
+
 
       if ($qr) {
         if ($qr->type == 'event-config') {
@@ -152,7 +167,7 @@ trait QR
     if ($valid_time->lessThan(Carbon::now())) {
       // Если прошел 1 час или больше
       $status = $qr->type != 'subscription' ? 'used' : 'active';
-      echo 'Прошло больше 1 часа';
+
     }
 
     $update = $qr->update([
