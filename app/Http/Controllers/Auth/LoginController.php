@@ -32,9 +32,10 @@ class LoginController extends Controller
    */
   protected function authenticated(Request $request, $user)
   {
+
       if ($user->status) {
           if($user->isAdmin() ){
-            
+
             return redirect('/welcome');
 
             // if ($user->isAdmin() == "admin") {
@@ -58,6 +59,10 @@ class LoginController extends Controller
           return redirect('/');
       }
 
+  }
+  public function logout(){
+    Auth::logout();
+            return redirect('/');
   }
 
 

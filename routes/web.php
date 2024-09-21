@@ -49,6 +49,7 @@ use App\Http\Controllers\Admin\Product\ProductListController;
 use App\Http\Controllers\Admin\Product\ProductStoreController;
 use App\Http\Controllers\Admin\Product\ProductUpdateController;
 use App\Http\Controllers\Admin\cashier\CashierController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\cashier\BuyProduct;
 use App\Http\Controllers\cashier\BuyTicketController;
 use App\Http\Controllers\cashier\CorporativeTicket;
@@ -74,8 +75,9 @@ use App\Http\Controllers\IncrementController;
 // authentication
 Auth::routes(['register' => false]);
 
-Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 
+Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
 Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])->name('auth-reset-password-basic');
 
