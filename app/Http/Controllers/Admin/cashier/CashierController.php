@@ -78,4 +78,17 @@ class CashierController extends Controller
 
       return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
    }
+    public function getPartnerDetails($id)
+   {
+
+      $partner = $this->cashierService->getPartnerDetails($id);
+
+        if ($partner) {
+
+          return response()->json($partner);
+        }
+
+        return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
+   }
+
 }

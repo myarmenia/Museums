@@ -409,12 +409,12 @@ $(function () {
     $('#event-total-price').text(totalPrice);
   }
 
- $("#otherServices").on('input',function(){
+ $("#partners").on('input',function(){
 
 
       $.ajax({
         type: "GET",
-        url: '/cashier/get-other-service/' + $(this).val(),
+        url: '/cashier/get-partner/' + $(this).val(),
         cache: false,
         success: function (data) {
         $('#other-service-save').removeClass('d-none')
@@ -430,22 +430,32 @@ $(function () {
                           </thead>
                             <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
                                 <tr class="table-default">
-                                        <td>${data.item_translations[0].name}</td>
+                                        <td>${data.name}</td>
                                          <td>
-                                             <input type="text" disabled onwheel="return false;" price="200012" value=1 class="form-control form-control-validate event_guid" id="other-service-price" name="other-service-price">
+                                             <input type="number" onwheel="return false;" price="200012"  class="form-control form-control-validate event_guid" id="ticketPrice" name="partner-price" data-museum-standart-ticket-price=${data.museum.standart_tickets.price }>
                                          </td>
-                                        <td class="remove-value event_guide_row_price ticket_price" id="event_guide_price_am">${data.price }</td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id="museum-ticket-price"></td>
                                       </tr>
-                                   
+
 
                                     </tbody></table>`
 
-                            $('#other-service-config').html(content)
+                            $('#partner-config').html(content)
 
           }
         })
 
+        // $('#ticketPrice').on('input',function(){
+        //   alert()
+        // })
+
+
   })
 
 
+
+
+
 });
+
+
