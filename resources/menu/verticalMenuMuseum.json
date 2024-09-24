@@ -172,6 +172,21 @@
       ]
     },
     {
+      "url": "partners/list",
+      "name": "Գործընկերներ",
+      "icon": "menu-icon tf-icons bx bx-group",
+      "slug": [
+        "partners_list",
+        "partners_create",
+        "partners-edit"
+      ],
+      "roles": [
+        "museum_admin",
+        "manager",
+        "accountant"
+      ]
+    },
+    {
       "url": "other-services/list",
       "name": "Այլ ծառայություններ",
       "icon": "menu-icon tf-icons bx bx-cog",

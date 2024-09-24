@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class CashierComment extends Model
 {
     use HasFactory;
+    protected $guarded = [];
+
 }
