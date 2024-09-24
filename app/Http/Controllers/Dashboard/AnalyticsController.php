@@ -11,12 +11,30 @@ use App\Traits\Dashboard\AnalyticsTrait;
 use App\Traits\Reports\CheckReportType;
 use App\Traits\Reports\ReportTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AnalyticsController extends Controller
 {
   // use ReportTrait, CheckReportType, AnalyticsTrait;
   use AnalyticsTrait, AnalyticsAttendanceByCountry, AnalyticsAttendanceByAge, AnalyticsTopMuseum;
+  protected $user;
+  public function __construct(){
 
+    $this->middleware(function ($request, $next) {
+      $this->user = Auth::user(); // Set user here
+
+      $authUserRols = Auth::user()->roles->pluck('name')->toArray();
+      $array2 = ['super_admin','general_manager','chief_accountant'];
+      $intersection = array_intersect(array:$authUserRols, $array2);
+
+      if (!count($intersection)) {
+        return redirect('/welcome'); // Перенаправляем на страницу /welcome
+    }
+
+      return $next($request);
+  });
+    // session(['last_visited_url' => $lastUrl]);
+  }
   public function __invoke()
   {
 
