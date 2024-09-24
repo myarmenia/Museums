@@ -11,7 +11,7 @@ $(function () {
         success: function (data) {
           if (data.success) {
             $('#returned_info').html(`
-                <div class="col-sm-10 text-success"> 
+                <div class="col-sm-10 text-success">
                   <div >
                       <div class="col-sm-10 text-success my-2">
                               <span class='fts-22'>Տոմսի տեսակը՝ ${data.type}</span>
@@ -19,32 +19,12 @@ $(function () {
                       <div id='text-components'>
                       </div>
                   </div>
-                    
+
                     <div id="button-container"></div> <!-- Контейнер для кнопки -->
                 </div>
             `);
-            // $('#returned_info').html(`<div class="col-sm-10 text-success "> 
-            //     <div class="col-sm-10 text-success my-2"><span class='fts-22'>Տոմսի տեսակը՝ ${data.type}</span></div>
-            //     <button class="btn btn-primary col-2" data-id="${unique}" id="archive-ticket">Արխիվացնել</button>
-            // </div>`)
-            if (data.guides) {
-              $('#text-components').html(`
-                <div class="form-check mt-3">
-                  <input class="form-check-input" type="checkbox" value="" id="checked-ticket" />
-                  <label class="form-check-label" for="checked-ticket">
-                    ջնջել տոմսը
-                  </label>
-                </div>
-                <div class="form-check mt-3 mb-3">
-                <input class="form-check-input" type="checkbox" value="" id="checked-guide" />
-                <label class="form-check-label" for="checked-guide">
-                  ջնջել էքսկուրսավար
-                </label>
-                </div>
-              `);
-            }else{
-              $('#text-components').empty();
-            }
+
+          
             $('#button-container').html(`
                 <button class="btn btn-primary col-2" data-id="${unique}" id="archive-ticket">Արխիվացնել</button>
             `);
@@ -61,25 +41,19 @@ $(function () {
 
   $(document).on("click", '#archive-ticket', function () {
     let dataId = $(this).attr('data-id');
+
     let ticketApprove = true;
     let guideApprove = false;
 
-    if($('#checked-ticket').length){
-      ticketApprove = $('#checked-ticket').prop('checked');
-    }
-    if($('#checked-guide').length){
-      guideApprove = $('#checked-guide').prop('checked');
-    }
 
     if (dataId != '') {
       let url = 'return-ticket/remove';
       $.ajax({
         type: "post",
         data: {
-          json:JSON.stringify({ 
+          json:JSON.stringify({
             "dataId": dataId,
-            "ticketApprove": ticketApprove, 
-            "guideApprove": guideApprove, 
+
           })
         },
         url: url,

@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('qr_black_lists', function (Blueprint $table) {
-            $table->id();
-            $table->string('mac');
-            $table->foreign('mac')->references('mac')->on('turnstiles')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('qr');
-            $table->timestamps();
+        Schema::table('ticket_qrs', function (Blueprint $table) {
+          $table->string('token')->nullable()->change();
+          $table->string('path')->nullable()->change();
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('qr_black_lists');
+        Schema::table('ticket_qrs', function (Blueprint $table) {
+            //
+        });
     }
 };

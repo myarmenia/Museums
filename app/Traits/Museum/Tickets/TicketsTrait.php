@@ -2,6 +2,8 @@
 namespace App\Traits\Museum\Tickets;
 use App\Models\Ticket;
 use App\Models\GuideService;
+use App\Models\TicketSchoolService;
+use App\Models\TicketSchoolSetting;
 use App\Models\TicketSubscriptionSetting;
 use App\Models\TicketUnitedSetting;
 
@@ -26,6 +28,11 @@ trait TicketsTrait
   public function getUniteddeService()
   {
     return TicketUnitedSetting::first();
+  }
+
+  public function getSchoolService()
+  {
+    return TicketSchoolSetting::first();
   }
 
   public function getUnitedSettings()

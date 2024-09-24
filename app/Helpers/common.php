@@ -3,6 +3,7 @@
 use App\Models\Chat;
 use App\Models\Country;
 use App\Models\EducationalProgram;
+use App\Models\Event;
 use App\Models\Museum;
 use App\Models\MuseumStaff;
 use App\Models\TicketType;
@@ -309,7 +310,7 @@ if (!function_exists('reportResult')) {
   function reportResult($data)
   {
 
-      $keys = ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product'];
+      $keys = ['standart', 'discount', 'free', 'school', 'united',  'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product', 'other_service'];
       $sums = [];
 
       foreach ($data as $array) {
@@ -333,7 +334,7 @@ if (!function_exists('reportResult')) {
 if (!function_exists('reportTypes')) {
   function reportTypes()
   {
-    return ['standart', 'discount', 'free', 'united', 'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product'];
+    return ['standart', 'discount', 'free', 'school', 'united', 'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product', 'other_service'];
   }
 }
 
@@ -347,7 +348,10 @@ if (!function_exists('ticketColors')) {
         'united' => 'linear-gradient(to bottom right, #9c78b1, #16acea7d)',
         'subscription' => '#16ACEA',
         'event' => '#9C78B1',
-        'event-config' => '#9C78B1'
+        'event-config' => '#9C78B1',
+        'event-standart' => '#9C78B1',
+        'event-discount' => '#eb9f28',
+        'event-free' => '#f1c88775',
 
     ];
   }
@@ -376,6 +380,7 @@ if (!function_exists('getTranslateTicketTitl')) {
         'standart' => 'Ստանդարտ',
         'discount' => 'Զեղչված',
         'free' => 'Անվճար',
+        'school' => 'Դպրոցական',
         'subscription' => 'Անդամակցության քարտ',
         'united' => 'Միասնական',
         'educational' => 'Կրթական',
@@ -383,9 +388,47 @@ if (!function_exists('getTranslateTicketTitl')) {
         'event-config' => 'Միջոցառում',
         'corporative' => 'Կորպորատիվ',
         'guide' => 'Էքսկուրսիա',
-        'product' => 'Ապրանք'
+        'product' => 'Ապրանք',
+        'other_service' => 'Այլ ծառայություններ'
 
       ];
+
+      //check have $title in $titles
+      if (isset($titles[$title])) {
+          return $titles[$title];
+      } else {
+        return $title;
+      }
+  }
+
+  if (!function_exists('getMonths')) {
+    function getMonths()
+    {
+      return ['Հունվար', 'Փետրվար', 'Մարտ', 'Ապրիլ', 'Մայիս', 'Հունիս', 'Հուլիս', 'Օգօստոս', 'Սեպտեմբեր', 'Հոկտեմբեր', 'Նոյեմբեր','Դեկտեմբեր'];
+    }
+
+  }
+
+}
+if (!function_exists('getTranslateTicketTitl_en')) {
+  function getTranslateTicketTitl_en($title)
+  {
+      $titles = [
+        'standart' => 'Standart',
+        'discount' => 'Discount',
+        'free' => 'Free',
+        'school' => 'School',
+        'subscription' => 'Subscription',
+        'united' => 'Combo',
+        'educational' => 'Educational',
+        'event' => 'Exhibition',
+        'event-config' => 'Event',
+        'corporative' => 'Corporative',
+        'guide' => 'Guide',
+        'product' => 'Product',
+        'other_service' => 'Other services'
+
+    ];
 
       //check have $title in $titles
       if (isset($titles[$title])) {
@@ -418,6 +461,16 @@ if (!function_exists('getAuthUserRoleInterface')) {
 
 }
 
+if (!function_exists('getAuthUserRoleInterfaceName')) {
+  function getAuthUserRoleInterfaceName()
+  {
+
+    return auth()->user()->roles()->first()->interface;
+  }
+
+}
+
+
 if (!function_exists('museumHaveUnreadMessage')) {
   function museumHaveUnreadMessage()
   {
@@ -444,11 +497,45 @@ if (!function_exists('getEventType')) {
 
     };
 
+}
 
+if (!function_exists('getMuseumAllEvents')) {
+    function getMuseumAllEvents($id)
+    {
+      $events = Event::where('museum_id', $id)->get();
 
+      return $events;
+
+    }
+}
+
+if (!function_exists('getMuseumAllEventsWithTranslation')) {
+  function getMuseumAllEventsWithTranslation($id, $lang)
+  {
+    $events = Event::where('museum_id', $id)
+          ->with([
+            'item_translations' => function ($query) use ($lang) {
+              $query->where('lang', $lang);
+            }
+          ])
+          ->get();
+
+    return $events;
+
+  }
 
 }
 
+if (!function_exists('getAllMuseums')) {
+  function getAllMuseums()
+  {
+    $museums = Museum::all();
+
+    return $museums;
+
+  }
+
+}
 
 
 

@@ -26,10 +26,16 @@ use App\Http\Controllers\Admin\Events\EventStoreController;
 use App\Http\Controllers\Admin\Events\EventUpdateController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
+use App\Http\Controllers\Admin\OtherServices\OSCreateController;
+use App\Http\Controllers\Admin\OtherServices\OSEditController;
+use App\Http\Controllers\Admin\OtherServices\OSListController;
+use App\Http\Controllers\Admin\OtherServices\OSStoreController;
+use App\Http\Controllers\Admin\OtherServices\OSUpdateController;
 use App\Http\Controllers\Admin\Reports\ExportExcelController;
 use App\Http\Controllers\Admin\Reports\ReportsForMuseumAdminController;
 use App\Http\Controllers\Admin\Reports\ReportsForSuperAdminController;
 use App\Http\Controllers\Admin\Tickets\GuideServiceController;
+use App\Http\Controllers\Admin\Tickets\SchoolTicketController;
 use App\Http\Controllers\Admin\Tickets\ShowTicketsController;
 use App\Http\Controllers\Admin\Tickets\ShowUnitedTicketController;
 use App\Http\Controllers\Admin\Tickets\StandartTicketController;
@@ -43,6 +49,7 @@ use App\Http\Controllers\Admin\Product\ProductListController;
 use App\Http\Controllers\Admin\Product\ProductStoreController;
 use App\Http\Controllers\Admin\Product\ProductUpdateController;
 use App\Http\Controllers\Admin\cashier\CashierController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\cashier\BuyProduct;
 use App\Http\Controllers\cashier\BuyTicketController;
 use App\Http\Controllers\cashier\CorporativeTicket;
@@ -61,13 +68,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
+use App\Http\Controllers\cashier\OtherServices;
+use App\Http\Controllers\cashier\OtherServicesController;
 use App\Http\Controllers\IncrementController;
+use Illuminate\Http\Request;
 
 // authentication
 Auth::routes(['register' => false]);
 
-Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 
+Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
 Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])->name('auth-reset-password-basic');
 
@@ -81,12 +92,22 @@ Route::group(['middleware' => ['auth']], function () {
   })->name('welcome');
 
   // Main Page Route
-  Route::group(['middleware' => ['role:super_admin|general_manager|chief_accountant']], function () {
+  // Route::group(['middleware' => ['role:super_admin|general_manager|chief_accountant']], function () {
+  //   Route::get('/', AnalyticsController::class)->name('dashboard_analytics');
+  // });
+
+
     Route::get('/', AnalyticsController::class)->name('dashboard_analytics');
-  });
+
 
   Route::group(['middleware' => ['role:museum_admin|manager|content_manager|accountant', 'check_auth_have_museum']], function () {
     Route::get('/museum-dashboard', SingleMuseumAnalyticsController::class)->name('museum_dashboard_analytics');
+  });
+
+  Route::post('/get-event', function (Illuminate\Http\Request $request) {
+
+      $museum_id = $request->input('museum_id');
+      return response()->json(getMuseumAllEventsWithTranslation($museum_id, 'am'));
   });
 
   // Route::resource('roles', RoleController::class);
@@ -96,9 +117,14 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/change-status', [ChangeStatusController::class, 'change_status'])->name('change_status');
   Route::get('delete-item/{tb_name}/{id}', [DeleteItemController::class, 'index'])->name('delete_item');
   Route::get('logs', [LogController::class, 'index'])->name('logs');
+
   Route::get('reports/{request_report_type}', [ReportsForSuperAdminController::class, 'index'])->name('reports');
   Route::get('museum/reports/{request_report_type}', [ReportsForMuseumAdminController::class, 'index'])->name('museum_reports');
   Route::get('export-report-excel', [ExportExcelController::class, "export"])->name('export_report_excel');
+
+  Route::get('event-reports', [ReportsForSuperAdminController::class, 'events'])->name('event_reports');
+  Route::get('museum/event-reports', [ReportsForMuseumAdminController::class, 'events'])->name('museum_event_reports');
+
 
   Route::group(['prefix' => 'museum'], function () {
     Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin|general_manager');
@@ -168,7 +194,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/create-subscription', SubscriptionTicket::class)->name('cashier.add.subscription');
     Route::post('/create-corporative', CorporativeTicket::class)->name('cashier.add.corporative');
     Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
-
+    Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
+    Route::get('get-other-service/{id}', [CashierController::class,'getOtherServiceDetails'])->name('cashier.otherService.details');;
+    Route::post('/create-other-service', OtherServicesController::class)->name('cashier.add.otherServices');
 
     // Route::get('/create', [CashierController::class, 'create'])->name('cashier.add');
 
@@ -216,7 +244,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('event-config', [EventConfigController::class, 'store'])->name('event_config_store');
     Route::post('/event-config-update', [EventConfigController::class, 'update'])->name('event_config_update');
     // Route::post('/call-edit-component',EventConfigComponentController::class)->name('edit_component');
-
+    Route::get('event-config-delete/{id}', [EventConfigController::class, 'delete'])->name('event-config-delete');
 
 
 
@@ -224,7 +252,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   });
 
-  Route::group(['prefix' => 'corporative', 'middleware' => ['role:museum_admin|manager']], function () {
+  Route::group(['prefix' => 'corporative', 'middleware' => ['role:museum_admin|manager|accountant']], function () {
     Route::get('/', [CorporativeSaleController::class, 'index'])->name('corporative');
     Route::get('/create', [CorporativeSaleController::class, 'create'])->name('corporative.create');
     Route::post('/create', [CorporativeSaleController::class, 'addCorporative'])->name('corporative.add');
@@ -250,11 +278,25 @@ Route::group(['middleware' => ['auth']], function () {
       Route::get('united', ShowUnitedTicketController::class)->name('tickets_united');
       Route::post('ticket-united', UnitedTicketController::class)->name('ticket_united_store');
       Route::post('ticket-united/{id}', UnitedTicketController::class)->name('ticket_united_update');
+
+      Route::post('ticket-school', SchoolTicketController::class)->name('ticket_school_store');
+      Route::post('ticket-school/{id}', SchoolTicketController::class)->name('ticket_school_update');
+    });
+  });
+
+  Route::group(['prefix' => 'other-services', 'middleware' => ['role:content_manager|museum_admin|manager', 'check_auth_have_museum']], function () {
+    Route::get('list', OSListController::class)->name('other_services_list');
+    Route::get('create', OSCreateController::class)->name('other_services_create');
+    Route::post('store', OSStoreController::class)->name('other_services_store');
+    Route::group(['middleware' => ['model_access']], function () {
+      Route::put('update/{id}', OSUpdateController::class)->name('other_services-update');
+      Route::get('edit/{id}', OSEditController::class)->name('other_services-edit');
     });
   });
 
   Route::get('change-style/{type}', [ChangeStyleController::class, "change_style"])->name('change_style');
-  Route::get('test-email', [ChangeStyleController::class, "test_email"])->name('test_email');
+  Route::get('test-email/{purchase_id}/{email}', [ChangeStyleController::class, "test_email"])->name('test_email');  //important
+  Route::get('test-pdfTickets/{purchase_id}', [ChangeStyleController::class, "testPdfTickets"])->name('est_pdfTickets');  //important
 
 
 });

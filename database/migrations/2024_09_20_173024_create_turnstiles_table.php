@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('museum_id');
             $table->foreign('museum_id')->references('id')->on('museums')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('mac')->unique();
+            $table->string('mac');
             $table->string('local_ip')->nullable();
-            // $table->string('name')->unique();
-            // $table->string('password');
+            $table->integer('ticket_redemption_time')->nullable();
             $table->timestamps();
         });
     }

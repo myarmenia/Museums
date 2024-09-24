@@ -20,6 +20,7 @@ class CashierController extends Controller
 
    public function index(Request $request)
    {
+
       $allData = $this->cashierService->getAllData();
 
       if($allData['success']) {
@@ -65,5 +66,16 @@ class CashierController extends Controller
       $data = $this->cashierService->showLastTicket();
 
       return view('content.cashier.show-last-ticket', compact('data'));
+   }
+   public function getOtherServiceDetails($id)
+   {
+
+    $otherService = $this->cashierService->getOtherServiceDetails($id);
+
+      if ($otherService) {
+         return response()->json($otherService);
+      }
+
+      return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
    }
 }

@@ -16,15 +16,15 @@ class ModelAccess
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $route_name = request()->route()->getName();
-        // $prefix = ltrim(request()->route()->getPrefix(), "/");
-        // $tb_name = str_replace("-", "_", $prefix);
-        $tb_name = explode('-', $route_name)[0];
 
         if (!museumAccessId()) {
             return redirect()->back();
         }
         else {
+            $route_name = request()->route()->getName();
+            // $prefix = ltrim(request()->route()->getPrefix(), "/");
+            // $tb_name = str_replace("-", "_", $prefix);
+            $tb_name = explode('-', $route_name)[0];
 
             $className = 'App\Models\\' . Str::studly(Str::singular($tb_name));
 

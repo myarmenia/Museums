@@ -30,6 +30,7 @@
                     <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
                         data-bs-target="#navs-top-home" aria-controls="navs-top-home" aria-selected="true">Տոմս</button>
                 </li>
+
                 @if (count($data['educational']))
                     <li data-name='educational' class="nav-item">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
@@ -56,6 +57,13 @@
                         data-bs-target="#navs-top-corporative" aria-controls="navs-top-corporative"
                         aria-selected="false">Կորպորատիվ</button>
                 </li>
+                @if (array_key_exists('other_services', $data))
+                <li data-name='other_services' class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-top-otherService" aria-controls="navs-top-otherService"
+                        aria-selected="false">Այլ ծառայություններ</button>
+                </li>
+            @endif
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
@@ -91,6 +99,13 @@
                                                 onwheel="return false;" name="free" value="{{ old('free') }}">
                                         </td>
                                         <td class="remove-value" class="remove-value">0</td>
+                                    </tr>
+                                    <tr class='table-default'>
+                                        <td>Դպրոցական</td>
+                                        <td><input type="number" min="0" class="form-control form-control-validate" id="school"
+                                                onwheel="return false;" name="school" value="{{ old('school') }}">
+                                        </td>
+                                        <td class="remove-value" class="remove-value"> - </td>
                                     </tr>
                                 </tbody>
 
@@ -210,12 +225,13 @@
                                 <div id="event-config"> </div>
                             </div>
                             <div id='event-total' class="d-flex justify-content-end d-none">
-                                <div class="d-flex">
+                                <div class="d-flex ">
                                     <div class="me-3">Ընդհանուր</div>
                                     <div class="me-2">
                                         <span class="remove-value" id="event-total-count">0</span>
                                         <span>տոմս</span>
                                     </div>
+                                    <div class="event-total-cont"></div>
                                     <div class="me-2">
                                         <span class="remove-value" id="event-total-price">0</span>
                                         <span>դրամ</span>
@@ -299,6 +315,30 @@
 
                     </form>
                 </div>
+                @if (array_key_exists('other_services', $data))
+                <div class="tab-pane fade" id="navs-top-otherService" role="tabpanel">
+                  <form data-name='events' class="form-cashier" action="{{ route('cashier.add.otherServices') }}" method="post">
+                      <div class="table-responsive text-nowrap">
+                          <select id="otherServices" name="other_service" class="form-select">
+                              <option value="">Ընտրեք ծառայությունը</option>
+                              @foreach ($data['other_services'] as $service)
+                                  <option value="{{ $service->id }}">{{ $service->translation('am')->name }}
+                                  </option>
+                              @endforeach
+                          </select>
+
+                          <div id="other-service-config"> </div>
+                      </div>
+
+                        <div id="other-service-save" class="mt-3 row justify-content-end d-none" >
+                            <div class="col-sm-10 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                            </div>
+                        </div>
+
+                  </form>
+              </div>
+            @endif
             </div>
         </div>
     </div>
