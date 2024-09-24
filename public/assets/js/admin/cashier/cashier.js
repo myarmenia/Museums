@@ -409,12 +409,12 @@ $(function () {
     $('#event-total-price').text(totalPrice);
   }
 
- $("#partners").on('input',function(){
+ $("#otherServices").on('input',function(){
 
 
       $.ajax({
         type: "GET",
-        url: '/cashier/get-partner/' + $(this).val(),
+        url: '/cashier/get-other-service/' + $(this).val(),
         cache: false,
         success: function (data) {
         $('#other-service-save').removeClass('d-none')
@@ -430,24 +430,121 @@ $(function () {
                           </thead>
                             <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
                                 <tr class="table-default">
+                                        <td>${data.item_translations[0].name}</td>
+                                         <td>
+                                             <input type="text" disabled onwheel="return false;" price="200012" value=1 class="form-control form-control-validate event_guid" id="other-service-price" name="other-service-price">
+                                         </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id="event_guide_price_am">${data.price }</td>
+                                      </tr>
+
+
+                                    </tbody></table>`
+
+                            $('#other-service-config').html(content)
+
+          }
+        })
+
+  })
+
+
+});
+
+ $("#partners").on('input',function(){
+
+
+      $.ajax({
+        type: "GET",
+        url: '/cashier/get-partner/' + $(this).val(),
+        cache: false,
+        success: function (data) {
+        $('#partnerPrint').removeClass('d-none')
+        let partnerTotalGuideCount = 0
+        let partnerTotalAmount = 0
+
+          console.log(data)
+          let content = `<table class="table cashier-table">
+                          <thead>
+                            <tr>
+                            <th>Անուն</th>
+                            <th>Քանակ</th>
+                            <th>Արժեք</th>
+                            </tr>
+                          </thead>
+                            <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
+                                <tr class="table-default">
                                         <td>${data.name}</td>
                                          <td>
-                                             <input type="number" onwheel="return false;" price="200012"  class="form-control form-control-validate event_guid" id="ticketPrice" name="partner-price" data-museum-standart-ticket-price=${data.museum.standart_tickets.price }>
+                                             <input type="number" onwheel="return false;" price="200012"  class="form-control form-control-validate event_guid" id="ticketPrice" name="ticket-price" data-museum-standart-ticket-price=${data.museum.standart_tickets.price }>
                                          </td>
-                                        <td class="remove-value event_guide_row_price ticket_price" id="museum-ticket-price"></td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id="partner-ticket-price">0</td>
+                                </tr>
+                                <tr class='table-default'>
+                                        <td>Էքսկուրսավար(հայերեն)</td>
+                                        <td>
+                                            <input type="number" onwheel="return false;"
+                                                price="${data.museum.guide.price_am}" min="0"
+                                                class="form-control form-control-validate event_guid" id="partner_guide_price_am" name="guide_price_am" >
+                                        </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id='partner_guide_am'>0</td>
+                                      </tr>
+                                      <tr class='table-default'>
+                                        <td>Էքսկուրսավար(այլ)</td>
+                                        <td>
+                                            <input type="number" onwheel="return false;"
+                                                price="${data.museum.guide.price_other}" min="0"
+                                                class="form-control form-control-validate event_guid" id="partner_guide_price_other" name="guide_price_other" >
+                                        </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id='partner_guide_other'>0</td>
                                       </tr>
 
 
                                     </tbody></table>`
 
                             $('#partner-config').html(content)
+                            $('#ticketPrice').on('input',function(){
+                              $price = $(this).val()*$('#ticketPrice').data('museum-standart-ticket-price')
 
-          }
+                              $('#partner-ticket-price').html($price)
+                              $('#partner-total-count').html($(this).val())
+
+
+                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-ticket-price').text()*1
+                              $('#partner-total-price').html(partnerTotalAmount)
+
+                            })
+
+                            $('#partner_guide_price_am').on('input',function(){
+
+                              $partner_guide_price_am = $(this).val()*$('#partner_guide_price_am').attr('price')
+                              partnerTotalGuideCount = $('#partner_guide_price_other').val()*1+$(this).val()*1
+
+
+                              $('#partner_guide_am').html($partner_guide_price_am)
+                              $('#partner-total-guide-count').html(partnerTotalGuideCount)
+                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-ticket-price').text()*1
+                              $('#partner-total-price').html(partnerTotalAmount)
+
+                            })
+
+                            $('#partner_guide_price_other').on('input',function(){
+                              $partner_guide_price_other = $(this).val()*$('#partner_guide_price_other').attr('price')
+                              partnerTotalGuideCount = $('#partner_guide_price_am').val()*1+$(this).val()*1
+
+
+                              $('#partner_guide_other').html($partner_guide_price_other)
+                              $('#partner-total-guide-count').html(partnerTotalGuideCount)
+
+                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-ticket-price').text()*1
+                              $('#partner-total-price').html(partnerTotalAmount)
+
+
+                            })
+
+              }
         })
 
-        // $('#ticketPrice').on('input',function(){
-        //   alert()
-        // })
+
 
 
   })
@@ -456,6 +553,6 @@ $(function () {
 
 
 
-});
+
 
 
