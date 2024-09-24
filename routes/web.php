@@ -31,6 +31,11 @@ use App\Http\Controllers\Admin\OtherServices\OSEditController;
 use App\Http\Controllers\Admin\OtherServices\OSListController;
 use App\Http\Controllers\Admin\OtherServices\OSStoreController;
 use App\Http\Controllers\Admin\OtherServices\OSUpdateController;
+use App\Http\Controllers\Admin\Partners\PartnerCreateController;
+use App\Http\Controllers\Admin\Partners\PartnerEditController;
+use App\Http\Controllers\Admin\Partners\PartnerListController;
+use App\Http\Controllers\Admin\Partners\PartnerStoreController;
+use App\Http\Controllers\Admin\Partners\PartnerUpdateController;
 use App\Http\Controllers\Admin\Reports\ExportExcelController;
 use App\Http\Controllers\Admin\Reports\ReportsForMuseumAdminController;
 use App\Http\Controllers\Admin\Reports\ReportsForSuperAdminController;
@@ -281,6 +286,16 @@ Route::group(['middleware' => ['auth']], function () {
 
       Route::post('ticket-school', SchoolTicketController::class)->name('ticket_school_store');
       Route::post('ticket-school/{id}', SchoolTicketController::class)->name('ticket_school_update');
+    });
+  });
+
+  Route::group(['prefix' => 'partners', 'middleware' => ['role:accountant|museum_admin|manager', 'check_auth_have_museum']], function () {
+    Route::get('list', PartnerListController::class)->name('partners_list');
+    Route::get('create', PartnerCreateController::class)->name('partners_create');
+    Route::post('store', PartnerStoreController::class)->name('partners_store');
+    Route::group(['middleware' => ['model_access']], function () {
+      Route::put('update/{id}', PartnerUpdateController::class)->name('partners-update');
+      Route::get('edit/{id}', PartnerEditController::class)->name('partners-edit');
     });
   });
 
