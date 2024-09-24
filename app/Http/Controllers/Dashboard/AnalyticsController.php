@@ -24,8 +24,8 @@ class AnalyticsController extends Controller
       $this->user = Auth::user(); // Set user here
 
       $authUserRols = Auth::user()->roles->pluck('name')->toArray();
-      $array2 = ['super_admin','general_manager','chief_accountant'];
-      $intersection = array_intersect(array:$authUserRols, $array2);
+      $roles = ['super_admin','general_manager','chief_accountant'];
+      $intersection = array_intersect($authUserRols, $roles);
 
       if (!count($intersection)) {
         return redirect('/welcome'); // Перенаправляем на страницу /welcome
