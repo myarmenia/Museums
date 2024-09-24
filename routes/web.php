@@ -71,6 +71,7 @@ use App\Http\Controllers\authentications\ForgotPasswordBasic;
 use App\Http\Controllers\cashier\OtherServices;
 use App\Http\Controllers\cashier\OtherServicesController;
 use App\Http\Controllers\IncrementController;
+use Illuminate\Http\Request;
 
 // authentication
 Auth::routes(['register' => false]);
@@ -91,9 +92,13 @@ Route::group(['middleware' => ['auth']], function () {
   })->name('welcome');
 
   // Main Page Route
-  Route::group(['middleware' => ['role:super_admin|general_manager|chief_accountant']], function () {
+  // Route::group(['middleware' => ['role:super_admin|general_manager|chief_accountant']], function () {
+  //   Route::get('/', AnalyticsController::class)->name('dashboard_analytics');
+  // });
+
+
     Route::get('/', AnalyticsController::class)->name('dashboard_analytics');
-  });
+
 
   Route::group(['middleware' => ['role:museum_admin|manager|content_manager|accountant', 'check_auth_have_museum']], function () {
     Route::get('/museum-dashboard', SingleMuseumAnalyticsController::class)->name('museum_dashboard_analytics');
