@@ -132,6 +132,11 @@ class Museum extends Model
     {
       return $this->hasMany(OtherService::class);
     }
+    public function partners(): HasMany
+    {
+      return $this->hasMany(Partner::class);
+    }
+
 
 
 
