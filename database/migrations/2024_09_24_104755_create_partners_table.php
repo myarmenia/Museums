@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('partners', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('museum_id');
+            $table->foreign('museum_id')->references('id')->on('museums')->onDelete('cascade');
+            $table->string('name');
+            $table->string('tin');
+            $table->string('account_number')->nullable();
+            $table->string('bank')->nullable();
+            $table->string('phone');
+            $table->boolean('status')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
