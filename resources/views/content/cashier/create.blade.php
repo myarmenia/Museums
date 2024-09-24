@@ -64,6 +64,13 @@
                         aria-selected="false">Այլ ծառայություններ</button>
                 </li>
             @endif
+            @if (array_key_exists('partners', $data))
+                <li data-name='other_services' class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-top-partners" aria-controls="navs-top-partners"
+                        aria-selected="false">Գործընկերներ</button>
+                </li>
+            @endif
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
@@ -339,6 +346,30 @@
                   </form>
               </div>
             @endif
+            @if (array_key_exists('partners', $data))
+            <div class="tab-pane fade" id="navs-top-partners" role="tabpanel">
+              <form data-name='events' class="form-cashier" action="{{ route('cashier.add.otherServices') }}" method="post">
+                  <div class="table-responsive text-nowrap">
+                      <select id="partners" name="partner" class="form-select">
+                          <option value="">Ընտրեք գործընկերոջը</option>
+                          @foreach ($data['partners'] as $partner)
+                              <option value="{{ $partner->id }}">{{ $partner->name }}
+                              </option>
+                          @endforeach
+                      </select>
+
+                      <div id="partner-config"> </div>
+                  </div>
+
+                    <div id="other-service-save" class="mt-3 row justify-content-end d-none" >
+                        <div class="col-sm-10 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                        </div>
+                    </div>
+
+              </form>
+          </div>
+        @endif
             </div>
         </div>
     </div>

@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Partner extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+
+    protected $guarded=[];
+
+    public function museum()
+    {
+      return $this->belongsTo(Museum::class,'museum_id');
+    }
 
 }
