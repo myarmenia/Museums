@@ -49,9 +49,10 @@ class PartnerController extends CashierController
             if ($item) {
                 $haveValue = true;
                 $newItem = [
-                    "type" => $key,
+                    "type" => "partner",
                     "quantity" => (int) $item,
                     "id"=>$request->partner_id,
+                    "sub_type"=>$key
                 ];
 
                 if (($key === 'guide_other' || $key === 'guide_am') && $guid) {
@@ -71,7 +72,7 @@ class PartnerController extends CashierController
             }
         }
 
-
+dd($data);
         if(!$haveValue){
           session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
 

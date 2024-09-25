@@ -473,11 +473,25 @@ $(function () {
                           </thead>
                             <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
                                 <tr class="table-default">
-                                        <td>${data.name}</td>
+                                        <td>Ստանդարտ</td>
                                          <td>
-                                             <input type="number" onwheel="return false;" price="200012"  class="form-control form-control-validate event_guid" id="ticketPrice" name="partner" data-museum-standart-ticket-price=${data.museum.standart_tickets.price }>
+                                             <input type="number" onwheel="return false;" price="200012"  class="form-control form-control-validate event_guid" id="StandartTicketPrice" name="standart" data-museum-standart-ticket-price=${data.museum.standart_tickets.price }>
                                          </td>
                                         <td class="remove-value event_guide_row_price ticket_price" id="partner-ticket-price">0</td>
+                                </tr>
+                                <tr class="table-default">
+                                        <td>Զեղչված</td>
+                                         <td>
+                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate event_guid" id="discountTicketPrice" name="discount" data-museum-standart-ticket-price=${data.museum.standart_tickets.price/2 }>
+                                         </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" ">0</td>
+                                </tr>
+                                <tr class="table-default">
+                                        <td>Անվճար</td>
+                                         <td>
+                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate event_guid" id="freeTicketPrice" name="discount" data-museum-standart-ticket-price=${data.museum.standart_tickets.price/2 }>
+                                         </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" ">0</td>
                                 </tr>
                                 <tr class='table-default'>
                                         <td>Էքսկուրսավար(հայերեն)</td>
@@ -510,8 +524,8 @@ $(function () {
                                     </tbody></table>`
 
                             $('#partner-config').html(content)
-                            $('#ticketPrice').on('input',function(){
-                              $price = $(this).val()*$('#ticketPrice').data('museum-standart-ticket-price')
+                            $('#StandartTicketPrice').on('input',function(){
+                              $price = $(this).val()*$('#StandartTicketPrice').data('museum-standart-ticket-price')
 
                               $('#partner-ticket-price').html($price)
                               $('#partner-total-count').html($(this).val())
