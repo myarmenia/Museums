@@ -475,7 +475,7 @@ $(function () {
                                 <tr class="table-default">
                                         <td>${data.name}</td>
                                          <td>
-                                             <input type="number" onwheel="return false;" price="200012"  class="form-control form-control-validate event_guid" id="ticketPrice" name="ticket-price" data-museum-standart-ticket-price=${data.museum.standart_tickets.price }>
+                                             <input type="number" onwheel="return false;" price="200012"  class="form-control form-control-validate event_guid" id="ticketPrice" name="partner" data-museum-standart-ticket-price=${data.museum.standart_tickets.price }>
                                          </td>
                                         <td class="remove-value event_guide_row_price ticket_price" id="partner-ticket-price">0</td>
                                 </tr>
@@ -484,7 +484,7 @@ $(function () {
                                         <td>
                                             <input type="number" onwheel="return false;"
                                                 price="${data.museum.guide.price_am}" min="0"
-                                                class="form-control form-control-validate event_guid" id="partner_guide_price_am" name="guide_price_am" >
+                                                class="form-control form-control-validate event_guid" id="partner_guide_price_am" name="guide_am" >
                                         </td>
                                         <td class="remove-value event_guide_row_price ticket_price" id='partner_guide_am'>0</td>
                                       </tr>
@@ -493,10 +493,18 @@ $(function () {
                                         <td>
                                             <input type="number" onwheel="return false;"
                                                 price="${data.museum.guide.price_other}" min="0"
-                                                class="form-control form-control-validate event_guid" id="partner_guide_price_other" name="guide_price_other" >
+                                                class="form-control form-control-validate event_guid" id="partner_guide_price_other" name="guide_other" >
                                         </td>
                                         <td class="remove-value event_guide_row_price ticket_price" id='partner_guide_other'>0</td>
                                       </tr>
+                                       <tr class='table-default'>
+                                        <td>Մեկնաբանություն</td>
+                                        <td>
+                                            <textarea name="comment"></textarea>
+                                        </td>
+
+                                      </tr>
+
 
 
                                     </tbody></table>`
@@ -548,6 +556,29 @@ $(function () {
 
 
   })
+  // ==========================
+  document.getElementById('myForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Отключаем стандартное поведение отправки формы
+
+        let form = event.target;  // Ссылка на саму форму
+        let formData = new FormData(form);  // Собираем данные формы
+
+        // Отправка данных через fetch
+        fetch(form.action, {
+            method: 'POST',  // Метод, указанный в форме
+            body: formData,  // Данные формы
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Для Laravel
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
 
 
 

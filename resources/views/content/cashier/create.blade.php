@@ -348,12 +348,13 @@
             @endif
             @if (array_key_exists('partners', $data))
             <div class="tab-pane fade" id="navs-top-partners" role="tabpanel">
-              <form data-name='events' class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">
-                  <div class="table-responsive text-nowrap">
-                      <select id="partners" name="partner" class="form-select">
+              <form data-name="partner" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">
+
+                {{-- <form data-name='partner'id="myForm" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">                <div class="table-responsive text-nowrap"> --}}
+                      <select id="partners" name="partner_id" class="form-select">
                           <option value="">Ընտրեք գործընկերոջը</option>
                           @foreach ($data['partners'] as $partner)
-                              <option value="{{ $partner->id }}">{{ $partner->name }}
+                              <option value={{ $partner->id }}>{{ $partner->name }}
                               </option>
                           @endforeach
                       </select>

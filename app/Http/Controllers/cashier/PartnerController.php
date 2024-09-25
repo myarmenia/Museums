@@ -19,41 +19,52 @@ class PartnerController extends Controller
 
     try {
 
-      // dd($request->all());
+
         DB::beginTransaction();
-        $requestData = $request->except('partner');
-        // $requestData = $request->all();
-        // dd($requestData);
+        $requestDatForValidation = $request->except('partner_id','comment');
+        $requestData = $request->all();
         $data['purchase_type'] = 'offline';
         $data['status'] = 1;
         $data['items'] = [];
+        $data['comment'] = (object) [
+          'comment' => $request->comment,
+          'type' => 'partner'
+      ];
 
         $museumId = getAuthMuseumId();
 
-        $filteredData = array_filter($requestData, function ($value) {
+        $filteredData = array_filter($requestDatForValidation, function ($value) {
           return !is_null($value);
         });
 
-
+// dd($filteredData);
         if (empty($filteredData)) {
             session(['errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։']);
 
-            return redirect()->back();
+            return redirect()->back()->session('navs-top-partners');
+
         }
 
         $guid = GuideService::where('museum_id', $museumId)->first();
         $haveValue = false;
-        foreach ($requestData as $key => $item) {
+        foreach ($requestDatForValidation as $key => $item) {
             if ($item) {
                 $haveValue = true;
                 $newItem = [
                     "type" => $key,
                     "quantity" => (int) $item,
+                    "id"=>$request->partner_id,
                 ];
 
                 if (($key === 'guide_other' || $key === 'guide_am') && $guid) {
 
                     $newItem["id"] = $guid->id;
+                    if($key === 'guide_other'){
+                      $newItem["sub_type"] = "partner_guide_other";
+
+                    }else{
+                       $newItem["sub_type"]="partner_guide_am";
+                    }
                 }
 
 
@@ -61,6 +72,7 @@ class PartnerController extends Controller
 
             }
         }
+
 dd($data);
         if(!$haveValue){
           session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
@@ -73,11 +85,9 @@ dd($data);
 
 
 
-        $data['items'][0]['type'] = "partner";
-                $data['items'][0]['quantity']=1;
-                $data['items'][0]['id']=$request->partner;
 
 
+// dd($data);
         $addPurchase = $this->purchase($data);
 
             if ( $addPurchase) {
