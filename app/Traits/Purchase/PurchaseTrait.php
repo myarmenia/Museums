@@ -596,17 +596,11 @@ trait PurchaseTrait
       return false;
     }
 
-    // $museum_id = museumAccessId();
-    // $museum_id = 1;
     $data['museum_id'] = $partner_ticket ? $partner_ticket->museum_id : false;
 
-    // if (!$museum_id) {
-    //   return false;
-    // }
+    $coefficient = ticketType($data['sub_type'])->coefficient;
+    $total_price = $partner_ticket->price * $coefficient * $data['quantity'];
 
-    // $data['museum_id'] = $museum_id;
-
-    $total_price = $partner_ticket->price * $data['quantity'];
 
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
