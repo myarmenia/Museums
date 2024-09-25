@@ -8,6 +8,7 @@ use App\Models\EventConfig;
 use App\Models\GuideService;
 use App\Models\Museum;
 use App\Models\OtherService;
+use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchasedItem;
@@ -24,6 +25,7 @@ trait PurchaseTrait
 
   public function purchase($data)
   {
+
     $this->typeAtTimeOfSale = $data['purchase_type'];
     $museum_id = null;
     $purchase_data = [];
@@ -77,6 +79,11 @@ trait PurchaseTrait
     // ========================================================
 
     $purchase = Purchase::create($purchase_data);
+
+    if(isset($data['comment']) && $data['comment'] != null){
+      $purchase->cashier_comment()->create($data['comment']);
+    }
+
     $data['purchase_id'] = $purchase->id;
 
     $item = $this->itemStore($data);
@@ -301,6 +308,26 @@ trait PurchaseTrait
       if ($value['type'] == 'other_service') {
 
         $maked_data = $this->makeOtherServiceData($value);
+        unset($maked_data['id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+
+      //  ===============================================================================
+
+      //  =================== partner ====================================================
+
+
+      if ($value['type'] == 'partner') {
+
+        $maked_data = $this->makePartnerTicketData($value);
         unset($maked_data['id']);
 
         if ($maked_data) {
@@ -561,6 +588,34 @@ trait PurchaseTrait
     return $data;
   }
 
+  public function makePartnerTicketData($data)
+  {
+    $partner_ticket = $this->getPartnerTicket($data['id']);
+
+    if (!$partner_ticket) {
+      return false;
+    }
+
+    // $museum_id = museumAccessId();
+    // $museum_id = 1;
+    $data['museum_id'] = $partner_ticket ? $partner_ticket->museum_id : false;
+
+    // if (!$museum_id) {
+    //   return false;
+    // }
+
+    // $data['museum_id'] = $museum_id;
+
+    $total_price = $partner_ticket->price * $data['quantity'];
+
+    $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
+
+    return $data;
+  }
+
+
+  // ================ get function start ==============================
 
   public function getProduct($id, $quantity)
   {
@@ -646,6 +701,11 @@ trait PurchaseTrait
     return OtherService::where(['id' => $id, 'status' => 1])->first();
   }
 
+  public function getPartnerTicket($id)
+  {
+      $partner = Partner::find($id);
+      return $partner != null ? Ticket::where(['museum_id' => $id, 'status' => 1])->first() : false;
+  }
   public function createUnitedTickets($data)
   {
 
