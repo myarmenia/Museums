@@ -73,7 +73,7 @@ class PartnerController extends Controller
             }
         }
 
-dd($data);
+// dd($data);
         if(!$haveValue){
           session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
 
