@@ -461,6 +461,9 @@ $(function () {
         $('#partnerPrint').removeClass('d-none')
         let partnerTotalGuideCount = 0
         let partnerTotalAmount = 0
+        let partnerTotalCount = 0 
+      
+    
 
           console.log(data)
           let content = `<table class="table cashier-table">
@@ -475,23 +478,23 @@ $(function () {
                                 <tr class="table-default">
                                         <td>Ստանդարտ</td>
                                          <td>
-                                             <input type="number" onwheel="return false;" price="200012"  class="form-control form-control-validate event_guid" id="StandartTicketPrice" name="standart" data-museum-standart-ticket-price=${data.museum.standart_tickets.price }>
+                                             <input type="number" onwheel="return false;" price="200012"  class="form-control form-control-validate partner_ticket_type" id="StandartTicketPrice" name="standart" data-museum-standart-ticket-price=${data.museum.standart_tickets.price }>
                                          </td>
-                                        <td class="remove-value event_guide_row_price ticket_price" id="partner-ticket-price">0</td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id="partner-standart-ticket-price">0</td>
                                 </tr>
                                 <tr class="table-default">
                                         <td>Զեղչված</td>
                                          <td>
-                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate event_guid" id="discountTicketPrice" name="discount" data-museum-standart-ticket-price=${data.museum.standart_tickets.price/2 }>
+                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate partner_ticket_type" id="discountTicketPrice" name="discount" data-museum-discount-ticket-price=${data.museum.standart_tickets.price/2 }>
                                          </td>
-                                        <td class="remove-value event_guide_row_price ticket_price" ">0</td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id="partner-discount-ticket-price">0</td>
                                 </tr>
                                 <tr class="table-default">
                                         <td>Անվճար</td>
                                          <td>
-                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate event_guid" id="freeTicketPrice" name="discount" data-museum-standart-ticket-price=${data.museum.standart_tickets.price/2 }>
+                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate partner_ticket_type" id="freeTicketPrice" name="discount" data-museum-free-ticket-price=0>
                                          </td>
-                                        <td class="remove-value event_guide_row_price ticket_price" ">0</td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id="partner-free-ticket-price">0</td>
                                 </tr>
                                 <tr class='table-default'>
                                         <td>Էքսկուրսավար(հայերեն)</td>
@@ -522,19 +525,69 @@ $(function () {
 
 
                                     </tbody></table>`
-
+                                    
                             $('#partner-config').html(content)
-                            $('#StandartTicketPrice').on('input',function(){
-                              $price = $(this).val()*$('#StandartTicketPrice').data('museum-standart-ticket-price')
+                            $('.partner_ticket_type').on('input',function(){
+                              $price = $(this).val()*$(this).data('museum-standart-ticket-price')
 
-                              $('#partner-ticket-price').html($price)
-                              $('#partner-total-count').html($(this).val())
+                              $('#partner-standart-ticket-price').html($price)
+
+                             
+                              
+                            
+                              $('.partner_ticket_type').each(function() {
+                              //  console.log($(this).val(*1)
+                                  // partnerTotalCount += parseFloat($(this).val()*1);
+                                  let quantity = parseFloat($(this).val())
+
+                                    if (!isNaN(quantity)) {
+                                      partnerTotalCount += quantity
+                                    }
+
+                                  
+                              });
+                              console.log(partnerTotalCount)
+                              $('#partner-total-count').html(partnerTotalCount)
 
 
-                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-ticket-price').text()*1
+                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-standart-ticket-price').text()*1+$('#partner-discount-ticket-price').text()*1+$('#partner-free-ticket-price').text()*1
+                              
                               $('#partner-total-price').html(partnerTotalAmount)
 
                             })
+                            $('#discountTicketPrice').on('input',function(){
+                              $price = $(this).val()*$('#discountTicketPrice').data('museum-discount-ticket-price')
+
+                              $('#partner-discount-ticket-price').html($price)
+
+
+                              $('.partner_ticket_type').each(function() {
+                               
+                                partnerTotalCount += parseFloat($(this).val()) || 0;
+                            });
+                            $('#partner-total-count').html(partnerTotalCount)
+
+
+                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-standart-ticket-price').text()*1+$('#partner-discount-ticket-price').text()*1+$('#partner-free-ticket-price').text()*1
+                              $('#partner-total-price').html(partnerTotalAmount)
+
+                            })
+                            $('#freeTicketPrice').on('input',function(){
+                              $price = $(this).val()*$('#freeTicketPrice').data('museum-free-ticket-price')
+
+                              $('#partner-discount-ticket-price').html($price)
+                              $('.partner_ticket_type').each(function() {
+                               
+                                partnerTotalCount += parseFloat($(this).val()) || 0;
+                            });
+                            $('#partner-total-count').html(partnerTotalCount)
+
+
+                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-standart-ticket-price').text()*1+$('#partner-discount-ticket-price').text()*1+$('#partner-free-ticket-price').text()*1
+                              $('#partner-total-price').html(partnerTotalAmount)
+
+                            })
+                            
 
                             $('#partner_guide_price_am').on('input',function(){
 
@@ -544,7 +597,7 @@ $(function () {
 
                               $('#partner_guide_am').html($partner_guide_price_am)
                               $('#partner-total-guide-count').html(partnerTotalGuideCount)
-                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-ticket-price').text()*1
+                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-standart-ticket-price').text()*1
                               $('#partner-total-price').html(partnerTotalAmount)
 
                             })
@@ -557,7 +610,7 @@ $(function () {
                               $('#partner_guide_other').html($partner_guide_price_other)
                               $('#partner-total-guide-count').html(partnerTotalGuideCount)
 
-                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-ticket-price').text()*1
+                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-standart-ticket-price').text()*1
                               $('#partner-total-price').html(partnerTotalAmount)
 
 
@@ -570,31 +623,7 @@ $(function () {
 
 
   })
-  // ==========================
-  document.getElementById('myForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Отключаем стандартное поведение отправки формы
-
-        let form = event.target;  // Ссылка на саму форму
-        let formData = new FormData(form);  // Собираем данные формы
-
-        // Отправка данных через fetch
-        fetch(form.action, {
-            method: 'POST',  // Метод, указанный в форме
-            body: formData,  // Данные формы
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Для Laravel
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    });
-
-
+  
 
 
 
