@@ -9,7 +9,7 @@ use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class PartnerController extends Controller
+class PartnerController extends CashierController
 {
 
   use PurchaseTrait;
