@@ -703,8 +703,9 @@ trait PurchaseTrait
 
   public function getPartnerTicket($id)
   {
+
       $partner = Partner::find($id);
-      return $partner != null ? Ticket::where(['museum_id' => $id, 'status' => 1])->first() : false;
+      return $partner != null ? Ticket::where(['museum_id' =>$partner->museum_id, 'status' => 1])->first() : false;
   }
   public function createUnitedTickets($data)
   {
