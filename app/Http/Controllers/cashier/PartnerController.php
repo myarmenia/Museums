@@ -22,14 +22,12 @@ class PartnerController extends Controller
 
         DB::beginTransaction();
         $requestDatForValidation = $request->except('partner_id','comment');
-        $requestData = $request->all();
         $data['purchase_type'] = 'offline';
         $data['status'] = 1;
         $data['items'] = [];
-        $data['comment'] = (object) [
-          'comment' => $request->comment,
-          'type' => 'partner'
-      ];
+        $data['comment']['comment'] = $request->comment;
+        $data['comment']['type'] = 'partner';
+
 
         $museumId = getAuthMuseumId();
 
@@ -37,7 +35,7 @@ class PartnerController extends Controller
           return !is_null($value);
         });
 
-// dd($filteredData);
+
         if (empty($filteredData)) {
             session(['errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։']);
 
@@ -73,7 +71,7 @@ class PartnerController extends Controller
             }
         }
 
-// dd($data);
+
         if(!$haveValue){
           session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
 
@@ -81,13 +79,6 @@ class PartnerController extends Controller
           return redirect()->back();
         }
 
-
-
-
-
-
-
-// dd($data);
         $addPurchase = $this->purchase($data);
 
             if ( $addPurchase) {
