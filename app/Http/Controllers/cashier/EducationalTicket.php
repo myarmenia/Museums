@@ -19,6 +19,7 @@ class EducationalTicket extends CashierController
     {
         try {
             DB::beginTransaction();
+        
             $requestData = $request->input('educational');
 
             $data['purchase_type'] = 'offline';
@@ -45,7 +46,7 @@ class EducationalTicket extends CashierController
 
             if(!$haveValue){
                 session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
-                   
+
                 DB::rollBack();
                 return redirect()->back();
             }

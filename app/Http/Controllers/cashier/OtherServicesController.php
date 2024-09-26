@@ -21,6 +21,7 @@ class OtherServicesController extends CashierController
         try {
           // dd($request->all());
             DB::beginTransaction();
+            session(['open_tab' =>'navs-top-otherService']);
             $requestData = $request->all();
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
