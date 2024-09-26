@@ -6,6 +6,7 @@ use App\Models\EducationalProgram;
 use App\Models\Event;
 use App\Models\Museum;
 use App\Models\MuseumStaff;
+use App\Models\Partner;
 use App\Models\TicketType;
 use App\Models\TicketUnitedSetting;
 use Illuminate\Support\Carbon;
@@ -509,6 +510,16 @@ if (!function_exists('getMuseumAllEvents')) {
       return $events;
 
     }
+}
+
+if (!function_exists('getMuseumAllPartners')) {
+  function getMuseumAllPartners($id)
+  {
+    $partners = Partner::where('museum_id', $id)->get();
+
+    return $partners;
+
+  }
 }
 
 if (!function_exists('getMuseumAllEventsWithTranslation')) {
