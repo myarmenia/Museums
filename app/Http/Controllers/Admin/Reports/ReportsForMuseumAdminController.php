@@ -41,4 +41,13 @@ class ReportsForMuseumAdminController extends Controller
     return view("content.reports.museum-event", compact('data'));
 
   }
+
+  public function partners(Request $request)
+  {
+    $museum_id = museumAccessId();
+    // $data = $request->item_relation_id == null ? [] : $this->event_report($request->all(), $this->model);
+
+    return view("content.reports.museum-event", compact('data'));
+
+  }
 }

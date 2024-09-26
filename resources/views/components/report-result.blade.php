@@ -18,6 +18,7 @@
                 <th>Կրթական ծրագիր</th>
                 <th>Էքսկուրսիա</th>
                 <th>Չեղարկված</th>
+                <th>Գործընկերներ</th>
                 <th>Ապրանքներ</th>
                 <th>Այլ ծառայություններ</th>
                 @if (request()->request_report_type == 'compare')
@@ -33,6 +34,7 @@
 
               $total_sums = array_sum(array_column($newSums,'total_price'));
               $total_quantity = array_sum(array_column($newSums,'quantity'));
+              
         @endphp
 
         <tbody>
