@@ -44,14 +44,7 @@
                       @foreach ($all_report_types as $type)
                           <td>{{ !empty($report[$type]) ? $report[$type]['total_price'] .' / '. $report[$type]['quantity'] : ' - ' }}</td>
                       @endforeach
-                      {{-- <td>{{ !empty($report['discount']) ? $report['discount']['total_price'] .' / '. $report['discount']['quantity'] : ' - '  }}</td>
-                      <td>{{ !empty($report['free']) ? $report['free']['total_price'] .' / '. $report['free']['quantity'] : ' - '  }}</td>
-                      <td>{{ !empty($report['united']) ? $report['united']['total_price'] .' / '. $report['united']['quantity'] : ' - ' }}</td>
-                      <td>{{ !empty($report['subscription']) ? $report['subscription']['total_price'] .' / '. $report['subscription']['quantity'] : ' - '}}</td>
-                      <td>{{ !empty($report['event']) ? $report['event']['total_price'] .' / '. $report['event']['quantity'] : ' - '}}</td>
-                      <td>{{ !empty($report['corporative']) ? $report['corporative']['total_price'] .' / '. $report['corporative']['quantity'] : ' - '}}</td>
-                      <td>{{ !empty($report['educational']) ? $report['educational']['total_price'] .' / '. $report['educational']['quantity'] : ' - '}}</td>
-                      <td>{{ !empty($report['guide']) ? $report['guide']['total_price'] .' / '. $report['guide']['quantity'] : ' - '}}</td> --}}
+                     
 
                       {{-- @if (request()->request_report_type == 'compare') --}}
                         <td>{{ !empty(request()->input('from_created_at')) ? date('d.m.Y', strtotime(request()->input('from_created_at'))) : '' }}  -
