@@ -60,34 +60,18 @@ trait QR
       return 'invalid scan';
     }
 
-    // $turnstile = Turnstile::museum($mac)->first();   //old
-
+    // $turnstile = Turnstile::museum($mac)->first();
     $turnstile = Turnstile::museum($mac)->first();  // for ticket_redemption_time
     $museum_ids = Turnstile::museum($mac)->pluck('museum_id')->toArray();  // 20.09.24
 
 
-    // if ($turnstile) {   //old
+    // if ($turnstile) {
     if (count($museum_ids) > 0) {
-
-      // $museum_id = $turnstile->museum_id;  // old
+      $museum_id = $turnstile->museum_id;
       $end_date = null;
 
+      // $qr = TicketQr::valid($qr_token, $museum_id)->first();
       $qr = TicketQr::valid($qr_token, $museum_ids)->first();
-
-      // ============= 21.09.24 ========================
-      if($qr && $qr->visited_date != null &&  $qr->type != 'subscription'){
-
-        $visited_date = $qr->visited_date;
-        $valid_time = Carbon::parse($visited_date)->addHour();
-
-        if ($valid_time->lessThan(Carbon::now())) {
-          $update = $qr->update(['status' => 'used']);
-          return false;
-
-        }
-      }
-      // ============= 21.09.24 ========================
-
 
       if ($qr) {
         if ($qr->type == 'event-config') {
@@ -148,54 +132,21 @@ trait QR
   {
 
     $new_date = new DateTime();
-    $date = $date == null ? $new_date : $new_date->setTimestamp($date);
 
-    $date = $date->modify('+4 hours');  // +4 hour to UTC
-    $now_date = $date->format('Y-m-d H:i:s');
+    $now_date = $date == null ? $new_date->format('Y-m-d H:i:s') : date('Y-m-d H:i:s', $date);
 
+    $status = $qr->type != 'subscription' ? 'used' : 'active';
 
-    // ============= 21.09.24 ===================
-    $visited_date = $qr->visited_date;
-    $status = 'active';
-
-    if($visited_date == null){
-      $visited_date = $now_date;
+    if ($online && $ticket_redemption_time != null) {
+      $update = UpdateQRStatusJob::dispatch($qr->id, $now_date, $status)->delay(now()->addMinutes($ticket_redemption_time));
+    } else {
+      $update = $qr->update([
+        'status' => $status,
+        'visited_date' => $now_date,
+      ]);
     }
-
-    $valid_time = Carbon::parse($visited_date)->addHour();
-
-    if ($valid_time->lessThan(Carbon::now())) {
-      // Если прошел 1 час или больше
-      $status = $qr->type != 'subscription' ? 'used' : 'active';
-
-    }
-
-    $update = $qr->update([
-      'status' => $status,
-      'visited_date' => $now_date,
-    ]);
-
-
-    // ========== start old ============
-
-
-    // $status = $qr->type != 'subscription' ? 'used' : 'active';
-
-    // if($online && $ticket_redemption_time != null){
-    //     $update = UpdateQRStatusJob::dispatch($qr->id, $now_date, $status)->delay(now()->addMinutes($ticket_redemption_time));
-    // }
-    // else{
-    //   $update = $qr->update([
-    //     'status' => $status,
-    //     'visited_date' => $now_date,
-    //   ]);
-    // }
-
-    // ========== end old ============
-
 
     return $update;
-
   }
 
   public function changeTicketStatus($qr, $date)
@@ -218,6 +169,8 @@ trait QR
 
     return $update;
   }
+
+  
 
 
   // public function checkTicketAccesses($qr, $status = null, $date = null)
