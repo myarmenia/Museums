@@ -18,6 +18,7 @@ services:
     volumes:
       - /home/webex/Museum/Museums/storage:/home/webex/Museum/storage
       - /usr/local/etc/php.ini:/home/webex/Museum/vendor/laravel/sail/runtimes/8.2/php.ini
+      - ./laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
 
 #  nginx:
 #    image: nginx:latest
