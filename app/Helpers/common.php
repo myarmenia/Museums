@@ -6,6 +6,7 @@ use App\Models\EducationalProgram;
 use App\Models\Event;
 use App\Models\Museum;
 use App\Models\MuseumStaff;
+use App\Models\Partner;
 use App\Models\TicketType;
 use App\Models\TicketUnitedSetting;
 use Illuminate\Support\Carbon;
@@ -310,7 +311,7 @@ if (!function_exists('reportResult')) {
   function reportResult($data)
   {
 
-      $keys = ['standart', 'discount', 'free', 'school', 'united',  'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product', 'other_service'];
+      $keys = ['standart', 'discount', 'free', 'school', 'united',  'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'partner', 'product', 'other_service'];
       $sums = [];
 
       foreach ($data as $array) {
@@ -334,7 +335,7 @@ if (!function_exists('reportResult')) {
 if (!function_exists('reportTypes')) {
   function reportTypes()
   {
-    return ['standart', 'discount', 'free', 'school', 'united', 'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'product', 'other_service'];
+    return ['standart', 'discount', 'free', 'school', 'united', 'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'partner', 'product', 'other_service'];
   }
 }
 
@@ -388,6 +389,7 @@ if (!function_exists('getTranslateTicketTitl')) {
         'event-config' => 'Միջոցառում',
         'corporative' => 'Կորպորատիվ',
         'guide' => 'Էքսկուրսիա',
+        'partner' => 'Գործընկերներ',
         'product' => 'Ապրանք',
         'other_service' => 'Այլ ծառայություններ'
 
@@ -425,6 +427,7 @@ if (!function_exists('getTranslateTicketTitl_en')) {
         'event-config' => 'Event',
         'corporative' => 'Corporative',
         'guide' => 'Guide',
+        'partner' => 'Partners',
         'product' => 'Product',
         'other_service' => 'Other services'
 
@@ -507,6 +510,16 @@ if (!function_exists('getMuseumAllEvents')) {
       return $events;
 
     }
+}
+
+if (!function_exists('getMuseumAllPartners')) {
+  function getMuseumAllPartners($id)
+  {
+    $partners = Partner::where('museum_id', $id)->get();
+
+    return $partners;
+
+  }
 }
 
 if (!function_exists('getMuseumAllEventsWithTranslation')) {

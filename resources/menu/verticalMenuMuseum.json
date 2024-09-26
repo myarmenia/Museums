@@ -231,6 +231,13 @@
           "url": "museum/event-reports",
           "name": "Միջոցառում",
           "slug": ["museum_event_reports"]
+        },
+        {
+          "url": "museum/partners-reports",
+          "name": "Գործընկերներ",
+          "slug": [
+            "museum_partners_reports"
+          ]
         }
       ]
     }
