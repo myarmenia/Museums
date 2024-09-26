@@ -15,6 +15,7 @@ services:
       - "8000:8000"
     networks:
       - app-network
+      - ./laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
 
 #  nginx:
 #    image: nginx:latest
