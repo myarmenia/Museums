@@ -348,12 +348,13 @@
             @endif
             @if (array_key_exists('partners', $data))
             <div class="tab-pane fade" id="navs-top-partners" role="tabpanel">
-              <form data-name='events' class="form-cashier" action="{{ route('cashier.add.otherServices') }}" method="post">
-                  <div class="table-responsive text-nowrap">
-                      <select id="partners" name="partner" class="form-select">
+              <form data-name="partner" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">
+
+                {{-- <form data-name='partner'id="myForm" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">                <div class="table-responsive text-nowrap"> --}}
+                      <select id="partners" name="partner_id" class="form-select">
                           <option value="">Ընտրեք գործընկերոջը</option>
                           @foreach ($data['partners'] as $partner)
-                              <option value="{{ $partner->id }}">{{ $partner->name }}
+                              <option value={{ $partner->id }}>{{ $partner->name }}
                               </option>
                           @endforeach
                       </select>
@@ -365,6 +366,31 @@
                         <div class="col-sm-10 d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
                         </div>
+                    </div>
+                    <div id="partnerPrint"  class="d-none">
+                      <div id="partner-total" class="d-flex justify-content-end ">
+                        <div class="d-flex">
+                            <div class="me-3">Ընդհանուր</div>
+                            <div class="me-2">
+                                <span class="remove-value" id="partner-total-count">0</span>
+                                <span>տոմս</span>
+                            </div>
+                            <div class="me-2">
+                              <span class="remove-value" id="partner-total-guide-count">0</span>
+                              <span>Էքսկուրսավար</span>
+                          </div>
+                            <div class="event-total-cont"></div>
+                            <div class="me-2">
+                                <span class="remove-value" id="partner-total-price">0</span>
+                                <span>դրամ</span>
+                            </div>
+                        </div>
+                      </div>
+                      <div id="partner-save" class="mt-3 row justify-content-end ">
+                          <div class="col-sm-10 d-flex justify-content-end">
+                              <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                          </div>
+                      </div>
                     </div>
 
               </form>

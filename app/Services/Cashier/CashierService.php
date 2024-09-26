@@ -176,7 +176,7 @@ class CashierService
     public function getPartnerDetails($partnerId)
     {
         if($museumId = museumAccessId()) {
-            $partner = Partner::with('museum.standart_tickets')->where('museum_id', $museumId)->find($partnerId);
+            $partner = Partner::with('museum.standart_tickets','museum.guide')->where('museum_id', $museumId)->find($partnerId);
 
             return $partner;
         }

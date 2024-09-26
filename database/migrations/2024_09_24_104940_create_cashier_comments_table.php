@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('cashier_comments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('purchase_id')->nullable();
+            $table->unsignedBigInteger('purchase_id');
             $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
-            $table->string('comment');
-            $table->string(column: 'type');
+            $table->string('comment')->nullable();
+            $table->string(column: 'type')->nullable();
             $table->timestamps();
         });
     }

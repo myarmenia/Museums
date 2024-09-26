@@ -75,6 +75,7 @@ use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
 use App\Http\Controllers\cashier\OtherServices;
 use App\Http\Controllers\cashier\OtherServicesController;
+use App\Http\Controllers\cashier\PartnerController;
 use App\Http\Controllers\IncrementController;
 use Illuminate\Http\Request;
 
@@ -203,6 +204,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('get-other-service/{id}', [CashierController::class,'getOtherServiceDetails'])->name('cashier.otherService.details');
     Route::post('/create-other-service', OtherServicesController::class)->name('cashier.add.otherServices');
     Route::get('get-partner/{id}', [CashierController::class,'getPartnerDetails'])->name('cashier.partner.details');
+    Route::post('create-partner', PartnerController::class)->name('cashier.add.partner');
     // Route::get('/create', [CashierController::class, 'create'])->name('cashier.add');
 
   });
