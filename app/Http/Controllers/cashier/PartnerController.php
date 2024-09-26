@@ -19,7 +19,7 @@ class PartnerController extends CashierController
 
     try {
 
-
+// dd($request->all());
         DB::beginTransaction();
         $requestDatForValidation = $request->except('partner_id','comment');
         $data['purchase_type'] = 'offline';
@@ -67,9 +67,11 @@ class PartnerController extends CashierController
                     $newItem["id"] = $guid->id;
                     if($key === 'guide_other'){
                       $newItem["sub_type"] = "partner_guide_other";
+                      $newItem["type"]="guide_other";
 
                     }else{
                        $newItem["sub_type"]="partner_guide_am";
+                       $newItem["type"]="guide_am";
                     }
                 }
 
@@ -79,7 +81,7 @@ class PartnerController extends CashierController
             }
         }
 
-// dd($data);
+
         if(!$haveValue){
           session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
 

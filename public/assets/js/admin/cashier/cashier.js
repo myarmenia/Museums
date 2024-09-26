@@ -490,7 +490,7 @@ $(function () {
                                 <tr class="table-default">
                                         <td>Անվճար</td>
                                          <td>
-                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate partner_ticket_type" id="freeTicketPrice" name="discount" price=0>
+                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate partner_ticket_type" id="freeTicketPrice" name="free" price=0>
                                          </td>
                                         <td class="remove-value  partner_ticket_price price">0</td>
                                 </tr>
