@@ -25,8 +25,11 @@ class PartnerController extends CashierController
         $data['purchase_type'] = 'offline';
         $data['status'] = 1;
         $data['items'] = [];
-        $data['comment']['comment'] = $request->comment;
-        $data['comment']['type'] = 'partner';
+        if(!is_null($request->comment)){
+            $data['comment']['comment'] = $request->comment;
+            $data['comment']['type'] = 'partner';
+        }
+
 
 
         $museumId = getAuthMuseumId();
@@ -37,9 +40,13 @@ class PartnerController extends CashierController
 
 
         if (empty($filteredData)) {
-            session(['errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։']);
+            session([
+              'errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։',
+              'open_tab' =>'navs-top-partners'
+            ]);
 
-            return redirect()->back()->session('navs-top-partners');
+            return redirect()->back();
+
 
         }
 
@@ -72,7 +79,7 @@ class PartnerController extends CashierController
             }
         }
 
-dd($data);
+// dd($data);
         if(!$haveValue){
           session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
 
@@ -101,6 +108,7 @@ dd($data);
         DB::rollBack();
 
         return redirect()->back();
+
 
     } catch (\Exception $e) {
         session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);

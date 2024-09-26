@@ -35,7 +35,10 @@ class EventTicket extends CashierController
         }
 
       if ($allNull && is_null($request->guide_price_am) && is_null($request->guide_price_other) ) {
-        session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
+        session([
+          'errorMessage' => 'Լրացրեք քանակ դաշտը',
+          'open_tab' =>'navs-top-event'
+        ]);
 
         DB::rollBack();
         return redirect()->back();
@@ -160,7 +163,7 @@ class EventTicket extends CashierController
             }
 
           }
-          
+
           if (isset($request->guide_price_am) && $request->guide_price_am != null) {
             $data['items'][] = [
               "type" => 'event',

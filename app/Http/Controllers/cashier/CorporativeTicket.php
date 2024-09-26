@@ -31,7 +31,10 @@ class CorporativeTicket extends CashierController
             $corporativeSale = CorporativeSale::where(['museum_id' => $museumId, 'coupon' => $requestData['corporative-ticket']])->first();
 
             if ($corporativeSale->tickets_count < ($corporativeSale->visitors_count + (int) $requestData['buy-ticket'])) {
-                session(['errorMessage' => 'Տոմսերի քանակը չպետք է գերազանցի կորպորատիվի տոմսի քանակից']);
+                session([
+                  'errorMessage' => 'Տոմսերի քանակը չպետք է գերազանցի կորպորատիվի տոմսի քանակից',
+                  'open_tab' =>'#navs-top-corporative'
+                ]);
                 DB::rollBack();
                 return redirect()->back();
             }
@@ -40,12 +43,12 @@ class CorporativeTicket extends CashierController
 
             if ($purchaseItem) {
                 $purchaseId = $purchaseItem->purchase_id;
-                
+
                 $ticketCount = (int) $requestData['buy-ticket'];
-                
+
                 if(!$ticketCount){
                     session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
-                        
+
                     DB::rollBack();
                     return redirect()->back();
                 }

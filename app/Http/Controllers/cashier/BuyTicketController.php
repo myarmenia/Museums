@@ -36,7 +36,10 @@ class BuyTicketController extends CashierController
 
 
             if (empty($filteredData)) {
-                session(['errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։']);
+                session([
+                  'errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։',
+                  'open_tab' =>'navs-top-home'
+                ]);
 
                 return redirect()->back();
             }
