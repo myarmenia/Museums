@@ -9,7 +9,7 @@ services:
 #    container_name: php######
     restart: always
 #    command: bash -c "php artisan migrate && php artisan db:seed && php artisan serve --host=0.0.0.0"
-    command: bash -c "php artisan migrate && php artisan storage:link && php artisan config:cache && php artisan config:clear && service supervisor start && supervisorctl reread && supervisorctl update && supervisorctl start laravel-worker:* && php artisan serve --host=0.0.0.0"
+    command: bash -c "service supervisor start && supervisorctl reread && supervisorctl update && supervisorctl start laravel-worker:* && php artisan migrate && php artisan storage:link && php artisan config:cache && php artisan config:clear && php artisan serve --host=0.0.0.0"
 #    command: tail -f /dev/null
     ports:
       - "8000:8000"
