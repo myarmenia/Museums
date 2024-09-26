@@ -21,8 +21,10 @@
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h5 class="card-header">Տոմսերի վաճառք</h5>
+
             </div>
         </div>
+
         <div class="card-body">
 
             <ul class="nav nav-tabs" role="tablist">
@@ -65,7 +67,7 @@
                 </li>
             @endif
             @if (array_key_exists('partners', $data))
-                <li data-name='other_services' class="nav-item">
+                <li data-name='partner' class="nav-item">
                     <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                         data-bs-target="#navs-top-partners" aria-controls="navs-top-partners"
                         aria-selected="false">Գործընկերներ</button>
@@ -349,8 +351,6 @@
             @if (array_key_exists('partners', $data))
             <div class="tab-pane fade" id="navs-top-partners" role="tabpanel">
               <form data-name="partner" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">
-
-                {{-- <form data-name='partner'id="myForm" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">                <div class="table-responsive text-nowrap"> --}}
                       <select id="partners" name="partner_id" class="form-select">
                           <option value="">Ընտրեք գործընկերոջը</option>
                           @foreach ($data['partners'] as $partner)
@@ -402,6 +402,46 @@
 
 
     </div>
+
+    <script>
+      // Check if the session variable exists and set a JavaScript variable
+      console.log("{{\Session::get('open_tab')}}")
+      var isNavsTopPartnersSet = "{{ session()->has('open_tab') ? \Session::get('open_tab') : false }}";
+
+      document.addEventListener('DOMContentLoaded', function() {
+          // Check if the session variable is set
+          if (isNavsTopPartnersSet) {
+              // Select the tab link for the #navs-top-partners tab pane
+              var tabLink = document.querySelector('.nav-link[data-bs-target="#'+isNavsTopPartnersSet+'"]');
+              var tabPane = document.querySelector('#'+isNavsTopPartnersSet);
+
+              // Add 'active' class to the selected tab link
+              if (tabLink) {
+                  tabLink.classList.add('active');
+              }
+
+              // Remove 'active' class from other tab links (optional)
+              var otherTabLinks = document.querySelectorAll('.nav-link');
+              otherTabLinks.forEach(function(link) {
+                  if (link !== tabLink) {
+                      link.classList.remove('active');
+                  }
+              });
+
+              var tabPanes = document.querySelectorAll('.tab-pane');
+            tabPanes.forEach(function(pane) {
+                pane.classList.remove('show', 'active');
+                pane.classList.add('fade'); // Optional: keep the fade effect
+            });
+
+            // Show the corresponding tab pane and add 'show' and 'active' classes
+            if (tabPane) {
+                tabPane.classList.add('show', 'active');
+                tabPane.classList.remove('fade'); // Remove fade effect for the active pane
+            }
+          }
+      });
+  </script>
 
 
 @endsection
