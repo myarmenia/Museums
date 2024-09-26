@@ -22,6 +22,7 @@ class PartnerController extends CashierController
 // dd($request->all());
         DB::beginTransaction();
         $requestDatForValidation = $request->except('partner_id','comment');
+        session(['open_tab' =>'navs-top-partners']);
         $data['purchase_type'] = 'offline';
         $data['status'] = 1;
         $data['items'] = [];
@@ -42,7 +43,7 @@ class PartnerController extends CashierController
         if (empty($filteredData)) {
             session([
               'errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։',
-              'open_tab' =>'navs-top-partners'
+             
             ]);
 
             return redirect()->back();

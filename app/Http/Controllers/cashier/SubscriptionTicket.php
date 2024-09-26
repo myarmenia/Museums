@@ -18,12 +18,12 @@ class SubscriptionTicket extends CashierController
     {
         try {
             DB::beginTransaction();
+            session(['open_tab' =>'navs-top-aboniment']);
             $requestData = (int) $request->input('aboniment-ticket');
 
             if(!$requestData){
                 session([
-                  'errorMessage' => 'Լրացրեք քանակ դաշտը',
-                  'open_tab' =>'navs-top-aboniment'
+                  'errorMessage' => 'Լրացրեք քանակ դաշտը'
                 ]);
 
                 DB::rollBack();

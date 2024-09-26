@@ -20,6 +20,7 @@ class EventTicket extends CashierController
     try {
 
       DB::beginTransaction();
+      session(['open_tab' =>'navs-top-event']);
 
       $requestData = $request->input('event');
       $museumId = getAuthMuseumId();
@@ -37,7 +38,7 @@ class EventTicket extends CashierController
       if ($allNull && is_null($request->guide_price_am) && is_null($request->guide_price_other) ) {
         session([
           'errorMessage' => 'Լրացրեք քանակ դաշտը',
-          'open_tab' =>'navs-top-event'
+
         ]);
 
         DB::rollBack();

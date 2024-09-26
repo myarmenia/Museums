@@ -23,6 +23,7 @@ class CorporativeTicket extends CashierController
     {
         try {
             DB::beginTransaction();
+            session(['open_tab' =>'navs-top-corporative']);
 
             $requestData = $request->all();
 
@@ -32,8 +33,8 @@ class CorporativeTicket extends CashierController
 
             if ($corporativeSale->tickets_count < ($corporativeSale->visitors_count + (int) $requestData['buy-ticket'])) {
                 session([
-                  'errorMessage' => 'Տոմսերի քանակը չպետք է գերազանցի կորպորատիվի տոմսի քանակից',
-                  'open_tab' =>'#navs-top-corporative'
+                  'errorMessage' => 'Տոմսերի քանակը չպետք է գերազանցի կորպորատիվի տոմսի քանակից'
+
                 ]);
                 DB::rollBack();
                 return redirect()->back();
