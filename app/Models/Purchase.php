@@ -42,4 +42,9 @@ class Purchase extends Model
       return $this->belongsTo(PersonPurchase::class, "person_purchase_id");
     }
 
+    public function cashier_comment()
+    {
+      return $this->hasOne(CashierComment::class);
+    }
+
 }

@@ -5,6 +5,7 @@ use App\Models\CorporativeVisitorCount;
 use App\Models\Event;
 use App\Models\Museum;
 use App\Models\OtherService;
+use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Ticket;
 use App\Models\TicketPdf;
@@ -37,7 +38,11 @@ class CashierService
         },
         'other_services' => function ($query){
             $query->orderBy('id', 'DESC')->where('status', 1)->get();
-        },])->find($museumId);
+        },
+        'partners' => function ($query){
+          $query->orderBy('id', 'DESC')->where('status', 1)->get();
+      },
+        ])->find($museumId);
 
         if(!$ticketPrice = Ticket::where('museum_id', $museumId)->first()){
             session(['errorMessage' => 'Նախ ստեղծեք տոմս']);
@@ -70,7 +75,10 @@ class CashierService
         }
         if($museum->other_services->count()){
           $data['other_services'] = $museum->other_services;
-      }
+        }
+        if($museum->partners->count()){
+          $data['partners'] = $museum->partners;
+        }
 
         return ['success' => true, 'data' => $data];
     }
@@ -159,6 +167,18 @@ class CashierService
               $query->where('lang', 'am');
           }])->where('museum_id', $museumId)->find($otherServiceId);
             return $otherService;
+        }
+
+        session(['errorMessage' => 'Ինչ որ բան այն չէ']);
+
+        return false;
+    }
+    public function getPartnerDetails($partnerId)
+    {
+        if($museumId = museumAccessId()) {
+            $partner = Partner::with('museum.standart_tickets','museum.guide')->where('museum_id', $museumId)->find($partnerId);
+
+            return $partner;
         }
 
         session(['errorMessage' => 'Ինչ որ բան այն չէ']);

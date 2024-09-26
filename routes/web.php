@@ -31,6 +31,11 @@ use App\Http\Controllers\Admin\OtherServices\OSEditController;
 use App\Http\Controllers\Admin\OtherServices\OSListController;
 use App\Http\Controllers\Admin\OtherServices\OSStoreController;
 use App\Http\Controllers\Admin\OtherServices\OSUpdateController;
+use App\Http\Controllers\Admin\Partners\PartnerCreateController;
+use App\Http\Controllers\Admin\Partners\PartnerEditController;
+use App\Http\Controllers\Admin\Partners\PartnerListController;
+use App\Http\Controllers\Admin\Partners\PartnerStoreController;
+use App\Http\Controllers\Admin\Partners\PartnerUpdateController;
 use App\Http\Controllers\Admin\Reports\ExportExcelController;
 use App\Http\Controllers\Admin\Reports\ReportsForMuseumAdminController;
 use App\Http\Controllers\Admin\Reports\ReportsForSuperAdminController;
@@ -70,7 +75,9 @@ use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
 use App\Http\Controllers\cashier\OtherServices;
 use App\Http\Controllers\cashier\OtherServicesController;
+use App\Http\Controllers\cashier\PartnerController;
 use App\Http\Controllers\IncrementController;
+use Illuminate\Http\Request;
 
 // authentication
 Auth::routes(['register' => false]);
@@ -91,9 +98,13 @@ Route::group(['middleware' => ['auth']], function () {
   })->name('welcome');
 
   // Main Page Route
-  Route::group(['middleware' => ['role:super_admin|general_manager|chief_accountant']], function () {
+  // Route::group(['middleware' => ['role:super_admin|general_manager|chief_accountant']], function () {
+  //   Route::get('/', AnalyticsController::class)->name('dashboard_analytics');
+  // });
+
+
     Route::get('/', AnalyticsController::class)->name('dashboard_analytics');
-  });
+
 
   Route::group(['middleware' => ['role:museum_admin|manager|content_manager|accountant', 'check_auth_have_museum']], function () {
     Route::get('/museum-dashboard', SingleMuseumAnalyticsController::class)->name('museum_dashboard_analytics');
@@ -190,9 +201,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/create-corporative', CorporativeTicket::class)->name('cashier.add.corporative');
     Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
     Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
-    Route::get('get-other-service/{id}', [CashierController::class,'getOtherServiceDetails'])->name('cashier.otherService.details');;
+    Route::get('get-other-service/{id}', [CashierController::class,'getOtherServiceDetails'])->name('cashier.otherService.details');
     Route::post('/create-other-service', OtherServicesController::class)->name('cashier.add.otherServices');
-
+    Route::get('get-partner/{id}', [CashierController::class,'getPartnerDetails'])->name('cashier.partner.details');
+    Route::post('create-partner', PartnerController::class)->name('cashier.add.partner');
     // Route::get('/create', [CashierController::class, 'create'])->name('cashier.add');
 
   });
@@ -276,6 +288,16 @@ Route::group(['middleware' => ['auth']], function () {
 
       Route::post('ticket-school', SchoolTicketController::class)->name('ticket_school_store');
       Route::post('ticket-school/{id}', SchoolTicketController::class)->name('ticket_school_update');
+    });
+  });
+
+  Route::group(['prefix' => 'partners', 'middleware' => ['role:accountant|museum_admin|manager', 'check_auth_have_museum']], function () {
+    Route::get('list', PartnerListController::class)->name('partners_list');
+    Route::get('create', PartnerCreateController::class)->name('partners_create');
+    Route::post('store', PartnerStoreController::class)->name('partners_store');
+    Route::group(['middleware' => ['model_access']], function () {
+      Route::put('update/{id}', PartnerUpdateController::class)->name('partners-update');
+      Route::get('edit/{id}', PartnerEditController::class)->name('partners-edit');
     });
   });
 

@@ -35,7 +35,7 @@
                             placeholder="Վերնագիր {{ $lang }}"
                             value="{{ old("translate.$lang.name") }}"
                             name="translate[{{ $lang }}][name]"
-                            id="name-{{ $lang}}" name="name"
+                            id="name-{{ $lang}}"
                             />
                   </div>
                   @error("translate.$lang.name")

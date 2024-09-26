@@ -64,6 +64,13 @@
                         aria-selected="false">Այլ ծառայություններ</button>
                 </li>
             @endif
+            @if (array_key_exists('partners', $data))
+                <li data-name='other_services' class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-top-partners" aria-controls="navs-top-partners"
+                        aria-selected="false">Գործընկերներ</button>
+                </li>
+            @endif
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
@@ -339,6 +346,56 @@
                   </form>
               </div>
             @endif
+            @if (array_key_exists('partners', $data))
+            <div class="tab-pane fade" id="navs-top-partners" role="tabpanel">
+              <form data-name="partner" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">
+
+                {{-- <form data-name='partner'id="myForm" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">                <div class="table-responsive text-nowrap"> --}}
+                      <select id="partners" name="partner_id" class="form-select">
+                          <option value="">Ընտրեք գործընկերոջը</option>
+                          @foreach ($data['partners'] as $partner)
+                              <option value={{ $partner->id }}>{{ $partner->name }}
+                              </option>
+                          @endforeach
+                      </select>
+
+                      <div id="partner-config"> </div>
+                  </div>
+
+                    <div id="other-service-save" class="mt-3 row justify-content-end d-none" >
+                        <div class="col-sm-10 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                        </div>
+                    </div>
+                    <div id="partnerPrint"  class="d-none">
+                      <div id="partner-total" class="d-flex justify-content-end ">
+                        <div class="d-flex">
+                            <div class="me-3">Ընդհանուր</div>
+                            <div class="me-2">
+                                <span class="remove-value" id="partner-total-count">0</span>
+                                <span>տոմս</span>
+                            </div>
+                            <div class="me-2">
+                              <span class="remove-value" id="partner-total-guide-count">0</span>
+                              <span>Էքսկուրսավար</span>
+                          </div>
+                            <div class="event-total-cont"></div>
+                            <div class="me-2">
+                                <span class="remove-value" id="partner-total-price">0</span>
+                                <span>դրամ</span>
+                            </div>
+                        </div>
+                      </div>
+                      <div id="partner-save" class="mt-3 row justify-content-end ">
+                          <div class="col-sm-10 d-flex justify-content-end">
+                              <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                          </div>
+                      </div>
+                    </div>
+
+              </form>
+          </div>
+        @endif
             </div>
         </div>
     </div>

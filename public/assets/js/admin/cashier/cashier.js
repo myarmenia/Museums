@@ -436,7 +436,7 @@ $(function () {
                                          </td>
                                         <td class="remove-value event_guide_row_price ticket_price" id="event_guide_price_am">${data.price }</td>
                                       </tr>
-                                   
+
 
                                     </tbody></table>`
 
@@ -449,3 +449,155 @@ $(function () {
 
 
 });
+
+ $("#partners").on('input',function(){
+
+
+      $.ajax({
+        type: "GET",
+        url: '/cashier/get-partner/' + $(this).val(),
+        cache: false,
+        success: function (data) {
+        $('#partnerPrint').removeClass('d-none')
+        let partnerTotalGuideCount = 0
+        let partnerTotalAmount = 0
+
+          console.log(data)
+          let content = `<table class="table cashier-table">
+                          <thead>
+                            <tr>
+                            <th>Անուն</th>
+                            <th>Քանակ</th>
+                            <th>Արժեք</th>
+                            </tr>
+                          </thead>
+                            <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
+                                <tr class="table-default">
+                                        <td>Ստանդարտ</td>
+                                         <td>
+                                             <input type="number" onwheel="return false;" price="200012"  class="form-control form-control-validate event_guid" id="StandartTicketPrice" name="standart" data-museum-standart-ticket-price=${data.museum.standart_tickets.price }>
+                                         </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id="partner-ticket-price">0</td>
+                                </tr>
+                                <tr class="table-default">
+                                        <td>Զեղչված</td>
+                                         <td>
+                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate event_guid" id="discountTicketPrice" name="discount" data-museum-standart-ticket-price=${data.museum.standart_tickets.price/2 }>
+                                         </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" ">0</td>
+                                </tr>
+                                <tr class="table-default">
+                                        <td>Անվճար</td>
+                                         <td>
+                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate event_guid" id="freeTicketPrice" name="discount" data-museum-standart-ticket-price=${data.museum.standart_tickets.price/2 }>
+                                         </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" ">0</td>
+                                </tr>
+                                <tr class='table-default'>
+                                        <td>Էքսկուրսավար(հայերեն)</td>
+                                        <td>
+                                            <input type="number" onwheel="return false;"
+                                                price="${data.museum.guide.price_am}" min="0"
+                                                class="form-control form-control-validate event_guid" id="partner_guide_price_am" name="guide_am" >
+                                        </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id='partner_guide_am'>0</td>
+                                      </tr>
+                                      <tr class='table-default'>
+                                        <td>Էքսկուրսավար(այլ)</td>
+                                        <td>
+                                            <input type="number" onwheel="return false;"
+                                                price="${data.museum.guide.price_other}" min="0"
+                                                class="form-control form-control-validate event_guid" id="partner_guide_price_other" name="guide_other" >
+                                        </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id='partner_guide_other'>0</td>
+                                      </tr>
+                                       <tr class='table-default'>
+                                        <td>Մեկնաբանություն</td>
+                                        <td>
+                                            <textarea name="comment"></textarea>
+                                        </td>
+
+                                      </tr>
+
+
+
+                                    </tbody></table>`
+
+                            $('#partner-config').html(content)
+                            $('#StandartTicketPrice').on('input',function(){
+                              $price = $(this).val()*$('#StandartTicketPrice').data('museum-standart-ticket-price')
+
+                              $('#partner-ticket-price').html($price)
+                              $('#partner-total-count').html($(this).val())
+
+
+                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-ticket-price').text()*1
+                              $('#partner-total-price').html(partnerTotalAmount)
+
+                            })
+
+                            $('#partner_guide_price_am').on('input',function(){
+
+                              $partner_guide_price_am = $(this).val()*$('#partner_guide_price_am').attr('price')
+                              partnerTotalGuideCount = $('#partner_guide_price_other').val()*1+$(this).val()*1
+
+
+                              $('#partner_guide_am').html($partner_guide_price_am)
+                              $('#partner-total-guide-count').html(partnerTotalGuideCount)
+                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-ticket-price').text()*1
+                              $('#partner-total-price').html(partnerTotalAmount)
+
+                            })
+
+                            $('#partner_guide_price_other').on('input',function(){
+                              $partner_guide_price_other = $(this).val()*$('#partner_guide_price_other').attr('price')
+                              partnerTotalGuideCount = $('#partner_guide_price_am').val()*1+$(this).val()*1
+
+
+                              $('#partner_guide_other').html($partner_guide_price_other)
+                              $('#partner-total-guide-count').html(partnerTotalGuideCount)
+
+                              partnerTotalAmount = $('#partner_guide_am').text()*1+$('#partner_guide_other').text()*1+$('#partner-ticket-price').text()*1
+                              $('#partner-total-price').html(partnerTotalAmount)
+
+
+                            })
+
+              }
+        })
+
+
+
+
+  })
+  // ==========================
+  document.getElementById('myForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Отключаем стандартное поведение отправки формы
+
+        let form = event.target;  // Ссылка на саму форму
+        let formData = new FormData(form);  // Собираем данные формы
+
+        // Отправка данных через fetch
+        fetch(form.action, {
+            method: 'POST',  // Метод, указанный в форме
+            body: formData,  // Данные формы
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Для Laravel
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+
+
+
+
+
+
+
+
