@@ -170,6 +170,8 @@ trait QR
     return $update;
   }
 
+  
+
 
   // public function checkTicketAccesses($qr, $status = null, $date = null)
   // {
