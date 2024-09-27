@@ -14,7 +14,7 @@ class PurchasedItem extends Model
     use HasFactory, ReportFilterTrait, SoftDeletes;
     protected $guarded = [];
     // protected $defaultFields = ['museum_id'] commentats e eghel;
-    protected $defaultFields = ['item_relation_id', 'museum_id'];
+    protected $defaultFields = ['item_relation_id', 'museum_id', 'partner_id'];
 
   protected $relationFilter = [
       'purchase' => ['status','type', 'gender', 'country_id', 'start_date', 'end_date', 'start_age', 'end_age'],

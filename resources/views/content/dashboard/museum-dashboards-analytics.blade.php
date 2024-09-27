@@ -150,52 +150,7 @@
     </div>
     <!--/ Attendance By Age -->
 
-    <!-- Top Museums -->
-    {{-- @php
-        $currentDate = now();
-        $start_date = $currentDate->startOfYear()->format('d-m-Y');
-        $end_date = $currentDate->endOfYear()->format('d-m-Y');
-    @endphp
-    <div class="col-md-6 col-lg-4 order-1 mb-4">
-      <div class="card h-100">
-          <div class="card-header d-flex align-items-center justify-content-between pb-0">
-          <div class="card-title mb-0">
-            <h5 class="m-0 me-2">Top Թանգարաններ </h5>
-            <small class="text-muted">առավելագույն տոմս վաճառած</small>
-          </div>
-        </div>
-        <div class="card-body ">
-          <div class="d-flex justify-content-between align-items-center mb-3 my-4 ">
-            <div class="d-flex flex-column align-items-start gap-1">
-              <h2 class="my-2">{{$start_date}} - {{$end_date}}</h2>
-              <span>Ընթացիկ տարի</span>
-            </div>
-            <div id="orderStatisticsChartAge1"></div>
-          </div>
-          <ul class="p-0 m-0 mt-5 pt-4">
-            @foreach ($get_top_museum as $museum)
-
-                <li class="d-flex mb-4 pb-1">
-                    <div class="avatar flex-shrink-0 me-3">
-                      <span class="avatar-initial rounded bg-label-warning"><i class='bx bx-museum'></i></span>
-                    </div>
-                    <div class=" w-100 align-items-center justify-content-between gap-2">
-                      <div class="me-2">
-                        <small class="text-muted d-block mb-1">Թանգարան</small>
-                        <h6 class="mb-0">{{$museum['museum_name']}} cfffffffffffffffffff</h6>
-                      </div>
-                      <div class="user-progress d-flex align-items-center gap-1">
-                        <h6 class="mb-0">{{$museum['total_price']}}</h6> <span class="text-muted">դրամ</span>
-                      </div>
-                    </div>
-                </li>
-            @endforeach
-
-          </ul>
-        </div>
-      </div>
-    </div> --}}
-    <!--/ Top Museums -->
+    
 
   </div>
 @endsection

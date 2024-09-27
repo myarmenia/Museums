@@ -19,7 +19,7 @@ class Purchase extends Model
     protected $relationFilter = [
         'person_purchase' => ['gender', 'country_id'],
         'user' => ['gender', 'country_id'],
-        'purchased_items' => ['item_relation_id', 'museum_id'], //nor e avelacvats
+        'purchased_items' => ['item_relation_id', 'museum_id', 'partner_id'], //nor e avelacvats
     ];
 
     public function purchased_items():HasMany
