@@ -476,28 +476,28 @@ $(function () {
                                 <tr class="table-default">
                                         <td>Ստանդարտ</td>
                                          <td>
-                                             <input type="number" onwheel="return false;" class="form-control form-control-validate partner_ticket_type" id="StandartTicketPrice" name="standart" price=${data.museum.standart_tickets.price }>
+                                             <input type="number" min="0"  onwheel="return false;" class="form-control form-control-validate partner_ticket_type" id="StandartTicketPrice" name="standart" price=${data.museum.standart_tickets.price }>
                                          </td>
                                         <td class="remove-value  partner_ticket_price price">0</td>
                                 </tr>
                                 <tr class="table-default">
                                         <td>Զեղչված</td>
                                          <td>
-                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate partner_ticket_type" id="discountTicketPrice" name="discount" price=${data.museum.standart_tickets.price/2 }>
+                                             <input type="number" min="0" onwheel="return false;"   class="form-control form-control-validate partner_ticket_type" id="discountTicketPrice" name="discount" price=${data.museum.standart_tickets.price/2 }>
                                          </td>
                                         <td class="remove-value  partner_ticket_price price">0</td>
                                 </tr>
                                 <tr class="table-default">
                                         <td>Անվճար</td>
                                          <td>
-                                             <input type="number" onwheel="return false;"   class="form-control form-control-validate partner_ticket_type" id="freeTicketPrice" name="free" price=0>
+                                             <input type="number" min="0" onwheel="return false;"   class="form-control form-control-validate partner_ticket_type" id="freeTicketPrice" name="free" price=0>
                                          </td>
                                         <td class="remove-value  partner_ticket_price price">0</td>
                                 </tr>
                                 <tr class='table-default'>
                                         <td>Էքսկուրսավար(հայերեն)</td>
                                         <td>
-                                            <input type="number" onwheel="return false;"
+                                            <input type="number" min="0" onwheel="return false;"
                                                 price="${data.museum.guide.price_am}" min="0"
                                                 class="form-control form-control-validate partner_guid_count" id="partner_guide_price_am" name="guide_am" >
                                         </td>
@@ -506,7 +506,7 @@ $(function () {
                                       <tr class='table-default'>
                                         <td>Էքսկուրսավար(այլ)</td>
                                         <td>
-                                            <input type="number" onwheel="return false;"
+                                            <input type="number" min="0" onwheel="return false;"
                                                 price="${data.museum.guide.price_other}" min="0"
                                                 class="form-control form-control-validate partner_guid_count"  name="guide_other" >
                                         </td>

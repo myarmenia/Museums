@@ -43,7 +43,7 @@ class PartnerController extends CashierController
         if (empty($filteredData)) {
             session([
               'errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։',
-             
+
             ]);
 
             return redirect()->back();
@@ -66,6 +66,7 @@ class PartnerController extends CashierController
                 if (($key === 'guide_other' || $key === 'guide_am') && $guid) {
 
                     $newItem["id"] = $guid->id;
+                    $newItem["partner_id"] = $request->partner_id;
                     if($key === 'guide_other'){
                       $newItem["sub_type"] = "partner_guide_other";
                       $newItem["type"]="guide_other";
@@ -81,7 +82,6 @@ class PartnerController extends CashierController
 
             }
         }
-
 
         if(!$haveValue){
           session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
