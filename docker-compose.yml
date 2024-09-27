@@ -44,7 +44,6 @@ services:
 #      - app
 #    networks:
 #      - app-network
-#      - app 
 
 networks:
   app-network:
