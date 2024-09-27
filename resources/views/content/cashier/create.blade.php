@@ -21,8 +21,10 @@
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h5 class="card-header">Տոմսերի վաճառք</h5>
+
             </div>
         </div>
+
         <div class="card-body">
 
             <ul class="nav nav-tabs" role="tablist">
@@ -63,14 +65,14 @@
                         data-bs-target="#navs-top-otherService" aria-controls="navs-top-otherService"
                         aria-selected="false">Այլ ծառայություններ</button>
                 </li>
-            @endif
-            @if (array_key_exists('partners', $data))
-                <li data-name='other_services' class="nav-item">
-                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-top-partners" aria-controls="navs-top-partners"
-                        aria-selected="false">Գործընկերներ</button>
-                </li>
-            @endif
+              @endif
+              @if (array_key_exists('partners', $data))
+                  <li data-name='partner' class="nav-item">
+                      <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                          data-bs-target="#navs-top-partners" aria-controls="navs-top-partners"
+                          aria-selected="false">Գործընկերներ</button>
+                  </li>
+              @endif
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
@@ -108,7 +110,7 @@
                                         <td class="remove-value" class="remove-value">0</td>
                                     </tr>
                                     <tr class='table-default'>
-                                        <td>Դպրոցական</td>
+                                        <td>Դպրոցական / Աբոնիմենտ </td>
                                         <td><input type="number" min="0" class="form-control form-control-validate" id="school"
                                                 onwheel="return false;" name="school" value="{{ old('school') }}">
                                         </td>
@@ -231,25 +233,27 @@
 
                                 <div id="event-config"> </div>
                             </div>
-                            <div id='event-total' class="d-flex justify-content-end d-none">
-                                <div class="d-flex ">
-                                    <div class="me-3">Ընդհանուր</div>
-                                    <div class="me-2">
-                                        <span class="remove-value" id="event-total-count">0</span>
-                                        <span>տոմս</span>
-                                    </div>
-                                    <div class="event-total-cont"></div>
-                                    <div class="me-2">
-                                        <span class="remove-value" id="event-total-price">0</span>
-                                        <span>դրամ</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="event-save" class="mt-3 row justify-content-end d-none">
-                                <div class="col-sm-10 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
-                                </div>
-                            </div>
+
+                              <div id='event-total' class="d-flex justify-content-end d-none">
+                                  <div class="d-flex ">
+                                      <div class="me-3">Ընդհանուր</div>
+                                      <div class="me-2">
+                                          <span class="remove-value" id="event-total-count">0</span>
+                                          <span>տոմս</span>
+                                      </div>
+                                      <div class="event-total-cont"></div>
+                                      <div class="me-2">
+                                          <span class="remove-value" id="event-total-price">0</span>
+                                          <span>դրամ</span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div id="event-save" class="mt-3 row justify-content-end d-none">
+                                  <div class="col-sm-10 d-flex justify-content-end">
+                                      <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                                  </div>
+                              </div>
+
                         </form>
                     </div>
                 @endif
@@ -323,85 +327,125 @@
                     </form>
                 </div>
                 @if (array_key_exists('other_services', $data))
-                <div class="tab-pane fade" id="navs-top-otherService" role="tabpanel">
-                  <form data-name='events' class="form-cashier" action="{{ route('cashier.add.otherServices') }}" method="post">
-                      <div class="table-responsive text-nowrap">
-                          <select id="otherServices" name="other_service" class="form-select">
-                              <option value="">Ընտրեք ծառայությունը</option>
-                              @foreach ($data['other_services'] as $service)
-                                  <option value="{{ $service->id }}">{{ $service->translation('am')->name }}
-                                  </option>
-                              @endforeach
-                          </select>
+                  <div class="tab-pane fade" id="navs-top-otherService" role="tabpanel">
+                    <form data-name='events' class="form-cashier" action="{{ route('cashier.add.otherServices') }}" method="post">
+                        <div class="table-responsive text-nowrap">
+                            <select id="otherServices" name="other_service" class="form-select">
+                                <option value="">Ընտրեք ծառայությունը</option>
+                                @foreach ($data['other_services'] as $service)
+                                    <option value="{{ $service->id }}" >{{ $service->translation('am')->name }}
+                                    </option>
+                                @endforeach
+                            </select>
 
-                          <div id="other-service-config"> </div>
-                      </div>
-
-                        <div id="other-service-save" class="mt-3 row justify-content-end d-none" >
-                            <div class="col-sm-10 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
-                            </div>
+                            <div id="other-service-config"> </div>
                         </div>
 
-                  </form>
-              </div>
-            @endif
-            @if (array_key_exists('partners', $data))
-            <div class="tab-pane fade" id="navs-top-partners" role="tabpanel">
-              <form data-name="partner" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">
-
-                {{-- <form data-name='partner'id="myForm" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">                <div class="table-responsive text-nowrap"> --}}
-                      <select id="partners" name="partner_id" class="form-select">
-                          <option value="">Ընտրեք գործընկերոջը</option>
-                          @foreach ($data['partners'] as $partner)
-                              <option value={{ $partner->id }}>{{ $partner->name }}
-                              </option>
-                          @endforeach
-                      </select>
-
-                      <div id="partner-config"> </div>
+                          <div id="other-service-save" class="mt-3 row justify-content-end d-none" >
+                              <div class="col-sm-10 d-flex justify-content-end">
+                                  <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                              </div>
+                          </div>
+                    </form>
                   </div>
+                @endif
+                @if (array_key_exists('partners', $data))
+                  <div class="tab-pane fade" id="navs-top-partners" role="tabpanel">
+                    <form data-name="partner" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">
+                        <select id="partners" name="partner_id" class="form-select">
+                            <option value="">Ընտրեք գործընկերոջը</option>
+                            @foreach ($data['partners'] as $partner)
+                                <option value = {{ $partner->id }}>{{ $partner->name }}
+                                </option>
+                            @endforeach
+                        </select>
 
-                    <div id="other-service-save" class="mt-3 row justify-content-end d-none" >
-                        <div class="col-sm-10 d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
-                        </div>
-                    </div>
-                    <div id="partnerPrint"  class="d-none">
-                      <div id="partner-total" class="d-flex justify-content-end ">
-                        <div class="d-flex">
-                            <div class="me-3">Ընդհանուր</div>
-                            <div class="me-2">
-                                <span class="remove-value" id="partner-total-count">0</span>
-                                <span>տոմս</span>
-                            </div>
-                            <div class="me-2">
-                              <span class="remove-value" id="partner-total-guide-count">0</span>
-                              <span>Էքսկուրսավար</span>
-                          </div>
-                            <div class="event-total-cont"></div>
-                            <div class="me-2">
-                                <span class="remove-value" id="partner-total-price">0</span>
-                                <span>դրամ</span>
-                            </div>
-                        </div>
-                      </div>
-                      <div id="partner-save" class="mt-3 row justify-content-end ">
-                          <div class="col-sm-10 d-flex justify-content-end">
-                              <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
-                          </div>
-                      </div>
-                    </div>
+                        <div id="partner-config"> </div>
 
-              </form>
-          </div>
-        @endif
+                          <div id="other-service-save" class="mt-3 row justify-content-end d-none" >
+                              <div class="col-sm-10 d-flex justify-content-end">
+                                  <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                              </div>
+                          </div>
+                          <div id="partnerPrint"  class="d-none">
+                            <div id="partner-total" class="d-flex justify-content-end ">
+                              <div class="d-flex">
+                                  <div class="me-3">Ընդհանուր</div>
+                                  <div class="me-2">
+                                      <span class="remove-value" id="partner-total-count">0</span>
+                                      <span>տոմս</span>
+                                  </div>
+                                  <div class="me-2">
+                                    <span class="remove-value" id="partner-total-guide-count">0</span>
+                                    <span>Էքսկուրսավար</span>
+                                </div>
+                                  <div class="event-total-cont"></div>
+                                  <div class="me-2">
+                                      <span class="remove-value" id="partner-total-price">0</span>
+                                      <span>դրամ</span>
+                                  </div>
+                              </div>
+                            </div>
+                            <div id="partner-save" class="mt-3 row justify-content-end ">
+                                <div class="col-sm-10 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                                </div>
+                            </div>
+                          </div>
+
+                    </form>
+                  </div>
+                @endif
             </div>
         </div>
     </div>
 
 
     </div>
+
+    <script>
+      // Check if the session variable exists and set a JavaScript variable
+      console.log("{{\Session::get('open_tab')}}")
+      console.log("{{\Session::get('action')}}")
+      var isNavsTopTabSet = "{{ session()->has('open_tab') ? \Session::get('open_tab') : false }}";
+     
+
+
+      document.addEventListener('DOMContentLoaded', function() {
+          // Check if the session variable is set
+          if (isNavsTopTabSet) {
+            localStorage.clear()
+              // Select the tab link for the #navs-top-partners tab pane
+              var tabLink = document.querySelector('.nav-link[data-bs-target="#'+isNavsTopTabSet+'"]');
+              var tabPane = document.querySelector('#'+isNavsTopTabSet);
+
+              // Add 'active' class to the selected tab link
+              if (tabLink) {
+                  tabLink.classList.add('active');
+              }
+
+              // Remove 'active' class from other tab links (optional)
+              var otherTabLinks = document.querySelectorAll('.nav-link');
+              otherTabLinks.forEach(function(link) {
+                  if (link !== tabLink) {
+                      link.classList.remove('active');
+                  }
+              });
+
+              var tabPanes = document.querySelectorAll('.tab-pane');
+            tabPanes.forEach(function(pane) {
+                pane.classList.remove('show', 'active');
+                pane.classList.add('fade'); // Optional: keep the fade effect
+            });
+
+            // Show the corresponding tab pane and add 'show' and 'active' classes
+            if (tabPane) {
+                tabPane.classList.add('show', 'active');
+                tabPane.classList.remove('fade'); // Remove fade effect for the active pane
+            }
+          }
+      });
+    </script>
 
 
 @endsection

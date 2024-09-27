@@ -130,9 +130,10 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::get('event-reports', [ReportsForSuperAdminController::class, 'events'])->name('event_reports');
   Route::get('museum/event-reports', [ReportsForMuseumAdminController::class, 'events'])->name('museum_event_reports');
+  Route::get('museum/partners-reports', [ReportsForMuseumAdminController::class, 'partners'])->name('museum_partners_reports');
 
 
-  Route::group(['prefix' => 'museum'], function () {
+  Route::group(['prefix' => 'museum'], function (): void {
     Route::get('/', [MuseumController::class, 'index'])->name('museum')->middleware('role:super_admin|general_manager');
     Route::group(['middleware' => ['role:museum_admin|content_manager|manager']], function () {
       Route::get('/create', [MuseumController::class, 'create'])->name('create-museum');

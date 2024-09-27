@@ -215,7 +215,7 @@
       "url": "museum/reports/report",
       "name": "Հաշվետվություն",
       "icon": "menu-icon tf-icons bx bxs-report",
-      "slug": ["museum_reports","museum_event_reports"],
+      "slug": ["museum_reports","museum_event_reports", "museum_partners_reports"],
       "roles": [
         "museum_admin",
         "manager",
@@ -231,6 +231,13 @@
           "url": "museum/event-reports",
           "name": "Միջոցառում",
           "slug": ["museum_event_reports"]
+        },
+        {
+          "url": "museum/partners-reports",
+          "name": "Գործընկերներ",
+          "slug": [
+            "museum_partners_reports"
+          ]
         }
       ]
     }

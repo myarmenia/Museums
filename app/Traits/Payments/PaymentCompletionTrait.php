@@ -108,7 +108,7 @@ trait PaymentCompletionTrait
       if($pdf == null){
         $pdf = Pdf::loadView('components.qr-tickets', ['result' => $data])->setPaper('a4', 'portrait');
 
-        $fileName = 'ticket-' . time() . '.pdf';
+        $fileName = 'ticket-' . time() . $purchasedId . '.pdf';
         $path = 'public/pdf-file/' . $fileName;
 
         Storage::put($path, $pdf->output());

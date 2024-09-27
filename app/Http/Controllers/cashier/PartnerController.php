@@ -19,14 +19,17 @@ class PartnerController extends CashierController
 
     try {
 
-
         DB::beginTransaction();
         $requestDatForValidation = $request->except('partner_id','comment');
+        session(['open_tab' =>'navs-top-partners']);
         $data['purchase_type'] = 'offline';
         $data['status'] = 1;
         $data['items'] = [];
-        $data['comment']['comment'] = $request->comment;
-        $data['comment']['type'] = 'partner';
+        if(!is_null($request->comment)){
+            $data['comment']['comment'] = $request->comment;
+            $data['comment']['type'] = 'partner';
+        }
+
 
 
         $museumId = getAuthMuseumId();
@@ -37,9 +40,13 @@ class PartnerController extends CashierController
 
 
         if (empty($filteredData)) {
-            session(['errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։']);
+            session([
+              'errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտերը։',
 
-            return redirect()->back()->session('navs-top-partners');
+            ]);
+
+            return redirect()->back();
+
 
         }
 
@@ -58,11 +65,14 @@ class PartnerController extends CashierController
                 if (($key === 'guide_other' || $key === 'guide_am') && $guid) {
 
                     $newItem["id"] = $guid->id;
+                    $newItem["partner_id"] = $request->partner_id;
                     if($key === 'guide_other'){
                       $newItem["sub_type"] = "partner_guide_other";
+                      $newItem["type"]="guide_other";
 
                     }else{
                        $newItem["sub_type"]="partner_guide_am";
+                       $newItem["type"]="guide_am";
                     }
                 }
 
@@ -72,7 +82,6 @@ class PartnerController extends CashierController
             }
         }
 
-dd($data);
         if(!$haveValue){
           session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
 
@@ -101,6 +110,7 @@ dd($data);
         DB::rollBack();
 
         return redirect()->back();
+
 
     } catch (\Exception $e) {
         session(['errorMessage' => 'Ինչ որ բան այն չէ, խնդրում ենք փորձել մի փոքր ուշ']);

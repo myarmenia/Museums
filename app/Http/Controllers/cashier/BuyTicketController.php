@@ -20,6 +20,7 @@ class BuyTicketController extends CashierController
         try {
 
             DB::beginTransaction();
+            session(['open_tab' =>'navs-top-home']);
             $requestData = $request->all();
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
@@ -36,7 +37,10 @@ class BuyTicketController extends CashierController
 
 
             if (empty($filteredData)) {
-                session(['errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։']);
+                session([
+                  'errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։'
+
+                ]);
 
                 return redirect()->back();
             }

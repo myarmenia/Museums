@@ -24,6 +24,7 @@ return [
     'educational' => 'Կրթական ծրագիր',
     'guide' => 'Էքսկուրսիա',
     'canceled' => 'Չեղարկված',
+    'partner' => 'Գործընկերներ',
     'product' => 'Ապրանքներ',
     'other_service' => 'Այլ ծառայություններ'
 
