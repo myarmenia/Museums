@@ -226,32 +226,34 @@
                                 <select id="event-select" name="event" class="form-select">
                                     <option value="">Ընտրեք միջոցառումը</option>
                                     @foreach ($data['events'] as $event)
-                                        <option value="{{ $event->id }}">{{ $event->translation('am')->name }}
+                                        <option value="{{ $event->id }}" {{ session('eventDetailId') == $event->id ? 'selected' : '' }}>{{ $event->translation('am')->name }}
                                         </option>
                                     @endforeach
                                 </select>
 
                                 <div id="event-config"> </div>
                             </div>
-                            <div id='event-total' class="d-flex justify-content-end d-none">
-                                <div class="d-flex ">
-                                    <div class="me-3">Ընդհանուր</div>
-                                    <div class="me-2">
-                                        <span class="remove-value" id="event-total-count">0</span>
-                                        <span>տոմս</span>
-                                    </div>
-                                    <div class="event-total-cont"></div>
-                                    <div class="me-2">
-                                        <span class="remove-value" id="event-total-price">0</span>
-                                        <span>դրամ</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="event-save" class="mt-3 row justify-content-end d-none">
-                                <div class="col-sm-10 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
-                                </div>
-                            </div>
+
+                              <div id='event-total' class="d-flex justify-content-end d-none">
+                                  <div class="d-flex ">
+                                      <div class="me-3">Ընդհանուր</div>
+                                      <div class="me-2">
+                                          <span class="remove-value" id="event-total-count">0</span>
+                                          <span>տոմս</span>
+                                      </div>
+                                      <div class="event-total-cont"></div>
+                                      <div class="me-2">
+                                          <span class="remove-value" id="event-total-price">0</span>
+                                          <span>դրամ</span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div id="event-save" class="mt-3 row justify-content-end d-none">
+                                  <div class="col-sm-10 d-flex justify-content-end">
+                                      <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                                  </div>
+                              </div>
+
                         </form>
                     </div>
                 @endif
@@ -331,7 +333,7 @@
                             <select id="otherServices" name="other_service" class="form-select">
                                 <option value="">Ընտրեք ծառայությունը</option>
                                 @foreach ($data['other_services'] as $service)
-                                    <option value="{{ $service->id }}">{{ $service->translation('am')->name }}
+                                    <option value="{{ $service->id }}" {{ session('otherServiceId') == $service->id ? 'selected' : '' }}>{{ $service->translation('am')->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -344,7 +346,6 @@
                                   <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
                               </div>
                           </div>
-
                     </form>
                   </div>
                 @endif
@@ -354,7 +355,7 @@
                         <select id="partners" name="partner_id" class="form-select">
                             <option value="">Ընտրեք գործընկերոջը</option>
                             @foreach ($data['partners'] as $partner)
-                                <option value={{ $partner->id }}>{{ $partner->name }}
+                                <option value = {{ $partner->id }} {{ session('action') == $partner->id ? 'selected' : '' }}>{{ $partner->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -405,14 +406,20 @@
     <script>
       // Check if the session variable exists and set a JavaScript variable
       console.log("{{\Session::get('open_tab')}}")
-      var isNavsTopPartnersSet = "{{ session()->has('open_tab') ? \Session::get('open_tab') : false }}";
+      console.log("{{\Session::get('action')}}")
+      var isNavsTopTabSet = "{{ session()->has('open_tab') ? \Session::get('open_tab') : false }}";
+      var isPartnerId = "{{ session()->has('partnerId') ? \Session::get('partnerId') : false }}";
+      var isOtherServiceId = "{{ session()->has('otherServiceId') ? \Session::get('otherServiceId') : false }}";
+      var isEventDetailId = "{{ session()->has('eventDetailId') ? \Session::get('eventDetailId') : false }}";
+console.log(localStorage)
+
 
       document.addEventListener('DOMContentLoaded', function() {
           // Check if the session variable is set
-          if (isNavsTopPartnersSet) {
+          if (isNavsTopTabSet) {
               // Select the tab link for the #navs-top-partners tab pane
-              var tabLink = document.querySelector('.nav-link[data-bs-target="#'+isNavsTopPartnersSet+'"]');
-              var tabPane = document.querySelector('#'+isNavsTopPartnersSet);
+              var tabLink = document.querySelector('.nav-link[data-bs-target="#'+isNavsTopTabSet+'"]');
+              var tabPane = document.querySelector('#'+isNavsTopTabSet);
 
               // Add 'active' class to the selected tab link
               if (tabLink) {
