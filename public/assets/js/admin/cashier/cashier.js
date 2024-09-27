@@ -197,15 +197,7 @@ $(function () {
     });
   });
 
-  if(isEventDetailId){
-
-    const storedValue = localStorage.getItem('eventConfigValue');
-    $('#event-config').html(storedValue);
-    $('#event-total').removeClass('d-none')
-    $('#event-save').removeClass('d-none')
-
-
-  }
+  
 
   $('#event-select').on('input', function () {
     let selectedId = $('#event-select').val();
@@ -334,7 +326,7 @@ $(function () {
             }
 
           $('#event-config').html(html);
-          localStorage.setItem('eventConfigValue', html);
+
 
         }
       });
@@ -421,13 +413,7 @@ $(function () {
     $('#event-total-price').text(totalPrice);
   }
 
-  if(isOtherServiceId){
 
-    const storedValue = localStorage.getItem('otherServiceValue');
-    $('#other-service-config').html(storedValue )
-    $('#other-service-save').removeClass('d-none')
-
-  }
 
  $("#otherServices").on('input',function(){
 
@@ -460,7 +446,7 @@ $(function () {
                                     </tbody></table>`
 
                             $('#other-service-config').html(content)
-                            localStorage.setItem('otherServiceValue', content);
+
 
 
           }
@@ -470,15 +456,6 @@ $(function () {
 
 
 });
-
-
-if(isPartnerId){
-
-  const storedValue = localStorage.getItem('partnerValue');
-  $('#partner-config').html(storedValue )
-  $('#partnerPrint').removeClass('d-none')
-
-}
 
 
 
@@ -552,7 +529,6 @@ if(isPartnerId){
                                     </tbody></table>`
 
                             $('#partner-config').html(content)
-                            localStorage.setItem('partnerValue', content);
 
 
               }
@@ -619,16 +595,7 @@ if(isPartnerId){
 }
 
 
-// document.getElementById('partners').addEventListener('change', function() {
-//   localStorage.setItem('selectedOption', this.value);
-// });
 
-// window.addEventListener('load', function() {
-//   var selectedOption = localStorage.getItem('selectedOption');
-//   if (selectedOption) {
-//       document.getElementById('partners').value = selectedOption;
-//   }
-// });
 
 
 
