@@ -45,6 +45,12 @@ class ReportsForMuseumAdminController extends Controller
 
   public function partners(Request $request)
   {
+
+    if (isset($request->partner_id) && $request->partner_id == 'all') {
+      unset($request['partner_id']);
+    }
+
+    
     $museum_id = museumAccessId();
     // $data = $request->item_relation_id == null ? [] : $this->event_report($request->all(), $this->model);
     $data = $this->partners_report($request->all(), $this->model);
