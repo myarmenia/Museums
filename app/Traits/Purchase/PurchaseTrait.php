@@ -412,6 +412,7 @@ trait PurchaseTrait
 
   public function makeGuideData($data)
   {
+
     $type = $data['type'] == 'guide_am' ? 'price_am' : 'price_other';
     $guide = $this->getGuide($data['id']);
 
@@ -597,6 +598,7 @@ trait PurchaseTrait
     }
 
     $data['museum_id'] = $partner_ticket ? $partner_ticket->museum_id : false;
+    $data['partner_id'] = $data['id'];
 
     $coefficient = ticketType($data['sub_type'])->coefficient;
     $total_price = $partner_ticket->price * $coefficient * $data['quantity'];
