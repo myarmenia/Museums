@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CashierComment;
 use App\Models\Chat;
 use App\Models\Country;
 use App\Models\EducationalProgram;
@@ -306,6 +307,22 @@ if (!function_exists('getMuseum')) {
 
 }
 
+if (!function_exists('getPartner')) {
+  function getPartner($id)
+  {
+    return Partner::find($id);
+  }
+
+}
+
+if (!function_exists('getPurchaseComment')) {
+  function getPurchaseComment($id)
+  {
+      $commentRow = CashierComment::where('purchase_id', $id)->first();
+      return $commentRow != null ? $commentRow->comment : null;
+  }
+
+}
 
 if (!function_exists('reportResult')) {
   function reportResult($data)

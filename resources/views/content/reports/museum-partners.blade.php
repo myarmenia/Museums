@@ -3,7 +3,6 @@
 
  @section('title', 'Account settings - Account')
 @section('page-script')
-    {{-- <script src="{{ asset('assets/js/admin/report/single-museum.js') }}"></script> --}}
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
@@ -46,10 +45,12 @@
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
 
                         <div class="col-2">
-                            <select id="multiple-select-partner" name="item_relation_id" class="form-select select-2" data-placeholder="Գործընկեր" value="{{ request()->input('item_relation_id') ?? ''}}" >
-                                <option disabled selected>Գործընկեր</option>
+                            <select id="multiple-select-partner" name="partner_id" class="form-select select-2" data-placeholder="Գործընկեր" value="{{ request()->input('partner_id') ?? ''}}" >
+                                {{-- <option disabled selected>Գործընկեր</option> --}}
+                                <option value="all" {{ in_array('all', (array)request()->input('partner_id')) || count((array)request()->input('partner_id')) == 0 ? 'selected' : '' }}>Բոլորը</option>
+
                                 @foreach (getMuseumAllPartners(museumAccessId()) as $partner)
-                                    <option value="{{$partner->id}}" {{ request()->input('item_relation_id') == $partner->id ? 'selected' : '' }}>{{$partner->name}}</option>
+                                    <option value="{{$partner->id}}" {{ request()->input('partner_id') == $partner->id ? 'selected' : '' }}>{{$partner->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -68,9 +69,6 @@
 
                     <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
                         <button class="btn btn-primary col-2 search">Հաշվետվություն</button>
-                        <a class="btn btn-primary col-2 download_csv" href="{{ route('export_report_excel',  ['request_report_type' => request()->request_report_type == 'compare' ? 'compare' : 'report',
-                                  'report_type' => request()->input('report_type'),
-                                  'data' => $data, 'role_group' => 'museum'])}}" {{ count($data) == 0 ? 'disabled' : ''}}>Արտահանել XLSX</a>
                         <a class="btn btn-primary" href="{{ route('museum_partners_reports') }}">Չեղարկել</a>
                     </div>
                 </form>

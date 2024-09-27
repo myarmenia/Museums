@@ -5,17 +5,11 @@ use App\Models\TicketQr;
 
 trait PartnersReports
 {
-
+  protected $itemId;
   public function partners_report($data, $model)
   {
-      // if (!isset($data['item_relation_id']) || $data['item_relation_id'] == null) {
-      //   // return false;
-      // }
-      // else{
 
-      // }
-
-
+    
     $type = ['partner', 'guide'];
     $sub_type = ['partner_guide_am', 'partner_guide_other'];
 
@@ -23,20 +17,9 @@ trait PartnersReports
     $data['museum_id'] = museumAccessId();
 
 
-
     $data = array_filter($data, function ($value) {
       return $value !== null && $value !== 'null';
     });
-
-
-    if(isset($data['item_relation_id']) && $data['item_relation_id'] != null){
-
-        $guide_ids = GuideService::where('museum_id',  museumAccessId())->pluck('id')->toArray();
-        array_push($guide_ids, $data['item_relation_id']);
-
-        $data['item_relation_id'] = $guide_ids;
-
-    }
 
     $report = $model->where(function ($query) {
                           $query->where('type', 'partner')
@@ -55,12 +38,8 @@ trait PartnersReports
 
     $groupedData = $this->partners_report_fin_quant($report, $canceled);
 
-    dd($groupedData);
+    // dd($groupedData);
     return $groupedData;
-    // return [
-    //   'data' => reset($groupedData),
-    //   'item' => $this->getEvant($event_id)
-    // ];
 
 
   }
@@ -68,15 +47,27 @@ trait PartnersReports
   public function partners_report_fin_quant($report, $canceled)
   {
 
-    $report = $report
-      ->groupBy('museum_id', 'type', 'sub_type')
-      ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('MAX(sub_type) as sub_type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
-      ->get();
+      $this->itemId = 'partner_id';
 
-    // $report = $report
-    //   ->groupBy('item_relation_id', 'type', 'sub_type')
-    //   ->select('item_relation_id', \DB::raw('MAX(type) as type'), \DB::raw('MAX(sub_type) as sub_type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
-    //   ->get();
+      if (isset(request()->partner_id)) {
+        $this->itemId = 'purchase_id';
+
+      }
+
+      if(isset(request()->partner_id)){
+        $report = $report
+          ->groupBy('partner_id', 'purchase_id', 'type', 'sub_type')
+          ->select('partner_id', \DB::raw('MAX(purchase_id) as purchase_id'), \DB::raw('MAX(type) as type'), \DB::raw('MAX(sub_type) as sub_type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
+          ->get();
+
+      }
+      else{
+        $report = $report
+          ->groupBy('partner_id', 'type', 'sub_type')
+          ->select('partner_id', \DB::raw('MAX(type) as type'), \DB::raw('MAX(sub_type) as sub_type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
+          ->get();
+      }
+
 
     $canceled = $canceled->groupBy('museum_id')
       ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
@@ -90,34 +81,40 @@ trait PartnersReports
       return $item;
     }, $canceled);
 
-    return $this->partnersGroupByMuseumId(array_merge($report));
+
+    return $this->partnersGroupByPartnerId(array_merge($report));
     // return $this->groupByMuseumId(array_merge($report, $canceled));
 
   }
 
-  public function partnersGroupByMuseumId($array)
+  public function partnersGroupByPartnerId($array)
   {
 
     return array_reduce($array, function ($carry, $item) {
-      $museumId = $item['museum_id'];
+      $item_id = $this->itemId;
+      $partnerId = $item[$item_id];
 
-      if (isset($museumId)) {
-        if (!isset($carry[$museumId])) {
-          $carry[$museumId] = [];
+
+      if (isset($partnerId)) {
+        if (!isset($carry[$partnerId])) {
+          $carry[$partnerId] = [];
 
         }
 
-        $type = isset($item['type']) ? $item['type'] : 'united';
+        $type = isset($item['type']) ? $item['type'] : null;
+        $subType = isset($item['sub_type']) ? $item['sub_type'] : null;
+
+        $groupKey = isset($subType) ? $subType : $type;
 
         if (isset($item['quantity'])) {
-          $carry[$museumId][$type]['quantity'] = $item['quantity'];
+          $carry[$partnerId][$groupKey]['quantity'] = $item['quantity'];
         }
 
         if (isset($item['total_price'])) {
-          $carry[$museumId][$type]['total_price'] = $item['total_price'];
+          $carry[$partnerId][$groupKey]['total_price'] = $item['total_price'];
         }
 
-        $carry[$museumId]['museum_id'] = $item['museum_id'];
+        $carry[$partnerId]['partner_id'] = $item['partner_id'];
 
       }
 
@@ -125,5 +122,6 @@ trait PartnersReports
     }, []);
 
   }
+
 
 }
