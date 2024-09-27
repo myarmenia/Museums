@@ -110,7 +110,7 @@
                                         <td class="remove-value" class="remove-value">0</td>
                                     </tr>
                                     <tr class='table-default'>
-                                        <td>Դպրոցական/Աբոնիմենտ</td>
+                                        <td>Դպրոցական / Աբոնիմենտ </td>
                                         <td><input type="number" min="0" class="form-control form-control-validate" id="school"
                                                 onwheel="return false;" name="school" value="{{ old('school') }}">
                                         </td>
@@ -226,7 +226,7 @@
                                 <select id="event-select" name="event" class="form-select">
                                     <option value="">Ընտրեք միջոցառումը</option>
                                     @foreach ($data['events'] as $event)
-                                        <option value="{{ $event->id }}" {{ session('eventDetailId') == $event->id ? 'selected' : '' }}>{{ $event->translation('am')->name }}
+                                        <option value="{{ $event->id }}">{{ $event->translation('am')->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -333,7 +333,7 @@
                             <select id="otherServices" name="other_service" class="form-select">
                                 <option value="">Ընտրեք ծառայությունը</option>
                                 @foreach ($data['other_services'] as $service)
-                                    <option value="{{ $service->id }}" {{ session('otherServiceId') == $service->id ? 'selected' : '' }}>{{ $service->translation('am')->name }}
+                                    <option value="{{ $service->id }}" >{{ $service->translation('am')->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -355,7 +355,7 @@
                         <select id="partners" name="partner_id" class="form-select">
                             <option value="">Ընտրեք գործընկերոջը</option>
                             @foreach ($data['partners'] as $partner)
-                                <option value = {{ $partner->id }} {{ session('action') == $partner->id ? 'selected' : '' }}>{{ $partner->name }}
+                                <option value = {{ $partner->id }}>{{ $partner->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -408,15 +408,13 @@
       console.log("{{\Session::get('open_tab')}}")
       console.log("{{\Session::get('action')}}")
       var isNavsTopTabSet = "{{ session()->has('open_tab') ? \Session::get('open_tab') : false }}";
-      var isPartnerId = "{{ session()->has('partnerId') ? \Session::get('partnerId') : false }}";
-      var isOtherServiceId = "{{ session()->has('otherServiceId') ? \Session::get('otherServiceId') : false }}";
-      var isEventDetailId = "{{ session()->has('eventDetailId') ? \Session::get('eventDetailId') : false }}";
-console.log(localStorage)
+     
 
 
       document.addEventListener('DOMContentLoaded', function() {
           // Check if the session variable is set
           if (isNavsTopTabSet) {
+            localStorage.clear()
               // Select the tab link for the #navs-top-partners tab pane
               var tabLink = document.querySelector('.nav-link[data-bs-target="#'+isNavsTopTabSet+'"]');
               var tabPane = document.querySelector('#'+isNavsTopTabSet);
