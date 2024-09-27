@@ -33,7 +33,7 @@
         <tbody>
             @php $i = 0; $all_report_types = ['standart', 'discount','free', 'returned','partner_guide_am', 'partner_guide_other']; @endphp
             @foreach ($data as $museum_id => $report)
-{{-- {{dd($report)}} --}}
+
 
                   <tr>
                       <td>{{ ++$i }}</td>
@@ -44,7 +44,7 @@
                       @foreach ($all_report_types as $type)
                           <td>{{ !empty($report[$type]) ? $report[$type]['total_price'] .' / '. $report[$type]['quantity'] : ' - ' }}</td>
                       @endforeach
-                     
+
 
                       {{-- @if (request()->request_report_type == 'compare') --}}
                         <td>{{ !empty(request()->input('from_created_at')) ? date('d.m.Y', strtotime(request()->input('from_created_at'))) : '' }}  -

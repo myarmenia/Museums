@@ -35,7 +35,7 @@ trait PartnersReports
         array_push($guide_ids, $data['item_relation_id']);
 
         $data['item_relation_id'] = $guide_ids;
-      
+
     }
 
     $report = $model->where(function ($query) {
@@ -55,7 +55,7 @@ trait PartnersReports
 
     $groupedData = $this->partners_report_fin_quant($report, $canceled);
 
-    // dd($groupedData);
+    dd($groupedData);
     return $groupedData;
     // return [
     //   'data' => reset($groupedData),
@@ -72,6 +72,11 @@ trait PartnersReports
       ->groupBy('museum_id', 'type', 'sub_type')
       ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('MAX(sub_type) as sub_type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
       ->get();
+
+    // $report = $report
+    //   ->groupBy('item_relation_id', 'type', 'sub_type')
+    //   ->select('item_relation_id', \DB::raw('MAX(type) as type'), \DB::raw('MAX(sub_type) as sub_type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
+    //   ->get();
 
     $canceled = $canceled->groupBy('museum_id')
       ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
@@ -99,23 +104,21 @@ trait PartnersReports
       if (isset($museumId)) {
         if (!isset($carry[$museumId])) {
           $carry[$museumId] = [];
+
         }
 
-        $type = isset($item['type']) ? $item['type'] : null;
-        $subType = isset($item['sub_type']) ? $item['sub_type'] : null;
-
-        // Определяем, какой ключ использовать для группировки
-        $groupKey = isset($subType) ? $subType : $type;
+        $type = isset($item['type']) ? $item['type'] : 'united';
 
         if (isset($item['quantity'])) {
-          $carry[$museumId][$groupKey]['quantity'] = $item['quantity'];
+          $carry[$museumId][$type]['quantity'] = $item['quantity'];
         }
 
         if (isset($item['total_price'])) {
-          $carry[$museumId][$groupKey]['total_price'] = $item['total_price'];
+          $carry[$museumId][$type]['total_price'] = $item['total_price'];
         }
 
         $carry[$museumId]['museum_id'] = $item['museum_id'];
+
       }
 
       return $carry;
