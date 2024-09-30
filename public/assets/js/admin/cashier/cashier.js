@@ -197,7 +197,7 @@ $(function () {
     });
   });
 
-  
+var  selectedVal=''
 
   $('#event-select').on('input', function () {
     let selectedId = $('#event-select').val();
@@ -327,6 +327,14 @@ $(function () {
 
           $('#event-config').html(html);
 
+          $('#event-select').val(data.id)
+          selectedVal=$('#event-select').val()
+          console.log(selectedVal)
+          // $('#event-select[value=selectedVal]').prop('selected', true);
+          $('#event-select option[value='+selectedVal+']').prop('selected', true);
+
+
+
 
         }
       });
@@ -453,9 +461,21 @@ $(function () {
         })
 
   })
+//  =================== clicking on event tab to display selected value =====================
 
+  $(".nav-link").on('click',function(){
+
+    if($(this).attr('aria-controls')=="navs-top-event"){
+
+
+      $('#event-select').val(selectedVal)
+   $('#event-select').trigger('change')
+    }
+  })
 
 });
+
+
 
 
 
@@ -467,7 +487,6 @@ $(function () {
         success: function (data) {
         $('#partnerPrint').removeClass('d-none')
 
-          console.log(data)
           let content = `<table class="table cashier-table">
                           <thead>
                             <tr>
@@ -593,6 +612,8 @@ $(function () {
 
   $('#partner-total-price').html(partnerTotalPrice)
 }
+
+
 
 
 

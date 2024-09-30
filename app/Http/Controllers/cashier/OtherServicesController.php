@@ -19,19 +19,26 @@ class OtherServicesController extends CashierController
     public function __invoke(Request $request)
     {
         try {
-          // dd($request->all());
+
             DB::beginTransaction();
             session(['open_tab' =>'navs-top-otherService']);
+            $requestDatForValidation = $request->except('other_service');
             $requestData = $request->all();
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
             $data['items'] = [];
 
             $museumId = getAuthMuseumId();
+            if(is_null($request->other_service)){
+              session([
+                'errorMessage' => 'Պետք է պարտադիր նշված լինի ծառայության  դաշտը։',
+
+              ]);
+
+              return redirect()->back();
 
 
-
-
+            }
 
 
             $data['items'][0]['type'] = "other_service";
