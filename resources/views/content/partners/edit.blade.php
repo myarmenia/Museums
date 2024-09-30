@@ -59,9 +59,7 @@
             </div>
 
             <div class="mb-3 row" >
-                <label for="phone" class="col-md-2 col-form-label">Հեռախոս
-                  <span class="required-field text-danger">*</span>
-                </label>
+                <label for="phone" class="col-md-2 col-form-label">Հեռախոս </label>
 
                 <div class="col-md-10">
                     <input class="form-control" placeholder="Հեռախոս" value="{{ $partner->phone }}"
