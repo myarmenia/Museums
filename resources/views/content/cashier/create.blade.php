@@ -224,7 +224,7 @@
                         <form data-name='events' class="form-cashier" action="{{ route('cashier.add.event') }}" method="post">
                             <div class="table-responsive text-nowrap">
                                 <select id="event-select" name="event" class="form-select">
-                                    <option value=""disabled>Ընտրեք միջոցառումը</option>
+                                    <option value="">Ընտրեք միջոցառումը</option>
                                     @foreach ($data['events'] as $event)
                                         <option value="{{ $event->id }}">{{ $event->translation('am')->name }}
                                         </option>
@@ -331,7 +331,7 @@
                     <form data-name='events' class="form-cashier" action="{{ route('cashier.add.otherServices') }}" method="post">
                         <div class="table-responsive text-nowrap">
                             <select id="otherServices" name="other_service" class="form-select">
-                                <option value="" disabled>Ընտրեք ծառայությունը</option>
+                                <option value="">Ընտրեք ծառայությունը</option>
                                 @foreach ($data['other_services'] as $service)
                                     <option value="{{ $service->id }}" >{{ $service->translation('am')->name }}
                                     </option>
@@ -353,7 +353,7 @@
                   <div class="tab-pane fade" id="navs-top-partners" role="tabpanel">
                     <form data-name="partner" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">
                         <select id="partners" name="partner_id" class="form-select">
-                            <option value="" disabled>Ընտրեք գործընկերոջը</option>
+                            <option value="" >Ընտրեք գործընկերոջը</option>
                             @foreach ($data['partners'] as $partner)
                                 <option value = {{ $partner->id }}>{{ $partner->name }}
                                 </option>
@@ -407,6 +407,7 @@
       // Check if the session variable exists and set a JavaScript variable
       console.log("{{\Session::get('open_tab')}}")
       console.log("{{\Session::get('action')}}")
+      console.log("{{\Session::get('eventId')}}",8896)
       var isNavsTopTabSet = "{{ session()->has('open_tab') ? \Session::get('open_tab') : false }}";
 
 
@@ -422,7 +423,6 @@
               // Add 'active' class to the selected tab link
               if (tabLink) {
                   tabLink.classList.add('active');
-
               }
 
               // Remove 'active' class from other tab links (optional)
