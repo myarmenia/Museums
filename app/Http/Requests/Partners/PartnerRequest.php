@@ -24,9 +24,7 @@ class PartnerRequest extends FormRequest
         return [
 
           'name' => 'required',
-          'tin' => 'required',
-          'phone' => 'required'
-          
+          'tin' => 'required'
         ];
     }
 }
