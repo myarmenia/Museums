@@ -224,7 +224,7 @@
                         <form data-name='events' class="form-cashier" action="{{ route('cashier.add.event') }}" method="post">
                             <div class="table-responsive text-nowrap">
                                 <select id="event-select" name="event" class="form-select">
-                                    <option value="">Ընտրեք միջոցառումը</option>
+                                    <option value=""disabled>Ընտրեք միջոցառումը</option>
                                     @foreach ($data['events'] as $event)
                                         <option value="{{ $event->id }}">{{ $event->translation('am')->name }}
                                         </option>
@@ -331,7 +331,7 @@
                     <form data-name='events' class="form-cashier" action="{{ route('cashier.add.otherServices') }}" method="post">
                         <div class="table-responsive text-nowrap">
                             <select id="otherServices" name="other_service" class="form-select">
-                                <option value="">Ընտրեք ծառայությունը</option>
+                                <option value="" disabled>Ընտրեք ծառայությունը</option>
                                 @foreach ($data['other_services'] as $service)
                                     <option value="{{ $service->id }}" >{{ $service->translation('am')->name }}
                                     </option>
@@ -353,7 +353,7 @@
                   <div class="tab-pane fade" id="navs-top-partners" role="tabpanel">
                     <form data-name="partner" class="form-cashier" action="{{ route('cashier.add.partner') }}" method="post">
                         <select id="partners" name="partner_id" class="form-select">
-                            <option value="">Ընտրեք գործընկերոջը</option>
+                            <option value="" disabled>Ընտրեք գործընկերոջը</option>
                             @foreach ($data['partners'] as $partner)
                                 <option value = {{ $partner->id }}>{{ $partner->name }}
                                 </option>
