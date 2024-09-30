@@ -18,7 +18,7 @@ class PartnerController extends CashierController
   {
 
     try {
-
+// dd($request->all());
         DB::beginTransaction();
         $requestDatForValidation = $request->except('partner_id','comment');
         session(['open_tab' =>'navs-top-partners']);
@@ -28,27 +28,54 @@ class PartnerController extends CashierController
         if(!is_null($request->comment)){
             $data['comment']['comment'] = $request->comment;
             $data['comment']['type'] = 'partner';
+        }else{
+
         }
 
-
-
         $museumId = getAuthMuseumId();
+        if(!is_null($request->partner_id)){
 
-        $filteredData = array_filter($requestDatForValidation, function ($value) {
-          return !is_null($value);
-        });
+          $filteredData = array_filter($requestDatForValidation, function ($value) {
+
+            return !is_null($value);
+          });
 
 
-        if (empty($filteredData)) {
-            session([
-              'errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտերը։',
+          if (empty($filteredData)) {
+              session([
+                'errorMessage' => 'Պետք է պարտադիր նշված լինի գործընկեր  և տոմսի քանակ դաշտերը։',
+
+              ]);
+
+              return redirect()->back();
+
+
+          }
+        }else{
+          session([
+              'errorMessage' => 'Պետք է պարտադիր նշված լինի գործընկեր դաշտը։',
 
             ]);
 
             return redirect()->back();
-
-
         }
+
+        // $filteredData = array_filter($requestDatForValidation, function ($value) {
+
+        //   return !is_null($value);
+        // });
+
+
+        // if (empty($filteredData)) {
+        //     session([
+        //       'errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտերը։',
+
+        //     ]);
+
+        //     return redirect()->back();
+
+
+        // }
 
         $guid = GuideService::where('museum_id', $museumId)->first();
         $haveValue = false;

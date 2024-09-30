@@ -408,7 +408,7 @@
       console.log("{{\Session::get('open_tab')}}")
       console.log("{{\Session::get('action')}}")
       var isNavsTopTabSet = "{{ session()->has('open_tab') ? \Session::get('open_tab') : false }}";
-     
+
 
 
       document.addEventListener('DOMContentLoaded', function() {
@@ -422,6 +422,7 @@
               // Add 'active' class to the selected tab link
               if (tabLink) {
                   tabLink.classList.add('active');
+
               }
 
               // Remove 'active' class from other tab links (optional)
