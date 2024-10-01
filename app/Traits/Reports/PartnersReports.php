@@ -9,7 +9,7 @@ trait PartnersReports
   public function partners_report($data, $model)
   {
 
-    
+
     $type = ['partner', 'guide'];
     $sub_type = ['partner_guide_am', 'partner_guide_other'];
 
@@ -33,8 +33,21 @@ trait PartnersReports
                         ->reportFilter($data); //  purchased_items
 
 
-    $report_ids = $report->pluck('id');
-    $canceled = TicketQr::where('status', 'returned')->where('type', 'partner')->whereIn('purchased_item_id', $report_ids);
+    // $report_ids = $report->pluck('id');
+    // $canceled = TicketQr::where('status', 'returned')->where('type', 'partner')->whereIn('purchased_item_id', $report_ids);
+    
+    $canceled = $model->where(function ($query) use ($sub_type) {
+                  $query->where(function ($q) {
+                    $q->where('type', 'partner')
+                      ->whereNotNull('sub_type');
+                  })
+                    ->orWhere(function ($q) use ($sub_type) {
+                      $q->where('type', 'guide')
+                        ->whereIn('sub_type', $sub_type);
+                    });
+                })
+                ->where('returned_quantity', '>', 0)
+                ->reportFilter($data); //  purchased_items
 
     $groupedData = $this->partners_report_fin_quant($report, $canceled);
 
@@ -69,9 +82,9 @@ trait PartnersReports
       }
 
 
-    $canceled = $canceled->groupBy('museum_id')
-      ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
-      ->get();
+    $canceled = $canceled->groupBy('partner_id' )
+          ->select('partner_id', \DB::raw('SUM(returned_total_price) as total_price'), \DB::raw('SUM(returned_quantity) as quantity'))
+          ->get();
 
     $report = $report->toArray();
     $canceled = $canceled->toArray();
@@ -82,8 +95,8 @@ trait PartnersReports
     }, $canceled);
 
 
-    return $this->partnersGroupByPartnerId(array_merge($report));
-    // return $this->groupByMuseumId(array_merge($report, $canceled));
+    // return $this->partnersGroupByPartnerId(array_merge($report));
+    return $this->partnersGroupByPartnerId(array_merge($report, $canceled));
 
   }
 
@@ -104,7 +117,7 @@ trait PartnersReports
         $type = isset($item['type']) ? $item['type'] : null;
         $subType = isset($item['sub_type']) ? $item['sub_type'] : null;
 
-        $groupKey = isset($subType) ? $subType : $type;
+        $groupKey = isset($type) && $type != 'canceled' ? (isset($subType) ? $subType : $type) : $type;
 
         if (isset($item['quantity'])) {
           $carry[$partnerId][$groupKey]['quantity'] = $item['quantity'];
