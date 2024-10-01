@@ -432,7 +432,7 @@ var  selectedVal=''
   }
 
 
-
+var otherServiceVal=''
  $("#otherServices").on('input',function(){
 
       $.ajax({
@@ -440,6 +440,8 @@ var  selectedVal=''
         url: '/cashier/get-other-service/' + $(this).val(),
         cache: false,
         success: function (data) {
+          otherServiceVal = data.id
+          console.log(otherServiceVal)
         $('#other-service-save').removeClass('d-none')
 
           console.log(data)
@@ -471,34 +473,22 @@ var  selectedVal=''
         })
 
   })
-//  =================== clicking on event tab to display selected value =====================
-
-  $(".nav-link").on('click',function(){
-
-    if($(this).attr('aria-controls')=="navs-top-event"){
-
-
-      $('#event-select').val(selectedVal)
-
-        $('#event-select').trigger('change')
-
-
-    }
-  })
-
-});
 
 
 
 
 
+var partnerVal=''
  $("#partners").on('change',function(){
+
       $.ajax({
         type: "GET",
         url: '/cashier/get-partner/' + $(this).val(),
         cache: false,
         success: function (data) {
         $('#partnerPrint').removeClass('d-none')
+        partnerVal = data.id
+        console.log(partnerVal)
 
           let content = `<table class="table cashier-table">
                           <thead>
@@ -567,6 +557,49 @@ var  selectedVal=''
         })
 
   })
+
+
+
+
+
+  //  =================== clicking on event tab to display selected value =====================
+
+  $(".nav-link").on('click',function(){
+
+    if($(this).attr('aria-controls')=="navs-top-event"){
+
+
+      $('#event-select').val(selectedVal)
+
+        $('#event-select').trigger('change')
+
+
+    }
+    if($(this).attr('aria-controls')=="navs-top-partners"){
+
+
+      $('#partners').val(partnerVal)
+
+        $('#partners').trigger('change')
+
+
+    }
+    if($(this).attr('aria-controls')=="navs-top-otherService"){
+      console.log("otherService", otherServiceVal)
+
+
+      $('#otherServices').val(otherServiceVal)
+
+        $('#otherServices').trigger('change')
+
+
+    }
+
+  })
+
+
+
+});
 // ======================= partner ticket type count ================
   $(document).on('input', '.partner_ticket_type', function () {
     let partnerTotalCount = 0
