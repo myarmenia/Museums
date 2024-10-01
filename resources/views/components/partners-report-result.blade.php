@@ -31,7 +31,7 @@
         @endphp
 
         <tbody>
-            @php $i = 0; $all_report_types = ['standart', 'discount','free', 'returned','partner_guide_am', 'partner_guide_other']; @endphp
+            @php $i = 0; $all_report_types = ['standart', 'discount','free', 'canceled','partner_guide_am', 'partner_guide_other']; @endphp
             @foreach ($data as $item_id => $report)
 
                   <tr>
