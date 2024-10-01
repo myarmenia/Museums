@@ -433,15 +433,14 @@ var  selectedVal=''
 
 
 var otherServiceVal=''
- $("#otherServices").on('input',function(){
+ $("#otherServices").on('change',function(){
 
       $.ajax({
         type: "GET",
         url: '/cashier/get-other-service/' + $(this).val(),
         cache: false,
         success: function (data) {
-          otherServiceVal = data.id
-          console.log(otherServiceVal)
+          otherServiceVal=data.id
         $('#other-service-save').removeClass('d-none')
 
           console.log(data)
@@ -488,7 +487,7 @@ var partnerVal=''
         success: function (data) {
         $('#partnerPrint').removeClass('d-none')
         partnerVal = data.id
-        console.log(partnerVal)
+
 
           let content = `<table class="table cashier-table">
                           <thead>
@@ -563,8 +562,8 @@ var partnerVal=''
 
 
   //  =================== clicking on event tab to display selected value =====================
+  $(document).on('click', '.nav-link', function() {
 
-  $(".nav-link").on('click',function(){
 
     if($(this).attr('aria-controls')=="navs-top-event"){
 
@@ -577,7 +576,6 @@ var partnerVal=''
     }
     if($(this).attr('aria-controls')=="navs-top-partners"){
 
-
       $('#partners').val(partnerVal)
 
         $('#partners').trigger('change')
@@ -585,13 +583,10 @@ var partnerVal=''
 
     }
     if($(this).attr('aria-controls')=="navs-top-otherService"){
-      console.log("otherService", otherServiceVal)
-
 
       $('#otherServices').val(otherServiceVal)
 
         $('#otherServices').trigger('change')
-
 
     }
 
