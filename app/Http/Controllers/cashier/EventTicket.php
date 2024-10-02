@@ -35,6 +35,7 @@ class EventTicket extends CashierController
             }
         }
 
+
       if ($allNull && is_null($request->guide_price_am) && is_null($request->guide_price_other) ) {
         session([
           'errorMessage' => 'Լրացրեք քանակ դաշտը',

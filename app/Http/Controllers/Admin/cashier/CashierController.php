@@ -43,7 +43,8 @@ class CashierController extends Controller
       $event = $this->cashierService->getEventDetails($id);
 
       if ($event) {
-        session(['eventDetailId'=>$id]);
+        session(['eventId'=>$id]);
+
          return response()->json($event);
       }
 
@@ -74,7 +75,7 @@ class CashierController extends Controller
     $otherService = $this->cashierService->getOtherServiceDetails($id);
 
       if ($otherService) {
-        session(['otherServiceId'=>$id]);
+
          return response()->json($otherService);
       }
 
@@ -84,7 +85,7 @@ class CashierController extends Controller
    {
 
       $partner = $this->cashierService->getPartnerDetails($id);
-      session(['partnerId'=>$id]);
+
         if ($partner) {
 
           return response()->json($partner);

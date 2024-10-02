@@ -13,7 +13,6 @@ trait QR
 {
   public function check($data)
   {
-    // dd(count($data['qr']));
 
     $online = true;
 
@@ -60,17 +59,15 @@ trait QR
       return 'invalid scan';
     }
 
-    // $turnstile = Turnstile::museum($mac)->first();
+
     $turnstile = Turnstile::museum($mac)->first();  // for ticket_redemption_time
     $museum_ids = Turnstile::museum($mac)->pluck('museum_id')->toArray();  // 20.09.24
 
 
-    // if ($turnstile) {
     if (count($museum_ids) > 0) {
       $museum_id = $turnstile->museum_id;
       $end_date = null;
 
-      // $qr = TicketQr::valid($qr_token, $museum_id)->first();
       $qr = TicketQr::valid($qr_token, $museum_ids)->first();
 
       if ($qr) {
@@ -121,8 +118,6 @@ trait QR
     $today->setTime(0, 0, 0);
 
     $checked_date_plus_one_year = $type != 'event' && $type != 'event-config' ? $checked_date->modify('+1 year') : $checked_date;
-    // $checked_date_plus_one_year = $type != 'event' ? $checked_date->modify('+1 year') : $checked_date;
-
 
     return $type != 'event' && $type != 'event-config' ? ($today <= $checked_date_plus_one_year ? true : false) : (($today >= $checked_date && $today <= $checked_end_date) ? true : false);
 
@@ -138,13 +133,20 @@ trait QR
     $status = $qr->type != 'subscription' ? 'used' : 'active';
 
     if ($online && $ticket_redemption_time != null) {
-      $update = UpdateQRStatusJob::dispatch($qr->id, $now_date, $status)->delay(now()->addMinutes($ticket_redemption_time));
+      if($qr->visited_date == null){
+          $update = UpdateQRStatusJob::dispatch($qr->id, $now_date, $status)->delay(now()->addMinutes($ticket_redemption_time));
+      }
+
     } else {
       $update = $qr->update([
         'status' => $status,
         'visited_date' => $now_date,
       ]);
     }
+
+    $update = $qr->update([
+      'visited_date' => $now_date,
+    ]);
 
     return $update;
   }
@@ -170,53 +172,6 @@ trait QR
     return $update;
   }
 
-  
-
-
-  // public function checkTicketAccesses($qr, $status = null, $date = null)
-  // {
-
-  //   $new_date = new DateTime();
-  //   $date = $date == null ? $new_date : $new_date->setTimestamp($date);
-
-  //   $date = $date->modify('+4 hours');  // +4 hour to UTC
-  //   $now_date = $date->format('Y-m-d H:i:s');
-
-  //   if ($qr->type == 'subscription') {
-  //     $created_at = $qr->created_at;
-
-  //     $access_period = Carbon::parse($created_at)->addDays(365); // Добавляем 365 days
-  //     // $access_period = $now->modify('+365 days');
-
-  //   } else {
-
-  //     $access_period = $date->modify('+8 hours'); // Добавляем 8 часов
-  //   }
-
-  //   $qr_access = TicketAccess::where('ticket_qr_id', $qr->id)->first();
-
-  //   if (!$qr_access) {
-  //     $data = [
-  //       'ticket_qr_id' => $qr->id,
-  //       'museum_id' => $qr->museum_id,
-  //       'visited_date' => $now_date,
-  //       'access_period' => $access_period
-
-  //     ];
-
-  //     if ($status) {
-  //       $data['status'] = $status;
-  //     }
-
-  //     TicketAccess::create($data);
-  //     return true;
-
-  //   } else {
-  //     return $now_date <= $qr_access->access_period ? true : false;
-  //   }
-
-
-  // }
 
   public function addQrBlackList($qr, $mac)
   {

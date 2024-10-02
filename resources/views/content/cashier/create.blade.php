@@ -331,7 +331,7 @@
                     <form data-name='events' class="form-cashier" action="{{ route('cashier.add.otherServices') }}" method="post">
                         <div class="table-responsive text-nowrap">
                             <select id="otherServices" name="other_service" class="form-select">
-                                <option value="">Ընտրեք ծառայությունը</option>
+                                <option value="" >Ընտրեք ծառայությունը</option>
                                 @foreach ($data['other_services'] as $service)
                                     <option value="{{ $service->id }}" >{{ $service->translation('am')->name }}
                                     </option>
@@ -407,8 +407,9 @@
       // Check if the session variable exists and set a JavaScript variable
       console.log("{{\Session::get('open_tab')}}")
       console.log("{{\Session::get('action')}}")
+      console.log("{{\Session::get('eventId')}}",8896)
       var isNavsTopTabSet = "{{ session()->has('open_tab') ? \Session::get('open_tab') : false }}";
-     
+
 
 
       document.addEventListener('DOMContentLoaded', function() {
