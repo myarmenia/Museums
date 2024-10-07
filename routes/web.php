@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\Events\EventEditController;
 use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\Admin\Events\EventStoreController;
 use App\Http\Controllers\Admin\Events\EventUpdateController;
+use App\Http\Controllers\Admin\Logs\CashierLogController;
 use App\Http\Controllers\Admin\Logs\LogController;
 use App\Http\Controllers\Admin\MuseumBranches\MuseumBranchController;
 use App\Http\Controllers\Admin\OtherServices\OSCreateController;
@@ -311,6 +312,10 @@ Route::group(['middleware' => ['auth']], function () {
       Route::get('edit/{id}', OSEditController::class)->name('other_services-edit');
     });
   });
+
+  Route::get('cashier-logs', [CashierLogController::class, 'index'])->name('cashier_logs');
+  Route::post('cashier-logs-show-more', [CashierLogController::class, 'cashier_logs_show_more'])->name('cashier_logs_show_more');
+
 
   Route::get('change-style/{type}', [ChangeStyleController::class, "change_style"])->name('change_style');
   Route::get('test-email/{purchase_id}/{email}', [ChangeStyleController::class, "test_email"])->name('test_email');  //important

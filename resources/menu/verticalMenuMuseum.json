@@ -58,7 +58,7 @@
     {
       "name": "Դրամարկղ",
       "icon": "menu-icon tf-icons bx bx-wallet",
-      "slug": "cashier",
+      "slug": ["cashier.tickets", "cashier.product", "cashier.show-ticket"],
       "roles": [
         "museum_admin",
         "cashier",
@@ -210,6 +210,17 @@
         "museum_admin",
         "manager"
       ]
+    },
+    {
+      "name": "Լոգավորում",
+      "icon": "menu-icon tf-icons bx bx-data",
+      "slug": "cashier_logs",
+      "roles": [
+        "museum_admin",
+        "manager",
+        "accountant"
+      ],
+      "url": "cashier-logs"
     },
     {
       "url": "museum/reports/report",
