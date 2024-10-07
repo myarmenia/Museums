@@ -15,7 +15,7 @@ class CashierService
       if ($model->purchase->type == 'offline') {
           $create = CashierLog::create([
                 'user_id' => Auth::id(),
-                'item_relation_id' => $model->purchase_id,
+                'item_relation_id' => $model->id,
                 'db_name' => 'purchases',
                 'action' => 'store'
               ]);
@@ -47,12 +47,11 @@ class CashierService
   {
 
 
-    $log = CashierLog::find($id);
+      $log = CashierLog::find($id);
 
-    $relation_name = $log->db_name;
+      $relation_name = $log->db_name;
 
-
-        $item = $log->{$relation_name};
+      $item = $log->{$relation_name};
         // dd($item);
       return $item ? $item : false;
 
