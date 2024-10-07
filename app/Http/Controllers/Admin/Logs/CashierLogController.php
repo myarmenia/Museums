@@ -20,12 +20,12 @@ class CashierLogController extends Controller
 
       $data = LogService::logFilter($request->all(), $this->model)
         ->orderBy('id', 'DESC')
-        ->paginate(10)->withQueryString();
+        ->paginate(30)->withQueryString();
 
       return view("content.logs.cashier-logs", compact('data'))
         ->with('i', ($request->input('page', 1) - 1) * 10);
 
-  }
+    }
 
 
   public function cashier_logs_show_more(Request $request){
