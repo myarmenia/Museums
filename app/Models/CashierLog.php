@@ -13,7 +13,7 @@ class CashierLog extends Model
     protected $guarded = [];
     protected $table = 'cashier_logs';
 
-    protected $filterFields = ['type'];
+    protected $filterFields = ['action'];
 
     public function user(): BelongsTo
     {

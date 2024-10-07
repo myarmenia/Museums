@@ -33,11 +33,11 @@
 
 
                         <div class="col-2">
-                            <select id="defaultSelect" name="type" class="form-select" value="{{ request()->input('type') }}" >
+                            <select id="defaultSelect" name="action" class="form-select" value="{{ request()->input('action') }}" >
                                     <option value="" disabled selected>Գործ․ տեսակ</option>
                                     <option value="" >{{__('logs.all')}}</option>
-                                    <option value="store" {{ request()->input('type') == 'store' ? 'selected' : '' }}>{{__('logs.store')}}</option>
-                                    <option value="return" {{ request()->input('type') == 'return' ? 'selected' : '' }}>{{__('logs.return')}}</option>
+                                    <option value="store" {{ request()->input('action') == 'store' ? 'selected' : '' }}>{{__('logs.store')}}</option>
+                                    <option value="return" {{ request()->input('action') == 'return' ? 'selected' : '' }}>{{__('logs.return')}}</option>
                             </select>
                         </div>
 
@@ -73,7 +73,7 @@
                                 <td>{{ ++$i }}</td>
                                 <td>{{ $log->user->name }} {{ $log->user->surname }}</td>
                                 <td>{{ __("logs.$log->action") }}</td>
-                                <td>{{ $log->created_at->format('d-m-Y')}}</td>
+                                <td>{{ $log->created_at->format('d-m-Y H:i')}}</td>
                                 <td><a href="" class="menu-link show_details"
                                         data-id="{{$log->id}}">
                                             <i class="menu-icon tf-icons bx bx-show-alt"></i>
