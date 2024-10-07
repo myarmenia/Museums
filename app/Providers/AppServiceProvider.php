@@ -4,7 +4,10 @@ namespace App\Providers;
 
 
 use App\Interfaces\MuseumBranches\MuseumBranchesRepositoryInterface;
-use App\Models\OtherService;
+use App\Models\Purchase;
+use App\Models\TicketQr;
+use App\Observers\PurchaseObserver;
+use App\Observers\TicketQrObserver;
 use App\Repositories\MuseumBranches\MuseumBranchRepository;
 use App\Repositories\OtherService\OtherServiceRepository;
 use App\Services\API\OtherService\OtherServService;
@@ -32,5 +35,8 @@ class AppServiceProvider extends ServiceProvider
   public function boot(): void
   {
     Paginator::useBootstrapFive();
+    Purchase::observe(PurchaseObserver::class);
+    TicketQr::observe(classes: TicketQrObserver::class);
+
   }
 }
