@@ -12,7 +12,7 @@ class CashierService
   public static function store($model)
   {
 
-      if ($model->purchase->type == 'offline') {
+      if ($model->type == 'offline') {
           $create = CashierLog::create([
                 'user_id' => Auth::id(),
                 'item_relation_id' => $model->id,
