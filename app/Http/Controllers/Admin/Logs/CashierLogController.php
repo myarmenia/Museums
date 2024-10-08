@@ -13,12 +13,19 @@ class CashierLogController extends Controller
     protected $model;
     public function __construct(CashierLog $model)
     {
-      // $this->middleware('role:super_admin');
       $this->model = $model;
     }
     public  function index(Request $request){
 
-      $data = LogService::logFilter($request->all(), $this->model)
+      // if(isset($request->action)){
+      //   $this->model->relationFilter = $request->action == 'store' ? ['purchases' => ['museum_id']] : ($request->action == 'return' ? ['ticket_qrs' => ['museum_id']] : null);
+
+      // }
+
+      $requestData = $request->all();
+      $requestData['museum_id'] = getAuthMuseumId();
+
+      $data = LogService::logFilter($requestData, $this->model)
         ->orderBy('id', 'DESC')
         ->paginate(30)->withQueryString();
 

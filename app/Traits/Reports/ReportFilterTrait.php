@@ -95,7 +95,6 @@ trait ReportFilterTrait
 
 
 
-
         if (isset($relationFilter) && $this->getKeyFromValue($field, $relationFilter)) {
               $relationModel = $this->getKeyFromValue($field, $relationFilter);
 
@@ -133,6 +132,7 @@ trait ReportFilterTrait
 
       }
 
+      // dd($builder->get());
 
 
       // if ($filterFields && in_array($field, $filterFields) && $value != null) {
