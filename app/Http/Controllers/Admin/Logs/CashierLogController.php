@@ -21,6 +21,14 @@ class CashierLogController extends Controller
       //   $this->model->relationFilter = $request->action == 'store' ? ['purchases' => ['museum_id']] : ($request->action == 'return' ? ['ticket_qrs' => ['museum_id']] : null);
 
       // }
+      if (isset($request->action)) {
+
+        $newRelationFilter = $request->action == 'store'
+          ? ['purchases' => ['museum_id']]
+          : ['ticket_qrs' => ['museum_id']];
+
+        $this->model->setRelationFilter($newRelationFilter);
+      }
 
       $requestData = $request->all();
       $requestData['museum_id'] = getAuthMuseumId();
