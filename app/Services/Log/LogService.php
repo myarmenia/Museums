@@ -36,6 +36,9 @@ class LogService
 
   public static function logFilter(array $data, $model)
   {
+      $data['action'] = !isset($data['action']) ? 'store' : $data['action'];
+      $data['museum_id'] = getAuthMuseumId();
+      
       $filteredData  = $model->reportFilter($data);
 
       return $filteredData ;

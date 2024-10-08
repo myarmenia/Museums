@@ -17,10 +17,6 @@ class CashierLogController extends Controller
     }
     public  function index(Request $request){
 
-      // if(isset($request->action)){
-      //   $this->model->relationFilter = $request->action == 'store' ? ['purchases' => ['museum_id']] : ($request->action == 'return' ? ['ticket_qrs' => ['museum_id']] : null);
-
-      // }
       if (isset($request->action)) {
 
         $newRelationFilter = $request->action == 'store'
@@ -30,10 +26,8 @@ class CashierLogController extends Controller
         $this->model->setRelationFilter($newRelationFilter);
       }
 
-      $requestData = $request->all();
-      $requestData['museum_id'] = getAuthMuseumId();
 
-      $data = LogService::logFilter($requestData, $this->model)
+      $data = LogService::logFilter($request->all(), $this->model)
         ->orderBy('id', 'DESC')
         ->paginate(30)->withQueryString();
 
