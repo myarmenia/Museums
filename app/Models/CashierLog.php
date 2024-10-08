@@ -17,8 +17,7 @@ class CashierLog extends Model
     protected $defaultFields = ['action'];
     protected $relationFilter = [
       'purchases' => ['museum_id'],
-      // 'ticket_qrs' => ['museum_id'],
-
+      'ticket_qrs' => ['museum_id']
     ];
 
   public function user(): BelongsTo
@@ -34,6 +33,11 @@ class CashierLog extends Model
     public function purchases(): BelongsTo
     {
       return $this->belongsTo(Purchase::class, 'item_relation_id');
+    }
+
+    public function setRelationFilter(array $filter)
+    {
+      $this->relationFilter = $filter;
     }
 
 }

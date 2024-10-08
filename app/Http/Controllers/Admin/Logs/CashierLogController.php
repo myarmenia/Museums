@@ -21,6 +21,14 @@ class CashierLogController extends Controller
       //   $this->model->relationFilter = $request->action == 'store' ? ['purchases' => ['museum_id']] : ($request->action == 'return' ? ['ticket_qrs' => ['museum_id']] : null);
 
       // }
+      if (isset($request->action)) {
+
+        $newRelationFilter = $request->action == 'store'
+          ? ['purchases' => ['museum_id']]
+          : ['ticket_qrs' => ['museum_id']];
+
+        $this->model->setRelationFilter($newRelationFilter);
+      }
 
       $requestData = $request->all();
       $requestData['museum_id'] = getAuthMuseumId();
@@ -30,7 +38,7 @@ class CashierLogController extends Controller
         ->paginate(30)->withQueryString();
 
       return view("content.logs.cashier-logs", compact('data'))
-        ->with('i', ($request->input('page', 1) - 1) * 10);
+        ->with('i', ($request->input('page', 1) - 1) * 30);
 
     }
 
