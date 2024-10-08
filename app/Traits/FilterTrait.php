@@ -95,7 +95,7 @@ trait FilterTrait {
 
           if($hasRelation){
                 foreach($hasRelation as $key=>$rel){
-dump($key,$rel);
+
                   if($rel && in_array($field,  $filterFieldsInRelation)){
 
                                   $name = $field;
