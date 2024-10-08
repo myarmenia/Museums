@@ -38,7 +38,7 @@ class CashierLogController extends Controller
         ->paginate(30)->withQueryString();
 
       return view("content.logs.cashier-logs", compact('data'))
-        ->with('i', ($request->input('page', 1) - 1) * 10);
+        ->with('i', ($request->input('page', 1) - 1) * 30);
 
     }
 
