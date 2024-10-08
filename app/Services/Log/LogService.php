@@ -36,17 +36,11 @@ class LogService
 
   public static function logFilter(array $data, $model)
   {
-      $filteredData  = $model->filter($data);
+      $data['action'] = !isset($data['action']) ? 'store' : $data['action'];
+      $data['museum_id'] = getAuthMuseumId();
+      
+      $filteredData  = $model->reportFilter($data);
 
-      if(isset($data['role'])){
-        $role = $data['role'];
-        $filteredData  = $filteredData ->whereHas('user', function ($query) use ($role){
-                      $query->whereHas('roles', function ($q) use ($role){
-                            $q->where('name', $role);
-                      });
-                });
-      }
-
-    return $filteredData ;
+      return $filteredData ;
   }
 }

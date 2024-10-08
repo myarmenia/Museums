@@ -3,19 +3,23 @@
 namespace App\Models;
 
 use App\Traits\FilterTrait;
+use App\Traits\Reports\ReportFilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CashierLog extends Model
 {
-    use HasFactory, FilterTrait;
+    use HasFactory, ReportFilterTrait;
     protected $guarded = [];
     protected $table = 'cashier_logs';
 
-    protected $filterFields = ['action'];
+    protected $defaultFields = ['action'];
+    protected $relationFilter = [
+      'purchases' => ['museum_id']
+    ];
 
-    public function user(): BelongsTo
+  public function user(): BelongsTo
     {
       return $this->belongsTo(User::class, 'user_id');
     }
@@ -28,6 +32,11 @@ class CashierLog extends Model
     public function purchases(): BelongsTo
     {
       return $this->belongsTo(Purchase::class, 'item_relation_id');
+    }
+
+    public function setRelationFilter(array $filter)
+    {
+      $this->relationFilter = $filter;
     }
 
 }
