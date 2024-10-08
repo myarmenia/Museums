@@ -35,8 +35,7 @@
                         <div class="col-2">
                             <select id="defaultSelect" name="action" class="form-select" value="{{ request()->input('action') }}" >
                                     <option value="" disabled selected>Գործ․ տեսակ</option>
-                                    <option value="" >{{__('logs.all')}}</option>
-                                    <option value="store" {{ request()->input('action') == 'store' ? 'selected' : '' }}>{{__('logs.store')}}</option>
+                                    <option value="store" {{ request()->input('action') == 'store' ||  request()->input('action') == null ? 'selected' : '' }}>{{__('logs.store')}}</option>
                                     <option value="return" {{ request()->input('action') == 'return' ? 'selected' : '' }}>{{__('logs.return')}}</option>
                             </select>
                         </div>
