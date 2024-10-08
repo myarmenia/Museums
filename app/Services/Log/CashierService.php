@@ -63,7 +63,11 @@ class CashierService
       return $value !== null && $value !== 'null';
     });
 
-    $filteredData = $model->filter($data);
+    $data['action'] = !isset($data['action']) ? 'store' : $data['action'];
+    $data['museum_id'] = getAuthMuseumId();
+
+    $filteredData = $model->reportFilter($data);
+    // $filteredData = $model->filter($data);
 
     return $filteredData;
   }
