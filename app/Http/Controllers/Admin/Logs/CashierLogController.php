@@ -27,7 +27,7 @@ class CashierLogController extends Controller
       }
 
 
-      $data = LogService::logFilter($request->all(), $this->model)
+      $data = CashierService::logFilter($request->all(), $this->model)
         ->orderBy('id', 'DESC')
         ->paginate(30)->withQueryString();
 
