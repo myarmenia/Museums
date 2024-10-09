@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Logs;
 use App\Http\Controllers\Controller;
 use App\Models\CashierLog;
 use App\Services\Log\CashierService;
-use App\Services\Log\LogService;
 use Illuminate\Http\Request;
 
 class CashierLogController extends Controller
@@ -27,7 +26,7 @@ class CashierLogController extends Controller
       }
 
 
-      $data = LogService::logFilter($request->all(), $this->model)
+      $data = CashierService::logFilter($request->all(), $this->model)
         ->orderBy('id', 'DESC')
         ->paginate(30)->withQueryString();
 

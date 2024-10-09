@@ -16,8 +16,7 @@ class LogService
       $data = $data ? json_encode($data, JSON_UNESCAPED_UNICODE) : null;
 
       $log = Log::create([
-        // 'user_id' => $user->id,
-        'user_id' => 1,
+        'user_id' => $user->id,
         'type' => $type,
         'tb_name' => $tb_name,
         'tb_id' => $tb_id,
@@ -36,11 +35,17 @@ class LogService
 
   public static function logFilter(array $data, $model)
   {
-      $data['action'] = !isset($data['action']) ? 'store' : $data['action'];
-      $data['museum_id'] = getAuthMuseumId();
-      
-      $filteredData  = $model->reportFilter($data);
+      $filteredData = $model->filter($data);
 
-      return $filteredData ;
+      if (isset($data['role'])) {
+        $role = $data['role'];
+        $filteredData = $filteredData->whereHas('user', function ($query) use ($role) {
+          $query->whereHas('roles', function ($q) use ($role) {
+            $q->where('name', $role);
+          });
+        });
+      }
+
+      return $filteredData;
   }
 }
