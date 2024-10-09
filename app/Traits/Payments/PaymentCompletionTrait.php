@@ -6,7 +6,6 @@ use App\Models\Payment;
 use App\Models\Purchase;
 use App\Models\TicketPdf;
 use App\Models\TicketQr;
-use App\Services\Log\LogService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Mail;
 use Storage;
@@ -20,9 +19,6 @@ trait PaymentCompletionTrait
     $payment = $this->getPayment($order_id);
     $pdfPath = null;
 
-    // ============= test ================
-    LogService::store(null, 1, 'payment Completion', 'store');
-
     if ($payment->group_payment_status == 'success' && $payment->status == 'confirmed') {
       $response = 'OK';
 
@@ -33,16 +29,6 @@ trait PaymentCompletionTrait
         if (count($generate_qr) > 0) {
 
           $email = $payment->purchase->email;
-
-          // =============== 18.09.24 ===============================
-          // if($payment->purchase->type == 'online' && $payment->guard_type != 'cart'){
-          //     $purchasedId = $payment->purchase->id;
-          //     $museumId = $payment->purchase->museum_id;
-
-          //     $pdfPath = $this->pdfTickets($generate_qr, $museumId, $purchasedId);
-          // }
-
-          // =============== 18.09.24 ===============================
 
 
           $result = mail::send(new SendQRTiketsToUsersEmail($generate_qr, $email));
