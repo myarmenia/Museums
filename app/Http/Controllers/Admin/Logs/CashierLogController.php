@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Logs;
 use App\Http\Controllers\Controller;
 use App\Models\CashierLog;
 use App\Services\Log\CashierService;
-use App\Services\Log\LogService;
 use Illuminate\Http\Request;
 
 class CashierLogController extends Controller
