@@ -12,6 +12,7 @@ use App\Http\Controllers\API\Events\EventController;
 use App\Http\Controllers\API\Events\EventsListController;
 use App\Http\Controllers\API\Events\HeaderEventController;
 use App\Http\Controllers\API\Events\SingleEventController;
+use App\Http\Controllers\Api\HDMController;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\API\Lessons\LessonController;
@@ -210,3 +211,6 @@ Route::group(['prefix' => 'turnstile'], function ($router) {
 
 });
 
+
+// =================== test ===========================
+Route::get('hdm_connect', HDMController::class);
