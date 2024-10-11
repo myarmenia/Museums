@@ -9,6 +9,7 @@
                 <th>Ստանդարտ տ․ </th>
                 <th>Զեղչված տ․</th>
                 <th>Անվճար տ․</th>
+                <th>Դպրոցական տ․</th>
                 <th>Միասնական տ․ <br>ըստ թանգարանների</th>
                 <th>Անդամակցության <br> քարտ</th>
                 <th>Ցուցադրություն</th>
@@ -17,7 +18,9 @@
                 <th>Կրթական ծրագիր</th>
                 <th>Էքսկուրսիա</th>
                 <th>Չեղարկված</th>
+                <th>Գործընկերներ</th>
                 <th>Ապրանքներ</th>
+                <th>Այլ ծառայություններ</th>
                 @if (request()->request_report_type == 'compare')
                   <th>Ամսաթիվ</th>
                 @endif
@@ -31,6 +34,7 @@
 
               $total_sums = array_sum(array_column($newSums,'total_price'));
               $total_quantity = array_sum(array_column($newSums,'quantity'));
+              
         @endphp
 
         <tbody>

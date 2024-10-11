@@ -197,104 +197,474 @@ $(function () {
     });
   });
 
-  $('#event-select').on('input', function () {
+var  selectedVal=''
+
+  $('#event-select').on('change', function () {
     let selectedId = $('#event-select').val();
-    if (selectedId) {
+    console.log(selectedId)
+    if(selectedId==''){
+      console.log(selectedId,777)
+      $('#event-config').html('')
+      $('#event-total').attr('style', 'display: none !important');
+       $('#event-save').attr('style', 'display: none !important');
+
+    }else{
+      console.log('/cashier/get-event-details/' + selectedId)
+      if (selectedId) {
+        console.log(selectedId)
+        $.ajax({
+          type: "GET",
+          url: '/cashier/get-event-details/' + selectedId,
+          cache: false,
+          success: function (data) {
+            console.log(data.style + ' ///////')
+            $('#event-total').attr('style', 'display: none !important ');
+            $('#event-save').attr('style', 'display: none !important');
+            $('#event-config').text('');
+            $('#event-total-count').text(0);
+            $('#event-total-price').text(0);
+            let html = ``;
+
+            if (data.event_configs.length == 0 && data.style == 'basic'){
+              html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
+            }else{
+              $('#event-total').attr('style', 'display: block !important; display:flex !important; justify-content: end !important');
+              $('#event-save').attr('style', 'display: block !important; display:flex !important; margin-top: 1rem !important; justify-content: flex-end !important;');
+              let guidTotalCont = ''
+              let guidCont = ''
+              if (data.guide_price_am || data.guide_price_other){
+                    guidTotalCont = `<div class="me-2">
+                                          <span class="remove-value total_event_guid_quantity" id="git-total-count">0</span>
+                                          <span>Էքսկուրսավար</span>
+                                      </div>`
+
+                guidCont = `<table class="table cashier-table">
+                              <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
+                                  ${data.guide_price_am ?
+                                      `<tr class='table-default'>
+                                          <td>Էքսկուրսավար(հայերեն)</td>
+                                          <td>
+                                              <input type="number" onwheel="return false;"
+                                                  price="${data.guide_price_am}" min="0"
+                                                  class="form-control form-control-validate event_guid" id="guide_price_am" name="guide_price_am">
+                                          </td>
+                                          <td class="remove-value event_guide_row_price ticket_price" id='event_guide_price_am'>0</td>
+                                        </tr>` : ``}
+                                        ${data.guide_price_other ?
+                                          `<tr class='table-default'>
+                                              <td>Էքսկուրսավար(այլ)</td>
+                                              <td><input type="number" onwheel="return false;"
+                                                      price="${data.guide_price_other}" min="0"
+                                                      class="form-control form-control-validate event_guid" id="guide_price_other" name="guide_price_other">
+                                              </td>
+                                              <td class="remove-value event_guide_row_price ticket_price" id='event_guide_price_other'>0</td>
+                                          </tr>` : ``}
+                                      </tbody></dable>`
+              }
+
+              document.querySelector('.event-total-cont').innerHTML = guidTotalCont;
+
+              html = `<table class="table cashier-table">
+                          <thead>
+                            <tr>`+
+                                (data.style == 'basic' ? `<th>Օր</th>` : ``) +
+                                `<th>Սկիզբ</th>
+                                <th>Վերջ</th>` +
+                                (data.style == 'basic' ? `<th>Հասանելի տեղեր</th>` : ``) +
+                                `<th>Քանակ</th>
+                                <th>Արժեք</th>
+                            </tr>
+                          </thead>
+                          <tbody class="table-border-bottom-0">`;
+              data.style == 'basic' ?
+                  data.event_configs.map(element => {
+                    html += `<tr class='table-default'>
+                                  <td>${element.day}</td>
+                                  <td>${element.start_time}</td>
+                                  <td>${element.end_time}</td>
+                                  <td>${element.visitors_quantity_limitation - element.visitors_quantity} մարդ</td>
+                                  <td class="d-flex">
+                                      <div>
+                                        <label for="event_${element['id']}" class="col col-form-label">Ստանդարտ </label>
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.price}"
+                                            id="event_${element['id']}_standart" name="event[${element['id']}][standart]" data-id="${element['id']}">
+                                      </div>
+                                      ${data.discount_price ?
+                                      `<div>
+                                        <label for="event_${element['id']}" class="col col-form-label">Զեղչված </label>
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.discount_price}"
+                                            id="event_${element['id']}_discount" name="event[${element['id']}][discount]" data-id="${element['id']}">
+                                      </div>
+                                      <div>
+                                        <label for="event_${element['id']}" class="col col-form-label">Անվճար </label>
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="0"
+                                            id="event_${element['id']}_free" name="event[${element['id']}][free]" data-id="${element['id']}">
+                                      </div>` : ``}
+                                  </td>
+                                  <td id = 'event-ticket-price_${element['id']}' class='remove-value ticket_price'>0</td>
+                              </tr>`;
+
+                  }) :
+                  html += `<tr class='table-default'>
+                                  <td>${data.start_date}</td>
+                                  <td>${data.end_date}</td>
+                                  <td class="d-flex">
+                                      <div>
+                                        <label for="event_${data.id}" class="col col-form-label">Ստանդարտ </label>
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.price}"
+                                            id="event_${data.id}_standart" name="event[${data.id}][standart]" data-id="${data.id}">
+                                      </div>
+                                      ${data.discount_price ?
+                                      `<div>
+                                        <label for="event_${data.id}" class="col col-form-label">Զեղչված </label>
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.discount_price}"
+                                            id="event_${data.id}_discount" name="event[${data.id}][discount]" data-id="${data.id}">
+                                      </div>
+                                      <div>
+                                        <label for="event_${data.id}" class="col col-form-label">Անվճար </label>
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="0}"
+                                            id="event_${data.id}_free" name="event[${data.id}][free]" data-id="${data.id}">
+                                      </div>`: ``}
+                                  </td>
+                                  <td id = 'event-ticket-price_${data.id}' class='remove-value ticket_price'>0</td>
+                          </tr>`;
+
+              html += `</tbody></table>${guidCont}`
+
+              data.style == 'basic' ? html += `<input type="hidden" name="style" value="basic">` : html += `<input type="hidden"  name="style" value="temporary">`
+              }
+
+            $('#event-config').html(html);
+
+            $('#event-select').val(data.id)
+            selectedVal=$('#event-select').val()
+            console.log(selectedVal)
+            // $('#event-select[value=selectedVal]').prop('selected', true);
+            $('#event-select option[value='+selectedVal+']').prop('selected', true);
+
+
+
+
+          }
+        });
+      } else {
+        html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
+        $('#event-config').html(html);
+      }
+    }
+
+  });
+
+
+  $(document).on('input', '.event_ticket', function () {
+      let eventId = $(this).attr('data-id');
+      let rowTotalQuantity = 0
+      let rowTotalPrice = 0
+      let totalQuantity = 0
+
+        $('input[data-id="' + eventId +'"]').each(function () {
+
+            let eachTicketCount = parseFloat($(this).val());
+
+            let eachTicketPrice = eachTicketCount * $(this).attr('price');
+            if (!isNaN(eachTicketCount)) {
+              rowTotalQuantity += eachTicketCount;
+            }
+            if (!isNaN(eachTicketPrice)) {
+              rowTotalPrice += eachTicketPrice;
+            }
+        });
+
+      $('#event-ticket-price_' + eventId).text(rowTotalPrice);
+
+      $('input[name^="event"]').each(function () {
+        let event = parseFloat($(this).val());
+        let eventPrice = event * parseFloat($(this).attr('price'));
+        if (!isNaN(event)) {
+          totalQuantity += event;
+        }
+
+      });
+
+      $('#event-total-count').text(totalQuantity);
+
+      totalPrice()
+  });
+
+
+  $(document).on('input', '.event_guid', function () {
+
+    let eventGuidPrice = $(this).attr('price')
+    let eventGuidQuantity = parseFloat($(this).val())
+    let eventGuidId = $(this).attr('id')
+
+    let totalEventGuidQuantity = 0
+    let totalEventGuidPrice = parseFloat($('#event-total-price').text())
+    let thisGuidPrice = eventGuidPrice * eventGuidQuantity
+
+
+    $('#event_' + eventGuidId).html(thisGuidPrice)
+    totalEventGuidPrice += thisGuidPrice
+    $('.event_guid').each(function () {
+        let quantity = parseFloat($(this).val())
+
+        if (!isNaN(quantity)) {
+          totalEventGuidQuantity += quantity
+        }
+
+        $('.total_event_guid_quantity').text(totalEventGuidQuantity)
+
+    });
+
+    totalPrice()
+
+  })
+
+
+  function totalPrice(){
+      let totalPrice = 0
+      $('.ticket_price').each(function () {
+
+        totalPrice += $(this).text()*1
+      })
+
+    $('#event-total-price').text(totalPrice);
+  }
+
+
+var otherServiceVal=''
+ $("#otherServices").on('change',function(){
+
       $.ajax({
         type: "GET",
-        url: '/cashier/get-event-details/' + selectedId,
+        url: '/cashier/get-other-service/' + $(this).val(),
         cache: false,
         success: function (data) {
-          console.log(data.style + ' ///////')
-          $('#event-total').attr('style', 'display: none !important ');
-          $('#event-save').attr('style', 'display: none !important');
-          $('#event-config').text('');
-          $('#event-total-count').text(0);
-          $('#event-total-price').text(0);
-          let html = ``;
+          otherServiceVal=data.id
+        $('#other-service-save').removeClass('d-none')
 
-          if (data.event_configs.length == 0 && data.style == 'basic'){
-            html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
-          }else{
-            $('#event-total').attr('style', 'display: block !important; display:flex !important; justify-content: end !important');
-            $('#event-save').attr('style', 'display: block !important; display:flex !important; margin-top: 1rem !important; justify-content: flex-end !important;');
+          console.log(data)
+          let content = `<table class="table cashier-table">
+                          <thead>
+                            <tr>
+                            <th>Անուն</th>
+                            <th>Քանակ</th>
+                            <th>Արժեք</th>
+                            </tr>
+                          </thead>
+                            <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
+                                <tr class="table-default">
+                                        <td>${data.item_translations[0].name}</td>
+                                         <td>
+                                             <input type="text" disabled onwheel="return false;" price="200012" value=1 class="form-control form-control-validate event_guid" id="other-service-price" name="other-service-price">
+                                         </td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id="event_guide_price_am">${data.price }</td>
+                                      </tr>
 
-            html = `<table class="table cashier-table">
-                        <thead>
-                          <tr>`+
-                              (data.style == 'basic' ? `<th>Օր</th>` : ``) +
-                              `<th>Սկիզբ</th>
-                              <th>Վերջ</th>` +
-                              (data.style == 'basic' ? `<th>Հասանելի տեղեր</th>` : ``) +
-                              `<th>Քանակ</th>
-                              <th>Արժեք</th>
-                          </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0">`;
-            data.style == 'basic' ?
-                data.event_configs.map(element => {
-                  html += `<tr class='table-default'>
-                                <td>${element.day}</td>
-                                <td>${element.start_time}</td>
-                                <td>${element.end_time}</td>
-                                <td>${element.visitors_quantity_limitation - element.visitors_quantity} մարդ</td>
-                                <td><input type="number" min="0" class="form-control form-control-validate" onwheel="return false;" price="${element['price']}"
-                                  id="event_${element['id']}" name="event[${element['id']}]"></td>
-                                <td id = 'event-ticket-price_${element['id']}' class='remove-value'>0</td>
-                            </tr>`;
-                }) :
-                html += `<tr class='table-default'>
-                                <td>${data.start_date}</td>
-                                <td>${data.end_date}</td>
-                                <td><input type="number" min="0" class="form-control form-control-validate" onwheel="return false;" price="${data.price}"
-                                  id="event_${data.id}" name="event[${data.id}]"></td>
-                                <td id = 'event-ticket-price_${data.id}' class='remove-value'>0</td>
-                            </tr>`;
 
-            html += `</tbody></table>`
+                                    </tbody></table>`
 
-            data.style == 'basic' ? html += `<input type="hidden" name="style" value="basic">` : html += `<input type="hidden"  name="style" value="temporary">`
-            }
+                            $('#other-service-config').html(content)
 
-          $('#event-config').html(html);
-        }
-      });
-    } else {
-      html = `<h3 class='m-3'>Բացակայում են միջոցառման ժամերը։</h3>`
-      $('#event-config').html(html);
+
+
+          }
+        })
+
+  })
+
+
+
+
+
+var partnerVal=''
+ $("#partners").on('change',function(){
+
+      $.ajax({
+        type: "GET",
+        url: '/cashier/get-partner/' + $(this).val(),
+        cache: false,
+        success: function (data) {
+        $('#partnerPrint').removeClass('d-none')
+        partnerVal = data.id
+
+
+          let content = `<table class="table cashier-table">
+                          <thead>
+                            <tr>
+                            <th>Անուն</th>
+                            <th>Քանակ</th>
+                            <th>Արժեք</th>
+                            </tr>
+                          </thead>
+                            <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
+                                <tr class="table-default">
+                                        <td>Ստանդարտ</td>
+                                         <td>
+                                             <input type="number" min="0"  onwheel="return false;" class="form-control form-control-validate partner_ticket_type" id="StandartTicketPrice" name="standart" price=${data.museum.standart_tickets.price }>
+                                         </td>
+                                        <td class="remove-value  partner_ticket_price price">0</td>
+                                </tr>
+                                <tr class="table-default">
+                                        <td>Զեղչված</td>
+                                         <td>
+                                             <input type="number" min="0" onwheel="return false;"   class="form-control form-control-validate partner_ticket_type" id="discountTicketPrice" name="discount" price=${data.museum.standart_tickets.price/2 }>
+                                         </td>
+                                        <td class="remove-value  partner_ticket_price price">0</td>
+                                </tr>
+                                <tr class="table-default">
+                                        <td>Անվճար</td>
+                                         <td>
+                                             <input type="number" min="0" onwheel="return false;"   class="form-control form-control-validate partner_ticket_type" id="freeTicketPrice" name="free" price=0>
+                                         </td>
+                                        <td class="remove-value  partner_ticket_price price">0</td>
+                                </tr>
+                                <tr class='table-default'>
+                                        <td>Էքսկուրսավար(հայերեն)</td>
+                                        <td>
+                                            <input type="number" min="0" onwheel="return false;"
+                                                price="${data.museum.guide.price_am}" min="0"
+                                                class="form-control form-control-validate partner_guid_count" id="partner_guide_price_am" name="guide_am" >
+                                        </td>
+                                        <td class="remove-value event_guide_row_price partner_ticket_price price">0</td>
+                                      </tr>
+                                      <tr class='table-default'>
+                                        <td>Էքսկուրսավար(այլ)</td>
+                                        <td>
+                                            <input type="number" min="0" onwheel="return false;"
+                                                price="${data.museum.guide.price_other}" min="0"
+                                                class="form-control form-control-validate partner_guid_count"  name="guide_other" >
+                                        </td>
+                                        <td class="remove-value event_guide_row_price partner_ticket_price price">0</td>
+                                      </tr>
+                                       <tr class='table-default'>
+                                        <td>Մեկնաբանություն</td>
+                                        <td>
+                                            <textarea name="comment"></textarea>
+                                        </td>
+
+                                      </tr>
+
+
+
+                                    </tbody></table>`
+
+                            $('#partner-config').html(content)
+
+
+              }
+        })
+
+  })
+
+
+
+
+
+  //  =================== clicking on event tab to display selected value =====================
+  $(document).on('click', '.nav-link', function() {
+
+
+    if($(this).attr('aria-controls')=="navs-top-event"){
+
+
+      $('#event-select').val(selectedVal)
+
+        $('#event-select').trigger('change')
+
+
+    }
+    if($(this).attr('aria-controls')=="navs-top-partners"){
+
+      $('#partners').val(partnerVal)
+
+        $('#partners').trigger('change')
+
+
+    }
+    if($(this).attr('aria-controls')=="navs-top-otherService"){
+
+      $('#otherServices').val(otherServiceVal)
+
+        $('#otherServices').trigger('change')
+
     }
 
-  });
-
-
-  $(document).on('input', 'input[name^="event"]', function () {
-    let ticketCount = $(this).val();
-    let eventId = $(this).attr('name').match(/\[(\d+)\]/)[1];
-    if (ticketCount > 0) {
-      let priceTicket = $(this).attr('price');
-      let readyPrice = priceTicket * ticketCount;
-      $('#event-ticket-price_' + eventId).text(readyPrice);
-    } else {
-      $('#event-ticket-price_' + eventId).text(0);
-    }
-
-    let totalQuantity = 0;
-    let totalPrice = 0;
-    $('input[name^="event"]').each(function () {
-      let event = parseFloat($(this).val());
-      let eventPrice = event * parseFloat($(this).attr('price'));
-      if (!isNaN(event)) {
-        totalQuantity += event;
-      }
-      if (!isNaN(eventPrice)) {
-        totalPrice += eventPrice;
-      }
-    });
-    $('#event-total-count').text(totalQuantity);
-    $('#event-total-price').text(totalPrice);
-  });
-
+  })
 
 
 
 });
+// ======================= partner ticket type count ================
+  $(document).on('input', '.partner_ticket_type', function () {
+    let partnerTotalCount = 0
+    $('.partner_ticket_type').each(function() {
+          let quantity = parseFloat($(this).val())
+          let thisPrice = parseFloat($(this).attr('price')) ;
+          let thisTotalPrice = quantity*thisPrice
+
+
+          $(this).closest('tr').find('.partner_ticket_price').html(thisTotalPrice);
+
+
+            if (!isNaN(quantity)) {
+              partnerTotalCount += quantity
+
+            }
+
+            partnerTotalPrice()
+
+    });
+
+      $('#partner-total-count').html(partnerTotalCount)
+  })
+  // ======================= partner guide ticket type count ================
+
+  $(document).on('input', '.partner_guid_count', function () {
+    let partnerTotalGuideCount = 0
+    let quantity = parseFloat($(this).val())
+    let thisPrice = parseFloat($(this).attr('price'));
+    let thisTotalPrice = quantity*thisPrice
+
+          $(this).closest('tr').find('.partner_ticket_price').html(thisTotalPrice);
+
+    $('.partner_guid_count').each(function() {
+
+          let quantity = parseFloat($(this).val())
+
+            if (!isNaN(quantity)) {
+              partnerTotalGuideCount += quantity
+
+            }
+      });
+
+      $('#partner-total-guide-count').html(partnerTotalGuideCount)
+      partnerTotalPrice()
+
+  })
+
+  function partnerTotalPrice(){
+    let partnerTotalPrice = 0
+    $('.price').each(function () {
+
+      partnerTotalPrice += $(this).text()*1
+    })
+
+
+  $('#partner-total-price').html(partnerTotalPrice)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

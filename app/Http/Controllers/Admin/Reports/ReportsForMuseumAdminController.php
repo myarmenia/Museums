@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Museum;
 use App\Models\PurchasedItem;
 use App\Traits\Reports\CheckReportType;
+use App\Traits\Reports\EventReports;
+use App\Traits\Reports\PartnersReports;
 use App\Traits\Reports\ReportTrait;
 use Illuminate\Http\Request;
 
 class ReportsForMuseumAdminController extends Controller
 {
-  use ReportTrait, CheckReportType;
+  use ReportTrait, CheckReportType, EventReports, PartnersReports;
   protected $model;
   public function __construct(PurchasedItem $model)
   {
@@ -29,6 +31,31 @@ class ReportsForMuseumAdminController extends Controller
     $data = $this->report($request->all(), $this->model, $request_report_type);
 
     return view("content.reports.museum-admin", compact('data'));
+
+  }
+
+  public function events(Request $request)
+  {
+    $museum_id = museumAccessId();
+    $data = $request->item_relation_id == null ? [] : $this->event_report($request->all(), $this->model);
+
+    return view("content.reports.museum-event", compact('data'));
+
+  }
+
+  public function partners(Request $request)
+  {
+
+    if (isset($request->partner_id) && $request->partner_id == 'all') {
+      unset($request['partner_id']);
+    }
+
+    
+    $museum_id = museumAccessId();
+    // $data = $request->item_relation_id == null ? [] : $this->event_report($request->all(), $this->model);
+    $data = $this->partners_report($request->all(), $this->model);
+
+    return view("content.reports.museum-partners", compact('data'));
 
   }
 }

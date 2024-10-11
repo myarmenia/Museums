@@ -32,9 +32,12 @@ class LoginController extends Controller
    */
   protected function authenticated(Request $request, $user)
   {
+
       if ($user->status) {
           if($user->isAdmin() ){
+
             return redirect('/welcome');
+
             // if ($user->isAdmin() == "admin") {
             //     return redirect('/');
             // }
@@ -57,8 +60,7 @@ class LoginController extends Controller
       }
 
   }
-
-
+  
   /**
    * Create a new controller instance.
    *

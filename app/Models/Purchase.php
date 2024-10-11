@@ -19,7 +19,7 @@ class Purchase extends Model
     protected $relationFilter = [
         'person_purchase' => ['gender', 'country_id'],
         'user' => ['gender', 'country_id'],
-        // 'purchased_items' => ['museum_id'],
+        'purchased_items' => ['item_relation_id', 'museum_id', 'partner_id'], //nor e avelacvats
     ];
 
     public function purchased_items():HasMany
@@ -40,6 +40,11 @@ class Purchase extends Model
     public function person_purchase()
     {
       return $this->belongsTo(PersonPurchase::class, "person_purchase_id");
+    }
+
+    public function cashier_comment()
+    {
+      return $this->hasOne(CashierComment::class);
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\cashier;
 
 use App\Models\GuideService;
 use App\Models\Ticket;
+use App\Models\TicketSchoolSetting;
 use App\Traits\NodeApi\QrTokenTrait;
 use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
@@ -17,7 +18,9 @@ class BuyTicketController extends CashierController
     public function __invoke(Request $request)
     {
         try {
+
             DB::beginTransaction();
+            session(['open_tab' =>'navs-top-home']);
             $requestData = $request->all();
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
@@ -26,9 +29,18 @@ class BuyTicketController extends CashierController
             $museumId = getAuthMuseumId();
 
             $ticket = Ticket::where(['museum_id' => $museumId, 'status' => 1])->first();
+            $school_ticket = TicketSchoolSetting::first(); //updated from admin and in table only one row  (dont created)
 
-            if((is_null($requestData['standart']) && is_null($requestData['discount']) && is_null($requestData['free']))){
-                session(['errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։']);
+            $filteredData = array_filter($requestData, function ($value) {
+              return !is_null($value);
+            });
+
+
+            if (empty($filteredData)) {
+                session([
+                  'errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտը։'
+
+                ]);
 
                 return redirect()->back();
             }
@@ -39,9 +51,17 @@ class BuyTicketController extends CashierController
                 return redirect()->route('tickets_show');
             }
 
+
+            if (!$school_ticket && $request->school != null) {
+              session(['errorMessage' => 'Իրավասու մամնի կողմից փոխհատուցման արժեքը դեռևս նշված չէ։']);
+
+              return redirect()->back();
+            }
+
             $ticketId = $ticket->id;
 
             $guid = GuideService::where('museum_id', $museumId)->first();
+
             $haveValue = false;
             foreach ($requestData as $key => $item) {
                 if ($item) {
@@ -50,10 +70,15 @@ class BuyTicketController extends CashierController
                         "type" => $key,
                         "quantity" => (int) $item,
                     ];
-                
+
                     if (($key === 'guide_other' || $key === 'guide_am') && $guid) {
+
                         $newItem["id"] = $guid->id;
-                    } else {
+                    }elseif($key === 'school'){
+
+                        $newItem["id"] = $school_ticket->id;
+                    }
+                     else {
                         $newItem["id"] = $ticketId;
                     }
 
@@ -61,28 +86,36 @@ class BuyTicketController extends CashierController
                 }
             }
 
+
             if(!$haveValue){
                 session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
-                   
+
                 DB::rollBack();
                 return redirect()->back();
             }
 
             $addTicketPurchase = $this->purchase($data);
 
-            if ($addTicketPurchase) {
-                $addQr = $this->getTokenQr($addTicketPurchase->id);
 
-                if ($addQr) {
-                    $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
 
-                    session(['success' => 'Տոմսերը ավելացված է']);
-                   
-                    DB::commit();
-                    return redirect()->back()->with('pdfFile', $pdfPath);
+                if ($addTicketPurchase) {
+
+                    $addQr = $this->getTokenQr($addTicketPurchase->id);
+
+                    if ($addQr) {
+                        $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
+
+                        session(['success' => 'Տոմսերը ավելացված է']);
+
+                        DB::commit();
+                        return redirect()->back()->with('pdfFile', $pdfPath);
+                    }
                 }
-            }
+
+
+
             DB::rollBack();
+
             return redirect()->back();
 
         } catch (\Exception $e) {

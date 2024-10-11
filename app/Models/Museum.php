@@ -128,6 +128,17 @@ class Museum extends Model
       return $this->hasOne(Turnstile::class)->where('local_ip', '!=', null);
     }
 
+    public function other_services(): HasMany
+    {
+      return $this->hasMany(OtherService::class);
+    }
+    public function partners(): HasMany
+    {
+      return $this->hasMany(Partner::class);
+    }
+
+
+
 
 
 }

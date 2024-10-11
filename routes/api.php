@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\cashier\CashierController as CashierCashierController;
 use App\Http\Controllers\Admin\Events\EventListController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\Cart\DeleteItemController;
@@ -37,6 +38,7 @@ use App\Http\Controllers\API\MuseumListController;
 use App\Http\Controllers\API\Notification\AllNotificationController;
 use App\Http\Controllers\API\Notification\ReadNotificationController;
 use App\Http\Controllers\API\Notification\UnreadNotificationController;
+use App\Http\Controllers\API\OtherService\OtherServiceController;
 use App\Http\Controllers\API\Product\ProductCantroller;
 use App\Http\Controllers\API\RegionListController;
 use App\Http\Controllers\API\Shop\ProductCantroller as ShopProductCantroller;
@@ -44,6 +46,8 @@ use App\Http\Controllers\API\Shop\SingleProductController;
 use App\Http\Controllers\API\Student\DashboardController;
 use App\Http\Controllers\API\Student\VisitHistoryController;
 use App\Http\Controllers\API\User\UserController;
+use App\Http\Controllers\cashier\BuyTicketController;
+use App\Http\Controllers\cashier\CashierController;
 use App\Http\Controllers\Turnstile\ActiveQrsController;
 use App\Http\Controllers\Turnstile\CheckQRController;
 use App\Http\Controllers\Turnstile\QrBlackListController;
@@ -134,6 +138,9 @@ Route::group(['middleware' => ['api']], function ($router) {
       Route::get('product/{id}',SingleProductController::class);
 
     });
+    Route::group(['prefix' => 'other-service'], function ($router) {
+      Route::get('list/{id}', [OtherServiceController::class, 'show']);
+    });
 
 
 
@@ -210,6 +217,7 @@ Route::group(['prefix' => 'turnstile'], function ($router) {
   // Route::get('send-qr-to-mail/{id}', SendQRToMailController::class);
 
 });
+Route::post('buy-ticket',BuyTicketController::class);
 
 
 // =================== test ===========================

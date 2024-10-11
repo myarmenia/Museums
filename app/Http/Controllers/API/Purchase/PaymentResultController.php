@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API\Purchase;
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Controllers\Controller;
 use App\Traits\NodeApi\QrTokenTrait;
 use App\Traits\Payments\CheckPaymentStatusTrait;
 use App\Traits\Payments\PaymentCompletionTrait;
@@ -20,10 +19,11 @@ class PaymentResultController extends BaseController
           $order_number = $request->order_number;
           $payment_result = $this->checkStatus($order_number);
 
+
           if($payment_result){
-              $payment_completion = $this->paymentCompletion($payment_result, $order_number);
-              return $payment_completion;
+                    $payment_completion = $this->paymentCompletion($payment_result, $order_number);
+                    return $payment_completion;
+                }
+
           }
-          
-    }
 }

@@ -14,7 +14,7 @@ trait CheckReportType
 
       unset($data['museum_id']);
     }
-    
+
     if (isset($data['time']) && count($data['time']) == 1) {
       // $get_report_times = getReportTimes();
 
