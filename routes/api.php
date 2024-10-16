@@ -13,6 +13,7 @@ use App\Http\Controllers\API\Events\EventController;
 use App\Http\Controllers\API\Events\EventsListController;
 use App\Http\Controllers\API\Events\HeaderEventController;
 use App\Http\Controllers\API\Events\SingleEventController;
+use App\Http\Controllers\Api\HDMController;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\ForgotPasswordController;
 use App\Http\Controllers\API\Lessons\LessonController;
@@ -217,4 +218,13 @@ Route::group(['prefix' => 'turnstile'], function ($router) {
 
 });
 Route::post('buy-ticket',BuyTicketController::class);
+
+
+// =================== test ===========================
+Route::get('hdm_connect', [HDMController::class, 'index']);
+Route::get('hdm_dll_connect', [HDMController::class, 'dll']);
+Route::get('get-cashiers', [HDMController::class, 'getCashiers']);
+Route::get('connect', [HDMController::class, 'connect']);
+
+
 
