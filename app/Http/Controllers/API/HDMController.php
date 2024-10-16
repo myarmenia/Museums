@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\Request;
 
 class HDMController extends Controller
 {
-  public function __invoke()
+  public function index()
   {
 
-      $host = '192.168.1.157';
+      $host = '192.168.10.125';
       $port = 8080;
       $password = 'ReVZh4PJ';
 
@@ -62,7 +63,7 @@ class HDMController extends Controller
             dd($decryptedResponse);
       }
     }
-dd('finish');
+    dd('finish');
   }
 
   function encryptData($data, $key) {
@@ -81,6 +82,109 @@ function generateKey($password) {
   // Գեներացնում ենք 24-բայթանոց բանալի ՀԴՄ գաղտնաբառի հիման վրա
   $hash = hash('sha256', $password, true);
   return substr($hash, 0, 24); // Վերցնում ենք առաջին 24 բայթերը
+}
+
+
+public function dll(){
+  try {
+
+    $host = '192.168.10.125';
+    $port = 8080;
+    $password = 'ReVZh4PJ';
+    // Создание COM-объекта
+    $FR = new \COM("HDMIntegrator.FR");
+
+    // Настройка параметров ККМ
+    $FR->IP = "192.168.10.125"; // IP-адрес ККМ
+    $FR->Port = 8080; // Порт ККМ
+    $FR->FRPassword = "ReVZh4PJ"; // Пароль ККМ
+    $FR->OperatorID = 3; // ID оператора
+    $FR->OperatorPassword = "3"; // Пароль оператора
+    $FR->FRKey = "C1QOLqcqOch87VhsayNv4w=="; // Лицензия
+
+    // Открытие нового чека продажи
+    if (!$FR->OpenSaleDocument(2, "")) {
+        // Если операция завершилась ошибкой, выводим код и описание ошибки
+        throw new Exception($FR->ErrCode . " - " . $FR->ErrDescription);
+    }
+
+    // Добавление товара в чек
+    if (!$FR->NewItem(1, 1, 10, 0, 0, 0, 0, "ticket", "0000022", "ticket", "91.02")) {
+        throw new Exception($FR->ErrCode . " - " . $FR->ErrDescription);
+    }
+
+    // Печать чека
+    if (!$FR->PrintDocument(10, 0, true, 0, 0)) {
+        throw new Exception($FR->ErrCode . " - " . $FR->ErrDescription);
+    }
+
+    // Получение номера чека
+    $fiscalData = $FR->FiscalData;
+    $receiptNumber = $fiscalData->Rseq;
+
+    echo "Чек успешно распечатан. Номер чека: " . $receiptNumber;
+
+} catch (Exception $e) {
+    // Обработка ошибок
+    echo "Ошибка: " . $e->getMessage();
+}
+}
+
+public function getCashiers(){
+
+  try {
+    // Создание COM-объекта для взаимодействия с библиотекой HDMIntegrator
+    $fr = new \COM("HDMIntegrator.FR");
+
+    // Установка IP-адреса и порта ККМ
+    $fr->IP = "192.168.10.125";
+    $fr->Port = 8080;
+
+    // Установка пароля ККМ
+    $fr->FRPassword = "ReVZh4PJ";  // Введите свой пароль ККМ
+
+    // Вызов метода для получения списка операторов (кассиров)
+    if ($fr->GetOperators()) {
+        // Если метод вернул True, выведем список операторов
+        $operators = $fr->FROperators;
+        foreach ($operators as $operator) {
+            echo "ID: " . $operator->ID . ", Имя: " . $operator->Name . "\n";
+        }
+    } else {
+        // Если возникла ошибка, выводим код и описание ошибки
+        echo "Ошибка: " . $fr->ErrCode . " - " . $fr->ErrDescription;
+    }
+  } catch (Exception $e) {
+      echo "Ошибка создания COM объекта: " . $e->getMessage();
+  }
+}
+
+
+public function connect(){
+  try {
+    // 1. Создаем COM-объект
+    $fr = new \COM("HDMIntegrator.FR");
+
+    // 2. Устанавливаем параметры подключения
+    // Указываем IP-адрес и порт, по которому доступен ККМ
+    $fr->IP = "192.168.10.125";  // Замените на ваш IP-адрес ККМ
+    $fr->Port = 8080;          // Замените на ваш порт ККМ
+    $fr->ConnectionReadTimeout = 90000;
+    // Устанавливаем пароль ККМ для доступа
+    $fr->FRPassword = "ReVZh4PJ";  // Замените на ваш пароль ККМ
+
+    // 3. Проверяем подключение
+    // Используем метод ConnectionCheck() для проверки соединения
+    if ($fr->ConnectionCheck()) {
+        echo "Подключение к ККМ успешно!";
+    } else {
+        echo "Ошибка подключения: " . $fr->ErrCode . " - " . $fr->ErrDescription;
+    }
+
+  } catch (Exception $e) {
+      echo "Ошибка создания COM объекта: " . $e->getMessage();
+  }
+
 }
 
 }

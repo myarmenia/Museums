@@ -221,4 +221,10 @@ Route::post('buy-ticket',BuyTicketController::class);
 
 
 // =================== test ===========================
-Route::get('hdm_connect', HDMController::class);
+Route::get('hdm_connect', [HDMController::class, 'index']);
+Route::get('hdm_dll_connect', [HDMController::class, 'dll']);
+Route::get('get-cashiers', [HDMController::class, 'getCashiers']);
+Route::get('connect', [HDMController::class, 'connect']);
+
+
+
