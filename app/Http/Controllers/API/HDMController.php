@@ -8,183 +8,307 @@ use Illuminate\Http\Request;
 
 class HDMController extends Controller
 {
-  public function index()
-  {
+  protected $secondKey = null;
+  public function encryptData($data, $key) {
+      // PKCS7 padding-ի համար կոդավորվող տվյալները բլոկի չափի համաձայն
+      // 3DES կոդավորում օգտագործելով ECB ռեժիմ
 
-      $host = '192.168.10.125';
-      $port = 8080;
-      $password = 'ReVZh4PJ';
-
-      // Создаем TCP-соединение
-      $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-      if (!$socket) {
-        dd(11);
-          die("Couldn't create socket: " . socket_strerror(socket_last_error()));
-      }
-      if ($socket === false) {
-        dd(66);
-        echo "Ошибка создания сокета: " . socket_strerror(socket_last_error()) . "\n";
-      } else {
-        if (socket_connect($socket, $host, $port)) {
-        // 12-բայթ գլխագրի կառուցում
-          $id = 1;  // ID, օրինակ՝ 1
-          $type = 2;  // Տվյալների տեսակ, օրինակ՝ 2
-          $dataLength = 100;  // Տվյալների երկարությունը, օրինակ՝ 100 բայթ
-
-          // Գլխագրի փաթեթավորում որպես 12-բայթ բինար տվյալ
-          $header = pack('N*', $password);
-
-            // Ուղարկել 12-բայթ գլխագիրը
-            // $sent = socket_write($socket, $header, strlen($header));
-            // if ($sent === false) {
-            //     die("Socket write error: " . socket_strerror(socket_last_error($socket)));
-            // }
-
-            // echo "12-բայթ գլխագիրը ուղարկվեց հաջողությամբ";
-
-            $data = json_encode([
-              "password" => "ReVZh4PJ",
-              "cashier"=>3,
-              "pin"=>3
-          ]);
-          $key = $this->generateKey($password);
-
-          $encryptedData = $this->encryptData($data, $key);
-          $p = socket_write($socket, $encryptedData, strlen($encryptedData));
-            // Փակել սոկետը
-            // socket_close($socket);
-
-            $response = socket_read($socket, 2048);  // ստանում ենք պատասխանը
-
-            if ($response === false) {
-              die("Unable to read from socket: " . socket_strerror(socket_last_error($socket)));
-          }
-            $decryptedResponse = decryptData($response, $key);  // ապակոդավորում ենք պատասխանը
-            dd($decryptedResponse);
-      }
-    }
-    dd('finish');
+      $data = $this->pkcs7_pad($data);
+      $encrypted = openssl_encrypt($data,'des-ede3-ecb',$key,OPENSSL_RAW_DATA);
+      // | OPENSSL_NO_PADDING
+      return $encrypted;
   }
 
-  function encryptData($data, $key) {
-    // PKCS7 padding-ի համար կոդավորվող տվյալները բլոկի չափի համաձայն
-    $blockSize = 8;  // 3DES բլոկի չափը
-    $pad = $blockSize - (strlen($data) % $blockSize);
-    $data .= str_repeat(chr($pad), $pad);
+  public function decryptData($data, $key) {
+      // PKCS7 padding-ի համար կոդավորվող տվյալները բլոկի չափի համաձայն
+      // 3DES կոդավորում օգտագործելով ECB ռեժիմ
 
-    // 3DES կոդավորում օգտագործելով ECB ռեժիմ
-    $encrypted = openssl_encrypt($data, 'DES-EDE3', $key, OPENSSL_RAW_DATA | OPENSSL_NO_PADDING);
+      // $data = $this->pkcs7_pad($data);
+      $decrypted = openssl_decrypt($data,'des-ede3-ecb',$key,OPENSSL_RAW_DATA);
 
-    return $encrypted;
-}
+      return $decrypted;
+  }
+  public function pkcs7_pad($data) {
+    $block_size = 8; // Размер блока 3DES в байтах
+    $pad = $block_size - (strlen($data) % $block_size);
+    return $data . str_repeat(chr($pad), $pad);
+  }
 
-function generateKey($password) {
+
+
+  public function createHeader($operationCode, $data_length) {
+    // Գլխագիրը պետք է լինի 12 բայթ
+    $header = "";
+
+    // Առաջին 6 բայթը կոնստանտ արժեքներ են ըստ փաստաթղթի
+    $header .= hex2bin("D580D4B4D5840007");
+
+    // $header .= hex2bin("D580D4B4D584000501000205");
+
+
+    // 9-րդ բայթ - գործողության կոդը (օր.՝ կտրոնի տպում՝ 4)
+    $header .= chr($operationCode);
+    $header .= hex2bin("00");
+
+    $header .= chr(intval($data_length >> 8));
+    $header .= chr(intval($data_length & 0xFF));
+    return $header;
+  }
+
+public function generateKey($password) {
   // Գեներացնում ենք 24-բայթանոց բանալի ՀԴՄ գաղտնաբառի հիման վրա
   $hash = hash('sha256', $password, true);
+
   return substr($hash, 0, 24); // Վերցնում ենք առաջին 24 բայթերը
 }
 
 
-public function dll(){
-  try {
+  public function cashiers(){
 
-    $host = '192.168.10.125';
-    $port = 8080;
-    $password = 'ReVZh4PJ';
-    // Создание COM-объекта
-    $FR = new \COM("HDMIntegrator.FR");
+      $ip = '192.168.10.125'; // ՀԴՄ սարքի IP հասցեն
+      $port = 8080; // ՀԴՄ սարքի պորտը
+      $hdm_password = "96yQDWay";
 
-    // Настройка параметров ККМ
-    $FR->IP = "192.168.10.125"; // IP-адрес ККМ
-    $FR->Port = 8080; // Порт ККМ
-    $FR->FRPassword = "ReVZh4PJ"; // Пароль ККМ
-    $FR->OperatorID = 3; // ID оператора
-    $FR->OperatorPassword = "3"; // Пароль оператора
-    $FR->FRKey = "C1QOLqcqOch87VhsayNv4w=="; // Лицензия
+      // 1. Նոր սոկետ ստեղծել
+      $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+      if ($socket === false) {
+          die("Սոկետ ստեղծելու ժամանակ սխալ է տեղի ունեցել: " . socket_strerror(socket_last_error()));
+      }
 
-    // Открытие нового чека продажи
-    if (!$FR->OpenSaleDocument(2, "")) {
-        // Если операция завершилась ошибкой, выводим код и описание ошибки
-        throw new Exception($FR->ErrCode . " - " . $FR->ErrDescription);
-    }
+      // 2. TCP կապ հաստատել ՀԴՄ սարքի հետ
+      $result = socket_connect($socket, $ip, $port);
+      if ($result === false) {
+          die("ՀԴՄ սարքի հետ կապ հաստատելու ժամանակ սխալ է տեղի ունեցել: " . socket_strerror(socket_last_error($socket)));
+      }
 
-    // Добавление товара в чек
-    if (!$FR->NewItem(1, 1, 10, 0, 0, 0, 0, "ticket", "0000022", "ticket", "91.02")) {
-        throw new Exception($FR->ErrCode . " - " . $FR->ErrDescription);
-    }
-
-    // Печать чека
-    if (!$FR->PrintDocument(10, 0, true, 0, 0)) {
-        throw new Exception($FR->ErrCode . " - " . $FR->ErrDescription);
-    }
-
-    // Получение номера чека
-    $fiscalData = $FR->FiscalData;
-    $receiptNumber = $fiscalData->Rseq;
-
-    echo "Чек успешно распечатан. Номер чека: " . $receiptNumber;
-
-} catch (Exception $e) {
-    // Обработка ошибок
-    echo "Ошибка: " . $e->getMessage();
-}
-}
-
-public function getCashiers(){
-
-  try {
-    // Создание COM-объекта для взаимодействия с библиотекой HDMIntegrator
-    $fr = new \COM("HDMIntegrator.FR");
-
-    // Установка IP-адреса и порта ККМ
-    $fr->IP = "192.168.10.125";
-    $fr->Port = 8080;
-
-    // Установка пароля ККМ
-    $fr->FRPassword = "ReVZh4PJ";  // Введите свой пароль ККМ
-
-    // Вызов метода для получения списка операторов (кассиров)
-    if ($fr->GetOperators()) {
-        // Если метод вернул True, выведем список операторов
-        $operators = $fr->FROperators;
-        foreach ($operators as $operator) {
-            echo "ID: " . $operator->ID . ", Имя: " . $operator->Name . "\n";
-        }
-    } else {
-        // Если возникла ошибка, выводим код и описание ошибки
-        echo "Ошибка: " . $fr->ErrCode . " - " . $fr->ErrDescription;
-    }
-  } catch (Exception $e) {
-      echo "Ошибка создания COM объекта: " . $e->getMessage();
-  }
-}
+      socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, ["sec"=>30, "usec"=>0]);  // Սպասելու ժամանակ 30 վայրկյան
 
 
-public function connect(){
-  try {
-    // 1. Создаем COM-объект
-    $fr = new \COM("HDMIntegrator.FR");
+      $first_key = $this->generateKey($hdm_password);
 
-    // 2. Устанавливаем параметры подключения
-    // Указываем IP-адрес и порт, по которому доступен ККМ
-    $fr->IP = "192.168.10.125";  // Замените на ваш IP-адрес ККМ
-    $fr->Port = 8080;          // Замените на ваш порт ККМ
-    $fr->ConnectionReadTimeout = 90000;
-    // Устанавливаем пароль ККМ для доступа
-    $fr->FRPassword = "ReVZh4PJ";  // Замените на ваш пароль ККМ
+      // Հարցման մարմինը JSON ձևաչափով
+      $jsonBody = json_encode([
+        'password' => $hdm_password
+        // 'cashier' => 3,
+        // 'pin' => 3
+      ]);
 
-    // 3. Проверяем подключение
-    // Используем метод ConnectionCheck() для проверки соединения
-    if ($fr->ConnectionCheck()) {
-        echo "Подключение к ККМ успешно!";
-    } else {
-        echo "Ошибка подключения: " . $fr->ErrCode . " - " . $fr->ErrDescription;
-    }
 
-  } catch (Exception $e) {
-      echo "Ошибка создания COM объекта: " . $e->getMessage();
+      $enc_data = $this->encryptData($jsonBody, $first_key);
+
+      $operationCode = '01';  // Օրինակ՝ 2
+      $header = $this->createHeader($operationCode, strlen($enc_data));
+
+      // Հարցման ամբողջական մարմին
+      $request = $header . $enc_data;
+
+      // 4. Ուղարկել հարցումը
+      socket_write($socket, $request, strlen($request));
+
+      // 5. Ստանալ պատասխան
+      $response = socket_read($socket, 2048); // 2048 բայթ կարդալ
+
+
+      // 6. Պատասխանն ապակոդավորել
+      $response_data = substr($response, 11); // Հանենք գլխի 12 բայթը
+      $resp_json = $this->decryptData($response_data, $first_key);
+      // $resp_json = openssl_decrypt($response_data,'des-ede3-ecb',$first_key,OPENSSL_RAW_DATA);
+      print_r($resp_json);
+      // 7. Արտածել պատասխան
+      // echo "Սարքից ստացված պատասխան HEX՝ ".bin2hex($response)."\n";
+
+      // 8. Զանգը փակել
+      socket_close($socket);
   }
 
-}
+
+
+  public function cashierLogin(){
+
+    $ip = '192.168.10.125'; // ՀԴՄ սարքի IP հասցեն
+    $port = 8080; // ՀԴՄ սարքի պորտը
+    $hdm_password = "96yQDWay";
+
+    // 1. Նոր սոկետ ստեղծել
+    $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+    if ($socket === false) {
+        die("Սոկետ ստեղծելու ժամանակ սխալ է տեղի ունեցել: " . socket_strerror(socket_last_error()));
+    }
+
+    // 2. TCP կապ հաստատել ՀԴՄ սարքի հետ
+    $result = socket_connect($socket, $ip, $port);
+    if ($result === false) {
+        die("ՀԴՄ սարքի հետ կապ հաստատելու ժամանակ սխալ է տեղի ունեցել: " . socket_strerror(socket_last_error($socket)));
+    }
+
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, ["sec"=>30, "usec"=>0]);  // Սպասելու ժամանակ 30 վայրկյան
+
+
+    $first_key = $this->generateKey($hdm_password);
+
+    // Հարցման մարմինը JSON ձևաչափով
+    $jsonBody = json_encode([
+      'password' => $hdm_password,
+      'cashier' => 3,
+      'pin' => 3
+    ]);
+
+
+    $enc_data = $this->encryptData($jsonBody, $first_key);
+
+    $operationCode = '02';  // Օրինակ՝ 2
+    $header = $this->createHeader($operationCode, strlen($enc_data));
+
+    // Հարցման ամբողջական մարմին
+    $request = $header . $enc_data;
+
+    // 4. Ուղարկել հարցումը
+    socket_write($socket, $request, strlen($request));
+
+    // 5. Ստանալ պատասխան
+    $response = socket_read($socket, 2048); // 2048 բայթ կարդալ
+
+
+    // 6. Պատասխանն ապակոդավորել
+    $response_data = substr($response, 11); // Հանենք գլխի 12 բայթը
+    $resp_json = $this->decryptData($response_data, $first_key);
+    // $resp_json = openssl_decrypt($response_data,'des-ede3-ecb',$first_key,OPENSSL_RAW_DATA);
+    $resp = json_decode( $resp_json);
+
+    // $this->secondKey = $resp->key;
+echo $resp->key;
+    // dd($this->secondKey);
+    // 7. Արտածել պատասխան
+    // echo "Սարքից ստացված պատասխան HEX՝ ".bin2hex($response)."\n";
+
+    // 8. Զանգը փակել
+    socket_close($socket);
+  }
+
+  public function printReceipt(){
+    // dd($this->secondKey);
+    $ip = '192.168.10.125'; // ՀԴՄ սարքի IP հասցեն
+    $port = 8080; // ՀԴՄ սարքի պորտը
+    $hdm_password = "96yQDWay";
+    $second_key = '/DjpnvMAcAuEGttBMdxj0R+51EP7ErcA';
+    $second_key = base64_decode($second_key);
+    dump(bin2hex($second_key), strlen($second_key), $second_key);
+    // 1. Նոր սոկետ ստեղծել
+    $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+    if ($socket === false) {
+        die("Սոկետ ստեղծելու ժամանակ սխալ է տեղի ունեցել: " . socket_strerror(socket_last_error()));
+    }
+
+    // 2. TCP կապ հաստատել ՀԴՄ սարքի հետ
+    $result = socket_connect($socket, $ip, $port);
+    if ($result === false) {
+        die("ՀԴՄ սարքի հետ կապ հաստատելու ժամանակ սխալ է տեղի ունեցել: " . socket_strerror(socket_last_error($socket)));
+    }
+
+    socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, ["sec"=>30, "usec"=>0]);  // Սպասելու ժամանակ 30 վայրկյան
+
+
+    // $second_key = $this->generateKey($hdm_password);
+
+    // Հարցման մարմինը JSON ձևաչափով
+    $jsonBody = json_encode([
+      // 'seq' => 100002,
+      'paidAmount' => 0,
+      'paidAmountCard' => 10,
+      'partialAmount' => 0,
+      'prePaymentAmount' => 0,
+      'useExtPOS' => true,
+      'mode' => 2,
+      // 'partnerTin' =>  null,
+      'items'=> [
+            ['dep' => 1,
+            'qty' => 1,
+            'price' => 10,
+            'productCode' => '0015',
+            'productName' => 'ticket',
+            'adgCode' => '91.02',
+            'unit' => 'hat',
+            'additionalDiscount' => 0,
+            'additionalDiscountType' => 0,
+            'discount' => 0,
+            'discountType' => 0
+            ]
+      ]
+    ]);
+    // $jsonBody = json_encode([
+    //   // 'seq' => 100002,
+    //   'crn' => '53028644',
+    //   // 'receiptId' => '00000016'
+    //   'returnTicketId' =>'00000013',
+
+    //   // 'cashAmountForReturn' => 10,
+    //   // 'cardAmountForReturn' => 0.0
+
+    // ]);
+    echo($jsonBody);
+
+
+    $enc_data = $this->encryptData($jsonBody, $second_key);
+    dump(bin2hex($enc_data));
+
+    $operationCode = '04';  // Օրինակ՝ 2
+    $header = $this->createHeader($operationCode, strlen($enc_data));
+
+    // Հարցման ամբողջական մարմին
+    $request = $header . $enc_data;
+
+    // 4. Ուղարկել հարցումը
+    socket_write($socket, $request, strlen($request));
+
+    // 5. Ստանալ պատասխան
+    $response = socket_read($socket, 2048); // 2048 բայթ կարդալ
+
+    // dd( $response);
+    // 6. Պատասխանն ապակոդավորել
+    $response_data = substr($response, 11); // Հանենք գլխի 12 բայթը
+    dump($response_data);
+    dump($this->parseHeader( $response));
+    $resp_json = $this->decryptData($response_data, $second_key);
+    // $resp_json = openssl_decrypt($response_data,'des-ede3-ecb',$first_key,OPENSSL_RAW_DATA);
+    $resp = json_decode( $resp_json);
+
+    dump($resp);
+
+
+    // 7. Արտածել պատասխան
+    echo "Սարքից ստացված պատասխան HEX՝ ".bin2hex($response)."\n";
+
+    // 8. Զանգը փակել
+    socket_close($socket);
+  }
+
+
+  public function parseHeader($header) {
+    // Убедимся, что длина заголовка соответствует ожидаемым 12 байтам
+    // if (strlen($header) !== 11) {
+    //     throw new Exception("Неверная длина заголовка");
+    // }
+
+    // Первые 6 байт - это константные значения, их просто пропустим
+    $constant = substr($header, 0, 6);
+  // dd($constant );
+    // Проверяем, что они соответствуют ожидаемому значению
+    // if (bin2hex($constant) !== "d580d4b4d584") {
+    //     throw new Exception("Неверные константные байты");
+    // }
+
+    // 7-й байт - это операция (operationCode)
+    $operationCode = ord($header[6]);
+
+    // 8-й байт игнорируем (0x00)
+
+    // 9-й и 10-й байты - длина данных (data_length)
+    $data_length = (ord($header[8]) << 8) + ord($header[9]);
+
+    return [
+        'operationCode' => $operationCode,
+        'data_length' => $data_length
+    ];
+  }
 
 }
