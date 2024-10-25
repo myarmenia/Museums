@@ -46,17 +46,30 @@ class CashierService
   public static function showDetails($id)
   {
 
-
+      $museum_id = getAuthMuseumId();
       $log = CashierLog::find($id);
 
       $relation_name = $log->db_name;
 
       $item = $log->{$relation_name};
-        // dd($item);
-      return $item ? $item : false;
+
+      return $item && $museum_id == $item->museum_id ? $item : false;
 
   }
 
+  public static function logFilter(array $data, $model)
+  {
+    $data = array_filter($data, function ($value) {
+      return $value !== null && $value !== 'null';
+    });
 
+    $data['action'] = !isset($data['action']) ? 'store' : $data['action'];
+    $data['museum_id'] = getAuthMuseumId();
+
+    $filteredData = $model->reportFilter($data);
+    // $filteredData = $model->filter($data);
+
+    return $filteredData;
+  }
 
 }
