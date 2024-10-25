@@ -48,6 +48,7 @@ trait QrTokenTrait
                 ->get();
 
             $purchasesKeys = [];
+
             foreach ($allPurchasesForQr as $key => $item) {
 
 
@@ -59,12 +60,24 @@ trait QrTokenTrait
 
             }
 
+            if(isset($purchasesKeys['school'])){
+              $purchasesKeys['school']=1;
+            }
+            // dd($purchasesKeys );
             $data = $this->getReqQrToken($url, $purchasesKeys);
-
+// dd( $data);
             $addedItemsToken = [];
+
             foreach ($allPurchases as $key => $item) {
                 $quantity = $item->quantity;
+
                 $priceOneTicket = (int) $item->total_price / (int) $item->quantity;
+
+                  if($item->type=="school"){
+
+                      $quantity=1;
+
+                  }
 
                 for ($i = 0; $i < $quantity; $i++) {
                     $type = $item->type;
@@ -84,6 +97,8 @@ trait QrTokenTrait
                         'updated_at' => now(),
 
                     ];
+
+
                     $addedItemsToken[]=$token;
                     $allData[] = $newData;
                     if(isset($data[$type])){
@@ -116,6 +131,7 @@ trait QrTokenTrait
 
     public function getReqQrToken(string $url, array $data): array
     {
+
         $req = Http::post($url, $data);
         $response = $req->getBody()->getContents();
         $response = json_decode($response, true);
