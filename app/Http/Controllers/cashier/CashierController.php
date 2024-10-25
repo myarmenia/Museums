@@ -135,6 +135,7 @@ class CashierController extends Controller
                 $purchaseGuid = false;
             }
 
+
             $data['data'][] = [
                 'ticket_token' => $qr['ticket_token'],
                 'description_educational_programming' => $itemDescriptionName? trim($itemDescriptionName)  : null,
@@ -156,11 +157,16 @@ class CashierController extends Controller
               $data['data'][$key]['service_name_am'] = $qr->purchased_item->other_service->translation('am')->name;
               $data['data'][$key]['service_name_en'] = $qr->purchased_item->other_service->translation('en')->name;
             }
+            if($qr['type']=="school"){
+
+              $data['data'][$key]['quantity']= $qr->purchased_item->quantity;
+            }
 
 
 
 
         }
+
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
 

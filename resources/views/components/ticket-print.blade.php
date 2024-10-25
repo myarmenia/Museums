@@ -82,6 +82,7 @@
                     <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }} /
                         {{ getTranslateTicketTitl_en($item['type']) }}</span>
                 </div>
+
                 @if (isset($item['sub_type']) &&
                         $item['sub_type'] != null &&
                         $item['sub_type'] != 'guide_price_am' &&
@@ -98,6 +99,13 @@
                         <span>{{ $item['description_educational_programming'] }} /
                             {{ $item['description_educational_programming_en'] }} </span>
                     </div>
+                @endif
+                @if ($item['type'] == 'school')
+                <div class="text-flex text-margin">
+                  <span>Քանակ/Quantity </span>
+                  <span>{{ $item['quantity']}}</span>
+              </div>
+
                 @endif
                 @if ($item['type'] == 'event')
                     <div class="text-flex text-margin">

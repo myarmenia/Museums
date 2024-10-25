@@ -91,7 +91,7 @@
 
 <div class="your-component">
 
-    <x-offcanvas :reservetions=" isset($reservetions) ? $reservetions : [] " ></x-offcanvas>
+    {{-- <x-offcanvas :reservetions=" isset($reservetions) ? $reservetions : [] " ></x-offcanvas> --}}
 </div>
 
 @endsection
