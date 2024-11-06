@@ -30,7 +30,7 @@ class EventTicket extends CashierController
 
         foreach ($requestData as $value) {
 
-            if (!is_null($value['standart']) || !is_null($value['discount']) || !is_null($value['free'])) {
+            if ((isset($value['standart']) && !is_null($value['standart'])) || (isset($value['discount']) && !is_null($value['discount'])) ||(isset($value['free']) && !is_null($value['free']) )) {
                 $allNull = true;
                 break;
             }
