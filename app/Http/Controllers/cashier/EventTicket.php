@@ -26,17 +26,17 @@ class EventTicket extends CashierController
       $museumId = getAuthMuseumId();
       $eventKeys = array_keys($requestData);
 
-      $allNull = true;
+      $allNull = false;
 
-        foreach ($requestData[$eventKeys[0]] as $value) {
-            if (!is_null($value)) {
-                $allNull = false;
+        foreach ($requestData as $value) {
+
+            if (!is_null($value['standart']) || !is_null($value['discount']) || !is_null($value['free'])) {
+                $allNull = true;
                 break;
             }
         }
 
-
-      if ($allNull && is_null($request->guide_price_am) && is_null($request->guide_price_other) ) {
+      if (!$allNull && is_null($request->guide_price_am) && is_null($request->guide_price_other) ) {
         session([
           'errorMessage' => 'Լրացրեք քանակ դաշտը',
 
