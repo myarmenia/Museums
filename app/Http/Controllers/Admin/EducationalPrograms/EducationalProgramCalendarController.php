@@ -12,6 +12,7 @@ class EducationalProgramCalendarController extends Controller
   public function __invoke()
   {
     $data = $this->getAllReservetions();
+    // dd($data);
     return view("content.educational-programs.calendar",  compact('data'));
   }
 }
