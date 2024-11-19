@@ -13,6 +13,9 @@ use App\Http\Controllers\API\Events\EventController;
 use App\Http\Controllers\API\Events\EventsListController;
 use App\Http\Controllers\API\Events\HeaderEventController;
 use App\Http\Controllers\API\Events\SingleEventController;
+use App\Http\Controllers\API\HDM\CashierLoginController;
+use App\Http\Controllers\API\HDM\GetCashiersController;
+use App\Http\Controllers\API\HDM\PrintReceiptController;
 use App\Http\Controllers\API\HDMController;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\ForgotPasswordController;
@@ -228,11 +231,15 @@ Route::post('buy-ticket',BuyTicketController::class);
 // Route::get('connect', [HDMController::class, 'connect']);
 // Route::get('new-index', [HDMController::class, 'new_index']);
 // Route::get('print-last-receipt-copy', [HDMController::class, 'printCopy']);
-Route::get('cashiers', [HDMController::class, 'cashiers']);
-Route::get('cashier-login', [HDMController::class, 'cashierLogin']);
-Route::get('print-receipt', [HDMController::class, 'printReceipt']);
 
 
+Route::middleware(['web'])->group(function () {
+  Route::get('cashiers', GetCashiersController::class);
+  Route::get('cashier-login', CashierLoginController::class);
+  Route::get('print-receipt', PrintReceiptController::class);
+});
+
+Route::get('api-print-receipt', [HDMController::class, 'printReceipt']);
 Route::get('test-cashiers', [HDMTestController::class, 'cashiers']);
 
 // Route::get('login-cashier', [HDMController::class, 'loginCashier']);
