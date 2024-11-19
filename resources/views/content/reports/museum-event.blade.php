@@ -42,7 +42,7 @@
 
             <div>
                 <form action="{{route('museum_event_reports')}}" method="get" class="row g-3 mt-2" style="display: flex" id="form">
-                    <div class="mb-3 justify-content-end" style="display: flex; gap: 8px">
+                    <div class="mb-3 d-flex justify-content-end" >
 
                         <div class="col-2">
                             <select id="multiple-select-event" name="item_relation_id" class="form-select select-2" data-placeholder="Միջոցառում" value="{{ request()->input('item_relation_id') ?? ''}}" >
