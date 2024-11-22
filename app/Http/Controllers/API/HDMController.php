@@ -190,7 +190,7 @@ echo $resp->key;
     $ip = '192.168.10.125'; // ՀԴՄ սարքի IP հասցեն
     $port = 8080; // ՀԴՄ սարքի պորտը
     $hdm_password = "96yQDWay";
-    $second_key = '/DjpnvMAcAuEGttBMdxj0R+51EP7ErcA';
+    $second_key = 'HUbxoNjPNYid15GHrYascYRUaG+j0bnE';
     $second_key = base64_decode($second_key);
     dump(bin2hex($second_key), strlen($second_key), $second_key);
     // 1. Նոր սոկետ ստեղծել
@@ -213,8 +213,8 @@ echo $resp->key;
     // Հարցման մարմինը JSON ձևաչափով
     $jsonBody = json_encode([
       // 'seq' => 100002,
-      'paidAmount' => 0,
-      'paidAmountCard' => 10,
+      'paidAmount' => 10,
+      'paidAmountCard' => 0,
       'partialAmount' => 0,
       'prePaymentAmount' => 0,
       'useExtPOS' => true,

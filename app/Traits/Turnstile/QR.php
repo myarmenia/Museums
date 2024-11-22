@@ -132,7 +132,7 @@ trait QR
 
     $status = $qr->type != 'subscription' ? 'used' : 'active';
 
-    if ($online && $ticket_redemption_time != null) {
+    if ($ticket_redemption_time != null) {
       if($qr->visited_date == null){
           $update = UpdateQRStatusJob::dispatch($qr->id, $now_date, $status)->delay(now()->addMinutes($ticket_redemption_time));
       }
