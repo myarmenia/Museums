@@ -12,7 +12,9 @@ class GetCashiersController extends Controller
     public function __invoke()
     {
 
-      $ip = '192.168.10.125'; // ՀԴՄ սարքի IP հասցեն
+      // $ip = '192.168.10.125'; // ՀԴՄ սարքի IP հասցեն
+      $ip = '46.130.63.249'; // ՀԴՄ սարքի IP հասցեն
+
       $port = 8080; // ՀԴՄ սարքի պորտը
       $hdmPassword = "96yQDWay";
 
