@@ -139,7 +139,7 @@
                 </form>
             </div>
 
-            <x-report-result :data="$data"></x-report-result>
+            <x-report-result :data="$data" :reportWithCashier="$report_with_cashier"></x-report-result>
 
         </div>
     </div>
