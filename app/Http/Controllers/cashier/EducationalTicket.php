@@ -19,7 +19,7 @@ class EducationalTicket extends CashierController
     {
         try {
             DB::beginTransaction();
-        
+
             $requestData = $request->input('educational');
 
             $data['purchase_type'] = 'offline';
@@ -54,6 +54,7 @@ class EducationalTicket extends CashierController
             $addTicketPurchase = $this->purchase($data);
 
             if ($addTicketPurchase) {
+              
                 $addQr = $this->getTokenQr($addTicketPurchase->id);
 
                 if ($addQr) {
