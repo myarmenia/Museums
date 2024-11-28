@@ -28,13 +28,14 @@
         </thead>
         @php
               $total_info = null;
+              $report_with_cashier  = null;
 
               $sums = reportResult($data);
               $newSums = array_diff_key($sums, ['canceled' => '']);
 
               $total_sums = array_sum(array_column($newSums,'total_price'));
               $total_quantity = array_sum(array_column($newSums,'quantity'));
-              
+
         @endphp
 
         <tbody>
@@ -102,11 +103,20 @@
 
             @if (request()->request_report_type != 'compare' && count($data) > 0)
                 @if (request()->input('report_type') == 'fin_quant' || request()->input('report_type') == null)
-                        @php $total_info = $total_sums . ' / ' . $total_quantity;  @endphp
+                        @php
+                            $total_info = $total_sums . ' / ' . $total_quantity;
+                            $report_with_cashier = $reportWithCashier['totalPrice'] . ' / ' . $reportWithCashier['totalQuantity'];
+                        @endphp
                 @elseif(request()->input('report_type') == 'financial')
-                          @php $total_info = $total_sums;   @endphp
+                          @php
+                              $total_info = $total_sums;
+                              $report_with_cashier = $reportWithCashier['totalPrice'];
+                          @endphp
                 @else
-                          @php  $total_info = $total_quantity;  @endphp
+                          @php
+                            $total_info = $total_quantity;
+                            $report_with_cashier = $reportWithCashier['totalQuantity'];
+                          @endphp
                 @endif
 
                 @if (count($data) > 1)
@@ -157,6 +167,12 @@
 @if ($total_info != null)
   <div class="d-flex justify-content-end w-100 mt-4">
       <div>Ընդամենը` {{$total_info}}</div>
+  </div>
+@endif
+
+@if ($report_with_cashier != null)
+  <div class="d-flex justify-content-end w-100 mt-4">
+      <div>Դրամարկղ` {{$report_with_cashier}}</div>
   </div>
 @endif
 
