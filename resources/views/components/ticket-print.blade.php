@@ -61,6 +61,7 @@
 
         @foreach ($tickets['data'] as $key => $item)
 
+
         @if ($item['type']=="guide"||($item['type']=="event" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))||
         ($item['type']=="event-config" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))
        )
@@ -100,7 +101,7 @@
                             {{ $item['description_educational_programming_en'] }} </span>
                     </div>
                 @endif
-                @if ($item['type'] == 'school')
+                @if ($item['type'] == 'school'||'educational')
                 <div class="text-flex text-margin">
                   <span>Քանակ/Quantity </span>
                   <span>{{ $item['quantity']}}</span>
