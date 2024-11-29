@@ -101,7 +101,7 @@
                             {{ $item['description_educational_programming_en'] }} </span>
                     </div>
                 @endif
-                @if ($item['type'] == 'school'||'educational')
+                @if ($item['type'] == 'school'|| $item['type'] =='educational')
                 <div class="text-flex text-margin">
                   <span>Քանակ/Quantity </span>
                   <span>{{ $item['quantity']}}</span>
@@ -134,7 +134,7 @@
 
 
                 @if (isset($item['price']))
-                    @if (isset($item['photo']) && $item['type'] !== 'other_service' && $item['type'] !== 'school')
+                    @if (isset($item['photo']) && $item['type'] !== 'other_service' && $item['type'] !== 'school'&& $item['type'] !== 'educational')
                         <div class="text-flex text-margin">
                             <span>Գին/Price - </span>
                             <span>{{ $item['price'] }}դր․/AMD</span>
