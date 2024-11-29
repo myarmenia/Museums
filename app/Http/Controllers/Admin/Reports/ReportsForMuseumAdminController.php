@@ -34,6 +34,7 @@ class ReportsForMuseumAdminController extends Controller
     $totalPrice = 0;
 
     if($request->type != 'online'){
+        $report_with_cashier = $request->all();
         $report_with_cashier['type'] = 'offline';
 
         $report_with_cashier = $this->report($report_with_cashier, $this->model, $request_report_type);
