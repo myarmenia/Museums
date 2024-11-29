@@ -76,7 +76,7 @@ trait QrTokenTrait
 
                 $priceOneTicket = (int) $item->total_price / (int) $item->quantity;
 
-                  if($item->type=="school"|| "educational"){
+                  if($item->type == "school"|| $item->type == "educational"){
 
                       $quantity=1;
 
