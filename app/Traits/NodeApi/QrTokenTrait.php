@@ -63,9 +63,12 @@ trait QrTokenTrait
             if(isset($purchasesKeys['school'])){
               $purchasesKeys['school']=1;
             }
-            // dd($purchasesKeys );
+            if(isset($purchasesKeys['educational'])){
+              $purchasesKeys['educational']=1;
+            }
+
             $data = $this->getReqQrToken($url, $purchasesKeys);
-// dd( $data);
+
             $addedItemsToken = [];
 
             foreach ($allPurchases as $key => $item) {
@@ -73,7 +76,7 @@ trait QrTokenTrait
 
                 $priceOneTicket = (int) $item->total_price / (int) $item->quantity;
 
-                  if($item->type=="school"){
+                  if($item->type=="school"|| "educational"){
 
                       $quantity=1;
 
