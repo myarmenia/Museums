@@ -62,6 +62,7 @@
         @foreach ($tickets['data'] as $key => $item)
 
 
+
         @if ($item['type']=="guide"||($item['type']=="event" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))||
         ($item['type']=="event-config" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))
        )
@@ -134,7 +135,7 @@
 
 
                 @if (isset($item['price']))
-                    @if (isset($item['photo']) && $item['type'] !== 'other_service' && $item['type'] !== 'school'&& $item['type'] !== 'educational')
+                    @if (isset($item['photo']) && $item['type'] !== 'other_service' && $item['type'] !== 'school')
                         <div class="text-flex text-margin">
                             <span>Գին/Price - </span>
                             <span>{{ $item['price'] }}դր․/AMD</span>

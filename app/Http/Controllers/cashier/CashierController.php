@@ -101,6 +101,7 @@ class CashierController extends Controller
 
         foreach ($qrs as $key=>$qr) {
 
+
             if($qr['type'] == 'event-config'){
                 $configItem = $eventAllConfigs->where('id', $qr->item_relation_id)->first();
 
@@ -160,13 +161,13 @@ class CashierController extends Controller
             if($qr['type'] =="school" || $qr['type'] == "educational"){
 
               $data['data'][$key]['quantity']= $qr->purchased_item->quantity;
+
             }
 
 
 
 
         }
-
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
 
