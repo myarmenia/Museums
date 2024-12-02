@@ -79,6 +79,7 @@ trait QrTokenTrait
                   if($item->type == "school"|| $item->type == "educational"){
 
                       $quantity=1;
+                      $priceOneTicket=$item->total_price;
 
                   }
 
@@ -104,9 +105,11 @@ trait QrTokenTrait
 
                     $addedItemsToken[]=$token;
                     $allData[] = $newData;
+                   
                     if(isset($data[$type])){
                       array_shift($data[$type]);
                     }
+
 
                 }
             }
