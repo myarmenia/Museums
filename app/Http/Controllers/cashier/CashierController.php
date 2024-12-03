@@ -49,9 +49,11 @@ class CashierController extends Controller
         ];
 
         if($ticketQrs){
+
             $qrs = $ticketQrs;
         }else{
             $qrs = TicketQr::whereIn('purchased_item_id', $purchaseItemIds)->get();
+       
         }
 
 
