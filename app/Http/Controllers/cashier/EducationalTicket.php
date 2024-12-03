@@ -53,11 +53,11 @@ class EducationalTicket extends CashierController
             }
 
             $addTicketPurchase = $this->purchase($data);
-
+// dd($addTicketPurchase);
             if ($addTicketPurchase) {
 
                 $addQr = $this->getTokenQr($addTicketPurchase->id);
-
+// dd($addQr);
                 if ($addQr) {
                     $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
                     session(['success' => 'Տոմսերը ավելացված է']);
