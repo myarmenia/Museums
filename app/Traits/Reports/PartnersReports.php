@@ -35,7 +35,7 @@ trait PartnersReports
 
     // $report_ids = $report->pluck('id');
     // $canceled = TicketQr::where('status', 'returned')->where('type', 'partner')->whereIn('purchased_item_id', $report_ids);
-    
+
     $canceled = $model->where(function ($query) use ($sub_type) {
                   $query->where(function ($q) {
                     $q->where('type', 'partner')
