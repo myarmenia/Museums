@@ -103,7 +103,15 @@ class CashierController extends Controller
 
         foreach ($qrs as $key=>$qr) {
 
+
+
           if($qr->type="educational"){
+            if($key==1){
+              $itemDescriptionName='';
+              $itemDescriptionName_en='';
+
+            }
+
 
 
             $itemDescription = EducationalProgram::with('item_translations')->find($qr->item_relation_id);
@@ -204,7 +212,7 @@ class CashierController extends Controller
 
 
 
-        }
+        } 
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
 
