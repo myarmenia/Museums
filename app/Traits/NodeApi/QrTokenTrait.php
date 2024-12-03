@@ -58,14 +58,16 @@ trait QrTokenTrait
 
 
 
+
             }
+
 
             if(isset($purchasesKeys['school'])){
               $purchasesKeys['school']=1;
             }
-            if(isset($purchasesKeys['educational'])){
-              $purchasesKeys['educational']=1;
-            }
+            // if(isset($purchasesKeys['educational'])){
+            //   $purchasesKeys['educational']=1;
+            // }
 
             $data = $this->getReqQrToken($url, $purchasesKeys);
 
@@ -105,7 +107,7 @@ trait QrTokenTrait
 
                     $addedItemsToken[]=$token;
                     $allData[] = $newData;
-                   
+
                     if(isset($data[$type])){
                       array_shift($data[$type]);
                     }
