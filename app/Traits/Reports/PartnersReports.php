@@ -35,7 +35,7 @@ trait PartnersReports
 
     // $report_ids = $report->pluck('id');
     // $canceled = TicketQr::where('status', 'returned')->where('type', 'partner')->whereIn('purchased_item_id', $report_ids);
-    
+
     $canceled = $model->where(function ($query) use ($sub_type) {
                   $query->where(function ($q) {
                     $q->where('type', 'partner')
@@ -73,18 +73,22 @@ trait PartnersReports
           ->select('partner_id', \DB::raw('MAX(purchase_id) as purchase_id'), \DB::raw('MAX(type) as type'), \DB::raw('MAX(sub_type) as sub_type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
           ->get();
 
+        $canceled = $canceled->groupBy('partner_id', 'purchase_id')
+          ->select('partner_id', \DB::raw('MAX(purchase_id) as purchase_id'), \DB::raw('SUM(returned_total_price) as total_price'), \DB::raw('SUM(returned_quantity) as quantity'))
+          ->get();
+
       }
       else{
         $report = $report
           ->groupBy('partner_id', 'type', 'sub_type')
           ->select('partner_id', \DB::raw('MAX(type) as type'), \DB::raw('MAX(sub_type) as sub_type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
           ->get();
-      }
 
-
-    $canceled = $canceled->groupBy('partner_id' )
+        $canceled = $canceled->groupBy('partner_id')
           ->select('partner_id', \DB::raw('SUM(returned_total_price) as total_price'), \DB::raw('SUM(returned_quantity) as quantity'))
           ->get();
+      }
+
 
     $report = $report->toArray();
     $canceled = $canceled->toArray();
@@ -93,6 +97,7 @@ trait PartnersReports
       $item['type'] = 'canceled';
       return $item;
     }, $canceled);
+
 
 
     // return $this->partnersGroupByPartnerId(array_merge($report));
