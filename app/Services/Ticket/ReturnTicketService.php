@@ -84,7 +84,7 @@ class ReturnTicketService
   {
 
     $data = json_decode($data['json'], true);
-    // dd($data);
+
     $token = $data['dataId'];
 
     $museumId = getAuthMuseumId();
@@ -93,8 +93,9 @@ class ReturnTicketService
       try {
         DB::beginTransaction();
 
+
         $ticket = $this->getActiveTicket($token, $museumId);
-// dd($ticket);
+
 
         if ($ticket && $ticket->visited_date != null) {
           return ['success' => false, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
@@ -115,9 +116,12 @@ class ReturnTicketService
           if ($purchaseItem->type == "free") {
             $totalPrice = 0;
             $oneTicketPrice = 0;
-          } else {
+          }
+           else {
+
             $oneTicketPrice = (int) $purchasePrice / (int) $purchaseQunatity;
             $totalPrice = (int) $purchaseItem->returned_total_price + $oneTicketPrice;
+
           }
           if($purchaseItem->type == "event-config" && $purchaseItem->sub_type !='guide_price_am' && $purchaseItem->sub_type !='guide_price_other'){
             $eventConfig =  EventConfig::where('id', $purchaseItem->item_relation_id)->first();
@@ -125,8 +129,24 @@ class ReturnTicketService
             $eventConfig->update(['visitors_quantity' => $countVisitors]);
           }
 
-          $returnedQuantity = $purchaseItem->returned_quantity + 1;
-          $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $oneTicketPrice;
+          if ($purchaseItem->type == "educational") {
+
+                $returnedQuantity = $purchaseItem->quantity;
+                $totalPrice = $purchaseItem->total_price;
+                $purchaseNewAmount =  $totalPrice;
+
+          }
+          else if ($purchaseItem->type == "school") {
+
+            $returnedQuantity = $purchaseItem->quantity;
+            $totalPrice = $purchaseItem->total_price;
+            $purchaseNewAmount =  $totalPrice;
+
+          }
+          else{
+              $returnedQuantity = $purchaseItem->returned_quantity + 1;
+              $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $oneTicketPrice;
+          }
 
           $purchaseItem->update(['returned_quantity' => $returnedQuantity, 'returned_total_price' => $totalPrice]);
           $purchaseItem->purchase->update(['returned_amount' => $purchaseNewAmount]);
