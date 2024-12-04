@@ -103,6 +103,47 @@ class CashierController extends Controller
 
         foreach ($qrs as $key=>$qr) {
 
+
+
+          if($qr->type=="educational"){
+            if($key>0){
+              $itemDescriptionName='';
+              $itemDescriptionName_en='';
+
+            }
+
+            $itemDescription = EducationalProgram::with('item_translations')->find($qr->item_relation_id);
+
+            $desc = $itemDescription->item_translations->where('lang', 'am')->first()->name;
+
+            $desc_en = $itemDescription->item_translations->where('lang', 'en')->first()->name;
+            $wordArr = explode(" ", $desc);
+
+            foreach ($wordArr as $key1 => $word) {
+              if($word){
+                  if($key1 < 6){
+                      $itemDescriptionName .= $word.' ';
+                  }
+                  else{
+                      break;
+                  }
+              }
+            }
+            $wordArr_en = explode(" ", $desc_en);
+            foreach ($wordArr_en as $key_en1 => $word_en) {
+              if($word_en){
+                  if($key_en1 < 6){
+                      $itemDescriptionName_en .= $word_en.' ';
+                  }
+                  else{
+                      break;
+                  }
+              }
+            }
+          }
+
+
+
             if($qr['type'] == 'event-config'){
                 $configItem = $eventAllConfigs->where('id', $qr->item_relation_id)->first();
 
@@ -192,3 +233,4 @@ class CashierController extends Controller
 // ========================
 // ===================
 //=========================
+// ================
