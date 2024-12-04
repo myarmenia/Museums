@@ -106,7 +106,7 @@ class CashierController extends Controller
 
 
           if($qr->type="educational"){
-            if($key==1){
+            if($key>0){
               $itemDescriptionName='';
               $itemDescriptionName_en='';
 
@@ -212,7 +212,7 @@ class CashierController extends Controller
 
 
 
-        } 
+        }
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
 
