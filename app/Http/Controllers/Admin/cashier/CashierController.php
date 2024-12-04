@@ -25,6 +25,7 @@ class CashierController extends Controller
 
       if($allData['success']) {
          $data = $allData['data'];
+        //  dd($data);
          return view('content.cashier.create', compact('data'));
       }
 

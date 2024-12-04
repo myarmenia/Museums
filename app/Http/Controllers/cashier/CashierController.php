@@ -22,7 +22,7 @@ class CashierController extends Controller
 {
     public function showReadyPdf(int $purchaseId, $ticketQrs = null)
     {
-
+// dd($purchaseId);
         $purchaseData = Purchase::with('purchased_items.ticketQr')->where('id', $purchaseId)->first();
         $museumId = $purchaseData->museum_id;
         $museum = Museum::with('translations')->find($museumId);
@@ -53,11 +53,11 @@ class CashierController extends Controller
             $qrs = $ticketQrs;
         }else{
             $qrs = TicketQr::whereIn('purchased_item_id', $purchaseItemIds)->get();
-       
+
         }
 
 
-        if($qrs[0]->type == 'event' || $qrs[0]->type == 'event-config' || $qrs[0]->type == 'educational'){
+        if($qrs[0]->type == 'event' || $qrs[0]->type == 'event-config' ){
             if($qrs[0]->type == 'event-config'){
                 $eventConfig = EventConfig::with('event.item_translations')->find($qrs[0]->item_relation_id);
                 $eventAllConfigs = EventConfig::where('event_id', $eventConfig->event->id)->get();
@@ -102,6 +102,48 @@ class CashierController extends Controller
 
 
         foreach ($qrs as $key=>$qr) {
+
+
+
+          if($qr->type="educational"){
+            if($key==1){
+              $itemDescriptionName='';
+              $itemDescriptionName_en='';
+
+            }
+
+
+
+            $itemDescription = EducationalProgram::with('item_translations')->find($qr->item_relation_id);
+
+            $desc = $itemDescription->item_translations->where('lang', 'am')->first()->name;
+
+            $desc_en = $itemDescription->item_translations->where('lang', 'en')->first()->name;
+            $wordArr = explode(" ", $desc);
+
+            foreach ($wordArr as $key1 => $word) {
+              if($word){
+                  if($key1 < 6){
+                      $itemDescriptionName .= $word.' ';
+                  }
+                  else{
+                      break;
+                  }
+              }
+            }
+            $wordArr_en = explode(" ", $desc_en);
+            foreach ($wordArr_en as $key_en1 => $word_en) {
+              if($word_en){
+                  if($key_en1 < 6){
+                      $itemDescriptionName_en .= $word_en.' ';
+                  }
+                  else{
+                      break;
+                  }
+              }
+            }
+          }
+
 
 
             if($qr['type'] == 'event-config'){
@@ -169,7 +211,8 @@ class CashierController extends Controller
 
 
 
-        }
+
+        } 
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
 
@@ -189,3 +232,4 @@ class CashierController extends Controller
         }
 }
 // ================
+// ========================
