@@ -28,6 +28,7 @@ class ReportsForMuseumAdminController extends Controller
     $museum_id = museumAccessId();
     $request['status'] = 1;
     $request['museum_id'] = [$museum_id];
+
     $data = $this->report($request->all(), $this->model, $request_report_type);
 
     $totalQuantity = 0;
