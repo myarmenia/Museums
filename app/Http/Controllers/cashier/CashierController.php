@@ -112,8 +112,6 @@ class CashierController extends Controller
 
             }
 
-
-
             $itemDescription = EducationalProgram::with('item_translations')->find($qr->item_relation_id);
 
             $desc = $itemDescription->item_translations->where('lang', 'am')->first()->name;
@@ -233,3 +231,4 @@ class CashierController extends Controller
 }
 // ================
 // ========================
+// ===================
