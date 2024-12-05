@@ -31,6 +31,7 @@
         @endphp
 
         <tbody>
+
             @php $i = 0; $all_report_types = ['standart', 'discount','free', 'canceled','partner_guide_am', 'partner_guide_other']; @endphp
             @foreach ($data as $item_id => $report)
 
@@ -49,8 +50,15 @@
                             <td>{{ getPurchaseComment($item_id) ?? ' - - - ' }}</td>
                       @endif
 
-                      <td>{{ !empty(request()->input('from_created_at')) ? date('d.m.Y', strtotime(request()->input('from_created_at'))) : '' }}  -
-                      {{!empty(request()->input('to_created_at')) ? date('d.m.Y', strtotime(request()->input('to_created_at'))) : ''}}</td>
+                      @if (isset(request()->partner_id))
+                            <td>{{ $report['date'] ?? ' - '}} </td>
+                      @else
+                            <td>{{ !empty(request()->input('from_created_at')) ? date('d.m.Y', strtotime(request()->input('from_created_at'))) : '' }}  -
+                              {{!empty(request()->input('to_created_at')) ? date('d.m.Y', strtotime(request()->input('to_created_at'))) : ''}}</td>
+
+                      @endif
+
+
 
                   </tr>
 

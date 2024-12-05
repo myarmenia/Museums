@@ -104,18 +104,19 @@
             @if (request()->request_report_type != 'compare' && count($data) > 0)
                 @if (request()->input('report_type') == 'fin_quant' || request()->input('report_type') == null)
                         @php
+
                             $total_info = $total_sums . ' / ' . $total_quantity;
-                            $report_with_cashier = $reportWithCashier['totalPrice'] . ' / ' . $reportWithCashier['totalQuantity'];
+                            $report_with_cashier = isset($reportWithCashier) ? $reportWithCashier['totalPrice'] . ' / ' . $reportWithCashier['totalQuantity'] : null;
                         @endphp
                 @elseif(request()->input('report_type') == 'financial')
                           @php
                               $total_info = $total_sums;
-                              $report_with_cashier = $reportWithCashier['totalPrice'];
+                              $report_with_cashier = isset($reportWithCashier) ? $reportWithCashier['totalPrice'] : null;
                           @endphp
                 @else
                           @php
                             $total_info = $total_quantity;
-                            $report_with_cashier = $reportWithCashier['totalQuantity'];
+                            $report_with_cashier = isset($reportWithCashier) ? $reportWithCashier['totalQuantity'] : null;
                           @endphp
                 @endif
 
