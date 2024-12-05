@@ -105,14 +105,12 @@ class CashierController extends Controller
 
 
 
-          if($qr->type="educational"){
+          if($qr->type=="educational"){
             if($key>0){
               $itemDescriptionName='';
               $itemDescriptionName_en='';
 
             }
-
-
 
             $itemDescription = EducationalProgram::with('item_translations')->find($qr->item_relation_id);
 
@@ -233,3 +231,6 @@ class CashierController extends Controller
 }
 // ================
 // ========================
+// ===================
+//=========================
+// ================
