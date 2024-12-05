@@ -35,7 +35,7 @@
             @foreach ($data as $item_id => $report)
 
                   <tr>
-                      <td>{{ ++$i }}</td>
+                      <td>{{ $loop->iteration + (($data->currentPage() - 1) * $data->perPage()) }}</td>
                       @if (!isset(request()->partner_id))
                           <td>{{ isset($report['partner_id']) ? getPartner($report['partner_id'])->name : ' - '}}</td>
                       @endif
@@ -65,6 +65,9 @@
   </table>
 </div>
 
+<div class="demo-inline-spacing">
+    {{ $data->links() }}
+</div>
 @if ($total_info != null)
   <div class="d-flex justify-content-end w-100 mt-4">
       <div>Ընդամենը` {{$total_info}}</div>

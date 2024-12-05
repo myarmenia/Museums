@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Reports;
 use App\Http\Controllers\Controller;
 use App\Models\Museum;
 use App\Models\PurchasedItem;
+use App\Traits\Paginator;
 use App\Traits\Reports\CheckReportType;
 use App\Traits\Reports\EventReports;
 use App\Traits\Reports\PartnersReports;
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
 
 class ReportsForMuseumAdminController extends Controller
 {
-  use ReportTrait, CheckReportType, EventReports, PartnersReports;
+  use ReportTrait, CheckReportType, EventReports, PartnersReports, Paginator;
   protected $model;
   public function __construct(PurchasedItem $model)
   {
@@ -75,17 +76,21 @@ class ReportsForMuseumAdminController extends Controller
 
   public function partners(Request $request)
   {
+      $page = request()->page ?? 1;
+      $perPage = 10;
 
-    if (isset($request->partner_id) && $request->partner_id == 'all') {
-      unset($request['partner_id']);
-    }
+      if (isset($request->partner_id) && $request->partner_id == 'all') {
+        unset($request['partner_id']);
+      }
 
+      $museum_id = museumAccessId();
 
-    $museum_id = museumAccessId();
-    // $data = $request->item_relation_id == null ? [] : $this->event_report($request->all(), $this->model);
-    $data = $this->partners_report($request->all(), $this->model);
+      $data = $this->partners_report($request->all(), $this->model);
+      $collection = collect($data);
 
-    return view("content.reports.museum-partners", compact('data'));
+      $data = $this->arrayPaginator($collection, $request, $perPage);
+
+      return view("content.reports.museum-partners", compact('data'));
 
   }
 }
