@@ -17,7 +17,59 @@
 @section('content')
 
   <div class="row">
-      @php
+      <div class="col-lg-12 col-md-12 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <form action="{{route('dashboard_analytics')}}" method="get" class="row g-3 mt-2" style="display: flex">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+
+                          <div class="col-4">
+                              <select class="form-select" value="{{ request()->input('museum_id') }}" name="museum_id" >
+                                      <option value="" id="all_museums" {{ request()->input('museum_id') == '' ? 'selected' : '' }}>Բոլորը</option>
+                                      @foreach ($museums as $k => $museum)
+                                          <option  value="{{$museum->id}}" {{ $museum->id == request()->input('museum_id') ? 'selected' : '' }}>{{$museum->translationsForAdmin->name}}</option>
+                                      @endforeach
+                              </select>
+                          </div>
+
+                          <div class="col-2">
+                              <input type="date" class="form-control" id="datefrom" placeholder="Ստեղծման ամսաթիվ" name="from_created_at" value="{{ request()->input('from_created_at') }}">
+                          </div>
+
+                          <div class="col-2">
+                              <input type="date" class="form-control" id="dateto" placeholder="Ստեղծման ամսաթիվ" name="to_created_at" value="{{ request()->input('to_created_at') }}">
+                          </div>
+
+                          <button class="btn btn-primary col-2">Որոնել</button>
+                          <a class="btn btn-primary" href="{{ route('dashboard_analytics') }}">Չեղարկել</a>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+      </div>
+      @foreach ($ticket_statistics as $s => $card)
+          <div class="col-lg-2 col-md-2 mb-4 mx-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="card-title d-flex align-items-start justify-content-between">
+
+                    <div class="avatar flex-shrink-0 me-3">
+                      <span class="avatar-initial rounded bg-label-success"><i class="bx bxs-coupon"></i></span>
+                    </div>
+
+                  </div>
+                  <span class="fw-semibold d-block mb-1">{{ $s == 'total_price' ? 'Գումար' : 'Քանակ'}}</span>
+
+                  <h3 class="card-title mb-2">{{ $card }} <small style="font-size: 14px">{{ $s == 'total_price' ? 'դրամ' : ''}}</small></h3>
+                  {{-- <small class="text-success fw-semibold">Քանակ -  {{isset($ticket_type[$item]) ? $ticket_type[$item]['quantity'] : 0}}</small> --}}
+                </div>
+              </div>
+          </div>
+      @endforeach
+
+    {{-- ==================================================== --}}
+      {{-- @php
         $ticketTypes = array_diff(reportTypes(), ["canceled"]);
       @endphp
       @foreach ($ticketTypes as $key => $item)
@@ -37,7 +89,7 @@
                 </div>
               </div>
           </div>
-      @endforeach
+      @endforeach --}}
 
       <!-- Total Revenue -->
       <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">

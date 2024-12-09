@@ -13,8 +13,9 @@
   borderColor = config.colors.borderColor;
 
   var totalRevenueObj = JSON.parse(totalRevenueResult)
-  var attendanceByCountryObj = JSON.parse(attendanceByCountry)
-  var attendanceByAgeObj = JSON.parse(attendanceByAge)
+  var attendanceByCountryObj = attendanceByCountry ? JSON.parse(attendanceByCountry) : ''
+  var attendanceByAgeObj = attendanceByAge ? JSON.parse(attendanceByAge) : ''
+
   console.log(totalRevenueObj.total_prices);
   // Total Revenue Report Chart - Bar Chart
   // --------------------------------------------------------------------
@@ -580,5 +581,5 @@
 
 
 
- 
+
 })();
