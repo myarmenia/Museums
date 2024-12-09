@@ -49,7 +49,7 @@
               </div>
       </div>
       @foreach ($ticket_statistics as $s => $card)
-          <div class="col-lg-2 col-md-2 mb-4 mx-3">
+          <div class="col-lg-4 col-md-4 mb-4 mx-3">
               <div class="card">
                 <div class="card-body">
                   <div class="card-title d-flex align-items-start justify-content-between">
@@ -107,7 +107,7 @@
   </div>
   <div class="row">
     <!-- Attendance By Country -->
-    <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+    {{-- <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between pb-0">
           <div class="card-title mb-0">
@@ -152,14 +152,14 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!--/ Attendance By Country -->
 
 
 
 
     <!-- Attendance By Age -->
-    <div class="col-md-6 col-lg-4 col-xl-4 order-2 mb-4">
+    {{-- <div class="col-md-6 col-lg-4 col-xl-4 order-2 mb-4">
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between pb-0">
           <div class="card-title mb-0">
@@ -200,10 +200,10 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!--/ Attendance By Age -->
 
-    <!-- Top Museums -->
+    {{-- <!-- Top Museums -->
     @php
         $currentDate = now();
         $start_date = $currentDate->startOfYear()->format('d.m.Y');
@@ -247,14 +247,14 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!--/ Top Museums -->
 
   </div>
 @endsection
 <script>
       var totalRevenueResult =  '<?php echo $total_revenue ?>';
-      var attendanceByCountry = '<?php echo $attendance_by_country ?>'
-      var totalByCount = {{$total_by_count}}
-      var attendanceByAge = '<?php echo $attendance_by_age_arr ?>'
+      var attendanceByCountry = '<?php echo isset($attendance_by_country) ? $attendance_by_country : null ?>'
+      // var totalByCount = {{$total_by_count ?? ''}}
+      var attendanceByAge = '<?php echo isset($attendance_by_age_arr) ? $attendance_by_age_arr : null ?>'
 </script>
