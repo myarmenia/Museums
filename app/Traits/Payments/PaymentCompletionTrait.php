@@ -78,7 +78,14 @@ trait PaymentCompletionTrait
     //           </script>";
 
     // museumsarmenia.am
-    $redirect_url = 'https://museumsarmenia.am/am/'. "?result=$response&pdf=$pdfPath";
+
+    if($payment->guard_name == 'mobile'){
+        $redirect_url = $payment->redirect_url . "?result=$response&pdf=$pdfPath";
+    }
+    else{
+        $redirect_url = 'https://museumsarmenia.am/am/' . "?result=$response&pdf=$pdfPath";
+    }
+
     echo "<script type='text/javascript'>
                     window.location = '$redirect_url'
               </script>";
