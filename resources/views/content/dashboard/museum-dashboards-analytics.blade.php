@@ -54,7 +54,7 @@
   </div>
   <div class="row">
     <!-- Attendance By Country -->
-    <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+    {{-- <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between pb-0">
           <div class="card-title mb-0">
@@ -99,14 +99,14 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!--/ Attendance By Country -->
 
 
 
 
     <!-- Attendance By Age -->
-    <div class="col-md-6 col-lg-4 col-xl-4 order-2 mb-4">
+    {{-- <div class="col-md-6 col-lg-4 col-xl-4 order-2 mb-4">
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between pb-0">
           <div class="card-title mb-0">
@@ -147,17 +147,18 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!--/ Attendance By Age -->
 
-    
+
 
   </div>
 @endsection
 <script>
       var totalRevenueResult =  '<?php echo $analitics_by_month ?>';
-      var attendanceByAge = '<?php echo $attendance_by_age_arr ?>'
-      var attendanceByCountry = '<?php echo $attendance_by_country ?>'
+      var attendanceByAge = '<?php echo isset($attendance_by_age_arr) ? $attendance_by_age_arr : null ?>'
+      var attendanceByCountry = '<?php echo isset($attendance_by_country) ? $attendance_by_country : null ?>'
       // console.log(totalRevenueResult)
 
 </script>
+
