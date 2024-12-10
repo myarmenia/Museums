@@ -28,7 +28,7 @@
             </div>
             @if (museumAccessId())
                 <div>
-                  <a href="{{ route('other_services_create') }}" class="btn btn-primary mx-4">Ստեղծել նոր ծրագիր</a>
+                  <a href="{{ route('other_services_create') }}" class="btn btn-primary mx-4">Ստեղծել նոր ծառայություն</a>
                 </div>
             @endif
         </div>
