@@ -5,6 +5,7 @@ namespace App\Models;
 
 use App\Traits\FilterTrait;
 use App\Traits\ModelFilterTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,7 +28,7 @@ class Event extends Model
     protected $table = 'events';
 
     protected $defaultFillableFields = ['museum_id'];
-    protected $boolFilterFields = ['status'];
+    protected $boolFilterFields = ['status', 'online_sales'];
     protected $filterDateRangeFields = ['start_date', 'end_date'];
 
     protected $filterFields =['museum_id'];
@@ -74,7 +75,8 @@ class Event extends Model
       ['museum_id','=',$museum_id],
       ['id','!=',$event_id],
       ['status','=',1],
-      ['online_sales', '=', 1]
+      ['online_sales', '=', 1],
+      ['end_date', '>=', Carbon::today()]
     ] )->get();
 
 
