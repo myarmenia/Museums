@@ -575,7 +575,7 @@ var partnerVal=''
 
                           data.partner_educational_program?.map(el =>{
 
-                            document.getElementById('partner_education_program').append(createOption(el.translation_am.name, el.translation_am.id))
+                            document.getElementById('partner_education_program').append(createOption(el.translation_am.name, el.id))
 
                           })
                           callPartnerEducationalProgramFunction()
