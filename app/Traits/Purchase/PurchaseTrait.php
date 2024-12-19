@@ -592,16 +592,29 @@ trait PurchaseTrait
   public function makePartnerTicketData($data)
   {
     $partner_ticket = $this->getPartnerTicket($data['id']);
+    $educational_program_price = null;
 
     if (!$partner_ticket) {
       return false;
     }
 
+    if($data['sub_type'] == 'educational'){
+      $educational_program = $this->getEducationalProgram($data['educational_id']);
+
+      if (!$educational_program) {
+        return false;
+      }
+
+      $educational_program_price = $educational_program->price;
+    }
+
     $data['museum_id'] = $partner_ticket ? $partner_ticket->museum_id : false;
     $data['partner_id'] = $data['id'];
 
-    $coefficient = ticketType($data['sub_type'])->coefficient;
-    $total_price = $partner_ticket->price * $coefficient * $data['quantity'];
+    $price = $data['sub_type'] == 'educational' ? $educational_program_price : $partner_ticket->price;
+
+    $coefficient = $data['sub_type'] == 'educational' ? 1 : ticketType($data['sub_type'])->coefficient;
+    $total_price = $price * $coefficient * $data['quantity'];
 
 
     $data['total_price'] = $total_price;
