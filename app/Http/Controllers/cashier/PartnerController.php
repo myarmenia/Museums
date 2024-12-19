@@ -95,17 +95,18 @@ class PartnerController extends CashierController
 
           // dd($requestDatForValidation);
         foreach ($requestDatForValidation as $key => $item) {
-          // dump($item);
-            if ($item ) {
+          $newItem=null;
+            if ($item   && $key!="educational") {
                 $haveValue = true;
-                if( $key!="educational"){
+
+
                   $newItem = [
                       "type" => "partner",
                       "quantity" => (int) $item,
                       "id"=>$request->partner_id,// գործընկերոջ id
                       "sub_type"=>$key //տոմսի տեսակը
                   ];
-                }
+
 
                 if (($key === 'guide_other' || $key === 'guide_am') && $guid) {
 
@@ -120,9 +121,10 @@ class PartnerController extends CashierController
                        $newItem["type"]="guide_am";
                     }
                 }
+              }
 
-                if ($key === 'educational') {
-                  // dd($item);
+              if ( $item && $key === 'educational' && $item['educational_id']!=null && $item['quantity']!=null) {
+
                   $newItem = [
                     "type" => "partner",
                     "quantity" => (int) $item['quantity'],
@@ -132,11 +134,14 @@ class PartnerController extends CashierController
 
                 ];
               }
-
-
+              if($newItem!=null){
                 $data['items'][] = $newItem;
 
-            }
+              }
+
+
+
+
         }
 
 
@@ -148,6 +153,7 @@ class PartnerController extends CashierController
         }
 
         $addPurchase = $this->purchase($data);
+
 
             if ( $addPurchase) {
 

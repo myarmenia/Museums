@@ -103,8 +103,6 @@ class CashierController extends Controller
 
         foreach ($qrs as $key=>$qr) {
 
-
-
           if($qr->type=="educational"){
             if($key>0){
               $itemDescriptionName='';
@@ -211,6 +209,7 @@ class CashierController extends Controller
 
 
         }
+       
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
 
