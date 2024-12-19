@@ -286,18 +286,18 @@ var  selectedVal=''
                                   <td class="d-flex">
                                       <div>
                                         <label for="event_${element['id']}" class="col col-form-label">Ստանդարտ </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="${data.price}"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" style="width:100% !important" onwheel="return false;" price="${data.price}"
                                             id="event_${element['id']}_standart" name="event[${element['id']}][standart]" data-id="${element['id']}">
                                       </div>
                                       ${data.discount_price ?
                                       `<div>
                                         <label for="event_${element['id']}" class="col col-form-label">Զեղչված </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="${data.discount_price}"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket " style="width:100% !important" onwheel="return false;" price="${data.discount_price}"
                                             id="event_${element['id']}_discount" name="event[${element['id']}][discount]" data-id="${element['id']}">
                                       </div>
                                       <div>
                                         <label for="event_${element['id']}" class="col col-form-label">Անվճար </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="0"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket " style="width:100% !important" onwheel="return false;" price="0"
                                             id="event_${element['id']}_free" name="event[${element['id']}][free]" data-id="${element['id']}">
                                       </div>` : ``}
                                   </td>
@@ -311,18 +311,18 @@ var  selectedVal=''
                                   <td class="d-flex">
                                       <div>
                                         <label for="event_${data.id}" class="col col-form-label">Ստանդարտ </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="${data.price}"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket " style="width:90% !important" onwheel="return false;" price="${data.price}"
                                             id="event_${data.id}_standart" name="event[${data.id}][standart]" data-id="${data.id}">
                                       </div>
                                       ${data.discount_price ?
                                       `<div>
                                         <label for="event_${data.id}" class="col col-form-label">Զեղչված </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="${data.discount_price}"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket " style="width:90% !important" onwheel="return false;" price="${data.discount_price}"
                                             id="event_${data.id}_discount" name="event[${data.id}][discount]" data-id="${data.id}">
                                       </div>
                                       <div>
                                         <label for="event_${data.id}" class="col col-form-label">Անվճար </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="0}"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket " style="width:90% !important" onwheel="return false;" price="0}"
                                             id="event_${data.id}_free" name="event[${data.id}][free]" data-id="${data.id}">
                                       </div>`: ``}
                                   </td>
@@ -487,6 +487,14 @@ var partnerVal=''
         success: function (data) {
         $('#partnerPrint').removeClass('d-none')
         partnerVal = data.id
+        console.log(data.partner_educational_program)
+
+        const createOption =(name, id) => {
+          const option = document.createElement('option')
+          option.innerText = name
+          option.value=id
+          return option
+        }
 
 
           let content = `<table class="table cashier-table">
@@ -537,6 +545,19 @@ var partnerVal=''
                                         </td>
                                         <td class="remove-value event_guide_row_price partner_ticket_price price">0</td>
                                       </tr>
+                                      <tr class='table-default'>
+                                        <td>Կրթական ծրագիր
+                                        <select id="partner_education_program" name="educational[educational_id]" class="form-select" style="width:70% !important" >
+                                                <option value="">Ընտրեք կրթական ծրագիր</option>
+                                        </select>
+
+                                        </td>
+                                        <td>
+                                           <input type="number" min="0" onwheel="return false;" class="form-control form-control-validate " id="partner_education_program_quantity" name="educational[quantity]" price="0">
+
+                                        </td>
+                                        <td class="remove-value event_guide_row_price partner_ticket_price price">0</td>
+                                      </tr>
                                        <tr class='table-default'>
                                         <td>Մեկնաբանություն</td>
                                         <td>
@@ -550,6 +571,14 @@ var partnerVal=''
                                     </tbody></table>`
 
                             $('#partner-config').html(content)
+
+
+                          data.partner_educational_program?.map(el =>{
+
+                            document.getElementById('partner_education_program').append(createOption(el.translation_am.name, el.translation_am.id))
+
+                          })
+                          callPartnerEducationalProgramFunction()
 
 
               }
@@ -652,6 +681,11 @@ var partnerVal=''
 
 
   $('#partner-total-price').html(partnerTotalPrice)
+}
+function callPartnerEducationalProgramFunction(){
+$('#partner_education_program').on('change',function(){
+  // alert(this.value)
+})
 }
 
 
