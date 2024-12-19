@@ -489,10 +489,11 @@ var partnerVal=''
         partnerVal = data.id
         console.log(data.partner_educational_program)
 
-        const createOption =(name, id) => {
+        const createOption =(name, id,price) => {
           const option = document.createElement('option')
           option.innerText = name
           option.value=id
+          option.setAttribute('price', price);
           return option
         }
 
@@ -553,7 +554,7 @@ var partnerVal=''
 
                                         </td>
                                         <td>
-                                           <input type="number" min="0" onwheel="return false;" class="form-control form-control-validate " id="partner_education_program_quantity" name="educational[quantity]" price="0">
+                                           <input type="number" min="0" onwheel="return false;" class="form-control form-control-validate partner_ticket_type" id="partner_education_program_quantity" name="educational[quantity]" price="0">
 
                                         </td>
                                         <td class="remove-value event_guide_row_price partner_ticket_price price">0</td>
@@ -575,7 +576,7 @@ var partnerVal=''
 
                           data.partner_educational_program?.map(el =>{
 
-                            document.getElementById('partner_education_program').append(createOption(el.translation_am.name, el.id))
+                            document.getElementById('partner_education_program').append(createOption(el.translation_am.name, el.id,el.price ))
 
                           })
                           callPartnerEducationalProgramFunction()
@@ -684,7 +685,10 @@ var partnerVal=''
 }
 function callPartnerEducationalProgramFunction(){
 $('#partner_education_program').on('change',function(){
-  // alert(this.value)
+  // alert($(this).attr('price'));
+  const selectedOption = $(this).find(':selected');
+
+    $('#partner_education_program_quantity').attr('price', selectedOption.attr('price'));
 })
 }
 
