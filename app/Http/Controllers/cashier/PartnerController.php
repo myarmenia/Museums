@@ -124,7 +124,7 @@ class PartnerController extends CashierController
               }
 
               if ( $item && $key === 'educational' && $item['educational_id']!=null && $item['quantity']!=null) {
-
+                $haveValue = true;
                   $newItem = [
                     "type" => "partner",
                     "quantity" => (int) $item['quantity'],
