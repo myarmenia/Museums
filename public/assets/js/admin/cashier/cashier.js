@@ -246,7 +246,7 @@ var  selectedVal=''
                                           <td>
                                               <input type="number" onwheel="return false;"
                                                   price="${data.guide_price_am}" min="0"
-                                                  class="form-control form-control-validate event_guid" id="guide_price_am" name="guide_price_am">
+                                                  class="form-control form-control-validate w-100 event_guid" id="guide_price_am" name="guide_price_am">
                                           </td>
                                           <td class="remove-value event_guide_row_price ticket_price" id='event_guide_price_am'>0</td>
                                         </tr>` : ``}
@@ -255,7 +255,7 @@ var  selectedVal=''
                                               <td>Էքսկուրսավար(այլ)</td>
                                               <td><input type="number" onwheel="return false;"
                                                       price="${data.guide_price_other}" min="0"
-                                                      class="form-control form-control-validate event_guid" id="guide_price_other" name="guide_price_other">
+                                                      class="form-control form-control-validate w-100 event_guid" id="guide_price_other" name="guide_price_other">
                                               </td>
                                               <td class="remove-value event_guide_row_price ticket_price" id='event_guide_price_other'>0</td>
                                           </tr>` : ``}
@@ -286,18 +286,18 @@ var  selectedVal=''
                                   <td class="d-flex">
                                       <div>
                                         <label for="event_${element['id']}" class="col col-form-label">Ստանդարտ </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.price}"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="${data.price}"
                                             id="event_${element['id']}_standart" name="event[${element['id']}][standart]" data-id="${element['id']}">
                                       </div>
                                       ${data.discount_price ?
                                       `<div>
                                         <label for="event_${element['id']}" class="col col-form-label">Զեղչված </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.discount_price}"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="${data.discount_price}"
                                             id="event_${element['id']}_discount" name="event[${element['id']}][discount]" data-id="${element['id']}">
                                       </div>
                                       <div>
                                         <label for="event_${element['id']}" class="col col-form-label">Անվճար </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="0"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="0"
                                             id="event_${element['id']}_free" name="event[${element['id']}][free]" data-id="${element['id']}">
                                       </div>` : ``}
                                   </td>
@@ -311,18 +311,18 @@ var  selectedVal=''
                                   <td class="d-flex">
                                       <div>
                                         <label for="event_${data.id}" class="col col-form-label">Ստանդարտ </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.price}"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="${data.price}"
                                             id="event_${data.id}_standart" name="event[${data.id}][standart]" data-id="${data.id}">
                                       </div>
                                       ${data.discount_price ?
                                       `<div>
                                         <label for="event_${data.id}" class="col col-form-label">Զեղչված </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="${data.discount_price}"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="${data.discount_price}"
                                             id="event_${data.id}_discount" name="event[${data.id}][discount]" data-id="${data.id}">
                                       </div>
                                       <div>
                                         <label for="event_${data.id}" class="col col-form-label">Անվճար </label>
-                                        <input type="number" min="0" class="form-control form-control-validate event_ticket" onwheel="return false;" price="0}"
+                                        <input type="number" min="0" class="form-control form-control-validate event_ticket w-100" onwheel="return false;" price="0}"
                                             id="event_${data.id}_free" name="event[${data.id}][free]" data-id="${data.id}">
                                       </div>`: ``}
                                   </td>
