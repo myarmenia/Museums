@@ -103,7 +103,7 @@
                             {{ $item['description_educational_programming_en'] }} </span>
                     </div>
                 @endif
-                @if ($item['type'] == 'school'|| $item['type'] =='educational')
+                @if ($item['type'] == 'school'|| $item['type'] =='educational'||($item['type']=="partner" && $item['sub_type']=="educational"))
                 <div class="text-flex text-margin">
                   <span>Քանակ/Quantity </span>
                   <span>{{ $item['quantity']}}</span>
