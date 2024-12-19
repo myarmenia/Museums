@@ -1,7 +1,11 @@
 <?php
 namespace App\Services\Cashier;
+
+use App\Http\Resources\EducationalPrograms\EducationalProgramsResource;
+
 use App\Models\CorporativeSale;
 use App\Models\CorporativeVisitorCount;
+use App\Models\EducationalProgram;
 use App\Models\Event;
 use App\Models\Museum;
 use App\Models\OtherService;
@@ -177,6 +181,11 @@ class CashierService
     {
         if($museumId = museumAccessId()) {
             $partner = Partner::with('museum.standart_tickets','museum.guide')->where('museum_id', $museumId)->find($partnerId);
+
+            $partner['partner_educational_program'] = EducationalProgram::where('museum_id', $museumId)
+                    ->with('translationAm') // Eager load the Armenian translation
+                    ->get();
+             
 
             return $partner;
         }

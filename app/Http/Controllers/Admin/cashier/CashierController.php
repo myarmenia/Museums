@@ -87,7 +87,9 @@ class CashierController extends Controller
 
       $partner = $this->cashierService->getPartnerDetails($id);
 
+
         if ($partner) {
+          // dd($partner);
 
           return response()->json($partner);
         }
