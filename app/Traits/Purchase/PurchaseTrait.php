@@ -328,7 +328,7 @@ trait PurchaseTrait
       if ($value['type'] == 'partner') {
 
         $maked_data = $this->makePartnerTicketData($value);
-        unset($maked_data['id']);
+        unset($maked_data['id'], $maked_data['educational_id']);
 
         if ($maked_data) {
           $row = $this->addItemInPurchasedItem($maked_data);
