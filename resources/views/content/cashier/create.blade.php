@@ -188,7 +188,7 @@
                                                 <td>{{ $item['min_quantity'] . '-' . $item['max_quantity'] }}</td>
                                                 <td><input type="number" min="0"
                                                         min_quantity={{ $item['min_quantity'] }}
-                                                        max_quantity={{ $item['max_quantity'] }} class="form-control form-control-validate"
+                                                        max_quantity={{ $item['max_quantity'] }} class="form-control form-control-validate w-100"
                                                         onwheel="return false;" price="<?= $item['price'] ?>"
                                                         id="educational_{{ $item['id'] }}"
                                                         name="educational[{{ $item['id'] }}]"></td>

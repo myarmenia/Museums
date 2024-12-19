@@ -10,6 +10,7 @@ use App\Http\Resources\API\MuseumListResource;
 use App\Models\Event;
 use App\Models\Museum;
 use App\Models\Region;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EventsListController extends BaseController
@@ -24,7 +25,7 @@ class EventsListController extends BaseController
 
     $data = $this->model
                 ->filter($request->all())
-      ->where(['status' => 1, 'online_sales' => 1])
+      ->where(['status' => 1, 'online_sales' => 1])->whereDate('end_date', '>=', Carbon::today())
       ->orderBy('id', 'DESC')->paginate(12)->withQueryString();
       $museums = Museum::all();
       $museum_list = MuseumListResource::collection($museums);
