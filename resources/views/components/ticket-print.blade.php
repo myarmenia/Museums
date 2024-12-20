@@ -58,6 +58,7 @@
 <body>
 
     <div class="pdf-tmp">
+      {{-- {{dd($tickets['data'])  }} --}}
 
         @foreach ($tickets['data'] as $key => $item)
 
@@ -92,7 +93,7 @@
                         $item['sub_type'] != 'partner_guide_am')
                     <div class="text-flex text-margin">
                         <span>Տոմսի Տեսակ/Ticket type - </span>
-                        <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ($item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : 'Անվճար/Free') }}</span>
+                        <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ($item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : ($item['sub_type'] == 'educational' ? 'Կրթական/Educational' : 'Անվճար/Free')) }}</span>
                     </div>
                 @endif
                 @if ($item['description_educational_programming'])
@@ -102,7 +103,7 @@
                             {{ $item['description_educational_programming_en'] }} </span>
                     </div>
                 @endif
-                @if ($item['type'] == 'school'|| $item['type'] =='educational')
+                @if ($item['type'] == 'school'|| $item['type'] =='educational'||($item['type']=="partner" && $item['sub_type']=="educational"))
                 <div class="text-flex text-margin">
                   <span>Քանակ/Quantity </span>
                   <span>{{ $item['quantity']}}</span>
@@ -169,6 +170,7 @@
                 </div>
             </div>
     </div>
+
     @endforeach
 
 </body>

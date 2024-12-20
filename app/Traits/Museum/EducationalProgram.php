@@ -3,6 +3,7 @@ namespace App\Traits\Museum;
 
 use App\Models\EducationalProgram as ModelEducationalProgram;
 use App\Models\EducationalProgramReservation;
+use App\Models\EducationalProgramTranslation;
 
 trait EducationalProgram
 {
@@ -28,6 +29,7 @@ trait EducationalProgram
     {
       return EducationalProgramReservation::where(["museum_id" => museumAccessId(), 'date' => $date])->get();
     }
+   
 
 
 }

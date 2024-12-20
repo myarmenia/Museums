@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\cashier;
 
 use App\Http\Controllers\Controller;
+use App\Models\EducationalProgram;
 use App\Models\GuideService;
 use App\Traits\NodeApi\QrTokenTrait;
 use App\Traits\Purchase\PurchaseTrait;
@@ -18,7 +19,7 @@ class PartnerController extends CashierController
   {
 
     try {
-// dd($request->all());
+
         DB::beginTransaction();
         $requestDatForValidation = $request->except('partner_id','comment');
         session(['open_tab' =>'navs-top-partners']);
@@ -33,61 +34,79 @@ class PartnerController extends CashierController
         }
 
         $museumId = getAuthMuseumId();
-        if(!is_null($request->partner_id)){
+
 
           $filteredData = array_filter($requestDatForValidation, function ($value) {
 
             return !is_null($value);
           });
-
+          // dd($filteredData);
 
           if (empty($filteredData)) {
               session([
-                'errorMessage' => 'Պետք է պարտադիր նշված լինի գործընկեր  և տոմսի քանակ դաշտերը։',
+                'errorMessage' => 'Պետք է պարտադիր նշված լինի  տոմսի քանակ դաշտերը։',
 
               ]);
-
               return redirect()->back();
-
-
           }
-        }else{
-          session([
-              'errorMessage' => 'Պետք է պարտադիր նշված լինի գործընկեր դաշտը։',
+
+
+          if(isset($filteredData['educational']["quantity"]) && !isset($filteredData["educational"]['educational_id'])){
+              session([
+                'errorMessage' => 'Պետք է պարտադիր ընտրել գործընկերոջ կրթական ծրագիրը',
+
+              ]);
+              return redirect()->back();
+            }
+
+
+          if(!isset($filteredData['educational']["quantity"]) && isset($filteredData["educational"]['educational_id'])){
+            session([
+              'errorMessage' => 'Պետք է պարտադիր ընտրել գործընկերոջ կրթական ծրագրի քանակ դաշտը',
 
             ]);
 
+
             return redirect()->back();
-        }
+          }
+          if(isset($filteredData['educational']["quantity"]) && isset($filteredData["educational"]['educational_id'])){
+            // dd($filteredData['partner_education_program_quantity'],$filteredData['partner_education_program']);
+            $educational_program = EducationalProgram::where('id',$filteredData["educational"]['educational_id'])->first();
+              if($filteredData['educational']["quantity"]<$educational_program->min_quantity || $filteredData['educational']["quantity"]>$educational_program->max_quantity){
+                session([
+                  'errorMessage' => 'Պետք է գոծընկերոջ կրթական ծրագրի քանակ դաշտը ընկած լինի '.$educational_program->min_quantity .'- '.$educational_program->max_quantity ." միջակայքում",
 
-        // $filteredData = array_filter($requestDatForValidation, function ($value) {
+                ]);
+                return redirect()->back();
 
-        //   return !is_null($value);
-        // });
+              }
 
-
-        // if (empty($filteredData)) {
-        //     session([
-        //       'errorMessage' => 'Պետք է պարտադիր նշված լինի տոմսի քանակ դաշտերը։',
-
-        //     ]);
-
-        //     return redirect()->back();
+          }
 
 
-        // }
+
+
+
+
+
 
         $guid = GuideService::where('museum_id', $museumId)->first();
         $haveValue = false;
+
+          // dd($requestDatForValidation);
         foreach ($requestDatForValidation as $key => $item) {
-            if ($item) {
+          $newItem=null;
+            if ($item   && $key!="educational") {
                 $haveValue = true;
-                $newItem = [
-                    "type" => "partner",
-                    "quantity" => (int) $item,
-                    "id"=>$request->partner_id,
-                    "sub_type"=>$key
-                ];
+
+
+                  $newItem = [
+                      "type" => "partner",
+                      "quantity" => (int) $item,
+                      "id"=>$request->partner_id,// գործընկերոջ id
+                      "sub_type"=>$key //տոմսի տեսակը
+                  ];
+
 
                 if (($key === 'guide_other' || $key === 'guide_am') && $guid) {
 
@@ -102,12 +121,29 @@ class PartnerController extends CashierController
                        $newItem["type"]="guide_am";
                     }
                 }
+              }
 
+              if ( $item && $key === 'educational' && $item['educational_id']!=null && $item['quantity']!=null) {
+                $haveValue = true;
+                  $newItem = [
+                    "type" => "partner",
+                    "quantity" => (int) $item['quantity'],
+                    "id"=>$request->partner_id,// գործընկերոջ id
+                    "sub_type"=>"educational", //տոմսի տեսակը
+                    "educational_id"=>$item['educational_id']
 
+                ];
+              }
+              if($newItem!=null){
                 $data['items'][] = $newItem;
 
-            }
+              }
+
+
+
+
         }
+
 
         if(!$haveValue){
           session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
@@ -117,6 +153,7 @@ class PartnerController extends CashierController
         }
 
         $addPurchase = $this->purchase($data);
+
 
             if ( $addPurchase) {
 

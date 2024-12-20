@@ -86,11 +86,14 @@ class ReportsForMuseumAdminController extends Controller
       $museum_id = museumAccessId();
 
       $data = $this->partners_report($request->all(), $this->model);
+      $totalInfo = $this->totalInfo($data);
+
       $collection = collect($data);
 
       $data = $this->arrayPaginator($collection, $request, $perPage);
 
-      return view("content.reports.museum-partners", compact('data'));
+
+      return view("content.reports.museum-partners", compact('data', 'totalInfo'));
 
   }
 }

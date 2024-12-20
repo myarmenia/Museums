@@ -102,10 +102,11 @@ class CashierController extends Controller
 
 
         foreach ($qrs as $key=>$qr) {
-
+          // dd($qr);
 
 
           if($qr->type=="educational"){
+            // dd($key);
             if($key>0){
               $itemDescriptionName='';
               $itemDescriptionName_en='';
@@ -200,8 +201,9 @@ class CashierController extends Controller
               $data['data'][$key]['service_name_am'] = $qr->purchased_item->other_service->translation('am')->name;
               $data['data'][$key]['service_name_en'] = $qr->purchased_item->other_service->translation('en')->name;
             }
-            if($qr['type'] =="school" || $qr['type'] == "educational"){
 
+            if($qr['type'] =="school" || $qr['type'] == "educational" ||( $qr['type'] == "partner" && $qr->purchased_item->sub_type == "educational") ){
+         
               $data['data'][$key]['quantity']= $qr->purchased_item->quantity;
 
             }
@@ -211,6 +213,7 @@ class CashierController extends Controller
 
 
         }
+
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
 

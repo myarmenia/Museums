@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/admin/cashier/cashier.css') }}">
 @endsection
 
+
 @section('content')
     @include('includes.alert')
     <h4 class="py-3 mb-4">
@@ -188,7 +189,7 @@
                                                 <td>{{ $item['min_quantity'] . '-' . $item['max_quantity'] }}</td>
                                                 <td><input type="number" min="0"
                                                         min_quantity={{ $item['min_quantity'] }}
-                                                        max_quantity={{ $item['max_quantity'] }} class="form-control form-control-validate w-100"
+                                                        max_quantity={{ $item['max_quantity'] }} class="form-control form-control-validate" style="width:70% !important"
                                                         onwheel="return false;" price="<?= $item['price'] ?>"
                                                         id="educational_{{ $item['id'] }}"
                                                         name="educational[{{ $item['id'] }}]"></td>
