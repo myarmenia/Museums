@@ -686,6 +686,7 @@ var partnerVal=''
 function callPartnerEducationalProgramFunction(){
 $('#partner_education_program').on('change',function(){
   // alert($(this).attr('price'));
+  $('#partner_education_program_quantity').val('');
   const selectedOption = $(this).find(':selected');
 
     $('#partner_education_program_quantity').attr('price', selectedOption.attr('price'));

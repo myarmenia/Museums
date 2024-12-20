@@ -28,6 +28,7 @@ class ReturnTicketController extends Controller
 
     public function removeTicket(Request $request)
     {
+      // dd($request->all());
 
         $token = $this->returnTicketService->removeToken($request->all());
 

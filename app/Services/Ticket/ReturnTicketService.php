@@ -82,7 +82,7 @@ class ReturnTicketService
 
   public function removeToken($data)
   {
-
+// dd($data);
     $data = json_decode($data['json'], true);
 
     $token = $data['dataId'];
@@ -95,7 +95,7 @@ class ReturnTicketService
 
 
         $ticket = $this->getActiveTicket($token, $museumId);
-
+// dd($ticket);
 
         if ($ticket && $ticket->visited_date != null) {
           return ['success' => false, 'message' => 'Տվյալ թոքենով մուտք արդեն եղել է։'];
@@ -110,7 +110,7 @@ class ReturnTicketService
           $ticket->update(['status' => TicketQr::STATUS_RETURNED]);
           $purchasedItemId = $ticket->purchased_item_id;
           $purchaseItem = PurchasedItem::where('id', $purchasedItemId)->first();
-
+// dd( $purchaseItem);
           $purchaseQunatity = $purchaseItem->quantity;
           $purchasePrice = $purchaseItem->total_price;
           if ($purchaseItem->type == "free") {
@@ -118,6 +118,8 @@ class ReturnTicketService
             $oneTicketPrice = 0;
           }
            else {
+
+
 
             $oneTicketPrice = (int) $purchasePrice / (int) $purchaseQunatity;
             $totalPrice = (int) $purchaseItem->returned_total_price + $oneTicketPrice;
@@ -133,14 +135,21 @@ class ReturnTicketService
 
                 $returnedQuantity = $purchaseItem->quantity;
                 $totalPrice = $purchaseItem->total_price;
-                $purchaseNewAmount =  $totalPrice;
+                $purchaseNewAmount = $totalPrice;
 
           }
           else if ($purchaseItem->type == "school") {
 
             $returnedQuantity = $purchaseItem->quantity;
             $totalPrice = $purchaseItem->total_price;
-            $purchaseNewAmount =  $totalPrice;
+            $purchaseNewAmount =$purchaseItem->purchase->returned_amount + $totalPrice;
+
+          }
+          else if ($purchaseItem->type == "partner" &&  $purchaseItem->sub_type=="educational") {
+              $returnedQuantity = $purchaseItem->quantity;
+              $totalPrice = $purchaseItem->total_price;
+              $purchaseNewAmount =$purchaseItem->purchase->returned_amount + $totalPrice;
+
 
           }
           else{
