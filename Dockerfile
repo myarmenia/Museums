@@ -4,6 +4,8 @@ RUN apt-get update && apt-get install -y \
     software-properties-common && \
     add-apt-repository ppa:ondrej/php && \
     apt-get update && apt-get install -y \
+    python3.6 \
+    supervisor \
     php8.2 \
     php8.2-cli \
     php8.2-fpm \
@@ -19,9 +21,9 @@ RUN apt-get update && apt-get install -y \
     git \
     && apt install composer -y
 
-WORKDIR /var/www/Museum
+WORKDIR /home/webex/Museum/
 
-COPY . /var/www/Museum
+COPY . /home/webex/Museum/
 
 RUN composer install
 

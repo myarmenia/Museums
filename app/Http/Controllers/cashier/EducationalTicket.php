@@ -18,7 +18,9 @@ class EducationalTicket extends CashierController
     public function __invoke(Request $request)
     {
         try {
+
             DB::beginTransaction();
+
             $requestData = $request->input('educational');
 
             $data['purchase_type'] = 'offline';
@@ -45,16 +47,17 @@ class EducationalTicket extends CashierController
 
             if(!$haveValue){
                 session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
-                   
+
                 DB::rollBack();
                 return redirect()->back();
             }
 
             $addTicketPurchase = $this->purchase($data);
-
+// dd($addTicketPurchase);
             if ($addTicketPurchase) {
-                $addQr = $this->getTokenQr($addTicketPurchase->id);
 
+                $addQr = $this->getTokenQr($addTicketPurchase->id);
+// dd($addQr);
                 if ($addQr) {
                     $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
                     session(['success' => 'Տոմսերը ավելացված է']);

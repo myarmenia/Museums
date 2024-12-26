@@ -15,12 +15,28 @@ class EventListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-      
+
+      $price_array[0]=[
+
+          "price"=>$this->price,
+          "sub_type"=>'standart'
+
+      ];
+      if($this->discount_price!=null){
+
+        $price_array[1]=[
+          "price"=>$this->discount_price,
+          "sub_type"=>'discount'
+        ];
+      }
+
+
         return [
           'id' =>$this->id,
           'museum_id'=> $this->museum_id,
           'museum_name'=> $this->museum->translation(session('languages'))->name,
           'style'=>$this->style,
+          'all_prices'=>$price_array,
           'price' => $this->price,
           'name' => $this->translation(session('languages'))->name,
           'description' =>$this->translation(session('languages'))->description,

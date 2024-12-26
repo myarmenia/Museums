@@ -15,6 +15,79 @@ trait AnalyticsTrait
     {
       return Museum::all();
     }
+
+
+    public function ticketStatistics(array $data = []){
+
+        $purchases_ids = Purchase::where('status', 1);
+
+        if(!isset($data['from_created_at']) && !isset($data['to_created_at'])){
+
+          $currentYear = now()->year;
+          $purchases_ids = $purchases_ids->whereYear('created_at', $currentYear)->pluck('id');
+
+        }
+        else{
+
+            $from_created_at = $data['from_created_at'];
+            $to_created_at = $data['to_created_at'];
+
+            if ($data['from_created_at'] != null) {
+
+                $purchases_ids = $purchases_ids->whereDate('created_at', '>=', $from_created_at);
+
+            }
+            if ($data['to_created_at'] != null) {
+
+                $purchases_ids = $purchases_ids->whereDate('created_at', '<=', $to_created_at);
+
+            }
+
+            $purchases_ids = $purchases_ids->pluck('id');
+        }
+
+
+        $analytic = PurchasedItem::where('type', '!=',  'product')->whereIn('purchase_id', $purchases_ids);
+
+
+        $purchase_united_tickets = [];
+
+        if (!empty($data['museum_id'])) {
+
+          $museum_id = $data['museum_id'];
+
+          $analytic_for_single = (clone $analytic)->where('museum_id', $museum_id);
+         
+          $purchased_items_ids = $analytic->pluck('id');
+
+          $purchase_united_tickets = PurchaseUnitedTickets::where('museum_id', $museum_id)->whereIn('purchased_item_id', $purchased_items_ids)
+            ->select(\DB::raw('SUM(total_price) as total_price'), \DB::raw('SUM(quantity ) as quantity'))
+            ->get()->toArray();
+
+
+          $analytic = $analytic_for_single
+            ->select( \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
+            ->get()->toArray();
+
+
+
+          $analytic = [
+            'total_price' => (int) ($analytic[0]['total_price'] ?? 0) + (int) ($purchase_united_tickets[0]['total_price'] ?? 0),
+            'quantity' => (int) ($analytic[0]['quantity'] ?? 0) + (int) ($purchase_united_tickets[0]['quantity'] ?? 0),
+          ];
+
+
+        } else {
+          $analytic = $analytic
+            ->select( \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
+            ->get()->toArray()[0];
+        }
+
+
+        return $analytic;
+    }
+
+
     public function ticketsType($museum_id = null)
     {
       $currentYear = now()->year;
@@ -83,6 +156,7 @@ trait AnalyticsTrait
         return $groupedData;
 
     }
+
 
     public function analytic_financial($analytic, $united, $top_museums = null)
     {
@@ -153,3 +227,7 @@ trait AnalyticsTrait
 
 
 }
+
+
+
+// ================= 30.09.24 ========================

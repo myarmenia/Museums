@@ -7,11 +7,14 @@ use App\Models\Event;
 use App\Models\EventConfig;
 use App\Models\GuideService;
 use App\Models\Museum;
+use App\Models\OtherService;
+use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchasedItem;
 use App\Models\PurchaseUnitedTickets;
 use App\Models\Ticket;
+use App\Models\TicketSchoolSetting;
 use App\Models\TicketSubscriptionSetting;
 use App\Models\TicketUnitedSetting;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +25,7 @@ trait PurchaseTrait
 
   public function purchase($data)
   {
+
     $this->typeAtTimeOfSale = $data['purchase_type'];
     $museum_id = null;
     $purchase_data = [];
@@ -75,6 +79,11 @@ trait PurchaseTrait
     // ========================================================
 
     $purchase = Purchase::create($purchase_data);
+
+    if(isset($data['comment']) && $data['comment'] != null){
+      $purchase->cashier_comment()->create($data['comment']);
+    }
+
     $data['purchase_id'] = $purchase->id;
 
     $item = $this->itemStore($data);
@@ -138,13 +147,22 @@ trait PurchaseTrait
 
       if ($value['type'] == 'event-config') {
 
-        $maked_data = $this->makeEventConfigData($value);
+        $summedQuantities = collect($data['items'])
+          ->groupBy(function ($q_item) {
+            return $q_item['type'] . '-' . ($q_item['sub_type'] ?? '') . '-' . $q_item['id'];
+          }) // Группировка
+          ->map(function ($group) {
+            return $group->sum('quantity');
+          }) // Суммирование
+          ->sum();
+
+        $maked_data = $this->makeEventConfigData($value, $summedQuantities);
         unset($maked_data['id']);
 
         if ($maked_data) {
           $row = $this->addItemInPurchasedItem($maked_data);
         } else {
-          $event = $this->getAvailableEventViaEventCobfig($value['id']);
+          $event = $this->getAvailableEventViaEventConfig($value['id']);
 
           $row = ['error' => 'ticket_not_available', 'name' => $event];
           break;
@@ -178,6 +196,26 @@ trait PurchaseTrait
       if ($value['type'] == 'standart' || $value['type'] == 'discount' || $value['type'] == 'free' || $value['type'] == 'subscription') {
 
         $maked_data = $this->makeTicketData($value);
+        unset($maked_data['id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+
+      //  ===============================================================================
+
+      //  =================== school ====================================================
+
+
+      if ($value['type'] == 'school') {
+
+        $maked_data = $this->makeSchoolTicketData($value);
         unset($maked_data['id']);
 
         if ($maked_data) {
@@ -265,6 +303,45 @@ trait PurchaseTrait
 
       // =================================================================
 
+      //  =================== other service ===============================
+
+      if ($value['type'] == 'other_service') {
+
+        $maked_data = $this->makeOtherServiceData($value);
+        unset($maked_data['id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+
+      //  ===============================================================================
+
+      //  =================== partner ====================================================
+
+
+      if ($value['type'] == 'partner') {
+
+        $maked_data = $this->makePartnerTicketData($value);
+        unset($maked_data['id'], $maked_data['educational_id']);
+
+        if ($maked_data) {
+          $row = $this->addItemInPurchasedItem($maked_data);
+
+        } else {
+          $row = ['error' => 'ticket_not_available'];
+          break;
+        }
+
+      }
+
+      //  ===============================================================================
+
 
     }
 
@@ -309,8 +386,33 @@ trait PurchaseTrait
     return $data;
   }
 
+  public function makeSchoolTicketData($data)
+  {
+    $school_ticket = $this->getSchoolTicket($data['id']);
+
+    if (!$school_ticket) {
+      return false;
+    }
+
+    $muyseum_id = museumAccessId();
+
+    if (!$muyseum_id) {
+      return false;
+    }
+
+    $data['museum_id'] = $muyseum_id;
+
+    $total_price = $school_ticket->price * $data['quantity'];
+
+    $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
+
+    return $data;
+  }
+
   public function makeGuideData($data)
   {
+
     $type = $data['type'] == 'guide_am' ? 'price_am' : 'price_other';
     $guide = $this->getGuide($data['id']);
 
@@ -366,27 +468,40 @@ trait PurchaseTrait
 
   }
 
-  public function makeEventConfigData($data)
+  public function makeEventConfigData($data, $summedQuantities)
   {
 
     $event_config = $this->getEventConfig($data['id']);
+    $event = $event_config->event;
 
     if (!$event_config) {
       return false;
     }
 
-    if (!$event_config->event->status) {
+    if (!$event->status) {
       return false;
     }
 
     $remainder = $event_config->visitors_quantity_limitation - $event_config->visitors_quantity;
 
-    if ($data['quantity'] > $remainder) {
+    if ($summedQuantities > $remainder) {
       return false;
     }
 
-    $data['museum_id'] = $event_config ? $event_config->event->museum->id : false;
-    $total_price = $event_config->price * $data['quantity'];
+    $data['museum_id'] = $event_config ? $event->museum->id : false;
+    // $total_price = $event_config->price * $data['quantity'];
+    if(isset($data['sub_type'])){
+      $total_price =  $data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] :
+                      ($data['sub_type'] == 'standart' ? $event->price * $data['quantity'] :
+                        ($data['sub_type'] == 'free' ? 0 * $data['quantity'] :
+                          ($data['sub_type'] == 'guide_price_am' ? $event->guide_price_am * $data['quantity'] :
+                            ($data['sub_type'] == 'guide_price_other' ? $event->guide_price_other * $data['quantity'] : $event->price * $data['quantity']))));
+
+    }
+    else{
+      $total_price = $event->price * $data['quantity'];
+    }
+
 
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
@@ -405,7 +520,19 @@ trait PurchaseTrait
     }
 
     $data['museum_id'] = $event->museum->id;
-    $total_price = $event->price * $data['quantity'];
+
+    if (isset($data['sub_type'])) {
+      $total_price = $data['sub_type'] == 'discount' ? $event->discount_price * $data['quantity'] :
+        ($data['sub_type'] == 'standart' ? $event->price * $data['quantity'] :
+          ($data['sub_type'] == 'free' ? 0 * $data['quantity'] :
+            ($data['sub_type'] == 'guide_price_am' ? $event->guide_price_am * $data['quantity'] :
+              ($data['sub_type'] == 'guide_price_other' ? $event->guide_price_other * $data['quantity'] : $event->price * $data['quantity']))));
+
+    }
+    else{
+      $total_price = $event->price * $data['quantity'];
+    }
+
 
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
@@ -443,6 +570,61 @@ trait PurchaseTrait
     return $data;
   }
 
+  //////////////////////////
+  public function makeOtherServiceData($data)
+  {
+    $ticket = $this->getOtherServiceTicket($data['id']);
+
+    if (!$ticket) {
+      return false;
+    }
+
+    $data['museum_id'] = $ticket ? $ticket->museum->id : false;
+
+    $total_price = $ticket->price * $data['quantity'];
+
+    $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
+
+    return $data;
+  }
+
+  public function makePartnerTicketData($data)
+  {
+    $partner_ticket = $this->getPartnerTicket($data['id']);
+    $educational_program_price = null;
+
+    if (!$partner_ticket) {
+      return false;
+    }
+
+    if($data['sub_type'] == 'educational'){
+      $educational_program = $this->getEducationalProgram($data['educational_id']);
+
+      if (!$educational_program) {
+        return false;
+      }
+
+      $educational_program_price = $educational_program->price;
+    }
+
+    $data['museum_id'] = $partner_ticket ? $partner_ticket->museum_id : false;
+    $data['partner_id'] = $data['id'];
+
+    $price = $data['sub_type'] == 'educational' ? $educational_program_price : $partner_ticket->price;
+
+    $coefficient = $data['sub_type'] == 'educational' ? 1 : ticketType($data['sub_type'])->coefficient;
+    $total_price = $price * $coefficient * $data['quantity'];
+
+
+    $data['total_price'] = $total_price;
+    $data['item_relation_id'] = $data['id'];
+
+    return $data;
+  }
+
+
+  // ================ get function start ==============================
 
   public function getProduct($id, $quantity)
   {
@@ -476,7 +658,7 @@ trait PurchaseTrait
 
   }
 
-  public function getAvailableEventViaEventCobfig($id){
+  public function getAvailableEventViaEventConfig($id){
     $event_config = EventConfig::where('id', $id)->first();
     if($event_config){
 
@@ -518,6 +700,22 @@ trait PurchaseTrait
     return CorporativeSale::where('id', $id)->first();
   }
 
+  public function getSchoolTicket($id)
+  {
+    return TicketSchoolSetting::where('id', $id)->first();
+  }
+
+  public function getOtherServiceTicket($id)
+  {
+    return OtherService::where(['id' => $id, 'status' => 1])->first();
+  }
+
+  public function getPartnerTicket($id)
+  {
+
+      $partner = Partner::find($id);
+      return $partner != null ? Ticket::where(['museum_id' =>$partner->museum_id, 'status' => 1])->first() : false;
+  }
   public function createUnitedTickets($data)
   {
 

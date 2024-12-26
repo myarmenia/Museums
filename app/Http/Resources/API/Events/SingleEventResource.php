@@ -14,6 +14,19 @@ class SingleEventResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+      $price_array[0]=[
+
+        "price"=>$this->price,
+        "sub_type"=>'standart'
+
+    ];
+    if($this->discount_price!=null){
+
+      $price_array[1]=[
+        "price"=>$this->discount_price,
+        "sub_type"=>'discount'
+      ];
+    }
 
       return [
         'id' => $this->id,
@@ -21,6 +34,7 @@ class SingleEventResource extends JsonResource
         'museum_name'=> $this->museum->translation(session('languages'))->name,
         'museum_phones'=>$this->museum->phones->pluck('number'),
         'style' =>$this->style,
+        'all_prices'=>$price_array,
         'price' => $this->price,
         'name' => $this->translation(session('languages'))->name,
         'description' =>$this->translation(session('languages'))->description,

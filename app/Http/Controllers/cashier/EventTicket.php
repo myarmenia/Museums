@@ -18,13 +18,33 @@ class EventTicket extends CashierController
   public function __invoke(Request $request)
   {
     try {
+
       DB::beginTransaction();
+      session(['open_tab' =>'navs-top-event']);
 
       $requestData = $request->input('event');
-
       $museumId = getAuthMuseumId();
       $eventKeys = array_keys($requestData);
 
+      $allNull = false;
+
+        foreach ($requestData as $value) {
+
+            if ((isset($value['standart']) && !is_null($value['standart'])) || (isset($value['discount']) && !is_null($value['discount'])) ||(isset($value['free']) && !is_null($value['free']) )) {
+                $allNull = true;
+                break;
+            }
+        }
+
+      if (!$allNull && is_null($request->guide_price_am) && is_null($request->guide_price_other) ) {
+        session([
+          'errorMessage' => 'Լրացրեք քանակ դաշտը',
+
+        ]);
+
+        DB::rollBack();
+        return redirect()->back();
+      }
       if ($request->input('style') == 'basic') {  //for event with event_configs
 
         $allEventConfig = EventConfig::where('status', 1)->whereIn('id', $eventKeys)->get();
@@ -39,24 +59,37 @@ class EventTicket extends CashierController
           $data['items'] = [];
 
           $haveValue = false;
+          $dataForUpdateEventConfigs = [];
 
           foreach ($requestData as $key => $item) {
             if ($item) {
               $haveValue = true;
-              $event = $allEventConfig->find($key);
-              $visitorQuantity = (int) $event->visitors_quantity + (int) $item;
+              $event_config = $allEventConfig->find($key);
+              $itemTotalSum = array_sum(array_filter($item, fn($value) => $value !== null));
 
-              if ($visitorQuantity > $event->visitors_quantity_limitation) {
+              $visitorQuantity = (int) $event_config->visitors_quantity + (int) $itemTotalSum;
+
+              if ($visitorQuantity > $event_config->visitors_quantity_limitation) {
                 session(['errorMessage' => 'Տոմսերի քանակը չպետք է գերազանցի մնացած տոմսերի քանակին']);
                 DB::rollBack();
                 return redirect()->back();
               }
 
-              $data['items'][] = [
-                "type" => 'event-config',
-                "id" => $event->id,
-                "quantity" => (int) $item
-              ];
+              foreach ($item as $sub_type => $ticket_quantity) {
+                  if($ticket_quantity != null){
+                      $data['items'][] = [
+                        "type" => 'event-config',
+                        "sub_type" => $sub_type,
+                        "id" => $event_config->id,
+                        "quantity" => (int) $ticket_quantity
+                      ];
+                  }
+
+              }
+
+              $dataForUpdateEventConfigs[$key]['event_config'] = $event_config;
+              $dataForUpdateEventConfigs[$key]['visitor_quantity'] = $visitorQuantity;
+
 
 
             }
@@ -68,11 +101,33 @@ class EventTicket extends CashierController
             return redirect()->back();
           }
 
+          if(isset($request->guide_price_am) && $request->guide_price_am != null){
+              $data['items'][] = [
+                "type" => 'event-config',
+                "sub_type" => 'guide_price_am',
+                "id" => $event_config->id,
+                "quantity" => (int) $request->guide_price_am
+              ];
+          }
+          if (isset($request->guide_price_other) && $request->guide_price_other != null) {
+            $data['items'][] = [
+              "type" => 'event-config',
+              "sub_type" => 'guide_price_other',
+              "id" => $event_config->id,
+              "quantity" => (int) $request->guide_price_other
+            ];
+          }
+
           $addTicketPurchase = $this->purchase($data);
 
-          $event->update(['visitors_quantity' => $visitorQuantity]);
+
 
           if ($addTicketPurchase) {
+            foreach ($dataForUpdateEventConfigs as $config_value) {
+                $config_value['event_config']->update(['visitors_quantity' => $config_value['visitor_quantity']]);
+            }
+
+
             $addQr = $this->getTokenQr($addTicketPurchase->id);
 
             if ($addQr) {
@@ -86,24 +141,48 @@ class EventTicket extends CashierController
         }
       } else {  //for event temporary
         $event = Event::where(['museum_id' => $museumId, 'status' => 1, 'id' => $eventKeys])->first();
+        // dd($event);
         if ($event) {
-
-          if (in_array(null, $requestData, true)) {
+          if (in_array(null, $requestData, true) && is_null($request->guide_price_am) && is_null($request->guide_price_other) ) {
             session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
 
             DB::rollBack();
             return redirect()->back();
           }
 
-          $quantity = $value = array_values($requestData)[0];
-
+          $requestDataValue = array_values($requestData)[0];
           $data['purchase_type'] = 'offline';
           $data['status'] = 1;
-          $data['items'][] = [
-            "type" => 'event',
-            "id" => $event->id,
-            "quantity" => (int) $quantity
-          ];
+
+          foreach ($requestDataValue as $sub_type => $ticket_quantity) {
+            if ($ticket_quantity != null) {
+              $data['items'][] = [
+                "type" => 'event',
+                "sub_type" => $sub_type,
+                "id" => $event->id,
+                "quantity" => (int) $ticket_quantity
+              ];
+            }
+
+          }
+
+          if (isset($request->guide_price_am) && $request->guide_price_am != null) {
+            $data['items'][] = [
+              "type" => 'event',
+              "sub_type" => 'guide_price_am',
+              "id" => $event->id,
+              "quantity" => (int) $request->guide_price_am
+            ];
+          }
+          if (isset($request->guide_price_other) && $request->guide_price_other != null) {
+            $data['items'][] = [
+              "type" => 'event',
+              "sub_type" => 'guide_price_other',
+              "id" => $event->id,
+              "quantity" => (int) $request->guide_price_other
+            ];
+          }
+
 
           $addTicketPurchase = $this->purchase($data);
 

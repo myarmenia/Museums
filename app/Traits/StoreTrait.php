@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 trait StoreTrait
 {
@@ -30,6 +31,11 @@ trait StoreTrait
         $data['museum_id'] = museumAccessId();
       }
 
+      if ($request['translate'] != null && $table_name == 'other_services') {
+
+          $type = $this->makeOtherServiceType($request['translate']['en']['name']);
+          $data['type'] = $type;
+      }
 
       $item = $model::create($data);
 
@@ -60,4 +66,11 @@ trait StoreTrait
       }
     }
   }
+
+
+  public function makeOtherServiceType($name_en){
+      $type =  Str::slug($name_en, '_');
+      return strtolower($type);
+  }
+
 }

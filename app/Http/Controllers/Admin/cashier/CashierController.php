@@ -20,10 +20,12 @@ class CashierController extends Controller
 
    public function index(Request $request)
    {
+
       $allData = $this->cashierService->getAllData();
 
       if($allData['success']) {
          $data = $allData['data'];
+        //  dd($data);
          return view('content.cashier.create', compact('data'));
       }
 
@@ -42,6 +44,8 @@ class CashierController extends Controller
       $event = $this->cashierService->getEventDetails($id);
 
       if ($event) {
+        session(['eventId'=>$id]);
+
          return response()->json($event);
       }
 
@@ -66,4 +70,31 @@ class CashierController extends Controller
 
       return view('content.cashier.show-last-ticket', compact('data'));
    }
+   public function getOtherServiceDetails($id)
+   {
+
+    $otherService = $this->cashierService->getOtherServiceDetails($id);
+
+      if ($otherService) {
+
+         return response()->json($otherService);
+      }
+
+      return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
+   }
+    public function getPartnerDetails($id)
+   {
+
+      $partner = $this->cashierService->getPartnerDetails($id);
+
+
+        if ($partner) {
+          // dd($partner);
+
+          return response()->json($partner);
+        }
+
+        return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
+   }
+
 }

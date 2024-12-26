@@ -13,6 +13,7 @@ trait QrTokenTrait
 {
     public function getTokenQr(int $purchaseId): bool|object
     {
+
         $url = env('NODE_API_URL') . 'getQr';
 
         $allData = [];
@@ -22,25 +23,72 @@ trait QrTokenTrait
             'guide',
         ];
 
+        $unusedSubTypes = [
+          'guide_price_am',
+          'guide_price_other',
+        ];
+
+        $hasTicket='';
+        $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->get();
+        $purchasItemForOtherService = $allPurchases[0];
+
+        if($purchasItemForOtherService->type=="other_service" && !$purchasItemForOtherService->other_service->ticket ){
+
+          array_push($unusedTypes,'other_service');
+        }
         try {
             DB::beginTransaction();
-            $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->whereNotIn('type', $unusedTypes)->get();
+
+                $allPurchasesForQr = PurchasedItem::where('purchase_id', $purchaseId)
+                ->whereNotIn('type', $unusedTypes)
+                ->where(function ($query) use ($unusedSubTypes) {
+                  $query->whereNotIn('sub_type', $unusedSubTypes)
+                    ->orWhereNull('sub_type');
+                })
+                ->get();
+
             $purchasesKeys = [];
-            foreach ($allPurchases as $key => $item) {
+
+            foreach ($allPurchasesForQr as $key => $item) {
+
+
                 $purchasesKeys[$item->type] = array_key_exists($item->type, $purchasesKeys)
-                    ? $purchasesKeys[$item->type] + $item->quantity
-                    : $item->quantity;
+                ? $purchasesKeys[$item->type] + $item->quantity
+                : $item->quantity;
+
+
+
+
             }
+
+
+            if(isset($purchasesKeys['school'])){
+              $purchasesKeys['school']=1;
+            }
+            // if(isset($purchasesKeys['educational'])){
+            //   $purchasesKeys['educational']=1;
+            // }
+
             $data = $this->getReqQrToken($url, $purchasesKeys);
+
             $addedItemsToken = [];
+
             foreach ($allPurchases as $key => $item) {
                 $quantity = $item->quantity;
+
                 $priceOneTicket = (int) $item->total_price / (int) $item->quantity;
+
+                  if($item->type == "school"|| $item->type == "educational" || ($item->type == "partner" && $item->sub_type == "educational" )){
+
+                      $quantity=1;
+                      $priceOneTicket=$item->total_price;
+
+                  }
 
                 for ($i = 0; $i < $quantity; $i++) {
                     $type = $item->type;
-                    $token = $data[$type][0]['unique_token'];
-                    $path = $data[$type][0]['qr_path'];
+                    $token = $data[$type][0]['unique_token'] ?? null ;
+                    $path = $data[$type][0]['qr_path'] ?? null;
 
                     $newData = [
                         'museum_id' => $item->museum_id,
@@ -55,11 +103,19 @@ trait QrTokenTrait
                         'updated_at' => now(),
 
                     ];
+
+
                     $addedItemsToken[]=$token;
                     $allData[] = $newData;
-                    array_shift($data[$type]);
+
+                    if(isset($data[$type])){
+                      array_shift($data[$type]);
+                    }
+
+
                 }
             }
+
             $insert = TicketQr::insert($allData);
 
             if (!$insert) {
@@ -83,6 +139,7 @@ trait QrTokenTrait
 
     public function getReqQrToken(string $url, array $data): array
     {
+
         $req = Http::post($url, $data);
         $response = $req->getBody()->getContents();
         $response = json_decode($response, true);

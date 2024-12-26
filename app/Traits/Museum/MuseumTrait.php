@@ -2,6 +2,7 @@
 namespace App\Traits\Museum;
 use App\Models\Event;
 use App\Models\Museum;
+use Carbon\Carbon;
 
 trait MuseumTrait
 {
@@ -24,7 +25,9 @@ trait MuseumTrait
     $request['status'] = 1;
     $request['online_sales'] = 1;
 
-    return Event::filter($request->all())->get();
+    $events = Event::filter($request->all())->whereDate('end_date', '>=', Carbon::today())->get();
+
+    return $events;
 
   }
 

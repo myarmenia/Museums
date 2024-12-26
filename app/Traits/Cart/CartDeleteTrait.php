@@ -6,8 +6,13 @@ trait CartDeleteTrait
 {
     public function deleteItem($user, $item_id)
     {
-        $item = Cart::where(['id' => $item_id, 'user_id' => $user->id])->first();
-        return $item ? Cart::find($item_id)->delete() : false;
+        
+        return $user->carts()->where('id', $item_id)->delete();
+    }
+
+    public function deleteAllItems($user)
+    {
+        return $user->carts()->delete();
     }
 
 }

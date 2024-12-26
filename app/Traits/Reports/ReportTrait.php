@@ -67,22 +67,22 @@ trait ReportTrait
 
 
     $report_ids = $report->pluck('id');
-    $canceled = TicketQr::where('status', 'returned')->where('type', '!=', 'united')->whereIn('purchased_item_id', $report_ids);
+    // $canceled = TicketQr::where('status', 'returned')->where('type', '!=', 'united')->whereIn('purchased_item_id', $report_ids);
 
 
     if ($data['report_type'] == 'fin_quant') {
 
-      $groupedData = $this->report_fin_quant($report, $united, $canceled);
+      $groupedData = $this->report_fin_quant($report, $united);
     }
 
     if ($data['report_type'] == 'financial') {
 
-      $groupedData = $this->report_financial($report, $united, $canceled);
+      $groupedData = $this->report_financial($report, $united);
     }
 
     if ($data['report_type'] == 'quantitative') {
 
-      $groupedData = $this->report_quantitative($report, $united, $canceled);
+      $groupedData = $this->report_quantitative($report, $united);
     }
 
     // dd($groupedData);
@@ -91,22 +91,33 @@ trait ReportTrait
   }
 
 
-  public function report_financial($report, $united, $canceled)
+  public function report_financial($report, $united)
   {
-    $report = $report
+    $originalReport = clone $report;
+
+    $all_report = $report
       ->groupBy('museum_id', 'type')
       ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'))
       ->get();
+
+    $partner_guide_report = $report->whereIn('sub_type', ['partner_guide_other', 'partner_guide_am'])
+      ->groupBy('museum_id')
+      ->select('museum_id', \DB::raw('SUM(total_price - returned_total_price) as total_price'))
+      ->get()->toArray();    // grvel e nra hamar, vor yndhanur hashvetvutyan eqskursavarneri gumaric hanvi gortsynkerneri eqskuesianeri gumary
 
     $united = $united->groupBy('museum_id')
       ->select('museum_id', \DB::raw('SUM(total_price) as total_price'))
       ->get();
 
-    $canceled = $canceled->groupBy('museum_id')
-      ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
+    // $canceled = $canceled->groupBy('museum_id')
+    //   ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
+    //   ->get();
+
+    $canceled = $originalReport->groupBy('museum_id')
+      ->select('museum_id', \DB::raw('SUM(returned_total_price) as total_price'))
       ->get();
 
-    $report = $report->toArray();
+    $all_report = $all_report->toArray();
     $united = $united->toArray();
     $canceled = $canceled->toArray();
 
@@ -115,26 +126,44 @@ trait ReportTrait
       return $item;
     }, $canceled);
 
-    return $this->groupByMuseumId(array_merge($report, $united, $canceled));
+    // return $this->groupByMuseumId(array_merge($all_report, $united, $canceled));
+    $general_report = $this->groupByMuseumId(array_merge($all_report, $united, $canceled));
+
+    $general_report = $this->generalReport($partner_guide_report, $general_report);
+
+    return $general_report;
 
   }
 
-  public function report_fin_quant($report, $united, $canceled)
+  public function report_fin_quant($report, $united)
   {
-    $report = $report
+    $originalReport = clone $report;
+
+    $all_report = $report
       ->groupBy('museum_id', 'type')
       ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
       ->get();
+
+
+    $partner_guide_report = $report->whereIn('sub_type', ['partner_guide_other', 'partner_guide_am'])
+      ->groupBy('museum_id')
+      ->select('museum_id', \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
+      ->get()->toArray();    // grvel e nra hamar, vor yndhanur hashvetvutyan eqskursavarneri gumaric hanvi gortsynkerneri eqskuesianeri gumary
+
 
     $united = $united->groupBy('museum_id')
       ->select('museum_id', \DB::raw('SUM(total_price) as total_price'), \DB::raw('SUM(quantity) as quantity'))
       ->get();
 
-    $canceled = $canceled->groupBy('museum_id')
-      ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
+    // $canceled = $canceled->groupBy('museum_id')
+    //   ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
+    //   ->get();
+
+    $canceled = $originalReport->groupBy('museum_id')
+      ->select('museum_id', \DB::raw('SUM(returned_total_price) as total_price'), \DB::raw('SUM(returned_quantity) as quantity'))
       ->get();
 
-    $report = $report->toArray();
+    $all_report = $all_report->toArray();
     $united = $united->toArray();
     $canceled = $canceled->toArray();
 
@@ -144,27 +173,43 @@ trait ReportTrait
     }, $canceled);
 
 
+    $general_report = $this->groupByMuseumId(array_merge($all_report, $united, $canceled));
+
+    $general_report = $this->generalReport($partner_guide_report, $general_report);
+
     // dd($this->groupByMuseumId(array_merge($report, $united, $canceled)));
-    return $this->groupByMuseumId(array_merge($report, $united, $canceled));
+    // return $this->groupByMuseumId(array_merge($report, $united, $canceled));
+    return $general_report;
 
   }
 
-  public function report_quantitative($report, $united, $canceled)
+  public function report_quantitative($report, $united)
   {
-    $report = $report
+    $originalReport = clone $report;
+
+    $all_report = $report
       ->groupBy('museum_id', 'type')
       ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
       ->get();
+
+    $partner_guide_report = $report->whereIn('sub_type', ['partner_guide_other', 'partner_guide_am'])
+      ->groupBy('museum_id')
+      ->select('museum_id',  \DB::raw('SUM(quantity - returned_quantity) as quantity'))
+      ->get()->toArray();    // grvel e nra hamar, vor yndhanur hashvetvutyan eqskursavarneri gumaric hanvi gortsynkerneri eqskuesianeri gumary
 
     $united = $united->groupBy('museum_id')
       ->select('museum_id', \DB::raw('SUM(quantity) as quantity'))
       ->get();
 
-    $canceled = $canceled->groupBy('museum_id')
-      ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
+    // $canceled = $canceled->groupBy('museum_id')
+    //   ->select('museum_id', \DB::raw('SUM(price) as total_price'), \DB::raw('COUNT(*) as quantity'))
+    //   ->get();
+
+    $canceled = $originalReport->groupBy('museum_id')
+      ->select('museum_id',  \DB::raw('SUM(returned_quantity) as quantity'))
       ->get();
 
-    $report = $report->toArray();
+    $all_report = $all_report->toArray();
     $united = $united->toArray();
     $canceled = $canceled->toArray();
 
@@ -173,7 +218,12 @@ trait ReportTrait
       return $item;
     }, $canceled);
 
-    return $this->groupByMuseumId(array_merge($report, $united, $canceled));
+    // return $this->groupByMuseumId(array_merge($all_report, $united, $canceled));
+    $general_report = $this->groupByMuseumId(array_merge($all_report, $united, $canceled));
+
+    $general_report = $this->generalReport($partner_guide_report, $general_report);
+
+    return $general_report;
 
   }
 
@@ -207,5 +257,38 @@ trait ReportTrait
     }, []);
   }
 
+
+  // ========= grvel e nra hamar, vor yndhanur hashvetvutyan eqskursavarneri gumaric hanvi gortsynkerneri eqskuesianeri gumary 03.12.2024 =======================================
+
+  public function generalReport($partner_guide_report, $general_report)
+  {
+
+      foreach ($partner_guide_report as $key => $value) {
+
+          $museumId = $value['museum_id'];
+          $quantity = $value['quantity'] ?? 0;
+          $totalPrice = $value['total_price'] ?? 0;
+
+
+          if (isset($general_report[$museumId]['guide']['quantity'])) {
+              $general_report[$museumId]['guide']['quantity'] -= $quantity;
+          }
+
+          if (isset($general_report[$museumId]['guide']['total_price'])) {
+              $general_report[$museumId]['guide']['total_price'] -= $totalPrice;
+          }
+
+          if (isset($general_report[$museumId]['partner']['quantity'])) {
+              $general_report[$museumId]['partner']['quantity'] += $quantity;
+          }
+
+          if (isset($general_report[$museumId]['partner']['total_price'])) {
+              $general_report[$museumId]['partner']['total_price'] += $totalPrice;
+          }
+
+      }
+
+      return $general_report;
+  }
 
 }

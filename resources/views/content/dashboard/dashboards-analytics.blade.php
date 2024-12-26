@@ -17,7 +17,59 @@
 @section('content')
 
   <div class="row">
-      @php
+      <div class="col-lg-12 col-md-12 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <form action="{{route('dashboard_analytics')}}" method="get" class="row g-3 mt-2" style="display: flex">
+                    <div class="card-title d-flex align-items-start justify-content-between">
+
+                          <div class="col-4">
+                              <select class="form-select" value="{{ request()->input('museum_id') }}" name="museum_id" >
+                                      <option value="" id="all_museums" {{ request()->input('museum_id') == '' ? 'selected' : '' }}>Բոլորը</option>
+                                      @foreach ($museums as $k => $museum)
+                                          <option  value="{{$museum->id}}" {{ $museum->id == request()->input('museum_id') ? 'selected' : '' }}>{{$museum->translationsForAdmin->name}}</option>
+                                      @endforeach
+                              </select>
+                          </div>
+
+                          <div class="col-2">
+                              <input type="date" class="form-control" id="datefrom" placeholder="Ստեղծման ամսաթիվ" name="from_created_at" value="{{ request()->input('from_created_at') }}">
+                          </div>
+
+                          <div class="col-2">
+                              <input type="date" class="form-control" id="dateto" placeholder="Ստեղծման ամսաթիվ" name="to_created_at" value="{{ request()->input('to_created_at') }}">
+                          </div>
+
+                          <button class="btn btn-primary col-2">Որոնել</button>
+                          <a class="btn btn-primary" href="{{ route('dashboard_analytics') }}">Չեղարկել</a>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+      </div>
+      @foreach ($ticket_statistics as $s => $card)
+          <div class="col-lg-4 col-md-4 mb-4 mx-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="card-title d-flex align-items-start justify-content-between">
+
+                    <div class="avatar flex-shrink-0 me-3">
+                      <span class="avatar-initial rounded bg-label-success"><i class="bx bxs-coupon"></i></span>
+                    </div>
+
+                  </div>
+                  <span class="fw-semibold d-block mb-1">{{ $s == 'total_price' ? 'Գումար' : 'Քանակ'}}</span>
+
+                  <h3 class="card-title mb-2">{{ $card }} <small style="font-size: 14px">{{ $s == 'total_price' ? 'դրամ' : ''}}</small></h3>
+                  {{-- <small class="text-success fw-semibold">Քանակ -  {{isset($ticket_type[$item]) ? $ticket_type[$item]['quantity'] : 0}}</small> --}}
+                </div>
+              </div>
+          </div>
+      @endforeach
+
+    {{-- ==================================================== --}}
+      {{-- @php
         $ticketTypes = array_diff(reportTypes(), ["canceled"]);
       @endphp
       @foreach ($ticketTypes as $key => $item)
@@ -37,7 +89,7 @@
                 </div>
               </div>
           </div>
-      @endforeach
+      @endforeach --}}
 
       <!-- Total Revenue -->
       <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
@@ -55,7 +107,7 @@
   </div>
   <div class="row">
     <!-- Attendance By Country -->
-    <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+    {{-- <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between pb-0">
           <div class="card-title mb-0">
@@ -100,14 +152,14 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!--/ Attendance By Country -->
 
 
 
 
     <!-- Attendance By Age -->
-    <div class="col-md-6 col-lg-4 col-xl-4 order-2 mb-4">
+    {{-- <div class="col-md-6 col-lg-4 col-xl-4 order-2 mb-4">
       <div class="card h-100">
         <div class="card-header d-flex align-items-center justify-content-between pb-0">
           <div class="card-title mb-0">
@@ -148,10 +200,10 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!--/ Attendance By Age -->
 
-    <!-- Top Museums -->
+    {{-- <!-- Top Museums -->
     @php
         $currentDate = now();
         $start_date = $currentDate->startOfYear()->format('d.m.Y');
@@ -195,14 +247,14 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!--/ Top Museums -->
 
   </div>
 @endsection
 <script>
       var totalRevenueResult =  '<?php echo $total_revenue ?>';
-      var attendanceByCountry = '<?php echo $attendance_by_country ?>'
-      var totalByCount = {{$total_by_count}}
-      var attendanceByAge = '<?php echo $attendance_by_age_arr ?>'
+      var attendanceByCountry = '<?php echo isset($attendance_by_country) ? $attendance_by_country : null ?>'
+      // var totalByCount = {{$total_by_count ?? ''}}
+      var attendanceByAge = '<?php echo isset($attendance_by_age_arr) ? $attendance_by_age_arr : null ?>'
 </script>

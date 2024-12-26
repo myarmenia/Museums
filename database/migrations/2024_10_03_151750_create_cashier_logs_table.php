@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('qr_black_lists', function (Blueprint $table) {
+        Schema::create('cashier_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('mac');
-            $table->foreign('mac')->references('mac')->on('turnstiles')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('qr');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('item_relation_id');
+            $table->string('db_name');   // purchases , ticket_qrs
+            $table->string('action');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('qr_black_lists');
+        Schema::dropIfExists('cashier_logs');
     }
 };

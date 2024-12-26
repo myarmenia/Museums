@@ -29,6 +29,12 @@ class EducationalProgram extends Model
 
       return $this->hasOne(EducationalProgramTranslation::class)->where('lang', $lang)->first();
    }
+   public function translationAm()
+   {
+    
+       return $this->hasOne(EducationalProgramTranslation::class, 'educational_program_id')
+                   ->where('lang', 'am');
+   }
 
 
 }

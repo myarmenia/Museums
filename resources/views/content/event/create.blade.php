@@ -141,12 +141,12 @@
                 @enderror
               </div>
               <div class="mb-3 row" >
-                <label for="email" class="col-md-2 col-form-label">Գին
+                <label for="email" class="col-md-2 col-form-label">Ստանդարտ Գին
                   <span class="required-field text-danger">*</span>
                 </label>
 
                 <div class="col-md-10">
-                    <input class="form-control" placeholder="Գինը" value="{{ old('price') }}"
+                    <input class="form-control" placeholder="Ստանդարտ Գին" value="{{ old('price') }}"
                         id="price" name="price" />
                 </div>
                 @error("price")
@@ -156,7 +156,54 @@
                   </div>
                 @enderror
               </div>
+              <div class="mb-3 row" >
+                <label for="email" class="col-md-2 col-form-label">Զեղչված Գին
 
+                </label>
+
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="Զեղչված Գին" value="{{ old('discount_price') }}"
+                        id="discount_price" name="discount_price" />
+                </div>
+                @error("discount_price")
+                  <div class="mb-3 row justify-content-end">
+                      <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                      </div>
+                  </div>
+                @enderror
+              </div>
+              <div class="mb-3 row" >
+                <label for="email" class="col-md-2 col-form-label">Էքսկուրսավար(հայերեն)
+
+                </label>
+
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="Հայալեզու էքսկուրսիաի գինը" value="{{ old('guide_price_am') }}"
+                        id="guide_price_am" name="guide_price_am" />
+                </div>
+                @error("guide_price_am")
+                  <div class="mb-3 row justify-content-end">
+                      <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                      </div>
+                  </div>
+                @enderror
+              </div>
+              <div class="mb-3 row" >
+                <label for="email" class="col-md-2 col-form-label">Էքսկուրսավար(այլ)
+
+                </label>
+
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="Այլ լեզվով էքսկուրսիաի գինը" value="{{ old('guide_price_other') }}"
+                        id="guide_price_other" name="guide_price_other" />
+                </div>
+                @error("guide_price_other")
+                  <div class="mb-3 row justify-content-end">
+                      <div class="col-sm-10 text-danger fts-14">{{ $message }}
+                      </div>
+                  </div>
+                @enderror
+              </div>
 
 
 
@@ -200,5 +247,5 @@
         </div>
 
     </div>
-   
+
 @endsection

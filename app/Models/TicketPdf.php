@@ -14,5 +14,6 @@ class TicketPdf extends Model
     protected $fillable = [
         'museum_id',
         'pdf_path',
+        'purchased_id'
     ];
 }

@@ -1,16 +1,22 @@
 <?php
 namespace App\Services\Cashier;
+
+use App\Http\Resources\EducationalPrograms\EducationalProgramsResource;
+
 use App\Models\CorporativeSale;
 use App\Models\CorporativeVisitorCount;
+use App\Models\EducationalProgram;
 use App\Models\Event;
 use App\Models\Museum;
+use App\Models\OtherService;
+use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Ticket;
 use App\Models\TicketPdf;
 use App\Traits\Purchase\PurchaseTrait;
 use Carbon\Carbon;
 
-class CashierService 
+class CashierService
 {
     use PurchaseTrait;
     // protected $chatRepository;
@@ -33,7 +39,14 @@ class CashierService
         },
         'educational_programs' => function ($query) {
             $query->orderBy('id', 'DESC')->where('status', 1)->get();
-        },])->find($museumId);
+        },
+        'other_services' => function ($query){
+            $query->orderBy('id', 'DESC')->where('status', 1)->get();
+        },
+        'partners' => function ($query){
+          $query->orderBy('id', 'DESC')->where('status', 1)->get();
+      },
+        ])->find($museumId);
 
         if(!$ticketPrice = Ticket::where('museum_id', $museumId)->first()){
             session(['errorMessage' => 'Նախ ստեղծեք տոմս']);
@@ -53,7 +66,7 @@ class CashierService
             $data['ticket']['guid-arm'] = $museum->guide->price_am;
             $data['ticket']['guid-other'] = $museum->guide->price_other;
         }
-        
+
         $data['educational'] = $this->customEducationalResource($museum->educational_programs);
         if($museum->aboniment){
             $data['aboniment'] = [
@@ -63,6 +76,12 @@ class CashierService
 
         if($museum->events->count()){
             $data['events'] = $museum->events;
+        }
+        if($museum->other_services->count()){
+          $data['other_services'] = $museum->other_services;
+        }
+        if($museum->partners->count()){
+          $data['partners'] = $museum->partners;
         }
 
         return ['success' => true, 'data' => $data];
@@ -96,7 +115,7 @@ class CashierService
     public function checkCoupon($data)
     {
         $museumId = museumAccessId();
-       
+
         $corporative = $this->getMuseumCorporative($museumId, $data['coupon']);
         if($corporative){
             return ['success' => true, 'data' => [
@@ -139,11 +158,42 @@ class CashierService
     public function showLastTicket()
     {
         $museumId = museumAccessId();
-        
+
         $data = TicketPdf::where('museum_id', $museumId)->orderBy('id', 'DESC')->first();
 
         return $data;
     }
 
-   
+    public function getOtherServiceDetails($otherServiceId)
+    {
+        if($museumId = museumAccessId()) {
+            $otherService = OtherService::with(['item_translations' => function($query) {
+              $query->where('lang', 'am');
+          }])->where('museum_id', $museumId)->find($otherServiceId);
+            return $otherService;
+        }
+
+        session(['errorMessage' => 'Ինչ որ բան այն չէ']);
+
+        return false;
+    }
+    public function getPartnerDetails($partnerId)
+    {
+        if($museumId = museumAccessId()) {
+            $partner = Partner::with('museum.standart_tickets','museum.guide')->where('museum_id', $museumId)->find($partnerId);
+
+            $partner['partner_educational_program'] = EducationalProgram::where('museum_id', $museumId)
+                    ->with('translationAm') // Eager load the Armenian translation
+                    ->get();
+             
+
+            return $partner;
+        }
+
+        session(['errorMessage' => 'Ինչ որ բան այն չէ']);
+
+        return false;
+    }
+
+
 }
