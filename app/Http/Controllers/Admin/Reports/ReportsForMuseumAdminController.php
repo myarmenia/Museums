@@ -55,6 +55,9 @@ class ReportsForMuseumAdminController extends Controller
             return $carry;
           }, ['totalQuantity' => 0, 'totalPrice' => 0]);
         }
+        else{
+            $report_with_cashier = ['totalQuantity' => 0, 'totalPrice' => 0];
+        }
     }
     else{
         $report_with_cashier = ['totalQuantity' => 0, 'totalPrice' => 0];
