@@ -65,13 +65,13 @@ trait EventReports
   public function getEvantStyle($id)
   {
 
-    return Event::find($id)->style;
+    return Event::withTrashed()->find($id)->style;
   }
 
   public function getEvant($id)
   {
 
-    return Event::find($id);
+    return Event::withTrashed()->find($id);
   }
 
 
