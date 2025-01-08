@@ -529,6 +529,18 @@ if (!function_exists('getMuseumAllEvents')) {
     }
 }
 
+
+if (!function_exists('getMuseumAllEventsWithTrashed')) {
+  function getMuseumAllEventsWithTrashed($id)
+  {
+    $events = Event::where('museum_id', $id)->withTrashed()->get();
+
+    return $events;
+
+  }
+}
+
+
 if (!function_exists('getMuseumAllPartners')) {
   function getMuseumAllPartners($id)
   {
