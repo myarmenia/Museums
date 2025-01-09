@@ -186,6 +186,7 @@ trait PurchaseTrait
             $ec_sub_type = $maked_data['sub_type']; // event config sub_type
 
             $maked_data['item_relation_id'] = $data['partner_id'];
+            $maked_data['partner_id'] = $data['partner_id'];
             $maked_data['type'] = 'partner';
             $maked_data['sub_type'] = $ec_type;
             $maked_data['partner_relation_id'] =  $value['id'];
@@ -219,6 +220,7 @@ trait PurchaseTrait
             $e_sub_type = $maked_data['sub_type']; // event sub_type
 
             $maked_data['item_relation_id'] = $data['partner_id'];
+            $maked_data['partner_id'] = $data['partner_id'];
             $maked_data['type'] = 'partner';
             $maked_data['sub_type'] = $e_type;
             $maked_data['partner_relation_id'] = $value['id'];
