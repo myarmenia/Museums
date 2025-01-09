@@ -58,7 +58,7 @@
 <body>
 
     <div class="pdf-tmp">
-      {{-- {{dd($tickets['data'])  }} --}}
+      {{dd($tickets['data'])  }}
 
         @foreach ($tickets['data'] as $key => $item)
 
