@@ -175,7 +175,7 @@ trait PurchaseTrait
           })
           ->sum(); // Суммируем все группы
 
-       
+
         $maked_data = $this->makeEventConfigData($value, $summedQuantities);
         unset($maked_data['id']);
 
@@ -190,9 +190,6 @@ trait PurchaseTrait
             $maked_data['sub_type'] = $ec_type;
             $maked_data['partner_relation_id'] =  $value['id'];
             $maked_data['partner_relation_sub_type'] = $ec_sub_type;
-
-
-            unset($maked_data['partner_id']);
 
           }
 
@@ -226,8 +223,6 @@ trait PurchaseTrait
             $maked_data['sub_type'] = $e_type;
             $maked_data['partner_relation_id'] = $value['id'];
             $maked_data['partner_relation_sub_type'] = $e_sub_type;
-
-            unset($maked_data['partner_id']);
 
           }
 
