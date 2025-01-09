@@ -189,7 +189,9 @@ class CashierController extends Controller
                 'guid' => $purchaseGuid? $purchaseGuid : false,
                 'price' => $qr['price'],
                 'created_at' => $qr['created_at'],
-                'sub_type' => $qr->purchased_item->sub_type
+                'sub_type' => $qr->purchased_item->sub_type,
+                'partner_relation_id' => $qr->purchased_item->partner_relation_id,
+                'partner_relation_sub_type' => $qr->purchased_item->partner_relation_sub_type
             ];
             if(!is_null($qr['path'])){
 
@@ -203,7 +205,7 @@ class CashierController extends Controller
             }
 
             if($qr['type'] =="school" || $qr['type'] == "educational" ||( $qr['type'] == "partner" && $qr->purchased_item->sub_type == "educational") ){
-         
+
               $data['data'][$key]['quantity']= $qr->purchased_item->quantity;
 
             }
@@ -213,6 +215,7 @@ class CashierController extends Controller
 
 
         }
+  
 
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');

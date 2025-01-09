@@ -131,7 +131,7 @@ class PartnerController extends CashierController
                     "quantity" => (int) $item['quantity'],
                     "id"=>$request->partner_id,// գործընկերոջ id
                     "sub_type"=>"educational", //տոմսի տեսակը
-                    "sub_type_id"=>$item['educational_id']
+                    "educational_id"=>$item['educational_id']
                 ];
               }
               if($newItem!=null){
