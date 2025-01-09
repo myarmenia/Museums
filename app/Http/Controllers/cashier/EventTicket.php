@@ -60,6 +60,10 @@ class EventTicket extends CashierController
           $data['purchase_type'] = 'offline';
           $data['status'] = 1;
           $data['items'] = [];
+          if(isset($request->partner_id)){
+            $data['partner_id'] = $request->partner_id;
+          }
+
 
           $haveValue = false;
           $dataForUpdateEventConfigs = [];
@@ -120,7 +124,7 @@ class EventTicket extends CashierController
               "quantity" => (int) $request->guide_price_other
             ];
           }
-
+// dd($data);
           $addTicketPurchase = $this->purchase($data);
 
 
@@ -156,6 +160,10 @@ class EventTicket extends CashierController
           $requestDataValue = array_values($requestData)[0];
           $data['purchase_type'] = 'offline';
           $data['status'] = 1;
+          if(isset($request->partner_id)){
+            $data['partner_id'] = $request->partner_id;
+          }
+
 
           foreach ($requestDataValue as $sub_type => $ticket_quantity) {
             if ($ticket_quantity != null) {

@@ -145,6 +145,7 @@ trait PurchaseTrait
 
 
       if ($value['type'] == 'event-config') {
+        // dd($data);
 
         // $summedQuantities = collect($data['items'])
         //   ->groupBy(function ($q_item) {
@@ -154,13 +155,21 @@ trait PurchaseTrait
         //     return $group->sum('quantity');
         //   }) // Суммирование
         //   ->sum();
+        // dump($value);
+        $dataForSum=$data;
+        // if($value['sub_type']=="guide_price_other" ||$value['sub_type']=="guide_price_am")
+        unset($dataForSum['']);
+        dump($data['items']);
         $summedQuantities = collect($data['items'])
           ->groupBy(function ($q_item) {
-            return $q_item['type'] . '-' . $q_item['id'];
+            return $q_item['type'] . '-' .$q_item['sub_type'] . '-' . $q_item['id'];
           }) // Группировка
           ->filter(function ($group, $key) use ($value) {
             // Фильтруем только те группы, где ID совпадает с $value['id']
-            return str_contains($key, $value['id']);
+            // return str_contains($key, $value['id']);
+            return !in_array($value['sub_type'], ['guid_price_am', 'guid_price_other'])
+            ? str_contains($key, $value['id'])
+            : true;
           })
           ->map(function ($group) {
             // Считаем сумму 'quantity' для каждой группы
@@ -168,7 +177,7 @@ trait PurchaseTrait
           })
           ->sum(); // Общая сумма после фильтрации
 
-
+dump($summedQuantities);
         $maked_data = $this->makeEventConfigData($value, $summedQuantities);
         unset($maked_data['id']);
 
@@ -181,7 +190,7 @@ trait PurchaseTrait
             $maked_data['item_relation_id'] = $data['partner_id'];
             $maked_data['type'] = 'partner';
             $maked_data['sub_type'] = $ec_type;
-            $maked_data['partner_relation_id'] = $data['id'];
+            $maked_data['partner_relation_id'] =  $value['id'];
             $maked_data['partner_relation_sub_type'] = $ec_sub_type;
 
 
@@ -210,18 +219,20 @@ trait PurchaseTrait
 
         if ($maked_data) {
           if (isset($data['partner_id'])) {
+
             $e_type = $maked_data['type'];   // event type
             $e_sub_type = $maked_data['sub_type']; // event sub_type
 
             $maked_data['item_relation_id'] = $data['partner_id'];
             $maked_data['type'] = 'partner';
             $maked_data['sub_type'] = $e_type;
-            $maked_data['partner_relation_id'] = $data['id'];
+            $maked_data['partner_relation_id'] = $value['id'];
             $maked_data['partner_relation_sub_type'] = $e_sub_type;
 
             unset($maked_data['partner_id']);
 
           }
+
 
           $row = $this->addItemInPurchasedItem($maked_data);
         } else {
