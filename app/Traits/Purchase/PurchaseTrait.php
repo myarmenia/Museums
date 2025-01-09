@@ -145,7 +145,6 @@ trait PurchaseTrait
 
 
       if ($value['type'] == 'event-config') {
-        // dd($data);
 
         // $summedQuantities = collect($data['items'])
         //   ->groupBy(function ($q_item) {
@@ -156,28 +155,27 @@ trait PurchaseTrait
         //   }) // Суммирование
         //   ->sum();
         // dump($value);
-        $dataForSum=$data;
-        // if($value['sub_type']=="guide_price_other" ||$value['sub_type']=="guide_price_am")
-        unset($dataForSum['']);
-        dump($data['items']);
+
         $summedQuantities = collect($data['items'])
-          ->groupBy(function ($q_item) {
-            return $q_item['type'] . '-' .$q_item['sub_type'] . '-' . $q_item['id'];
-          }) // Группировка
-          ->filter(function ($group, $key) use ($value) {
-            // Фильтруем только те группы, где ID совпадает с $value['id']
-            // return str_contains($key, $value['id']);
-            return !in_array($value['sub_type'], ['guid_price_am', 'guid_price_other'])
-            ? str_contains($key, $value['id'])
-            : true;
+          ->filter(function ($item) use ($value) {
+            // Фильтруем элементы:
+            // - type должен совпадать с $value['type'] ('event-config')
+            // - id должен совпадать с $value['id']
+            // - sub_type не должен быть 'guid_price_am' или 'guid_price_other'
+            return $item['type'] === $value['type'] &&
+              $item['id'] === $value['id'] &&
+              !in_array($item['sub_type'], ['guide_price_am', 'guide_price_other']);
           })
+          ->groupBy(function ($q_item) {
+            return $q_item['type'] . '-' . $q_item['id'];
+          }) // Группируем оставшиеся элементы
           ->map(function ($group) {
             // Считаем сумму 'quantity' для каждой группы
             return $group->sum('quantity');
           })
-          ->sum(); // Общая сумма после фильтрации
+          ->sum(); // Суммируем все группы
 
-dump($summedQuantities);
+       
         $maked_data = $this->makeEventConfigData($value, $summedQuantities);
         unset($maked_data['id']);
 
