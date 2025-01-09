@@ -18,6 +18,8 @@ class EventTicket extends CashierController
   public function __invoke(Request $request)
   {
     try {
+      // dd($request->all());
+
 
       DB::beginTransaction();
       session(['open_tab' =>'navs-top-event']);
@@ -29,6 +31,7 @@ class EventTicket extends CashierController
       $allNull = false;
 
         foreach ($requestData as $value) {
+
 
             if ((isset($value['standart']) && !is_null($value['standart'])) || (isset($value['discount']) && !is_null($value['discount'])) ||(isset($value['free']) && !is_null($value['free']) )) {
                 $allNull = true;
