@@ -47,8 +47,10 @@
                         <div class="col-2">
                             <select id="multiple-select-event" name="item_relation_id" class="form-select select-2" data-placeholder="Միջոցառում" value="{{ request()->input('item_relation_id') ?? ''}}" >
                                 <option disabled selected>Միջոցառում</option>
-                                @foreach (getMuseumAllEvents(museumAccessId()) as $event)
-                                    <option value="{{$event->id}}" {{ request()->input('item_relation_id') == $event->id ? 'selected' : '' }}>{{$event->translation('am')->name}}</option>
+                                @foreach (getMuseumAllEventsWithTrashed(museumAccessId()) as $event)
+                                    <option value="{{$event->id}}" {{ request()->input('item_relation_id') == $event->id ? 'selected' : '' }} >{{$event->translation('am')->name}}
+                                        <span style="background: red !important"> {{$event->deleted_at != null ? ' ջնջված է' : ''}} </span>
+                                    </option>
                                 @endforeach
                             </select>
                         </div>

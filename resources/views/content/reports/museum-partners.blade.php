@@ -74,7 +74,7 @@
                 </form>
             </div>
 
-            <x-partners-report-result :data="$data"></x-partners-report-result>
+            <x-partners-report-result :data="$data" :totalInfo="$totalInfo"></x-partners-report-result>
 
         </div>
     </div>

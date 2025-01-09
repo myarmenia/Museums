@@ -21,16 +21,19 @@
 
             </tr>
         </thead>
-        @php
-              $total_info = null;
+        {{-- @php
+              $total_info = $totalInfo;
 
               $sums = reportResult($data);
+              // dd($sums);
               $newSums = array_diff_key($sums, ['canceled' => '']);
 
               $total_sums = array_sum(array_column($newSums,'total_price'));
               $total_quantity = array_sum(array_column($newSums,'quantity'));
 
-        @endphp
+              $total_info = $total_sums . ' / ' . $total_quantity;
+
+        @endphp --}}
 
         <tbody>
 
@@ -78,9 +81,9 @@
 <div class="demo-inline-spacing">
     {{ $data->links() }}
 </div>
-@if ($total_info != null)
+@if ($totalInfo != null)
   <div class="d-flex justify-content-end w-100 mt-4">
-      <div>Ընդամենը` {{$total_info}}</div>
+      <div>Ընդամենը` {{ $totalInfo }}</div>
   </div>
 @endif
 

@@ -328,7 +328,7 @@ if (!function_exists('reportResult')) {
   function reportResult($data)
   {
 
-      $keys = ['standart', 'discount', 'free', 'school', 'united',  'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'partner', 'product', 'other_service'];
+      $keys = ['standart', 'discount', 'free', 'school', 'united',  'subscription', 'event', 'event-config', 'corporative', 'educational', 'guide', 'canceled', 'partner', 'product', 'other_service', 'partner_guide_am', 'partner_guide_other'];
       $sums = [];
 
       foreach ($data as $array) {
@@ -528,6 +528,18 @@ if (!function_exists('getMuseumAllEvents')) {
 
     }
 }
+
+
+if (!function_exists('getMuseumAllEventsWithTrashed')) {
+  function getMuseumAllEventsWithTrashed($id)
+  {
+    $events = Event::where('museum_id', $id)->withTrashed()->get();
+
+    return $events;
+
+  }
+}
+
 
 if (!function_exists('getMuseumAllPartners')) {
   function getMuseumAllPartners($id)

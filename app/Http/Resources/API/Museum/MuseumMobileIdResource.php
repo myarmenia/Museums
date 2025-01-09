@@ -18,7 +18,8 @@ class MuseumMobileIdResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $translations = $this->translations[0];
+      
+        $translations = $this->translation(session("languages"));
         $mainPhotoPath = $this->images->where('main', 1)->first()->path;
         $phones = $this->phones->pluck('number')->toArray();
         $links = $this->links->pluck('link', 'name')->toArray();

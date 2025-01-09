@@ -143,5 +143,18 @@ trait PartnersReports
 
   }
 
+  public function totalInfo($data){
+        $sums = reportResult($data);
+        // dd($sums);
+        $newSums = array_diff_key($sums, ['canceled' => '']);
+
+        $total_sums = array_sum(array_column($newSums,'total_price'));
+        $total_quantity = array_sum(array_column($newSums,'quantity'));
+
+        $total_info = $total_sums . ' / ' . $total_quantity;
+
+        return $total_info;
+  }
+
 
 }
