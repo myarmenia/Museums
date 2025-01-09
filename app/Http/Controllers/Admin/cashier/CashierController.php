@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\cashier;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cashier\CashierEventRequest;
+use App\Models\Partner;
 use App\Models\ProductCategory;
 use App\Services\Cashier\CashierService;
 use App\Traits\Purchase\PurchaseTrait;
@@ -42,6 +43,8 @@ class CashierController extends Controller
    public function getEventDetails($id)
    {
       $event = $this->cashierService->getEventDetails($id);
+
+      $event['partners']=Partner::where('museum_id',$event->museum_id)->get();
 
       if ($event) {
         session(['eventId'=>$id]);
