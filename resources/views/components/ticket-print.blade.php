@@ -219,7 +219,6 @@
     </div>
 
     @endforeach
-    {{ dd(777) }}
 
 </body>
 
