@@ -90,7 +90,9 @@
                       $item['sub_type'] != null &&
                       $item['sub_type'] != 'guide_price_am' &&
                       $item['sub_type'] != 'guide_price_other'&&
-                      $item['sub_type'] != 'partner_guide_am')
+                      $item['sub_type'] != 'partner_guide_am'&&
+                      $item['sub_type'] != 'partner_guide_other'
+                      )
                       <div class="text-flex text-margin">
                             <span>Տոմսի Տեսակ/Ticket type - </span>
                             <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ($item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : ($item['sub_type'] == 'educational' ? 'Կրթական/Educational' : 'Անվճար/Free')) }}</span>
