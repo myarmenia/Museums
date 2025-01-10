@@ -270,7 +270,10 @@ var  selectedVal=''
 
 
                                       </tbody></table>`
-                    event_partner = `<table class="table cashier-table">
+
+
+              }
+              event_partner = `<table class="table cashier-table">
                                      <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
                                      <tr class='table-default'>
                                           <td>
@@ -280,8 +283,6 @@ var  selectedVal=''
                                           </td>
                                      </td>
                                      </tbody></table>`
-
-              }
 
               document.querySelector('.event-total-cont').innerHTML = guidTotalCont;
 
@@ -365,7 +366,7 @@ var  selectedVal=''
             console.log(selectedVal)
             // $('#event-select[value=selectedVal]').prop('selected', true);
             $('#event-select option[value='+selectedVal+']').prop('selected', true);
-
+            //creating event partner select options
             const createEventPartnerOption =(id,name) => {
               const option = document.createElement('option')
               option.innerText = name

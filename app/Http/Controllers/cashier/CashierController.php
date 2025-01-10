@@ -15,8 +15,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\EducationalProgram;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-
-
+use App\Models\Partner;
 
 class CashierController extends Controller
 {
@@ -52,6 +51,7 @@ class CashierController extends Controller
 
             $qrs = $ticketQrs;
         }else{
+
             $qrs = TicketQr::whereIn('purchased_item_id', $purchaseItemIds)->get();
 
         }
@@ -62,6 +62,7 @@ class CashierController extends Controller
                 $eventConfig = EventConfig::with('event.item_translations')->find($qrs[0]->item_relation_id);
                 $eventAllConfigs = EventConfig::where('event_id', $eventConfig->event->id)->get();
                 $itemDescription = $eventConfig->event;
+
 
             }elseif ($qrs[0]->type == 'event') {
                 $event = Event::where('id', $qrs[0]->item_relation_id)->get();
@@ -142,7 +143,8 @@ class CashierController extends Controller
               }
             }
           }
-
+          // dd($qr);
+         
 
 
             if($qr['type'] == 'event-config'){
@@ -191,8 +193,11 @@ class CashierController extends Controller
                 'created_at' => $qr['created_at'],
                 'sub_type' => $qr->purchased_item->sub_type,
                 'partner_relation_id' => $qr->purchased_item->partner_relation_id,
-                'partner_relation_sub_type' => $qr->purchased_item->partner_relation_sub_type
+                'partner_relation_sub_type' => $qr->purchased_item->partner_relation_sub_type,
+
             ];
+            // dd($data);
+
             if(!is_null($qr['path'])){
 
               $data['data'][$key]['photo'] = Storage::disk('local')->path($qr['path']);
@@ -215,7 +220,7 @@ class CashierController extends Controller
 
 
         }
-  
+
 
 
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
