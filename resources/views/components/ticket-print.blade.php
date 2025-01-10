@@ -97,7 +97,7 @@
                       </div>
                     @endif
                 @else
-               
+
                   <div class="text-flex text-margin">
                       <span>Տոմսի Տեսակ/Ticket type - </span>
                       <span>&nbsp;
@@ -219,7 +219,7 @@
     </div>
 
     @endforeach
-{{ dd(77777) }}
+
 </body>
 
 </html>
