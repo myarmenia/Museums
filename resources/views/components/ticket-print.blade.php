@@ -85,8 +85,55 @@
                     <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }} /
                         {{ getTranslateTicketTitl_en($item['type']) }}</span>
                 </div>
+                @if ($item['partner_relation_sub_type'] == null)
+                    @if (isset($item['sub_type']) &&
+                      $item['sub_type'] != null &&
+                      $item['sub_type'] != 'guide_price_am' &&
+                      $item['sub_type'] != 'guide_price_other'&&
+                      $item['sub_type'] != 'partner_guide_am')
+                      <div class="text-flex text-margin">
+                            <span>Տոմսի Տեսակ/Ticket type - </span>
+                            <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ($item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : ($item['sub_type'] == 'educational' ? 'Կրթական/Educational' : 'Անվճար/Free')) }}</span>
+                      </div>
+                    @endif
+                @else
 
-                @if (isset($item['sub_type']) &&
+                  <div class="text-flex text-margin">
+                      <span>Տոմսի Տեսակ/Ticket type - </span>
+                      <span>&nbsp;
+                        @if ($item['sub_type'] == 'event-config')
+                              @php
+                                  $output = '';
+                                  if ($item['partner_relation_sub_type'] == 'standard') {
+                                      $output = 'Միջոցառում / Event  /Ստանդարտ / Standart';
+                                  } elseif ($item['partner_relation_sub_type'] == 'discount') {
+                                      $output = 'Միջոցառում / Event / Զեղչված / Discount';
+                                  } else {
+                                      $output = 'Միջոցառում / Event / Անվճար / Free';
+                                  }
+                              @endphp
+                              {{ $output }}
+                        @elseif ($item['sub_type'] == 'event')
+                            @php
+                                $output = '';
+                                if ($item['partner_relation_sub_type'] == 'standard') {
+                                    $output = 'Ցուցադրություն / Exhibition / Ստանդարտ / Standart';
+                                } elseif ($item['partner_relation_sub_type'] == 'discount') {
+                                    $output = 'Ցուցադրություն / Exhibition / Զեղչված / Discount';
+                                } else {
+                                  $output = 'Ցուցադրություն / Exhibition / Անվճար / Free';
+                                }
+                            @endphp
+                            {{ $output }}
+                        @endif
+
+
+                      </span>
+                  </div>
+
+                @endif
+
+                {{-- @if (isset($item['sub_type']) &&
                         $item['sub_type'] != null &&
                         $item['sub_type'] != 'guide_price_am' &&
                         $item['sub_type'] != 'guide_price_other'&&
@@ -95,7 +142,7 @@
                         <span>Տոմսի Տեսակ/Ticket type - </span>
                         <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ($item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : ($item['sub_type'] == 'educational' ? 'Կրթական/Educational' : 'Անվճար/Free')) }}</span>
                     </div>
-                @endif
+                @endif --}}
                 @if ($item['description_educational_programming'])
                     <div class="text-flex text-margin">
                         <span>Անվանում/Name - </span>
