@@ -9,6 +9,7 @@ trait PartnersReports
   public function partners_report($data, $model)
   {
 
+    $currentYear = now()->year;
 
     $type = ['partner', 'guide'];
     $sub_type = ['partner_guide_am', 'partner_guide_other'];
@@ -21,29 +22,29 @@ trait PartnersReports
       return $value !== null && $value !== 'null';
     });
 
-    $report = $model->where(function ($query) {
+    $report = $model->where(function ($query) use ($currentYear) {
                           $query->where('type', 'partner')
-                            ->whereNotNull('sub_type');
+                            ->whereNotNull('sub_type')
+                            ->whereYear('created_at', $currentYear);
                         })
-                        ->orWhere(function ($query) use ($sub_type) {
+                        ->orWhere(function ($query) use ($sub_type, $currentYear) {
                           $query->where('type', 'guide')
-                            ->whereIn('sub_type', $sub_type);
+                            ->whereIn('sub_type', $sub_type)
+                            ->whereYear('created_at', $currentYear);
                         })
-                        ->where('returned_quantity', 0)
                         ->reportFilter($data); //  purchased_items
 
 
-    // $report_ids = $report->pluck('id');
-    // $canceled = TicketQr::where('status', 'returned')->where('type', 'partner')->whereIn('purchased_item_id', $report_ids);
-
-    $canceled = $model->where(function ($query) use ($sub_type) {
-                  $query->where(function ($q) {
+    $canceled = $model->where(function ($query) use ($sub_type, $currentYear) {
+                  $query->where(function ($q) use ($currentYear) {
                     $q->where('type', 'partner')
-                      ->whereNotNull('sub_type');
+                      ->whereNotNull('sub_type')
+                      ->whereYear('created_at', $currentYear);
                   })
-                    ->orWhere(function ($q) use ($sub_type) {
+                    ->orWhere(function ($q) use ($sub_type, $currentYear) {
                       $q->where('type', 'guide')
-                        ->whereIn('sub_type', $sub_type);
+                        ->whereIn('sub_type', $sub_type)
+                        ->whereYear('created_at', $currentYear);
                     });
                 })
                 ->where('returned_quantity', '>', 0)
@@ -51,9 +52,7 @@ trait PartnersReports
 
     $groupedData = $this->partners_report_fin_quant($report, $canceled);
 
-    // dd($groupedData);
     return $groupedData;
-
 
   }
 
@@ -79,7 +78,9 @@ trait PartnersReports
 
       }
       else{
-        $report = $report
+
+
+      $report = $report
           ->groupBy('partner_id', 'type', 'sub_type')
           ->select('partner_id', \DB::raw('MAX(created_at) as date'), \DB::raw('MAX(type) as type'), \DB::raw('MAX(sub_type) as sub_type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
           ->get();
@@ -97,7 +98,6 @@ trait PartnersReports
       $item['type'] = 'canceled';
       return $item;
     }, $canceled);
-
 
 
     // return $this->partnersGroupByPartnerId(array_merge($report));
@@ -145,7 +145,7 @@ trait PartnersReports
 
   public function totalInfo($data){
         $sums = reportResult($data);
-        // dd($sums);
+
         $newSums = array_diff_key($sums, ['canceled' => '']);
 
         $total_sums = array_sum(array_column($newSums,'total_price'));

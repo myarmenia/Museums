@@ -45,6 +45,11 @@
         <li class="list-group-item">Ընդամենը քանակ - {{$data['guide_price_other']['quantity'] ?? 0}} </li>
         <li class="list-group-item">Ընդամենը - {{$data['guide_price_other']['total_price'] ?? 0}} դրամ</li>
       </ul>
+      <ul class="list-group list-group-flush mt-2">
+        <li class="list-group-item"><h5> Գործընկեր</h5></li>
+        <li class="list-group-item">Ընդամենը քանակ - {{$data['partner']['quantity'] ?? 0}} </li>
+        <li class="list-group-item">Ընդամենը - {{$data['partner']['total_price'] ?? 0}} դրամ</li>
+      </ul>
       <div class="card-body">
         <h4 class="card-link">Ընդամենը -  {{$total_price}} դրամ</h4>
         <h4  class="card-link">Ընդամենը քանակ - {{$total_quantity}}</h4>
