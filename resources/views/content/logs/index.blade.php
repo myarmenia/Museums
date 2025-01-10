@@ -91,7 +91,7 @@
                                 <td>{{ __("logs.$log->type") }}</td>
                                 <td>{{ __("db_table.$log->tb_name") }}</td>
                                 <td>{{ $log->data }}</td>
-                                <td>{{ $log->created_at->format('d-m-Y')}}</td>
+                                <td>{{ $log->created_at->format('d-m-Y H:i')}}</td>
 
                             </tr>
                         @endforeach
