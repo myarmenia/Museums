@@ -28,8 +28,10 @@ trait QrTokenTrait
           'guide_price_other',
         ];
 
+
         $hasTicket='';
         $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->get();
+        // dd($allPurchases);
         $purchasItemForOtherService = $allPurchases[0];
 
         if($purchasItemForOtherService->type=="other_service" && !$purchasItemForOtherService->other_service->ticket ){
@@ -39,15 +41,37 @@ trait QrTokenTrait
         try {
             DB::beginTransaction();
 
-                $allPurchasesForQr = PurchasedItem::where('purchase_id', $purchaseId)
+                // $allPurchasesForQr = PurchasedItem::where('purchase_id', $purchaseId)
+                // ->whereNotIn('type', $unusedTypes)
+                // ->where(function ($query) use ($unusedSubTypes) {
+                //   $query->whereNotIn('sub_type', $unusedSubTypes)
+                //     ->orWhereNull('sub_type');
+                // })
+                // ->get();
+
+
+
+                $allPurchasesForQr = PurchasedItem::query()
+                ->where('purchase_id', $purchaseId)
                 ->whereNotIn('type', $unusedTypes)
-                ->where(function ($query) use ($unusedSubTypes) {
-                  $query->whereNotIn('sub_type', $unusedSubTypes)
-                    ->orWhereNull('sub_type');
+                ->where(function ($query) use($unusedSubTypes) {
+                    $query->whereNull('sub_type')
+                          ->orWhereNotIn('sub_type', $unusedSubTypes);
+                })
+                ->where(function ($query) use($unusedSubTypes) {
+                    $query->whereNotIn('sub_type', ['event', 'event-config'])
+                          ->orWhere(function ($query) use($unusedSubTypes) {
+                              $query->whereIn('sub_type', ['event', 'event-config'])
+                                    ->where(function ($query) use ($unusedSubTypes) {
+                                        $query->whereNull('partner_relation_sub_type')
+                                              ->orWhereNotIn('partner_relation_sub_type', $unusedSubTypes);
+                                    });
+                          });
                 })
                 ->get();
 
             $purchasesKeys = [];
+            // dd($allPurchasesForQr);
 
             foreach ($allPurchasesForQr as $key => $item) {
 
@@ -65,7 +89,7 @@ trait QrTokenTrait
             if(isset($purchasesKeys['school'])){
               $purchasesKeys['school']=1;
             }
-           
+          //  dd($purchasesKeys);
             $data = $this->getReqQrToken($url, $purchasesKeys);
 
             $addedItemsToken = [];
