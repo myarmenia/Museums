@@ -64,13 +64,13 @@
 
 
 
-        @if ($item['type']=="guide"||($item['type']=="event" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))||
-        ($item['type']=="event-config" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))
-       )
-           <div class="img" style="margin-bottom:20px;width:70%">
-               <img src="{{('assets/img/logos/museum-logo.png')}}" alt="museum-log" id="logo">
-           </div>
-       @endif
+            @if ($item['type']=="guide"||($item['type']=="event" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))||
+            ($item['type']=="event-config" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))
+          )
+              <div class="img" style="margin-bottom:20px;width:70%">
+                  <img src="{{('assets/img/logos/museum-logo.png')}}" alt="museum-log" id="logo">
+              </div>
+          @endif
             @if (isset($item['photo']))
                 <div class="img"><img src="{{ $item['photo'] }}" class="qr-code"></div>
             @endif
@@ -221,7 +221,7 @@
     </div>
 
     @endforeach
-
+{{-- {{ dd(77) }} --}}
 </body>
 
 </html>

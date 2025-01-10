@@ -134,7 +134,7 @@ class EventTicket extends CashierController
                 $config_value['event_config']->update(['visitors_quantity' => $config_value['visitor_quantity']]);
             }
 
-
+// dd($addTicketPurchase);
             $addQr = $this->getTokenQr($addTicketPurchase->id);
 
             if ($addQr) {
@@ -196,6 +196,7 @@ class EventTicket extends CashierController
 
 
           $addTicketPurchase = $this->purchase($data);
+          // dd($addTicketPurchase);
 
           if ($addTicketPurchase) {
             $addQr = $this->getTokenQr($addTicketPurchase->id);
