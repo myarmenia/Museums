@@ -58,14 +58,14 @@
 <body>
 
     <div class="pdf-tmp">
-      {{-- {{dd($tickets['data'])  }} --}}
+      {{dd($tickets['data'])  }}
 
         @foreach ($tickets['data'] as $key => $item)
 
 
 
             @if ($item['type']=="guide"||($item['type']=="event" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))||
-            ($item['type']=="event-config" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))
+            ($item['type']=="event-config" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other')) || ($item['partner_relation_sub_type']=='guide_price_am'|| $item['partner_relation_sub_type']=='guide_price_other')
           )
               <div class="img" style="margin-bottom:20px;width:70%">
                   <img src="{{('assets/img/logos/museum-logo.png')}}" alt="museum-log" id="logo">
@@ -212,6 +212,13 @@
                         <span>էքսկուրսավար/Guide - </span>
                         <span>{{ $item['price'] }}դր․/AMD</span>
                     </div>
+                @endif
+                @if ($item['partner_relation_sub_type'] == 'guide_price_other' || $item['partner_relation_sub_type'] == 'guide_price_am')
+
+                  <div class="text-flex text-margin">
+                      <span>էքսկուրսավար/Guide - </span>
+                      <span>{{ $item['price'] }}դր․/AMD</span>
+                  </div>
                 @endif
                 <div class="text-flex text-margin">
                     <span>Ստեղծվել է/Created - </span>
