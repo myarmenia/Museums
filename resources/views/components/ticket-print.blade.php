@@ -90,7 +90,9 @@
                       $item['sub_type'] != null &&
                       $item['sub_type'] != 'guide_price_am' &&
                       $item['sub_type'] != 'guide_price_other'&&
-                      $item['sub_type'] != 'partner_guide_am')
+                      $item['sub_type'] != 'partner_guide_am'&&
+                      $item['sub_type'] != 'partner_guide_other'
+                      )
                       <div class="text-flex text-margin">
                             <span>Տոմսի Տեսակ/Ticket type - </span>
                             <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ($item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : ($item['sub_type'] == 'educational' ? 'Կրթական/Educational' : 'Անվճար/Free')) }}</span>
@@ -104,7 +106,7 @@
                         @if ($item['sub_type'] == 'event-config')
                               @php
                                   $output = '';
-                                  if ($item['partner_relation_sub_type'] == 'standard') {
+                                  if ($item['partner_relation_sub_type'] == 'standart') {
                                       $output = 'Միջոցառում / Event  /Ստանդարտ / Standart';
                                   } elseif ($item['partner_relation_sub_type'] == 'discount') {
                                       $output = 'Միջոցառում / Event / Զեղչված / Discount';
@@ -116,7 +118,7 @@
                         @elseif ($item['sub_type'] == 'event')
                             @php
                                 $output = '';
-                                if ($item['partner_relation_sub_type'] == 'standard') {
+                                if ($item['partner_relation_sub_type'] == 'standart') {
                                     $output = 'Ցուցադրություն / Exhibition / Ստանդարտ / Standart';
                                 } elseif ($item['partner_relation_sub_type'] == 'discount') {
                                     $output = 'Ցուցադրություն / Exhibition / Զեղչված / Discount';
