@@ -3,6 +3,7 @@ namespace App\Traits\Reports;
 use App\Models\Event;
 use App\Models\EventConfig;
 use App\Models\TicketQr;
+use DB;
 
 trait EventReports
 {
@@ -35,13 +36,24 @@ trait EventReports
       return $value !== null && $value !== 'null';
     });
 
-    $report = $model->where('type', $type)->where('returned_quantity', 0)->reportFilter($data); //  purchased_items
+    $report = $model->where('type', $type)->reportFilter($data); //  purchased_items
+
+    $event_report_partner = $this->event_report_partner($model, $data, $type);
+
 
     $groupedData = $this->event_report_fin_quant($report);
+    $groupedData = reset($groupedData);
+
+
+    if ($event_report_partner && $groupedData) {
+      $groupedData['partner']['total_price'] = $event_report_partner->total_price;
+      $groupedData['partner']['quantity'] = $event_report_partner->quantity;
+
+    }
 
 
     return [
-      'data' => reset($groupedData),
+      'data' => $groupedData,
       'item' => $this->getEvant($event_id)
     ];
 
@@ -52,7 +64,7 @@ trait EventReports
 
     $report = $report
       ->groupBy('museum_id', 'type', 'sub_type')
-      ->select('museum_id', \DB::raw('MAX(type) as type'), \DB::raw('MAX(sub_type) as sub_type'), \DB::raw('SUM(total_price - returned_total_price) as total_price'), \DB::raw('SUM(quantity - returned_quantity) as quantity'))
+      ->select('museum_id', DB::raw('MAX(type) as type'), DB::raw('MAX(sub_type) as sub_type'), DB::raw('SUM(total_price - returned_total_price) as total_price'), DB::raw('SUM(quantity - returned_quantity) as quantity'))
       ->get();
 
 
@@ -60,6 +72,24 @@ trait EventReports
 
     return $this->eventGroupByMuseumId(array_merge($report));
 
+  }
+
+  public function event_report_partner($model, $data, $type)
+  {
+    $data['partner_relation_id'] = $data['item_relation_id'];
+    unset($data['item_relation_id']);
+
+    $event_report_partner = $model
+      ->where('type', 'partner')->where('sub_type', $type)->reportFilter($data); //  purchased_items
+
+    $totals = $event_report_partner
+      ->select(
+        DB::raw('SUM(total_price - returned_total_price) as total_price'),
+        DB::raw('SUM(quantity - returned_quantity) as quantity')
+      )
+      ->first();
+
+    return $totals;
   }
 
   public function getEvantStyle($id)
