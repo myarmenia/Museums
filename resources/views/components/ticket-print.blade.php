@@ -104,7 +104,7 @@
                         @if ($item['sub_type'] == 'event-config')
                               @php
                                   $output = '';
-                                  if ($item['partner_relation_sub_type'] == 'standard') {
+                                  if ($item['partner_relation_sub_type'] == 'standart') {
                                       $output = 'Միջոցառում / Event  /Ստանդարտ / Standart';
                                   } elseif ($item['partner_relation_sub_type'] == 'discount') {
                                       $output = 'Միջոցառում / Event / Զեղչված / Discount';
@@ -116,7 +116,7 @@
                         @elseif ($item['sub_type'] == 'event')
                             @php
                                 $output = '';
-                                if ($item['partner_relation_sub_type'] == 'standard') {
+                                if ($item['partner_relation_sub_type'] == 'standart') {
                                     $output = 'Ցուցադրություն / Exhibition / Ստանդարտ / Standart';
                                 } elseif ($item['partner_relation_sub_type'] == 'discount') {
                                     $output = 'Ցուցադրություն / Exhibition / Զեղչված / Discount';
@@ -219,6 +219,7 @@
     </div>
 
     @endforeach
+    {{ dd(777) }}
 
 </body>
 
