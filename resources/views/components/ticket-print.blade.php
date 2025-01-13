@@ -102,8 +102,7 @@
 
 
                   <div class="text-flex text-margin">
-                      <span>Տոմսի Տեսակ/Ticket type - </span>
-                      <span>&nbsp;
+
                         @if ($item['sub_type'] == 'event-config' &&($item['partner_relation_sub_type']!="guide_price_am" && $item['partner_relation_sub_type']!="guide_price_other"))
 
                               @php
@@ -116,7 +115,10 @@
                                       $output = 'Միջոցառում / Event / Անվճար / Free';
                                   }
                               @endphp
+                           <span>Տոմսի Տեսակ/Ticket type - </span>
+                           <span>&nbsp;
                               {{ $output }}
+                           </span>
                         @elseif ($item['sub_type'] == 'event' &&($item['partner_relation_sub_type']!="guide_price_am" && $item['partner_relation_sub_type']!="guide_price_other"))
 
                             @php
@@ -129,7 +131,8 @@
                                   $output = 'Ցուցադրություն / Exhibition / Անվճար / Free';
                                 }
                             @endphp
-                            {{ $output }}
+                           <span>Տոմսի Տեսակ/Ticket type - </span>
+                           <span>&nbsp; {{ $output }}</span>
                         @endif
 
 
@@ -222,6 +225,7 @@
     </div>
 
     @endforeach
+    {{ dd(777) }}
 
 </body>
 
