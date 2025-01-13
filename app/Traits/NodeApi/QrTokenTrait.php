@@ -72,18 +72,22 @@ trait QrTokenTrait
                 foreach($allPurchases as $item){
 
                   if(!in_array($item->type,$unusedTypes)){
+
                     if($item->partner_relation_sub_type==null){
-                      // dd($item->sub_type);
+
+
                       if(!in_array($item->sub_type,$unusedSubTypes)){
 
 
                         array_push($allPurchasesForQr,$item);
+
                       }
 
-                    }else{
-                      // dd($item->sub_type,"else");
-                      if(!in_array($item->sub_type,['event', 'event-config'])){
-                        dd($item);
+                    }
+                    else if($item->partner_relation_sub_type!="guide_price_am" && $item->partner_relation_sub_type!="guide_price_other"){
+
+                      if(in_array($item->sub_type,['event', 'event-config'])){
+
                         array_push($allPurchasesForQr,$item);
                       }
 
@@ -96,7 +100,7 @@ trait QrTokenTrait
 
 
             $purchasesKeys = [];
-            // dd($allPurchasesForQr);
+        
 
             foreach ($allPurchasesForQr as $key => $item) {
 
