@@ -50,24 +50,7 @@ trait QrTokenTrait
                 // ->get();
 
 
-                // $allPurchasesForQr = PurchasedItem::query()
-                // ->where('purchase_id', $purchaseId)
-                // ->whereNotIn('type', $unusedTypes)
-                // ->where(function ($query) use($unusedSubTypes) {
-                //     $query->whereNull('sub_type')
-                //           ->orWhereNotIn('sub_type', $unusedSubTypes);
-                // })
-                // ->where(function ($query) use($unusedSubTypes) {
-                //     $query->whereNotIn('sub_type', ['event', 'event-config'])
-                //           ->orWhere(function ($query) use($unusedSubTypes) {
-                //               $query->whereIn('sub_type', ['event', 'event-config'])
-                //                     ->where(function ($query) use ($unusedSubTypes) {
-                //                         $query->whereNull('partner_relation_sub_type')
-                //                               ->orWhereNotIn('partner_relation_sub_type', $unusedSubTypes);
-                //                     });
-                //           });
-                // })
-                // ->get();
+               
                 $allPurchasesForQr=[];
                 foreach($allPurchases as $item){
 
@@ -100,7 +83,7 @@ trait QrTokenTrait
 
 
             $purchasesKeys = [];
-        
+
 
             foreach ($allPurchasesForQr as $key => $item) {
 
