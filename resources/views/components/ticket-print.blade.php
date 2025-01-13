@@ -104,8 +104,8 @@
                   <div class="text-flex text-margin">
                       <span>Տոմսի Տեսակ/Ticket type - </span>
                       <span>&nbsp;
-                        @if ($item['sub_type'] == 'event-config')
-                        {{-- {{ dd($item['sub_type'], $item['partner_relation_sub_type']) }} --}}
+                        @if ($item['sub_type'] == 'event-config' &&($item['partner_relation_sub_type']!="guide_price_am" && $item['partner_relation_sub_type']!="guide_price_other"))
+
                               @php
                                   $output = '';
                                   if ($item['partner_relation_sub_type'] == 'standart') {
@@ -117,8 +117,8 @@
                                   }
                               @endphp
                               {{ $output }}
-                        @elseif ($item['sub_type'] == 'event')
-                        {{-- {{ dd(8888) }} --}}
+                        @elseif ($item['sub_type'] == 'event' &&($item['partner_relation_sub_type']!="guide_price_am" && $item['partner_relation_sub_type']!="guide_price_other"))
+
                             @php
                                 $output = '';
                                 if ($item['partner_relation_sub_type'] == 'standart') {
@@ -138,16 +138,7 @@
 
                 @endif
 
-                {{-- @if (isset($item['sub_type']) &&
-                        $item['sub_type'] != null &&
-                        $item['sub_type'] != 'guide_price_am' &&
-                        $item['sub_type'] != 'guide_price_other'&&
-                        $item['sub_type'] != 'partner_guide_am')
-                    <div class="text-flex text-margin">
-                        <span>Տոմսի Տեսակ/Ticket type - </span>
-                        <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ($item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : ($item['sub_type'] == 'educational' ? 'Կրթական/Educational' : 'Անվճար/Free')) }}</span>
-                    </div>
-                @endif --}}
+
                 @if ($item['description_educational_programming'])
                     <div class="text-flex text-margin">
                         <span>Անվանում/Name - </span>
@@ -231,7 +222,7 @@
     </div>
 
     @endforeach
-{{-- {{ dd(77) }} --}}
+
 </body>
 
 </html>
