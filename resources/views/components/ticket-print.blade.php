@@ -58,7 +58,7 @@
 <body>
 
     <div class="pdf-tmp">
-      {{dd($tickets['data'])  }}
+      {{-- {{dd($tickets['data'])  }} --}}
 
         @foreach ($tickets['data'] as $key => $item)
 
@@ -100,10 +100,12 @@
                     @endif
                 @else
 
+
                   <div class="text-flex text-margin">
                       <span>Տոմսի Տեսակ/Ticket type - </span>
                       <span>&nbsp;
                         @if ($item['sub_type'] == 'event-config')
+                        {{-- {{ dd($item['sub_type'], $item['partner_relation_sub_type']) }} --}}
                               @php
                                   $output = '';
                                   if ($item['partner_relation_sub_type'] == 'standart') {
@@ -116,6 +118,7 @@
                               @endphp
                               {{ $output }}
                         @elseif ($item['sub_type'] == 'event')
+                        {{-- {{ dd(8888) }} --}}
                             @php
                                 $output = '';
                                 if ($item['partner_relation_sub_type'] == 'standart') {
