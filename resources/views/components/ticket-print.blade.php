@@ -65,7 +65,7 @@
 
 
             @if ($item['type']=="guide"||($item['type']=="event" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))||
-            ($item['type']=="event-config" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))
+            ($item['type']=="event-config" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other')) || ($item['partner_relation_sub_type']=='guide_price_am'|| $item['partner_relation_sub_type']=='guide_price_other')
           )
               <div class="img" style="margin-bottom:20px;width:70%">
                   <img src="{{('assets/img/logos/museum-logo.png')}}" alt="museum-log" id="logo">
@@ -100,10 +100,12 @@
                     @endif
                 @else
 
+
                   <div class="text-flex text-margin">
                       <span>Տոմսի Տեսակ/Ticket type - </span>
                       <span>&nbsp;
                         @if ($item['sub_type'] == 'event-config')
+                        {{-- {{ dd($item['sub_type'], $item['partner_relation_sub_type']) }} --}}
                               @php
                                   $output = '';
                                   if ($item['partner_relation_sub_type'] == 'standart') {
@@ -116,6 +118,7 @@
                               @endphp
                               {{ $output }}
                         @elseif ($item['sub_type'] == 'event')
+                        {{-- {{ dd(8888) }} --}}
                             @php
                                 $output = '';
                                 if ($item['partner_relation_sub_type'] == 'standart') {
@@ -212,6 +215,13 @@
                         <span>էքսկուրսավար/Guide - </span>
                         <span>{{ $item['price'] }}դր․/AMD</span>
                     </div>
+                @endif
+                @if ($item['partner_relation_sub_type'] == 'guide_price_other' || $item['partner_relation_sub_type'] == 'guide_price_am')
+
+                  <div class="text-flex text-margin">
+                      <span>էքսկուրսավար/Guide - </span>
+                      <span>{{ $item['price'] }}դր․/AMD</span>
+                  </div>
                 @endif
                 <div class="text-flex text-margin">
                     <span>Ստեղծվել է/Created - </span>
