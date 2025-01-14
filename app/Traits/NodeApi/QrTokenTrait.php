@@ -50,7 +50,7 @@ trait QrTokenTrait
                 // ->get();
 
 
-               
+//==== in $allPurchasesForQr array we gethering all purchase items except guide, for guide there is no need generate qr token
                 $allPurchasesForQr=[];
                 foreach($allPurchases as $item){
 
@@ -81,29 +81,26 @@ trait QrTokenTrait
                   }
                 }
 
-
+// ============creating $purchasesKeys array for getting qr tocken for every ticket type
             $purchasesKeys = [];
 
 
             foreach ($allPurchasesForQr as $key => $item) {
 
-
                 $purchasesKeys[$item->type] = array_key_exists($item->type, $purchasesKeys)
                 ? $purchasesKeys[$item->type] + $item->quantity
                 : $item->quantity;
 
-
-
-
             }
+            // dd($purchasesKeys);
 
 
             if(isset($purchasesKeys['school'])){
               $purchasesKeys['school']=1;
             }
-          //  dd($purchasesKeys);
+          //  =========  $data return us array with ticket types keys and every key has array with  "unique_token", "qr_path"
             $data = $this->getReqQrToken($url, $purchasesKeys);
-
+// dd($data);
             $addedItemsToken = [];
 
             foreach ($allPurchases as $key => $item) {
