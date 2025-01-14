@@ -100,4 +100,16 @@ class CashierController extends Controller
         return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
    }
 
+    public function index_with_hdm(){
+        $allData = $this->cashierService->getAllData();
+
+        if ($allData['success']) {
+          $data = $allData['data'];
+          //  dd($data);
+          return view('content.cashier.create-with-hdm', compact('data'));
+        }
+
+        return redirect()->route('tickets_show');
+    }
+
 }
