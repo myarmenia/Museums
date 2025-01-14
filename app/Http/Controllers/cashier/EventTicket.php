@@ -202,6 +202,7 @@ class EventTicket extends CashierController
             $addQr = $this->getTokenQr($addTicketPurchase->id);
 
             if ($addQr) {
+              // dd($addQr);
               $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
               session(['success' => 'Տոմսերը ավելացված է']);
 
