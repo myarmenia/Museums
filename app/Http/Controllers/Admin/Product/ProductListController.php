@@ -7,6 +7,7 @@ use App\Models\Museum;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductListController extends Controller
 {
@@ -15,7 +16,10 @@ class ProductListController extends Controller
 
 	public function __construct(Product $model)
 	{
+    // dd(Auth::user());
     $this->middleware('role:super_admin|museum_admin|content_manager|manager|general_manager');
+    // dd($this->middleware('role:super_admin|museum_admin|content_manager|manager|general_manager'));
+
 
 		$this->model = $model;
 	}
@@ -26,12 +30,14 @@ class ProductListController extends Controller
 
       $data = $this->model
                   ->filter($request->all());
+      // dd($data->get());
 
-      if(request()->user()->roles[0]->name=="museum_admin" || request()->user()->roles[0]->name=='content_manager'){
-
+// dd(request()->user()->roles[0]);
+      if(!Auth::user()->hasRole('super_admin') && !Auth::user()->hasRole('general_manager')){
         $data=$data->where('museum_id',museumAccessId());
 
       }
+     
         $data=$data
         ->orderBy('id', 'DESC')->paginate(10)->withQueryString();
         return view('content.product.index', [
