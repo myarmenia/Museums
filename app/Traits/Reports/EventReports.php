@@ -45,7 +45,7 @@ trait EventReports
     $groupedData = reset($groupedData);
 
 
-    if ($event_report_partner && $groupedData) {
+    if ($event_report_partner) {
       $groupedData['partner']['total_price'] = $event_report_partner->total_price;
       $groupedData['partner']['quantity'] = $event_report_partner->quantity;
 
