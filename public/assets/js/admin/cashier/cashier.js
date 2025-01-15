@@ -666,6 +666,9 @@ var partnerVal=''
 
 
 
+
+
+
 });
 // ======================= partner ticket type count ================
   $(document).on('input', '.partner_ticket_type', function () {
@@ -734,6 +737,17 @@ $('#partner_education_program').on('change',function(){
     $('#partner_education_program_quantity').attr('price', selectedOption.attr('price'));
 })
 }
+
+
+$('.casheRadio').on('click',function(){
+
+  $('.casheRadio').attr('checked', false);
+  $(this).attr('checked', true);
+
+  $(this).parent().parent().parent().find('button[type="submit"]').removeAttr('disabled');
+})
+
+
 
 
 
