@@ -47,7 +47,7 @@ trait PrintReceiptTrait
 
         $print = $hdm->socket($jsonBody, '04');
 
-        dd($print);
+        // dd($print);
   }
 
 

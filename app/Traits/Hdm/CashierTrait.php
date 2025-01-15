@@ -6,8 +6,9 @@ use App\HDM\HDM;
 
 trait CashierTrait
 {
-  public function login()
+  public function cLogin()
   {
+
       $ip = '192.168.1.22'; // ՀԴՄ սարքի IP հասցեն
       $port = 1025; // ՀԴՄ սարքի պորտը
       $hdmPassword = "96yQDWay";
