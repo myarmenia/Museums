@@ -11,7 +11,7 @@ use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class BuyTicketController extends CashierController
+class BuyTicketControllerTest extends CashierController
 {
     use PurchaseTrait;
     use QrTokenTrait;
@@ -25,7 +25,7 @@ class BuyTicketController extends CashierController
             session(['open_tab' =>'navs-top-home']);
 
             $requestData = $request->all();
-            // unset($requestData['cashe']);
+            unset($requestData['cashe']);
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
             $data['items'] = [];
@@ -112,12 +112,12 @@ class BuyTicketController extends CashierController
 
 
                 if ($addTicketPurchase) {
-
+                  
 
                     $addQr = $this->getTokenQr($addTicketPurchase->id);
 
                     if ($addQr) {
-
+                      $this->PrintHdm($addTicketPurchase->id);
 
                         $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
 
