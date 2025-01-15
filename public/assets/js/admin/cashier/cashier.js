@@ -217,6 +217,7 @@ var  selectedVal=''
           url: '/cashier/get-event-details/' + selectedId,
           cache: false,
           success: function (data) {
+            console.log(data);
             console.log(data.style + ' ///////')
             $('#event-total').attr('style', 'display: none !important ');
             $('#event-save').attr('style', 'display: none !important');
@@ -232,6 +233,7 @@ var  selectedVal=''
               $('#event-save').attr('style', 'display: block !important; display:flex !important; margin-top: 1rem !important; justify-content: flex-end !important;');
               let guidTotalCont = ''
               let guidCont = ''
+              let event_partner = ''
               if (data.guide_price_am || data.guide_price_other){
                     guidTotalCont = `<div class="me-2">
                                           <span class="remove-value total_event_guid_quantity" id="git-total-count">0</span>
@@ -240,6 +242,7 @@ var  selectedVal=''
 
                 guidCont = `<table class="table cashier-table">
                               <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
+
                                   ${data.guide_price_am ?
                                       `<tr class='table-default'>
                                           <td>Էքսկուրսավար(հայերեն)</td>
@@ -258,9 +261,28 @@ var  selectedVal=''
                                                       class="form-control form-control-validate w-100 event_guid" id="guide_price_other" name="guide_price_other">
                                               </td>
                                               <td class="remove-value event_guide_row_price ticket_price" id='event_guide_price_other'>0</td>
-                                          </tr>` : ``}
-                                      </tbody></dable>`
+                                          </tr>
+
+
+
+                                          ` : ``}
+
+
+
+                                      </tbody></table>`
+
+
               }
+              event_partner = `<table class="table cashier-table">
+                                     <tbody class="table-border-bottom-0" style="border-top: 30px solid transparent">
+                                     <tr class='table-default'>
+                                          <td>
+                                            <select id="eventPartner" name="partner_id" class="form-select" style="width:40% !important">
+                                            <option disabled selected >Ընտրեք գործընկերոջը</option>
+                                            </select>
+                                          </td>
+                                     </td>
+                                     </tbody></table>`
 
               document.querySelector('.event-total-cont').innerHTML = guidTotalCont;
 
@@ -327,9 +349,12 @@ var  selectedVal=''
                                       </div>`: ``}
                                   </td>
                                   <td id = 'event-ticket-price_${data.id}' class='remove-value ticket_price'>0</td>
-                          </tr>`;
+                          </tr>
 
-              html += `</tbody></table>${guidCont}`
+                          `;
+
+
+              html += `</tbody></table>${guidCont}${event_partner}`
 
               data.style == 'basic' ? html += `<input type="hidden" name="style" value="basic">` : html += `<input type="hidden"  name="style" value="temporary">`
               }
@@ -341,6 +366,23 @@ var  selectedVal=''
             console.log(selectedVal)
             // $('#event-select[value=selectedVal]').prop('selected', true);
             $('#event-select option[value='+selectedVal+']').prop('selected', true);
+            //creating event partner select options
+            const createEventPartnerOption =(id,name) => {
+              const option = document.createElement('option')
+              option.innerText = name
+              option.value=id
+
+              return option
+            }
+
+
+            data.partners?.map(el =>{
+              console.log(el,"32323223")
+
+              document.getElementById('eventPartner').append(createEventPartnerOption( el.id, el.name))
+
+            })
+
 
 
 

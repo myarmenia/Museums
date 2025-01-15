@@ -119,7 +119,6 @@ trait PurchaseTrait
   public function itemStore(array $data)
   {
 
-
     foreach ($data['items'] as $key => $value) {
 
       $value['purchase_id'] = $data['purchase_id'];
@@ -147,19 +146,54 @@ trait PurchaseTrait
 
       if ($value['type'] == 'event-config') {
 
+        // $summedQuantities = collect($data['items'])
+        //   ->groupBy(function ($q_item) {
+        //     return $q_item['type'] . '-' . $q_item['id'];
+        //   }) // Группировка
+        //   ->map(function ($group) {
+        //     return $group->sum('quantity');
+        //   }) // Суммирование
+        //   ->sum();
+        // dump($value);
+
         $summedQuantities = collect($data['items'])
+          ->filter(function ($item) use ($value) {
+            // Фильтруем элементы:
+            // - type должен совпадать с $value['type'] ('event-config')
+            // - id должен совпадать с $value['id']
+            // - sub_type не должен быть 'guid_price_am' или 'guid_price_other'
+            return $item['type'] === $value['type'] &&
+              $item['id'] === $value['id'] &&
+              !in_array($item['sub_type'], ['guide_price_am', 'guide_price_other']);
+          })
           ->groupBy(function ($q_item) {
-            return $q_item['type'] . '-' . ($q_item['sub_type'] ?? '') . '-' . $q_item['id'];
-          }) // Группировка
+            return $q_item['type'] . '-' . $q_item['id'];
+          }) // Группируем оставшиеся элементы
           ->map(function ($group) {
+            // Считаем сумму 'quantity' для каждой группы
             return $group->sum('quantity');
-          }) // Суммирование
-          ->sum();
+          })
+          ->sum(); // Суммируем все группы
+
 
         $maked_data = $this->makeEventConfigData($value, $summedQuantities);
         unset($maked_data['id']);
 
+
         if ($maked_data) {
+          if(isset($data['partner_id'])){
+            $ec_type = $maked_data['type'];   // event config type
+            $ec_sub_type = $maked_data['sub_type']; // event config sub_type
+
+            $maked_data['item_relation_id'] = $data['partner_id'];
+            $maked_data['partner_id'] = $data['partner_id'];
+            $maked_data['type'] = 'partner';
+            $maked_data['sub_type'] = $ec_type;
+            $maked_data['partner_relation_id'] =  $value['id'];
+            $maked_data['partner_relation_sub_type'] = $ec_sub_type;
+
+          }
+
           $row = $this->addItemInPurchasedItem($maked_data);
         } else {
           $event = $this->getAvailableEventViaEventConfig($value['id']);
@@ -180,6 +214,21 @@ trait PurchaseTrait
         unset($maked_data['id']);
 
         if ($maked_data) {
+          if (isset($data['partner_id'])) {
+
+            $e_type = $maked_data['type'];   // event type
+            $e_sub_type = $maked_data['sub_type']; // event sub_type
+
+            $maked_data['item_relation_id'] = $data['partner_id'];
+            $maked_data['partner_id'] = $data['partner_id'];
+            $maked_data['type'] = 'partner';
+            $maked_data['sub_type'] = $e_type;
+            $maked_data['partner_relation_id'] = $value['id'];
+            $maked_data['partner_relation_sub_type'] = $e_sub_type;
+
+          }
+
+
           $row = $this->addItemInPurchasedItem($maked_data);
         } else {
 
@@ -485,6 +534,7 @@ trait PurchaseTrait
     $remainder = $event_config->visitors_quantity_limitation - $event_config->visitors_quantity;
 
     if ($summedQuantities > $remainder) {
+
       return false;
     }
 
@@ -594,6 +644,7 @@ trait PurchaseTrait
     $partner_ticket = $this->getPartnerTicket($data['id']);
     $educational_program_price = null;
 
+
     if (!$partner_ticket) {
       return false;
     }
@@ -619,6 +670,8 @@ trait PurchaseTrait
 
     $data['total_price'] = $total_price;
     $data['item_relation_id'] = $data['id'];
+
+
 
     return $data;
   }
@@ -655,6 +708,8 @@ trait PurchaseTrait
 
         return false;
     }
+
+    return false;
 
   }
 

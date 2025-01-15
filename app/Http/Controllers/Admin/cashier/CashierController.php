@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\cashier;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cashier\CashierEventRequest;
+use App\Models\Partner;
 use App\Models\ProductCategory;
 use App\Services\Cashier\CashierService;
 use App\Traits\Purchase\PurchaseTrait;
@@ -42,6 +43,8 @@ class CashierController extends Controller
    public function getEventDetails($id)
    {
       $event = $this->cashierService->getEventDetails($id);
+
+      $event['partners']=Partner::where('museum_id',$event->museum_id)->get();
 
       if ($event) {
         session(['eventId'=>$id]);
@@ -96,5 +99,17 @@ class CashierController extends Controller
 
         return response()->json(['error' => translateMessageApi('something-went-wrong')], 500);
    }
+
+    public function index_with_hdm(){
+        $allData = $this->cashierService->getAllData();
+
+        if ($allData['success']) {
+          $data = $allData['data'];
+          //  dd($data);
+          return view('content.cashier.create-with-hdm', compact('data'));
+        }
+
+        return redirect()->route('tickets_show');
+    }
 
 }

@@ -89,6 +89,7 @@ class ReportsForMuseumAdminController extends Controller
       $museum_id = museumAccessId();
 
       $data = $this->partners_report($request->all(), $this->model);
+     
       $totalInfo = $this->totalInfo($data);
 
       $collection = collect($data);

@@ -28,8 +28,10 @@ trait QrTokenTrait
           'guide_price_other',
         ];
 
+
         $hasTicket='';
         $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->get();
+        // dd($allPurchases);
         $purchasItemForOtherService = $allPurchases[0];
 
         if($purchasItemForOtherService->type=="other_service" && !$purchasItemForOtherService->other_service->ticket ){
@@ -39,38 +41,66 @@ trait QrTokenTrait
         try {
             DB::beginTransaction();
 
-                $allPurchasesForQr = PurchasedItem::where('purchase_id', $purchaseId)
-                ->whereNotIn('type', $unusedTypes)
-                ->where(function ($query) use ($unusedSubTypes) {
-                  $query->whereNotIn('sub_type', $unusedSubTypes)
-                    ->orWhereNull('sub_type');
-                })
-                ->get();
+                // $allPurchasesForQr = PurchasedItem::where('purchase_id', $purchaseId)
+                // ->whereNotIn('type', $unusedTypes)
+                // ->where(function ($query) use ($unusedSubTypes) {
+                //   $query->whereNotIn('sub_type', $unusedSubTypes)
+                //     ->orWhereNull('sub_type');
+                // })
+                // ->get();
 
+
+//==== in $allPurchasesForQr array we gethering all purchase items except guide, for guide there is no need generate qr token
+                $allPurchasesForQr=[];
+                foreach($allPurchases as $item){
+
+                  if(!in_array($item->type,$unusedTypes)){
+
+                    if($item->partner_relation_sub_type==null){
+
+
+                      if(!in_array($item->sub_type,$unusedSubTypes)){
+
+
+                        array_push($allPurchasesForQr,$item);
+
+                      }
+
+                    }
+                    else if($item->partner_relation_sub_type!="guide_price_am" && $item->partner_relation_sub_type!="guide_price_other"){
+
+                      if(in_array($item->sub_type,['event', 'event-config'])){
+
+                        array_push($allPurchasesForQr,$item);
+                      }
+
+                    }
+
+
+
+                  }
+                }
+
+// ============creating $purchasesKeys array for getting qr tocken for every ticket type
             $purchasesKeys = [];
 
-            foreach ($allPurchasesForQr as $key => $item) {
 
+            foreach ($allPurchasesForQr as $key => $item) {
 
                 $purchasesKeys[$item->type] = array_key_exists($item->type, $purchasesKeys)
                 ? $purchasesKeys[$item->type] + $item->quantity
                 : $item->quantity;
 
-
-
-
             }
+            // dd($purchasesKeys);
 
 
             if(isset($purchasesKeys['school'])){
               $purchasesKeys['school']=1;
             }
-            // if(isset($purchasesKeys['educational'])){
-            //   $purchasesKeys['educational']=1;
-            // }
-
+          //  =========  $data return us array with ticket types keys and every key has array with  "unique_token", "qr_path"
             $data = $this->getReqQrToken($url, $purchasesKeys);
-
+// dd($data);
             $addedItemsToken = [];
 
             foreach ($allPurchases as $key => $item) {

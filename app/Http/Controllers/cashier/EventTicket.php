@@ -18,6 +18,8 @@ class EventTicket extends CashierController
   public function __invoke(Request $request)
   {
     try {
+      // dd($request->all());
+
 
       DB::beginTransaction();
       session(['open_tab' =>'navs-top-event']);
@@ -29,6 +31,7 @@ class EventTicket extends CashierController
       $allNull = false;
 
         foreach ($requestData as $value) {
+
 
             if ((isset($value['standart']) && !is_null($value['standart'])) || (isset($value['discount']) && !is_null($value['discount'])) ||(isset($value['free']) && !is_null($value['free']) )) {
                 $allNull = true;
@@ -57,6 +60,10 @@ class EventTicket extends CashierController
           $data['purchase_type'] = 'offline';
           $data['status'] = 1;
           $data['items'] = [];
+          if(isset($request->partner_id)){
+            $data['partner_id'] = $request->partner_id;
+          }
+
 
           $haveValue = false;
           $dataForUpdateEventConfigs = [];
@@ -117,7 +124,7 @@ class EventTicket extends CashierController
               "quantity" => (int) $request->guide_price_other
             ];
           }
-
+// dd($data);
           $addTicketPurchase = $this->purchase($data);
 
 
@@ -127,7 +134,7 @@ class EventTicket extends CashierController
                 $config_value['event_config']->update(['visitors_quantity' => $config_value['visitor_quantity']]);
             }
 
-
+// dd($addTicketPurchase);
             $addQr = $this->getTokenQr($addTicketPurchase->id);
 
             if ($addQr) {
@@ -153,6 +160,10 @@ class EventTicket extends CashierController
           $requestDataValue = array_values($requestData)[0];
           $data['purchase_type'] = 'offline';
           $data['status'] = 1;
+          if(isset($request->partner_id)){
+            $data['partner_id'] = $request->partner_id;
+          }
+
 
           foreach ($requestDataValue as $sub_type => $ticket_quantity) {
             if ($ticket_quantity != null) {
@@ -185,11 +196,13 @@ class EventTicket extends CashierController
 
 
           $addTicketPurchase = $this->purchase($data);
+          // dd($addTicketPurchase);
 
           if ($addTicketPurchase) {
             $addQr = $this->getTokenQr($addTicketPurchase->id);
 
             if ($addQr) {
+              // dd($addQr);
               $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
               session(['success' => 'Տոմսերը ավելացված է']);
 

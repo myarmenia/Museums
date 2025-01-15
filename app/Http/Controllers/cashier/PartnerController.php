@@ -20,6 +20,7 @@ class PartnerController extends CashierController
 
     try {
 
+
         DB::beginTransaction();
         $requestDatForValidation = $request->except('partner_id','comment');
         session(['open_tab' =>'navs-top-partners']);
@@ -131,7 +132,6 @@ class PartnerController extends CashierController
                     "id"=>$request->partner_id,// գործընկերոջ id
                     "sub_type"=>"educational", //տոմսի տեսակը
                     "educational_id"=>$item['educational_id']
-
                 ];
               }
               if($newItem!=null){

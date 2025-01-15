@@ -64,13 +64,13 @@
 
 
 
-        @if ($item['type']=="guide"||($item['type']=="event" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))||
-        ($item['type']=="event-config" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))
-       )
-           <div class="img" style="margin-bottom:20px;width:70%">
-               <img src="{{('assets/img/logos/museum-logo.png')}}" alt="museum-log" id="logo">
-           </div>
-       @endif
+            @if ($item['type']=="guide"||($item['type']=="event" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))||
+            ($item['type']=="event-config" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other')) || ($item['partner_relation_sub_type']=='guide_price_am'|| $item['partner_relation_sub_type']=='guide_price_other')
+          )
+              <div class="img" style="margin-bottom:20px;width:70%">
+                  <img src="{{('assets/img/logos/museum-logo.png')}}" alt="museum-log" id="logo">
+              </div>
+          @endif
             @if (isset($item['photo']))
                 <div class="img"><img src="{{ $item['photo'] }}" class="qr-code"></div>
             @endif
@@ -85,17 +85,63 @@
                     <span>&nbsp;{{ getTranslateTicketTitl($item['type']) }} /
                         {{ getTranslateTicketTitl_en($item['type']) }}</span>
                 </div>
+                @if ($item['partner_relation_sub_type'] == null)
+                    @if (isset($item['sub_type']) &&
+                      $item['sub_type'] != null &&
+                      $item['sub_type'] != 'guide_price_am' &&
+                      $item['sub_type'] != 'guide_price_other'&&
+                      $item['sub_type'] != 'partner_guide_am'&&
+                      $item['sub_type'] != 'partner_guide_other'
+                      )
+                      <div class="text-flex text-margin">
+                            <span>Տոմսի Տեսակ/Ticket type - </span>
+                            <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ($item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : ($item['sub_type'] == 'educational' ? 'Կրթական/Educational' : 'Անվճար/Free')) }}</span>
+                      </div>
+                    @endif
+                @else
 
-                @if (isset($item['sub_type']) &&
-                        $item['sub_type'] != null &&
-                        $item['sub_type'] != 'guide_price_am' &&
-                        $item['sub_type'] != 'guide_price_other'&&
-                        $item['sub_type'] != 'partner_guide_am')
-                    <div class="text-flex text-margin">
-                        <span>Տոմսի Տեսակ/Ticket type - </span>
-                        <span>&nbsp;{{ $item['sub_type'] == 'standart' ? 'Ստանդարտ/Standart' : ($item['sub_type'] == 'discount' ? 'Զեղչված/Discount' : ($item['sub_type'] == 'educational' ? 'Կրթական/Educational' : 'Անվճար/Free')) }}</span>
-                    </div>
+
+                  <div class="text-flex text-margin">
+
+                        @if ($item['sub_type'] == 'event-config' &&($item['partner_relation_sub_type']!="guide_price_am" && $item['partner_relation_sub_type']!="guide_price_other"))
+
+                              @php
+                                  $output = '';
+                                  if ($item['partner_relation_sub_type'] == 'standart') {
+                                      $output = 'Միջոցառում / Event  /Ստանդարտ / Standart';
+                                  } elseif ($item['partner_relation_sub_type'] == 'discount') {
+                                      $output = 'Միջոցառում / Event / Զեղչված / Discount';
+                                  } else {
+                                      $output = 'Միջոցառում / Event / Անվճար / Free';
+                                  }
+                              @endphp
+                           <span>Տոմսի Տեսակ/Ticket type - </span>
+                           <span>&nbsp;
+                              {{ $output }}
+                           </span>
+                        @elseif ($item['sub_type'] == 'event' &&($item['partner_relation_sub_type']!="guide_price_am" && $item['partner_relation_sub_type']!="guide_price_other"))
+
+                            @php
+                                $output = '';
+                                if ($item['partner_relation_sub_type'] == 'standart') {
+                                    $output = 'Ցուցադրություն / Exhibition / Ստանդարտ / Standart';
+                                } elseif ($item['partner_relation_sub_type'] == 'discount') {
+                                    $output = 'Ցուցադրություն / Exhibition / Զեղչված / Discount';
+                                } else {
+                                  $output = 'Ցուցադրություն / Exhibition / Անվճար / Free';
+                                }
+                            @endphp
+                           <span>Տոմսի Տեսակ/Ticket type - </span>
+                           <span>&nbsp; {{ $output }}</span>
+                        @endif
+
+
+                      </span>
+                  </div>
+
                 @endif
+
+
                 @if ($item['description_educational_programming'])
                     <div class="text-flex text-margin">
                         <span>Անվանում/Name - </span>
@@ -164,6 +210,13 @@
                         <span>{{ $item['price'] }}դր․/AMD</span>
                     </div>
                 @endif
+                @if ($item['partner_relation_sub_type'] == 'guide_price_other' || $item['partner_relation_sub_type'] == 'guide_price_am')
+
+                  <div class="text-flex text-margin">
+                      <span>էքսկուրսավար/Guide - </span>
+                      <span>{{ $item['price'] }}դր․/AMD</span>
+                  </div>
+                @endif
                 <div class="text-flex text-margin">
                     <span>Ստեղծվել է/Created - </span>
                     <span>{{ $item['created_at'] }}</span>
@@ -172,6 +225,7 @@
     </div>
 
     @endforeach
+    {{-- {{ dd(777) }} --}}
 
 </body>
 
