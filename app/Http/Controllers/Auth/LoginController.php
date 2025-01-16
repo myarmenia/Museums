@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Traits\Hdm\CashierTrait;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class LoginController extends Controller
   |
   */
 
-  use AuthenticatesUsers;
+  use AuthenticatesUsers, CashierTrait;
 
   /**
    * Where to redirect users after login.
@@ -33,34 +34,39 @@ class LoginController extends Controller
   protected function authenticated(Request $request, $user)
   {
 
-      if ($user->status) {
-          if($user->isAdmin() ){
+    if ($user->status) {
+      if ($user->isAdmin()) {
 
-            return redirect('/welcome');
+        if(Auth::user()->hasRole('cashier')){
 
-            // if ($user->isAdmin() == "admin") {
-            //     return redirect('/');
-            // }
-            // if ($user->isAdmin() == "museum") {
+            // $this->cLogin();  // hdm cashier login for hdm
+        }
 
-            //     return redirect('/museum-dashboard');
-            // }
+        return redirect('/welcome');
 
-          }else{
+        // if ($user->isAdmin() == "admin") {
+        //     return redirect('/');
+        // }
+        // if ($user->isAdmin() == "museum") {
 
-            Auth::logout();
-            return redirect('/');
-          }
+        //     return redirect('/museum-dashboard');
+        // }
 
       } else {
 
-          session(['errorMessage' => 'Ձեր հաշիվն ապաակտիվացված է:']);
-          Auth::logout();
-          return redirect('/');
+        Auth::logout();
+        return redirect('/');
       }
 
+    } else {
+
+      session(['errorMessage' => 'Ձեր հաշիվն ապաակտիվացված է:']);
+      Auth::logout();
+      return redirect('/');
+    }
+
   }
-  
+
   /**
    * Create a new controller instance.
    *
