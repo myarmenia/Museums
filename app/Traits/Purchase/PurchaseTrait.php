@@ -59,6 +59,8 @@ trait PurchaseTrait
     $purchase_data['type'] = $data['purchase_type'];
     $purchase_data['amount'] = 0;
     $purchase_data['status'] = isset($data['status']) ? $data['status'] : 0;
+    $purchase_data['hdm_transaction_type'] = $data['hdm_transaction_type'] ?? null;
+
 
     // ======== when quantity = 0 ================
     $find_quantity_0 = array_filter($data['items'], function ($value) {

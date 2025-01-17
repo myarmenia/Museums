@@ -113,11 +113,19 @@ class BuyTicketControllerTest extends CashierController
 
                 if ($addTicketPurchase) {
 
+                    // $print = $this->PrintHdm($addTicketPurchase->id);
+                    // $print = $this->returnHdm();
+
 
                     $addQr = $this->getTokenQr($addTicketPurchase->id);
 
+
                     if ($addQr) {
-                      $this->PrintHdm($addTicketPurchase->id);
+                      // $this->PrintHdm($addTicketPurchase->id);
+                        $print = $this->PrintHdm($addTicketPurchase->id);
+                        if (!$print) {
+                          session(['errorMessage' => 'hdm error']);
+                        }
 
                         $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
 
