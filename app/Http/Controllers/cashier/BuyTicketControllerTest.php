@@ -112,20 +112,25 @@ class BuyTicketControllerTest extends CashierController
 
 
                 if ($addTicketPurchase) {
-                  
 
-                    $addQr = $this->getTokenQr($addTicketPurchase->id);
+                    $print = $this->PrintHdm($addTicketPurchase->id);
+                    // $print = $this->returnHdm();
 
-                    if ($addQr) {
-                      $this->PrintHdm($addTicketPurchase->id);
 
-                        $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
+                    // $addQr = $this->getTokenQr($addTicketPurchase->id);
+                    if(!$print){
+                        session(['errorMessage' => 'hdm error']);
+                    }
+                    // if ($addQr) {
+                    //   // $this->PrintHdm($addTicketPurchase->id);
 
-                        session(['success' => 'Տոմսերը ավելացված է']);
+                    //     $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
+
+                        // session(['success' => 'Տոմսերը ավելացված է']);
 
                         DB::commit();
-                        return redirect()->back()->with('pdfFile', $pdfPath);
-                    }
+                    //     return redirect()->back()->with('pdfFile', $pdfPath);
+                    // }
                 }
 
 
