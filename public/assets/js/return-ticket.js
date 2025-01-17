@@ -24,7 +24,7 @@ $(function () {
                 </div>
             `);
 
-          
+
             $('#button-container').html(`
                 <button class="btn btn-primary col-2" data-id="${unique}" id="archive-ticket">Արխիվացնել</button>
             `);

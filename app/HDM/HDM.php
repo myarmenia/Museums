@@ -1,6 +1,9 @@
 <?php
 
 namespace App\HDM;
+use App\Models\HdmConfig;
+use Auth;
+use Exception;
 use Session;
 
 class HDM
@@ -12,12 +15,12 @@ class HDM
   protected $firstEncryptionKeys = ['01', '02'];   // 03 - 13 second encription keys
 
 
-  public function __construct($ip, $port, $hdmPassword)
+  public function __construct($hasHdm)
   {
 
-    $this->ip = $ip;
-    $this->port = $port;
-    $this->hdmPassword = $hdmPassword;
+    $this->ip = $hasHdm->ip;
+    $this->port = $hasHdm->port;
+    $this->hdmPassword = $hasHdm->password;
 
   }
 
@@ -52,7 +55,6 @@ class HDM
     return false;
 
   }
-
 
   /**
    * 3DES կոդավորում օգտագործելով ECB ռեժիմ
@@ -116,7 +118,7 @@ class HDM
   public function getKey($operationCode){
 
     $loginKey = Session::get('cashierLoginKey');
-  
+
     $key = in_array($operationCode, $this->firstEncryptionKeys) ? $this->generateKey($this->hdmPassword) :
     ($loginKey != null ? base64_decode($loginKey) : false);
 
@@ -211,7 +213,7 @@ class HDM
         //  return $parseHeader['operationCode'];
         return [
           'success' => false,
-          'result' => $parseHeader['operationCode']
+          'result' => $parseHeader
         ];
       }
 
@@ -242,6 +244,11 @@ class HDM
   }
 
 
+  public function returnHdm(){
+
+  }
+
+
   public function parseHeader($header)
   {
     // Убедимся, что длина заголовка соответствует ожидаемым 12 байтам
@@ -253,7 +260,7 @@ class HDM
     $constant = substr($header, 0, 6);
     // dd($constant );
     // Проверяем, что они соответствуют ожидаемому значению
-    // if (bin2hex($constant) !== "d580d4b4d584") {
+    // if (bin2hex($constant) !== "D580D4B4D5840007") {
     //     throw new Exception("Неверные константные байты");
     // }
 

@@ -39,7 +39,8 @@ class LoginController extends Controller
 
         if(Auth::user()->hasRole('cashier')){
 
-            // $this->cLogin();  // hdm cashier login for hdm
+            $this->cLogin();  // hdm cashier login for hdm
+          
         }
 
         return redirect('/welcome');

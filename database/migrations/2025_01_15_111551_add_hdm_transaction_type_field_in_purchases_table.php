@@ -12,6 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('purchases', function (Blueprint $table) {
+            $table->string('hdm_rseq')->nullable()->after('type');
+            $table->string('hdm_crn')->nullable()->after('type');
             $table->string('hdm_transaction_type')->nullable()->after('type');
         });
     }
