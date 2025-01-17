@@ -142,7 +142,14 @@ class EventTicketTest extends CashierController
             $addQr = $this->getTokenQr($addTicketPurchase->id);
 
             if ($addQr) {
-              $this->PrintHdm($addTicketPurchase->id);
+              if(museumHasHdm() && $data['hdm_transaction_type']!=null){
+                $print = $this->PrintHdm($addTicketPurchase->id);
+                if (!$print) {
+                  session(['errorMessage' => 'hdm error']);
+                }
+
+              }
+
               $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
               session(['success' => 'Տոմսերը ավելացված է']);
 
@@ -209,8 +216,13 @@ class EventTicketTest extends CashierController
             $addQr = $this->getTokenQr($addTicketPurchase->id);
 
             if ($addQr) {
-              dd($data);
-              $this->PrintHdm($addTicketPurchase->id);
+              if(museumHasHdm() && $data['hdm_transaction_type']!=null){
+
+                  $print = $this->PrintHdm($addTicketPurchase->id);
+                  if (!$print) {
+                    session(['errorMessage' => 'hdm error']);
+                  }
+              }
 
               $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
               session(['success' => 'Տոմսերը ավելացված է']);

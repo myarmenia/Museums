@@ -19,6 +19,7 @@ class OtherServicesController extends CashierController
     public function __invoke(Request $request)
     {
         try {
+          // dd($request->all());
 
             DB::beginTransaction();
             session(['open_tab' =>'navs-top-otherService']);
@@ -42,7 +43,7 @@ class OtherServicesController extends CashierController
 
 
             $data['items'][0]['type'] = "other_service";
-                    $data['items'][0]['quantity']=1;
+                    $data['items'][0]['quantity']=$request->other_service_count;
                     $data['items'][0]['id']=$request->other_service;
 
 

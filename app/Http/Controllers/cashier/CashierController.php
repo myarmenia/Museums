@@ -56,7 +56,7 @@ class CashierController extends Controller
 
         }
 
-
+// dd($qrs);
         if($qrs[0]->type == 'event' || $qrs[0]->type == 'event-config' ){
             if($qrs[0]->type == 'event-config'){
                 $eventConfig = EventConfig::with('event.item_translations')->find($qrs[0]->item_relation_id);
@@ -144,7 +144,7 @@ class CashierController extends Controller
             }
           }
           // dd($qr);
-         
+
 
 
             if($qr['type'] == 'event-config'){
