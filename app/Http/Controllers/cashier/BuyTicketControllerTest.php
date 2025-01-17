@@ -112,7 +112,7 @@ class BuyTicketControllerTest extends CashierController
 
 
                 if ($addTicketPurchase) {
-                  
+
 
                     $addQr = $this->getTokenQr($addTicketPurchase->id);
 

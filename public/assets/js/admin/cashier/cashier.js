@@ -364,7 +364,7 @@ var  selectedVal=''
             $('#event-select').val(data.id)
             selectedVal=$('#event-select').val()
             console.log(selectedVal)
-            // $('#event-select[value=selectedVal]').prop('selected', true);
+
             $('#event-select option[value='+selectedVal+']').prop('selected', true);
             //creating event partner select options
             const createEventPartnerOption =(id,name) => {
@@ -382,6 +382,11 @@ var  selectedVal=''
               document.getElementById('eventPartner').append(createEventPartnerOption( el.id, el.name))
 
             })
+            $('#eventPartner').on('change', function () {
+              $('.casheRadio').prop('checked', false);
+              $('#eventBTN').removeAttr('disabled');
+            })
+
 
 
 
