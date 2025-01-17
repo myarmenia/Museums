@@ -44,7 +44,7 @@ class CashierController extends Controller
    {
       $event = $this->cashierService->getEventDetails($id);
 
-      $event['partners']=Partner::where('museum_id',$event->museum_id)->get();
+      $event['partners']=Partner::where(['museum_id'=>$event->museum_id,'status'=>1])->get();
 
       if ($event) {
         session(['eventId'=>$id]);
