@@ -126,7 +126,7 @@ class BuyTicketControllerTest extends CashierController
                         if (!$print) {
                           session(['errorMessage' => 'hdm error']);
                         }
-                        
+
                         $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
 
                         session(['success' => 'Տոմսերը ավելացված է']);

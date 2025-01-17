@@ -75,6 +75,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
 use App\Http\Controllers\cashier\BuyTicketControllerTest;
+use App\Http\Controllers\cashier\EventTicketTest;
 use App\Http\Controllers\cashier\OtherServices;
 use App\Http\Controllers\cashier\OtherServicesController;
 use App\Http\Controllers\cashier\PartnerController;
@@ -202,6 +203,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/create-ticket-test', BuyTicketControllerTest::class)->name('cashier.add.ticket.test');
     Route::post('/create-educational', EducationalTicket::class)->name('cashier.add.educational');
     Route::post('/create-event', EventTicket::class)->name('cashier.add.event');
+    Route::post('/create-event-test', EventTicketTest::class)->name('cashier.add.event.test');
     Route::post('/create-subscription', SubscriptionTicket::class)->name('cashier.add.subscription');
     Route::post('/create-corporative', CorporativeTicket::class)->name('cashier.add.corporative');
     Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
