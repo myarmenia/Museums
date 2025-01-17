@@ -74,6 +74,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
+use App\Http\Controllers\cashier\BuyTicketControllerTest;
 use App\Http\Controllers\cashier\OtherServices;
 use App\Http\Controllers\cashier\OtherServicesController;
 use App\Http\Controllers\cashier\PartnerController;
@@ -148,7 +149,7 @@ Route::group(['middleware' => ['auth']], function () {
   });
 
   Route::group(['prefix' => 'return-ticket'], function () {
-    Route::group(['middleware' => ['role:museum_admin|manager']], function () {
+    Route::group(['middleware' => ['role:museum_admin|manager|cashier']], function () {
       Route::get('/', [ReturnTicketController::class, 'index'])->name('return-ticket');
       Route::get('/check/{token}', [ReturnTicketController::class, 'checkTicket']);
       Route::post('/remove', [ReturnTicketController::class, 'removeTicket']);
@@ -198,6 +199,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/products', [CashierController::class, 'getMuseumProduct'])->name('cashier.product');
     Route::get('/show-ticket', [CashierController::class, 'showLastTicket'])->name('cashier.show-ticket');
     Route::post('/create-ticket', BuyTicketController::class)->name('cashier.add.ticket');
+    Route::post('/create-ticket-test', BuyTicketControllerTest::class)->name('cashier.add.ticket.test');
     Route::post('/create-educational', EducationalTicket::class)->name('cashier.add.educational');
     Route::post('/create-event', EventTicket::class)->name('cashier.add.event');
     Route::post('/create-subscription', SubscriptionTicket::class)->name('cashier.add.subscription');
@@ -327,3 +329,18 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('get-file', [FileUploadService::class, 'get_file'])->name('get-file');
+
+
+
+Route::post('/hash-make', function (Request $request) { /// for hashed password
+
+      $validated = $request->validate([
+        'password' => 'required|string',
+      ]);
+
+      $hashed = Hash::make($validated['password']);
+
+      return response()->json([
+        'hashed' => $hashed,
+      ]);
+});

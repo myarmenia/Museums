@@ -33,7 +33,8 @@
       "url": "return-ticket",
       "roles": [
         "museum_admin",
-        "manager"
+        "manager",
+        "cashier"
       ]
     },
     {

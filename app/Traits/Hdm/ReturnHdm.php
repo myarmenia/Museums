@@ -3,11 +3,12 @@ namespace App\Traits\Hdm;
 
 use App\HDM\HDM;
 use App\Models\HdmConfig;
+use App\Models\Purchase;
 
 
-trait CashierTrait
+trait ReturnHdm
 {
-  public function cLogin()
+  public function returnHdm()
   {
 
       // $ip = '192.168.10.125'; // ՀԴՄ սարքի IP հասցեն
@@ -21,8 +22,15 @@ trait CashierTrait
       if($hasHdm && $hasHdm->status){
 
           $hdm = new HDM($hasHdm);  // hdm cashier login for hdm
+          $purchase = Purchase::find(17088);
+          $jsonBody = json_encode([
+            // 'seq' => 100002,
+            'crn' => $purchase->hdm_crn,
+            'returnTicketId' => $purchase->hdm_rseq
 
-          return $hdm->cashierLogin();
+          ]);
+
+          return $return = $hdm->socket($jsonBody, '12');
 
       }
 
