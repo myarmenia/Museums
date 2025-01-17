@@ -37,12 +37,6 @@ class LoginController extends Controller
     if ($user->status) {
       if ($user->isAdmin()) {
 
-        // if(Auth::user()->hasRole('cashier')){
-
-        //     $this->cLogin();  // hdm cashier login for hdm
-
-        // }
-
         return redirect('/welcome');
 
         // if ($user->isAdmin() == "admin") {

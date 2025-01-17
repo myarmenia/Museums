@@ -42,8 +42,9 @@ trait QR
 
   }
 
-  public function checkQR($data_qr, $mac, $online)
+  public function checkQR($data_qr, $mac, $online):bool|string
   {
+    
     // example
     // "893AD83C829E71#6e2dd53cc2adeaa52123d424da1451d9e23d3b1340d8cf7f747e71af2b5f274f#1723445813#2024-08-12 09:20:36"
     // "qr-token#qr-hash(sha256)#timestampe-qr-created_at#qr-reader-date"
@@ -106,7 +107,7 @@ trait QR
     return 'invalid mac';
   }
 
-  public function checkDate($date, $end_date = null, $type)
+  public function checkDate($date, $end_date = null, $type):bool
   {
     $checked_date = new DateTime($date);
     $checked_date->setTime(0, 0, 0);

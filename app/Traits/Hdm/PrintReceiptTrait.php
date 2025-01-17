@@ -64,38 +64,43 @@ trait PrintReceiptTrait
         }
 
 
-        $jsonBody = json_encode([
-              // 'seq' => 100002,
-              'paidAmount' => $paidAmount,
-              'paidAmountCard' => $paidAmountCard,
-              'partialAmount' => 0,
-              'prePaymentAmount' => 0,
-              'useExtPOS' => $useExtPOS,
-              'mode' => 2,
-              'items' => $items
-
-            ]);
 
 
-        $print = $hdm->socket($jsonBody, '04');
+        if(count($items) > 0){
+          
+              $jsonBody = json_encode([
+                // 'seq' => 100002,
+                'paidAmount' => $paidAmount,
+                'paidAmountCard' => $paidAmountCard,
+                'partialAmount' => 0,
+                'prePaymentAmount' => 0,
+                'useExtPOS' => $useExtPOS,
+                'mode' => 2,
+                'items' => $items
 
-        if(!$print['success']){
+              ]);
 
-          if( ( isset($print['result']['operationCode']) && $print['result']['operationCode'] == 102) || $print['result'] == 'logOut'){
-           
-              $this->cLogin();
-              return $this->PrintHdm($purchase_id);
-          }
+              $print = $hdm->socket($jsonBody, '04');
+
+              if (!$print['success']) {
+
+                if ((isset($print['result']['operationCode']) && $print['result']['operationCode'] == 102) || $print['result'] == 'logOut') {
+
+                  $this->cLogin();
+                  return $this->PrintHdm($purchase_id);
+                }
+              } else {
+
+                $purchase->update([
+                  'hdm_crn' => $print['result']['crn'],
+                  'hdm_rseq' => $print['result']['rseq']
+                ]);
+              }
+
+              return $print['success'];
         }
-        else{
 
-          $purchase->update([
-            'hdm_crn' => $print['result']['crn'],
-            'hdm_rseq' => $print['result']['rseq']
-          ]);
-        }
-
-        return $print['success'];
+        return true;
 
   }
 
