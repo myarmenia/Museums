@@ -31,13 +31,14 @@ trait QrTokenTrait
 
         $hasTicket='';
         $allPurchases = PurchasedItem::where('purchase_id', $purchaseId)->get();
-        // dd($allPurchases);
+
         $purchasItemForOtherService = $allPurchases[0];
 
         if($purchasItemForOtherService->type=="other_service" && !$purchasItemForOtherService->other_service->ticket ){
 
           array_push($unusedTypes,'other_service');
         }
+        // dd($unusedTypes);
         try {
             DB::beginTransaction();
 
@@ -80,6 +81,7 @@ trait QrTokenTrait
 
                   }
                 }
+                // dd($allPurchasesForQr);
 
 // ============creating $purchasesKeys array for getting qr tocken for every ticket type
             $purchasesKeys = [];
@@ -98,6 +100,10 @@ trait QrTokenTrait
             if(isset($purchasesKeys['school'])){
               $purchasesKeys['school']=1;
             }
+            if(isset($purchasesKeys['other_service'])){
+              $purchasesKeys['other_service']=1;
+            }
+            // dd($purchasesKeys);
           //  =========  $data return us array with ticket types keys and every key has array with  "unique_token", "qr_path"
             $data = $this->getReqQrToken($url, $purchasesKeys);
 // dd($data);
@@ -108,7 +114,7 @@ trait QrTokenTrait
 
                 $priceOneTicket = (int) $item->total_price / (int) $item->quantity;
 
-                  if($item->type == "school"|| $item->type == "educational" || ($item->type == "partner" && $item->sub_type == "educational" )){
+                  if($item->type == "school"|| $item->type == "educational" ||  $item->type == "other_service" ||($item->type == "partner" && $item->sub_type == "educational" )){
 
                       $quantity=1;
                       $priceOneTicket=$item->total_price;
@@ -145,7 +151,7 @@ trait QrTokenTrait
 
                 }
             }
-
+// dd($allData);
             $insert = TicketQr::insert($allData);
 
             if (!$insert) {
