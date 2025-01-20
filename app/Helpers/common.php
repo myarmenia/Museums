@@ -582,12 +582,12 @@ if (!function_exists('getAllMuseums')) {
 
 
 if (!function_exists('museumHasHdm')) {
-  function museumHasHdm():bool
+  function museumHasHdm():bool|HdmConfig
   {
         $museumAccessId = museumAccessId();
 
         $hasHdm = HdmConfig::where('museum_id', $museumAccessId)->first();       // when museum work with dhm
-        return $hasHdm && $hasHdm->status ? true : false;
+        return $hasHdm && $hasHdm->status ? $hasHdm : false;
 
   }
 
