@@ -42,7 +42,7 @@ class HDM
       'pin' => 3
     ]);
 
-    
+
     $res = $this->socket($jsonBody, '02');
 
     if ($res['success']) {
@@ -199,7 +199,7 @@ class HDM
       }
 
 
-      socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, ["sec" => 30, "usec" => 0]);  // Սպասելու ժամանակ 30 վայրկյան
+      socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, ["sec" => 60, "usec" => 0]);  // Սպասելու ժամանակ 30 վայրկյան
 
       // $key = in_array($operationCode, $this->firstEncryptionKeys) ? $this->generateKey($this->hdmPassword) : base64_decode($this->loginKey);
       $key = $this->getKey($operationCode);
