@@ -6,11 +6,13 @@ use App\Models\EventConfig;
 use App\Models\Purchase;
 use App\Models\PurchasedItem;
 use App\Models\TicketQr;
+use App\Traits\Hdm\ReturnHdmTrait;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class ReturnTicketService
 {
+  use ReturnHdmTrait;
   public function checkToken($token)
   {
 
@@ -159,6 +161,23 @@ class ReturnTicketService
 
           $purchaseItem->update(['returned_quantity' => $returnedQuantity, 'returned_total_price' => $totalPrice]);
           $purchaseItem->purchase->update(['returned_amount' => $purchaseNewAmount]);
+
+          // =============================
+          if (museumHasHdm() && $purchaseItem->type != "partner" && $purchaseItem->type != "free") {
+
+            $print = $this->returnHdm($purchasedItemId);
+
+            if (!$print['success']) {
+
+                $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
+
+                session(['errorMessage' => $message]);
+                return redirect()->back();
+            }
+
+          }
+
+          // ====================================
 
         }
 

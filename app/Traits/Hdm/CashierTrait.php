@@ -14,17 +14,12 @@ trait CashierTrait
       // $port = 8080; // ՀԴՄ սարքի պորտը
       // $hdmPassword = "96yQDWay";
 
-    if (Auth::user()->hasRole('cashier')) {
+      // ======== araym petq chi 17.01.25 ======================
+    $hasHdm = museumHasHdm();
 
-      $cashier_login = $this->cLogin();  // hdm cashier login for hdm
-
-      if (!$cashier_login) {
-
-      }
-
+    if (!$hasHdm) {
+      return false;
     }
-    // ================================
-
       $museumAccessId = museumAccessId();
 
       $hasHdm = HdmConfig::where('museum_id', $museumAccessId)->first();       // when museum work with dhm
@@ -32,7 +27,7 @@ trait CashierTrait
       if($hasHdm && $hasHdm->status){
 
           $hdm = new HDM($hasHdm);  // hdm cashier login for hdm
-dd($hdm->cashierLogin());
+            // dd($hdm->cashierLogin());
           return $hdm->cashierLogin();
 
       }
