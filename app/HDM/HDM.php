@@ -42,6 +42,7 @@ class HDM
       'pin' => 3
     ]);
 
+    
     $res = $this->socket($jsonBody, '02');
 
     if ($res['success']) {
@@ -52,7 +53,15 @@ class HDM
 
     }
 
-    return false;
+
+    return [
+            'success' => false,
+            'result' => [
+              'message' => "ՀԴՄ սարքի հետ կապ հաստատելու ժամանակ սխալ է տեղի ունեցել",
+              'error' => 1
+        ]
+    ];
+
 
   }
 
@@ -168,10 +177,27 @@ class HDM
       }
 
       // 2. TCP կապ հաստատել ՀԴՄ սարքի հետ
-      $result = socket_connect($socket, $this->ip, $this->port);
-      if ($result === false) {
-        die("ՀԴՄ սարքի հետ կապ հաստատելու ժամանակ սխալ է տեղի ունեցել: " . socket_strerror(socket_last_error($socket)));
+      // $result = socket_connect($socket, $this->ip, $this->port);
+      // if ($result === false) {
+
+      //   die("ՀԴՄ սարքի հետ կապ հաստատելու ժամանակ սխալ է տեղի ունեցել: " . socket_strerror(socket_last_error($socket)));
+      // }
+
+      if (!@socket_connect($socket, $this->ip, $this->port)) {
+          $errorCode = socket_last_error($socket);
+          $errorMessage = socket_strerror($errorCode);
+          socket_close($socket); // Закрыть сокет перед завершением
+          // die("ՀԴՄ սարքի հետ կապ հաստատելու ժամանակ սխալ է տեղի ունեցել: [{$errorCode}] {$errorMessage}");
+
+          return [
+            'success' => false,
+            'result' => [
+                          'message' => "ՀԴՄ սարքի հետ կապ հաստատելու ժամանակ սխալ է տեղի ունեցել",
+                          'error' => 1
+                    ]
+          ];
       }
+
 
       socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, ["sec" => 30, "usec" => 0]);  // Սպասելու ժամանակ 30 վայրկյան
 
