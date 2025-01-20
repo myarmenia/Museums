@@ -39,13 +39,15 @@ trait ReturnHdmTrait
         ];
 
         // dd($purchase->hdm_rseq);
+        $crn = $purchase->hdm_crn;
         $rseq = $purchase->hdm_rseq;
+
 
         $hdm = new HDM($hasHdm);  // hdm cashier login for hdm
         $purchase = Purchase::find(17088);
         $jsonBody = json_encode([
           // 'seq' => 100002,
-          'crn' => $purchase->hdm_crn,
+          'crn' => $crn,
           'returnTicketId' => $rseq,
           // 'receiptId' => $rseq,   /// veradarghvogh ktroni stacum
 
