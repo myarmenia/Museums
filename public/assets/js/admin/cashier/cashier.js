@@ -384,6 +384,8 @@ var  selectedVal=''
             })
             $('#eventPartner').on('change', function () {
               $('.casheRadio').prop('checked', false);
+              $('.eventRadio').attr('disabled', true);
+
               $('#eventBTN').removeAttr('disabled');
             })
 
@@ -636,6 +638,9 @@ var partnerVal=''
 
                           })
                           callPartnerEducationalProgramFunction()
+                          $('#partner_education_program').on('change',function(){
+                            alert(777)
+                          })
 
 
               }
@@ -651,12 +656,15 @@ var partnerVal=''
   $(document).on('click', '.nav-link', function() {
 
 
+
     if($(this).attr('aria-controls')=="navs-top-event"){
 
 
       $('#event-select').val(selectedVal)
 
         $('#event-select').trigger('change')
+        $('.eventRadio').prop('checked',false)
+        $('.eventRadio').rempveAttr('disabled',true)
 
 
     }
@@ -751,12 +759,17 @@ $('#partner_education_program').on('change',function(){
     $('#partner_education_program_quantity').attr('price', selectedOption.attr('price'));
 })
 }
-
+// cashe radiobuttons functuanality
 
 $('.casheRadio').on('click',function(){
 
   $('.casheRadio').attr('checked', false);
   $(this).attr('checked', true);
+  // if ($('#eventPartner').val()) {
+  //   console.log($('#eventPartner').val())
+
+  //   $('.casheRadio').attr('disabled', true);
+  // }
 
   $(this).parent().parent().parent().find('button[type="submit"]').removeAttr('disabled');
 })

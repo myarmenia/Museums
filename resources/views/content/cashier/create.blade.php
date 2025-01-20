@@ -160,11 +160,31 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-3 row justify-content-end">
-                            <div class="col-sm-10 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
-                            </div>
-                        </div>
+                        <div class="mt-3 row  justify-content-end">
+                          <div class="col-sm-4 d-flex justify-content-end align-items-center">
+                            @if(museumHasHdm())
+                              <div class="radioButtons d-flex">
+                                  <div class="form-check">
+                                      <input class="form-check-input casheRadio" type="radio" name="cashe"
+                                          value="cashe" >
+                                      <label class="form-check-label" for="flexRadioDefault1">
+                                          Կանխիկ
+                                      </label>
+                                  </div>
+                                  <div class="form-check mx-2">
+                                      <input class="form-check-input casheRadio" type="radio" name="cashe"
+                                          value="card" >
+                                      <label class="form-check-label" for="flexRadioDefault2">
+                                          Անկանխիկ
+                                      </label>
+                                  </div>
+                              </div>
+                              @endif
+
+                              <button type="submit" {{ museumHasHdm()?"disabled" : null }}
+                                  class="btn btn-primary form-cashier-button mx-2">Տպել 1</button>
+                          </div>
+                      </div>
                     </form>
                 </div>
                 @if (count($data['educational']))
@@ -212,11 +232,42 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-3 row justify-content-end">
+                            {{-- <div class="mt-3 row justify-content-end">
                                 <div class="col-sm-10 d-flex justify-content-end">
                                     <button id='educational-button' type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
-                                </div>
-                            </div>
+
+                                  </div>
+
+                            </div> --}}
+                            <div class="mt-3 row  justify-content-end">
+                              <div class="col-sm-4 d-flex justify-content-end align-items-center">
+                                @if(museumHasHdm())
+
+                                  <div class="radioButtons d-flex">
+                                      <div class="form-check">
+                                          <input class="form-check-input casheRadio" type="radio" name="cashe"
+                                              value="cashe" >
+                                          <label class="form-check-label" for="flexRadioDefault1">
+                                              Կանխիկ
+                                          </label>
+                                      </div>
+                                      <div class="form-check mx-2">
+                                          <input class="form-check-input casheRadio" type="radio" name="cashe"
+                                              value="card" >
+                                          <label class="form-check-label" for="flexRadioDefault2">
+                                              Անկանխիկ
+                                          </label>
+                                      </div>
+                                  </div>
+                                  @endif
+
+
+                              </div>
+
+                          </div>
+                          <button type="submit"  class="btn btn-primary form-cashier-button" id='educational-button' disabled>Տպել 2.</button>
+
+
                         </form>
                     </div>
                 @endif
@@ -249,11 +300,40 @@
                                       </div>
                                   </div>
                               </div>
-                              <div id="event-save" class="mt-3 row justify-content-end d-none">
+                              {{-- <div id="event-save" class="mt-3 row justify-content-end d-none">
                                   <div class="col-sm-10 d-flex justify-content-end">
                                       <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
                                   </div>
-                              </div>
+                              </div> --}}
+                              <div  id="event-save" class="mt-3 row  justify-content-end d-none">
+                                <div class="col-sm-4 d-flex justify-content-end align-items-center">
+                                  @if(museumHasHdm())
+                                    <div class="radioButtons d-flex">
+                                        <div class="form-check">
+                                            <input class="form-check-input casheRadio eventRadio" type="radio" name="cashe"
+                                                value="cashe" >
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                Կանխիկ
+                                            </label>
+                                        </div>
+                                        <div class="form-check mx-2">
+                                            <input class="form-check-input casheRadio eventRadio" type="radio" name="cashe"
+                                                value="card" >
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                Անկանխիկ
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    <button
+                                      id="eventBTN"
+                                      type="submit"
+                                      {{ museumHasHdm() ? "disabled" : null  }}
+
+                                      class="btn btn-primary form-cashier-button mx-2">Տպել</button>
+                                </div>
+                            </div>
 
                         </form>
                     </div>
@@ -284,10 +364,38 @@
                             </div>
 
                             <div class="mt-3 row justify-content-end">
-                                <div class="col-sm-10 d-flex justify-content-end">
+                                {{-- <div class="col-sm-10 d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+                                </div> --}}
+                                <div class="col-sm-4 d-flex justify-content-end align-items-center">
+                                  @if(museumHasHdm())
+                                    <div class="radioButtons d-flex">
+                                        <div class="form-check">
+                                            <input class="form-check-input casheRadio" type="radio" name="cashe"
+                                                value="cashe" >
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                Կանխիկ
+                                            </label>
+                                        </div>
+                                        <div class="form-check mx-2">
+                                            <input class="form-check-input casheRadio" type="radio" name="cashe"
+                                                value="card" >
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                Անկանխիկ
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    <button
+
+                                      type="submit"
+                                      {{ museumHasHdm() ? "disabled" : null  }}
+
+                                      class="btn btn-primary form-cashier-button mx-2">Տպել4</button>
                                 </div>
                             </div>
+
                         </form>
                     </div>
                 @endif
@@ -343,8 +451,29 @@
                         </div>
 
                           <div id="other-service-save" class="mt-3 row justify-content-end d-none" >
-                              <div class="col-sm-10 d-flex justify-content-end">
-                                  <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
+
+                              <div class="col-sm-4 d-flex justify-content-end align-items-center">
+                                @if(museumHasHdm())
+                                  <div class="radioButtons d-flex">
+                                      <div class="form-check">
+                                          <input class="form-check-input casheRadio" type="radio" name="cashe"
+                                              value="cashe" >
+                                          <label class="form-check-label" for="flexRadioDefault1">
+                                              Կանխիկ
+                                          </label>
+                                      </div>
+                                      <div class="form-check mx-2">
+                                          <input class="form-check-input casheRadio" type="radio" name="cashe"
+                                              value="card" >
+                                          <label class="form-check-label" for="flexRadioDefault2">
+                                              Անկանխիկ
+                                          </label>
+                                      </div>
+                                  </div>
+                                @endif
+
+                                  <button type="submit" {{ museumHasHdm()?"disabled" : null }}
+                                      class="btn btn-primary form-cashier-button mx-2">Տպել </button>
                               </div>
                           </div>
                     </form>
@@ -389,8 +518,31 @@
                             </div>
                             <div id="partner-save" class="mt-3 row justify-content-end ">
                                 <div class="col-sm-10 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary form-cashier-button">Տպել</button>
-                                </div>
+                                    {{-- <button type="submit" class="btn btn-primary form-cashier-button">Տպելp</button> --}}
+                                    <div class="col-sm-4 d-flex justify-content-end align-items-center">
+                                      @if(museumHasHdm())
+                                        <div class="radioButtons d-flex">
+                                            <div class="form-check">
+                                                <input class="form-check-input casheRadio" type="radio" name="cashe"
+                                                    value="cashe" >
+                                                <label class="form-check-label" for="flexRadioDefault1">
+                                                    Կանխիկ
+                                                </label>
+                                            </div>
+                                            <div class="form-check mx-2">
+                                                <input class="form-check-input casheRadio" type="radio" name="cashe"
+                                                    value="card" >
+                                                <label class="form-check-label" for="flexRadioDefault2">
+                                                    Անկանխիկ
+                                                </label>
+                                            </div>
+                                        </div>
+                                      @endif
+
+                                        <button type="submit" {{ museumHasHdm()?"disabled" : null }}
+                                            class="btn btn-primary form-cashier-button mx-2">Տպել </button>
+                                    </div>
+                                  </div>
                             </div>
                           </div>
 
