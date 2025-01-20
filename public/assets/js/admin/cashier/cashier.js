@@ -505,7 +505,7 @@ var otherServiceTotalPrice=''
                                 <tr class="table-default">
                                         <td>${data.item_translations[0].name}</td>
                                          <td>
-                                             <input type="text"  onwheel="return false;" price="${data.price }" value=1 class="form-control form-control-validate event_guid" id="otherServiceCount" name="other_service_count">
+                                             <input type="number" min=0  onwheel="return false;" price="${data.price }" value=1 class="form-control form-control-validate event_guid" id="otherServiceCount" name="other_service_count">
                                          </td>
                                         <td class="remove-value event_guide_row_price ticket_price" id="otherServicePrice">${data.price }</td>
                                       </tr>
@@ -527,7 +527,7 @@ var otherServiceTotalPrice=''
         })
 
   })
-  
+
 
 
 
