@@ -18,84 +18,100 @@ trait PrintReceiptTrait
         // $port = 8080; // ՀԴՄ սարքի պորտը
         // $hdmPassword = "96yQDWay";
 
-        $museumAccessId = museumAccessId();
+        $hasHdm = museumHasHdm();
 
-        $hasHdm = HdmConfig::where('museum_id', $museumAccessId)->first();       // when museum work with dhm
-
-        if (!$hasHdm || ($hasHdm && !$hasHdm->status)) {
-
+        if (!$hasHdm) {
             return false;
         }
 
-
-        $hdm = new HDM($hasHdm);  // hdm cashier login for hdm
-        // $hdm = new HDM($ip, $port, $hdmPassword);
+        $incalculableTypes = ['school', 'free']; // no ticket should be printed for these types
 
         $purchase = Purchase::find($purchase_id);
-        $amount = $purchase->amount;
-        $transaction_type = $purchase->hdm_transaction_type;
-        $useExtPOS = $transaction_type == 'cashe' ? true : false;
-        $paidAmount = $transaction_type == 'cashe' ? $purchase->amount : 0;
-        $paidAmountCard = $transaction_type == 'cashe' ? 0 : $purchase->amount;
-        $purchase_items = $purchase->purchased_items;
-
-        $item_params = [
-                          'dep' => 1,
-                          'productCode' => '0015',
-                          'adgCode' => '91.02',
-                          'unit' => 'հատ',
-                          'additionalDiscount' => 0,
-                          'additionalDiscountType' => 0,
-                          'discount' => 0,
-                          'discountType' => 0
-                        ];
-
+        $purchase_items = $purchase->purchased_items->whereNotIn('type', $incalculableTypes);
         $items = [];
 
+        $item_params = [
+          'dep' => 1,
+          'productCode' => '0015',
+          'adgCode' => '91.02',
+          'unit' => 'հատ',
+          'additionalDiscount' => 0,
+          'additionalDiscountType' => 0,
+          'discount' => 0,
+          'discountType' => 0
+        ];
 
         foreach ($purchase_items as $key => $value) {
-            if($value->total_price > 0){
-                  $item_params['qty'] = $value->quantity;
-                  $item_params['price'] = $value->total_price / $value->quantity;   // mek apranqi giny
-                  $item_params['productName'] = getTranslateTicketTitl($value->type);
+          if ($value->total_price > 0) {
+            $item_params['qty'] = $value->quantity;
+            $item_params['price'] = $value->total_price / $value->quantity;   // mek apranqi giny
+            $item_params['productName'] = getTranslateTicketTitl($value->type);
 
-                  array_push($items, $item_params);
-            }
-        }
-
-
-        $jsonBody = json_encode([
-              // 'seq' => 100002,
-              'paidAmount' => $paidAmount,
-              'paidAmountCard' => $paidAmountCard,
-              'partialAmount' => 0,
-              'prePaymentAmount' => 0,
-              'useExtPOS' => $useExtPOS,
-              'mode' => 2,
-              'items' => $items
-
-            ]);
-
-
-        $print = $hdm->socket($jsonBody, '04');
-
-        if(!$print['success']){
-
-          if( ( isset($print['result']['operationCode']) && $print['result']['operationCode'] == 102) || $print['result'] == 'logOut'){
-           
-              $this->cLogin();
-              return $this->PrintHdm($purchase_id);
+            array_push($items, $item_params);
           }
         }
-        else{
 
-          $purchase->update([
-            'hdm_crn' => $print['result']['crn'],
-            'hdm_rseq' => $print['result']['rseq']
-          ]);
+
+        $total_price = array_reduce($items, function ($carry, $item) {
+          return $carry + ($item['price'] * $item['qty']);
+        }, 0);
+
+        if($total_price > 0 ){
+
+            $hdm = new HDM($hasHdm);
+            // $hdm = new HDM($ip, $port, $hdmPassword);
+
+            $transaction_type = $purchase->hdm_transaction_type;
+            $useExtPOS = $transaction_type == 'cashe' ? true : false;
+            $paidAmount = $transaction_type == 'cashe' ? $total_price : 0;
+            $paidAmountCard = $transaction_type == 'cashe' ? 0 : $total_price;
+
+              $jsonBody = json_encode([
+                // 'seq' => 100002,
+                'paidAmount' => $paidAmount,
+                'paidAmountCard' => $paidAmountCard,
+                'partialAmount' => 0,
+                'prePaymentAmount' => 0,
+                'useExtPOS' => $useExtPOS,
+                'mode' => 2,
+                'items' => $items
+
+              ]);
+
+              $print = $hdm->socket($jsonBody, '04');
+
+              if (!$print['success']) {
+
+                  if ((isset($print['result']['operationCode']) && $print['result']['operationCode'] == 102) || $print['result'] == 'logOut') {
+
+                    // $this->cLogin();
+                    $cashier_login = $hdm->cashierLogin();
+                    // dd($cashier_login);
+                    return $cashier_login ? $this->PrintHdm($purchase_id) : $cashier_login;
+
+                  }
+
+                  return $print;
+
+                  // if(isset($print['result']['error']) && $print['result']['error']){
+                  //     return ['message' => $print['result']['message']];
+                  // }
+
+              } else {
+
+                $purchase->update([
+                  'hdm_crn' => $print['result']['crn'],
+                  'hdm_rseq' => $print['result']['rseq']
+                ]);
+              }
+
+              return $print;
         }
 
-        return $print['success'];
+        return [
+          'success' => true,
+          'result' => true
+        ];
 
   }
 

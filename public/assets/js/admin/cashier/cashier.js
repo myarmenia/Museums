@@ -364,7 +364,7 @@ var  selectedVal=''
             $('#event-select').val(data.id)
             selectedVal=$('#event-select').val()
             console.log(selectedVal)
-            // $('#event-select[value=selectedVal]').prop('selected', true);
+
             $('#event-select option[value='+selectedVal+']').prop('selected', true);
             //creating event partner select options
             const createEventPartnerOption =(id,name) => {
@@ -382,6 +382,11 @@ var  selectedVal=''
               document.getElementById('eventPartner').append(createEventPartnerOption( el.id, el.name))
 
             })
+            $('#eventPartner').on('change', function () {
+              $('.casheRadio').prop('checked', false);
+              $('#eventBTN').removeAttr('disabled');
+            })
+
 
 
 
@@ -475,6 +480,8 @@ var  selectedVal=''
 
 
 var otherServiceVal=''
+var otherServiceTotalCount=''
+var otherServiceTotalPrice=''
  $("#otherServices").on('change',function(){
 
       $.ajax({
@@ -483,7 +490,7 @@ var otherServiceVal=''
         cache: false,
         success: function (data) {
           otherServiceVal=data.id
-        $('#other-service-save').removeClass('d-none')
+          $('#other-service-save').removeClass('d-none')
 
           console.log(data)
           let content = `<table class="table cashier-table">
@@ -498,15 +505,21 @@ var otherServiceVal=''
                                 <tr class="table-default">
                                         <td>${data.item_translations[0].name}</td>
                                          <td>
-                                             <input type="text" disabled onwheel="return false;" price="200012" value=1 class="form-control form-control-validate event_guid" id="other-service-price" name="other-service-price">
+                                             <input type="number" min=0  onwheel="return false;" price="${data.price }" value=1 class="form-control form-control-validate event_guid" id="otherServiceCount" name="other_service_count">
                                          </td>
-                                        <td class="remove-value event_guide_row_price ticket_price" id="event_guide_price_am">${data.price }</td>
+                                        <td class="remove-value event_guide_row_price ticket_price" id="otherServicePrice">${data.price }</td>
                                       </tr>
 
 
                                     </tbody></table>`
 
                             $('#other-service-config').html(content)
+                            $('#otherServiceCount').on('input',function(){
+                              otherServiceTotalCount = $(this).val()
+                              otherServiceTotalPrice = otherServiceTotalCount*$(this).attr('price')
+
+                              $('#otherServicePrice').text(otherServiceTotalPrice)
+                            })
 
 
 
@@ -514,6 +527,7 @@ var otherServiceVal=''
         })
 
   })
+
 
 
 

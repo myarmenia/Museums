@@ -5,6 +5,7 @@ use App\Models\Chat;
 use App\Models\Country;
 use App\Models\EducationalProgram;
 use App\Models\Event;
+use App\Models\HdmConfig;
 use App\Models\Museum;
 use App\Models\MuseumStaff;
 use App\Models\Partner;
@@ -574,6 +575,19 @@ if (!function_exists('getAllMuseums')) {
     $museums = Museum::all();
 
     return $museums;
+
+  }
+
+}
+
+
+if (!function_exists('museumHasHdm')) {
+  function museumHasHdm():bool|HdmConfig
+  {
+        $museumAccessId = museumAccessId();
+
+        $hasHdm = HdmConfig::where('museum_id', $museumAccessId)->first();       // when museum work with dhm
+        return $hasHdm && $hasHdm->status ? $hasHdm : false;
 
   }
 

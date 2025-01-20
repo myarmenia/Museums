@@ -116,17 +116,24 @@ class BuyTicketControllerTest extends CashierController
                     // $print = $this->PrintHdm($addTicketPurchase->id);
                     // $print = $this->returnHdm();
 
-
                     $addQr = $this->getTokenQr($addTicketPurchase->id);
 
 
                     if ($addQr) {
-                      // $this->PrintHdm($addTicketPurchase->id);
-                        $print = $this->PrintHdm($addTicketPurchase->id);
-                        if (!$print) {
-                          session(['errorMessage' => 'hdm error']);
+                        if (museumHasHdm()) {
+
+                          $print = $this->PrintHdm($addTicketPurchase->id);
+
+                          if (!$print['success']) {
+
+                              $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
+
+                              session(['errorMessage' => $message]);
+                              return redirect()->back();
+                          }
+
                         }
-                        
+
                         $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
 
                         session(['success' => 'Տոմսերը ավելացված է']);
