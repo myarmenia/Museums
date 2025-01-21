@@ -27,6 +27,7 @@ class EventTicket extends CashierController
       session(['open_tab' =>'navs-top-event']);
 
       $requestData = $request->input('event');
+
       $museumId = getAuthMuseumId();
       $eventKeys = array_keys($requestData);
 
@@ -127,7 +128,7 @@ class EventTicket extends CashierController
               "quantity" => (int) $request->guide_price_other
             ];
           }
-dd($data);
+// dd($data);
           $addTicketPurchase = $this->purchase($data);
 
 

@@ -24,7 +24,7 @@ class EducationalTicket extends CashierController
             DB::beginTransaction();
 
             $requestData = $request->input('educational');
-
+            unset($requestData['cashe']);
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
             $data['items'] = [];
@@ -62,7 +62,7 @@ class EducationalTicket extends CashierController
                 $addQr = $this->getTokenQr($addTicketPurchase->id);
 
                 if ($addQr) {
-       
+
                   if (museumHasHdm()) {
 
                     $print = $this->PrintHdm($addTicketPurchase->id);

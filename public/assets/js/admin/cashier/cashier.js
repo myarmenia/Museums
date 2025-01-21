@@ -9,7 +9,7 @@ $(function () {
     let forms = $(".tab-content form");
 
     mistakeQuantity = [];
-    $('#educational-button').prop('disabled', false);
+    // $('#educational-button').prop('disabled', false);
     $('#educational-error').attr('style', 'display: none !important');
     $('.session-message').remove();
     forms.each(function (form, index) {
