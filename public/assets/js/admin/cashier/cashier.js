@@ -663,8 +663,9 @@ var partnerVal=''
       $('#event-select').val(selectedVal)
 
         $('#event-select').trigger('change')
+        $('.eventRadio').attr('disabled',false)
         $('.eventRadio').prop('checked',false)
-        $('.eventRadio').rempveAttr('disabled',true)
+
 
 
     }

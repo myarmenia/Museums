@@ -59,6 +59,7 @@ class SubscriptionTicket extends CashierController
                     $addQr = $this->getTokenQr($addTicketPurchase->id);
 
                     if ($addQr) {
+                      
                          if (museumHasHdm()) {
 
                             $print = $this->PrintHdm($addTicketPurchase->id);

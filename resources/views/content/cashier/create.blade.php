@@ -392,7 +392,7 @@
                                       type="submit"
                                       {{ museumHasHdm() ? "disabled" : null  }}
 
-                                      class="btn btn-primary form-cashier-button mx-2">Տպել4</button>
+                                      class="btn btn-primary form-cashier-button mx-2">Տպել</button>
                                 </div>
                             </div>
 
