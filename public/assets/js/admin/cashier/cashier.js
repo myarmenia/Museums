@@ -117,18 +117,19 @@ $(function () {
     let minQuantity = parseInt($(this).attr('min_quantity'));
     let maxQuantity = parseInt($(this).attr('max_quantity'));
     if (ticketCount > 0) {
-      console.log(ticketCount)
+      console.log(ticketCount,"ticketCount")
 
       if (ticketCount < minQuantity || ticketCount > maxQuantity) {
         mistakeQuantity.push(productId);
-        $('#educational-button').prop('disabled', true);
+
+        // $('#educational-button').prop('disabled', true);
       } else {
         mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
-        $('#educational-button').prop('disabled', false);
+        // $('#educational-button').prop('disabled', false);
       }
     } else if (ticketCount == 0 || ticketCount == '' || ticketCount == null || ticketCount < 0) {
       mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
-      $('#educational-button').prop('disabled', false);
+      // $('#educational-button').prop('disabled', false);
     }
 
     if (ticketCount > 0) {
@@ -157,7 +158,13 @@ $(function () {
 
     if (mistakeQuantity.length > 0) {
       $('#educational-error').attr('style', 'display: block !important; color:red;');
+      $('.educationalRadio').prop("checked",false)
+      $('.educationalRadio').attr("disabled",true)
+
+
     } else {
+      $('.educationalRadio').attr("disabled",false)
+
       $('#educational-error').attr('style', 'display: none !important');
     }
   });
@@ -769,11 +776,7 @@ $('.casheRadio').on('click',function(){
 
   $('.casheRadio').attr('checked', false);
   $(this).attr('checked', true);
-  // if ($('#eventPartner').val()) {
-  //   console.log($('#eventPartner').val())
 
-  //   $('.casheRadio').attr('disabled', true);
-  // }
 
   $(this).parent().parent().parent().find('button[type="submit"]').removeAttr('disabled');
 })
