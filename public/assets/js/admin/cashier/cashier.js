@@ -648,9 +648,7 @@ var partnerVal=''
 
                           })
                           callPartnerEducationalProgramFunction()
-                          $('#partner_education_program').on('change',function(){
-                            alert(777)
-                          })
+                         
 
 
               }
