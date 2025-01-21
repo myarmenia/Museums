@@ -421,15 +421,36 @@ if (!function_exists('getTranslateTicketTitl')) {
       }
   }
 
-  if (!function_exists('getMonths')) {
-    function getMonths()
-    {
-      return ['Հունվար', 'Փետրվար', 'Մարտ', 'Ապրիլ', 'Մայիս', 'Հունիս', 'Հուլիս', 'Օգօստոս', 'Սեպտեմբեր', 'Հոկտեմբեր', 'Նոյեմբեր','Դեկտեմբեր'];
-    }
-
-  }
 
 }
+
+
+if (!function_exists('getTranslateTicketSubTitle')) {
+  function getTranslateTicketSubTitle($title)
+  {
+    $titles = [
+      'standart' => 'Ստանդարտ',
+      'discount' => 'Զեղչված',
+      'free' => 'Անվճար',
+      'school' => 'Դպրոցական',
+      'guide_price_am' => 'էքսկուրսավար հայ․',
+      'guide_price_other' => 'էքսկուրսավար այլ',
+      'event' => 'Ցուցադրություն',
+      'event-config' => 'Միջոցառում'
+
+    ];
+
+    //check have $title in $titles
+    if (isset($titles[$title])) {
+      return $titles[$title];
+    } else {
+      return $title;
+    }
+  }
+}
+
+
+
 if (!function_exists('getTranslateTicketTitl_en')) {
   function getTranslateTicketTitl_en($title)
   {
@@ -459,12 +480,15 @@ if (!function_exists('getTranslateTicketTitl_en')) {
       }
   }
 
-  if (!function_exists('getMonths')) {
-    function getMonths()
-    {
-      return ['Հունվար', 'Փետրվար', 'Մարտ', 'Ապրիլ', 'Մայիս', 'Հունիս', 'Հուլիս', 'Օգօստոս', 'Սեպտեմբեր', 'Հոկտեմբեր', 'Նոյեմբեր','Դեկտեմբեր'];
-    }
 
+
+}
+
+
+if (!function_exists('getMonths')) {
+  function getMonths()
+  {
+    return ['Հունվար', 'Փետրվար', 'Մարտ', 'Ապրիլ', 'Մայիս', 'Հունիս', 'Հուլիս', 'Օգօստոս', 'Սեպտեմբեր', 'Հոկտեմբեր', 'Նոյեմբեր', 'Դեկտեմբեր'];
   }
 
 }
