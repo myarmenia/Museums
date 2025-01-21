@@ -22,6 +22,8 @@ class EducationalTicket extends CashierController
         try {
 
             DB::beginTransaction();
+            session(['open_tab' =>'navs-top-educational']);
+
             $requestData = $request->input('educational');
 
             $data['purchase_type'] = 'offline';
