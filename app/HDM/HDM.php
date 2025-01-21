@@ -233,15 +233,15 @@ class HDM
 
       $response = json_decode($responseDecrypt, true); //
 
-      // $parseHeader = $this->parseHeader($res);
+      $parseHeader = $this->parseHeader($res);
 
-      // if($parseHeader['data_length'] == 0){
-      //   //  return $parseHeader['operationCode'];
-      //   return [
-      //     'success' => false,
-      //     'result' => $parseHeader
-      //   ];
-      // }
+      if($parseHeader['data_length'] == 0){
+        //  return $parseHeader['operationCode'];
+        return [
+          'success' => false,
+          'result' => $parseHeader
+        ];
+      }
 
       // if (!in_array($operationCode, $this->firstEncryptionKeys)) {
       //   $this->loginKey = $response->key;
