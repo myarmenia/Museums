@@ -69,8 +69,7 @@ trait PrintReceiptTrait
             $paidAmount = $transaction_type == 'cashe' ? $total_price : 0;
             $paidAmountCard = $transaction_type == 'cashe' ? 0 : $total_price;
 
-              $jsonBody = json_encode([
-                // 'seq' => 100002,
+            $parrams = [
                 'paidAmount' => $paidAmount,
                 'paidAmountCard' => $paidAmountCard,
                 'partialAmount' => 0,
@@ -78,27 +77,41 @@ trait PrintReceiptTrait
                 'useExtPOS' => $useExtPOS,
                 'mode' => 2,
                 'items' => $items
+            ];
 
-              ]);
 
+            if($transaction_type == 'card'){
+                $parrams['useExtPOS'] = false;
+            }
+
+
+            if($transaction_type == 'otherPos'){
+                $parrams['useExtPOS'] = true;
+
+                $this->hdmFooter();
+            }
+
+
+            $parrams['items'] = $items;
+
+
+            $jsonBody = json_encode($parrams);
+
+
+              // dd($footer);
               $print = $hdm->socket($jsonBody, '04');
 
               if (!$print['success']) {
 
                   if ((isset($print['result']['operationCode']) && $print['result']['operationCode'] == 102) || $print['result'] == 'logOut') {
 
-                    // $this->cLogin();
-                    $cashier_login = $hdm->cashierLogin();
-                    // dd($cashier_login);
-                    return $cashier_login ? $this->PrintHdm($purchase_id) : $cashier_login;
 
+                    $cashier_login = $hdm->cashierLogin();
+
+                    return $cashier_login ? $this->PrintHdm($purchase_id) : $cashier_login;
                   }
 
                   return $print;
-
-                  // if(isset($print['result']['error']) && $print['result']['error']){
-                  //     return ['message' => $print['result']['message']];
-                  // }
 
               } else {
 
@@ -118,32 +131,28 @@ trait PrintReceiptTrait
 
   }
 
-  public function returnHdm()
+  public function hdmFooter() // for other transaction set footer
   {
 
-    // $ip = '192.168.10.125'; // ՀԴՄ սարքի IP հասցեն
-    // $port = 8080; // ՀԴՄ սարքի պորտը
-    // $hdmPassword = "96yQDWay";
+      $hasHdm = museumHasHdm();
 
-    $museumAccessId = museumAccessId();
-
-    $hasHdm = HdmConfig::where('museum_id', $museumAccessId)->first();       // when museum work with dhm
-
-    if ($hasHdm && $hasHdm->status) {
+      if (!$hasHdm) {
+        return false;
+      }
 
       $hdm = new HDM($hasHdm);  // hdm cashier login for hdm
-      $purchase = Purchase::find(17088);
 
       $jsonBody = json_encode([
-        // 'seq' => 100002,
-        'crn' => $purchase->hdm_crn,
-        'returnTicketId' => $purchase->hdm_rseq
 
+        'footers' => [
+                        [
+                          'text' => 'Այլ տերմինալով վճարում'
+                          ]
+                    ]
       ]);
 
-      return $return = $hdm->socket($jsonBody, '06');
+       $return = $hdm->socket($jsonBody, '07');
 
-    }
 
   }
 
