@@ -44,7 +44,7 @@ trait PrintReceiptTrait
         foreach ($purchase_items as $key => $value) {
           if ($value->total_price > 0) {
             $type = getTranslateTicketTitl($value->type);
-            $sub_type = in_array($type, ['event', 'event-config']) ? '/ ' . getTranslateTicketSubTitle($value->sub_type) : null;
+            $sub_type = in_array($value->type, ['event', 'event-config']) ? '/ ' . getTranslateTicketSubTitle($value->sub_type) : null;
 
             $item_params['qty'] = $value->quantity;
             $item_params['price'] = $value->total_price / $value->quantity;   // mek apranqi giny
