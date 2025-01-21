@@ -113,9 +113,12 @@ $(function () {
     console.log(mistakeQuantity, 999)
     let ticketCount = parseInt($(this).val()) || 0;
     let productId = $(this).attr('name').match(/\[(\d+)\]/)[1];
+    console.log(productId,"productId")
     let minQuantity = parseInt($(this).attr('min_quantity'));
     let maxQuantity = parseInt($(this).attr('max_quantity'));
     if (ticketCount > 0) {
+      console.log(ticketCount)
+
       if (ticketCount < minQuantity || ticketCount > maxQuantity) {
         mistakeQuantity.push(productId);
         $('#educational-button').prop('disabled', true);
