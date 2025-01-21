@@ -25,7 +25,7 @@ class BuyTicketController extends CashierController
             session(['open_tab' =>'navs-top-home']);
 
             $requestData = $request->all();
-            // unset($requestData['cashe']);
+            unset($requestData['cashe']);
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
             $data['items'] = [];
