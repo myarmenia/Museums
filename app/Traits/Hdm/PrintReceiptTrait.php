@@ -74,21 +74,22 @@ trait PrintReceiptTrait
                 'paidAmountCard' => $paidAmountCard,
                 'partialAmount' => 0,
                 'prePaymentAmount' => 0,
-                'useExtPOS' => $useExtPOS,
                 'mode' => 2,
                 'items' => $items
             ];
 
+            $this->hdmFooter('remove');
 
             if($transaction_type == 'card'){
                 $parrams['useExtPOS'] = false;
+
             }
 
 
             if($transaction_type == 'otherPos'){
                 $parrams['useExtPOS'] = true;
 
-                $this->hdmFooter();
+                $this->hdmFooter('add');
             }
 
 
@@ -131,7 +132,7 @@ trait PrintReceiptTrait
 
   }
 
-  public function hdmFooter() // for other transaction set footer
+  public function hdmFooter($type) // for other transaction set footer
   {
 
       $hasHdm = museumHasHdm();
@@ -142,17 +143,18 @@ trait PrintReceiptTrait
 
       $hdm = new HDM($hasHdm);  // hdm cashier login for hdm
 
+      $text = $type == 'add' ? 'Այլ տերմինալով վճարում ' : '';
+
       $jsonBody = json_encode([
 
         'footers' => [
                         [
-                          'text' => 'Այլ տերմինալով վճարում'
+                          'text' => $text
                           ]
                     ]
       ]);
 
        $return = $hdm->socket($jsonBody, '07');
-
 
   }
 
