@@ -34,9 +34,9 @@ class OtherServicesController extends CashierController
 
 
             $museumId = getAuthMuseumId();
-            if(is_null($request->other_service)){
+            if(is_null($request->other_service_count)){
               session([
-                'errorMessage' => 'Պետք է պարտադիր նշված լինի ծառայության  դաշտը։',
+                'errorMessage' => 'Պետք է պարտադիր նշված լինի ծառայության  քանակ դաշտը։',
 
               ]);
 
