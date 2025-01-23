@@ -71,7 +71,9 @@ class CashierController extends Controller
    {
       $data = $this->cashierService->showLastTicket();
 
-      return view('content.cashier.show-last-ticket', compact('data'));
+      $last_hdm = $this->cashierService->getLastPurchaseHdm();
+
+      return view('content.cashier.show-last-ticket', compact('data', 'last_hdm'));
    }
    public function getOtherServiceDetails($id)
    {
@@ -106,11 +108,22 @@ class CashierController extends Controller
         if ($allData['success']) {
           $data = $allData['data'];
           //  dd($data);
-          
+
           return view('content.cashier.create-with-hdm', compact('data'));
         }
 
         return redirect()->route('tickets_show');
     }
+
+
+  public function printLastTeceiptHdm()
+  {
+
+    $data = $this->cashierService->lastReceiptHdm();
+
+    return redirect()->back()->with('result_hdm',$data);
+
+
+  }
 
 }

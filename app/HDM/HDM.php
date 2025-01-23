@@ -234,19 +234,14 @@ class HDM
       $response = json_decode($responseDecrypt, true); //
 
       $parseHeader = $this->parseHeader($res);
-
-      if($parseHeader['data_length'] == 0){
+      
+      if($parseHeader['data_length'] == 0 && $parseHeader['operationCode'] != 200){
         //  return $parseHeader['operationCode'];
         return [
           'success' => false,
           'result' => $parseHeader
         ];
       }
-
-      // if (!in_array($operationCode, $this->firstEncryptionKeys)) {
-      //   $this->loginKey = $response->key;
-      // }
-
 
       // 7. Արտածել պատասխան
       // echo "Սարքից ստացված պատասխան HEX՝ ".bin2hex($response)."\n";

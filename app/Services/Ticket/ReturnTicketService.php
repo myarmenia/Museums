@@ -163,7 +163,8 @@ class ReturnTicketService
           $purchaseItem->purchase->update(['returned_amount' => $purchaseNewAmount]);
 
           // =============================
-          if (museumHasHdm() && $purchaseItem->type != "partner" && $purchaseItem->type != "free") {
+          $incalculableTypes = ['partner', 'school', 'free'];
+          if (museumHasHdm() && !in_array($purchaseItem->type, $incalculableTypes) ) {
 
             $print = $this->returnHdm($purchasedItemId);
 

@@ -78,7 +78,7 @@ trait PrintReceiptTrait
                 'items' => $items
             ];
 
-            $this->hdmFooter('remove');
+            // $this->hdmFooter('remove');
 
             if($transaction_type == 'card'){
                 $parrams['useExtPOS'] = false;
@@ -89,7 +89,7 @@ trait PrintReceiptTrait
             if($transaction_type == 'otherPos'){
                 $parrams['useExtPOS'] = true;
 
-                $this->hdmFooter('add');
+                // $this->hdmFooter('add');
             }
 
 
@@ -146,10 +146,15 @@ trait PrintReceiptTrait
       $text = $type == 'add' ? 'Այլ տերմինալով վճարում ' : '';
 
       $jsonBody = json_encode([
+        'headers'=> [
+                        [
+                          'text' => ''
+                          ]
+                        ],
 
         'footers' => [
                         [
-                          'text' => $text
+                          'text' => ''
                           ]
                     ]
       ]);
