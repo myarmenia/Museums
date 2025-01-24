@@ -263,9 +263,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('event-config-delete/{id}', [EventConfigController::class, 'delete'])->name('event-config-delete');
 
 
-
-
-
   });
 
   Route::group(['prefix' => 'corporative', 'middleware' => ['role:museum_admin|manager|accountant']], function () {
@@ -348,3 +345,4 @@ Route::post('/hash-make', function (Request $request) { /// for hashed password
         'hashed' => $hashed,
       ]);
 });
+// =====
