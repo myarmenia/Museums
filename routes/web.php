@@ -193,10 +193,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
     Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
   });
+  Route::group(['prefix'=>'cashier', 'middleware' => ['role:cashier']],function(){
+    Route::get('/tickets',[CashierController::class,'index'])->name('cashier.tickets');
+  });
 
   Route::group(['prefix' => 'cashier', 'middleware' => ['role:museum_admin|cashier|manager', 'check_auth_have_museum']], function () {
-    Route::get('/tickets', [CashierController::class, 'index'])->name('cashier.tickets');
-    Route::get('/tickets-with-hdm', [CashierController::class, 'index_with_hdm'])->name('cashier.tickets-with-hdm');
     Route::post('/check-coupon', [CashierController::class, 'checkCoupon'])->name('cashier.check.coupon');
     Route::post('/corporative-ticket', [CashierController::class, 'corporativeTicket'])->name('cashier.buy.corporative');
     Route::get('/get-event-details/{id}', [CashierController::class, 'getEventDetails'])->name('cashier.eveent.details');
