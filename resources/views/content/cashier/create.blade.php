@@ -166,7 +166,7 @@
                               <div class="radioButtons d-flex">
                                   <div class="form-check">
                                       <input class="form-check-input casheRadio" type="radio" name="cashe"
-                                          value="cashe" >
+                                          value="cash" >
                                       <label class="form-check-label" for="flexRadioDefault1">
                                           Կանխիկ
                                       </label>
@@ -247,7 +247,7 @@
                                   <div class="radioButtons d-flex">
                                       <div class="form-check">
                                           <input class="form-check-input casheRadio educationalRadio" type="radio" name="cashe"
-                                              value="cashe" >
+                                              value="cash" >
                                           <label class="form-check-label" for="flexRadioDefault1">
                                               Կանխիկ
                                           </label>
@@ -316,7 +316,7 @@
                                     <div class="radioButtons d-flex">
                                         <div class="form-check">
                                             <input class="form-check-input casheRadio eventRadio" type="radio" name="cashe"
-                                                value="cashe" >
+                                                value="cash" >
                                             <label class="form-check-label" for="flexRadioDefault1">
                                                 Կանխիկ
                                             </label>
@@ -381,7 +381,7 @@
                                     <div class="radioButtons d-flex">
                                         <div class="form-check">
                                             <input class="form-check-input casheRadio" type="radio" name="cashe"
-                                                value="cashe" >
+                                                value="cash" >
                                             <label class="form-check-label" for="flexRadioDefault1">
                                                 Կանխիկ
                                             </label>
@@ -472,7 +472,7 @@
                                   <div class="radioButtons d-flex">
                                       <div class="form-check">
                                           <input class="form-check-input casheRadio" type="radio" name="cashe"
-                                              value="cashe" >
+                                              value="cash" >
                                           <label class="form-check-label" for="flexRadioDefault1">
                                               Կանխիկ
                                           </label>

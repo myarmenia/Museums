@@ -4,7 +4,7 @@ namespace App\Repositories\Museum;
 use App\Interfaces\Museum\MuseumRepositoryInterface;
 use App\Models\Museum;
 use App\Models\MuseumTranslation;
-
+use Carbon\Carbon;
 
 class MuseumRepository implements MuseumRepositoryInterface
 {
@@ -65,7 +65,7 @@ class MuseumRepository implements MuseumRepositoryInterface
     public function getMobileMuseumById($id)
     {
         return Museum::with([
-            'user', 'translations', 'phones', 'images', 'links', 
+            'user', 'translations', 'phones', 'images', 'links',
             'region',
             'museum_branches' => function ($query) {
                 $query->where('status', 1);
@@ -77,9 +77,10 @@ class MuseumRepository implements MuseumRepositoryInterface
                 $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
             },
             'events' => function ($query) {
-                $query->orderBy('id', 'DESC')->where('status', 1)->paginate(10);
+                $query->orderBy('id', 'DESC')->where(['status'=>1,'online_sales'=>1])->whereDate('end_date','>=',Carbon::today())->paginate(10);
             }
         ])->find($id);
     }
+
 
 }
