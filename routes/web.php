@@ -194,15 +194,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
   });
   Route::group(['prefix'=>'cashier', 'middleware' => ['role:cashier']],function(){
-    Route::get('/tickets',[CashierController::class,'index'])->name('cashier.tickets');
+    Route::get('/tickets',[CashierController::class, 'index'])->name('cashier.tickets');
+    Route::get('/products',[CashierController::class, 'getMuseumProduct'])->name('cashier.product');
+    Route::get('/show-ticket',[CashierController::class, 'showLastTicket'])->name('cashier.show-ticket');
+
   });
 
   Route::group(['prefix' => 'cashier', 'middleware' => ['role:museum_admin|cashier|manager', 'check_auth_have_museum']], function () {
     Route::post('/check-coupon', [CashierController::class, 'checkCoupon'])->name('cashier.check.coupon');
     Route::post('/corporative-ticket', [CashierController::class, 'corporativeTicket'])->name('cashier.buy.corporative');
     Route::get('/get-event-details/{id}', [CashierController::class, 'getEventDetails'])->name('cashier.eveent.details');
-    Route::get('/products', [CashierController::class, 'getMuseumProduct'])->name('cashier.product');
-    Route::get('/show-ticket', [CashierController::class, 'showLastTicket'])->name('cashier.show-ticket');
     Route::post('/create-ticket', BuyTicketController::class)->name('cashier.add.ticket');
     Route::post('/create-educational', EducationalTicket::class)->name('cashier.add.educational');
     Route::post('/create-event', EventTicket::class)->name('cashier.add.event');
