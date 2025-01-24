@@ -73,6 +73,18 @@
                             </select>
                         </div>
 
+                        <div class="col-2">
+                            <select id="multiple-select-hdm_transaction_type" name="hdm_transaction_type" class="form-select select-2" data-placeholder="ՀԴՄ եղանակ" value="{{ request()->input('hdm_transaction_type') ?? ''}}" >
+                                <option disabled selected>ՀԴՄ եղանակ</option>
+                                <option value="null" >Բոլորը</option>
+                                <option value="cash" {{ request()->input('type') == 'online' ? 'selected' : '' }}>Կանխիկ</option>
+                                <option value="card" {{ request()->input('type') == 'offline' ? 'selected' : '' }}>Անկանխիկ</option>
+                                <option value="card" {{ request()->input('type') == 'offline' ? 'selected' : '' }}>Անկանխիկ (այլ)</option>
+
+
+                            </select>
+                        </div>
+
                         <div class="col-1">
                             <select id="multiple-select-gender" name="gender" class="form-select select-2" data-placeholder="Սեռ" value="{{ request()->input('gender') ?? ''}}" >
                                 <option disabled selected>Սեռ</option>
