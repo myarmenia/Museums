@@ -65,9 +65,9 @@ trait PrintReceiptTrait
             // $hdm = new HDM($ip, $port, $hdmPassword);
 
             $transaction_type = $purchase->hdm_transaction_type;
-            $useExtPOS = $transaction_type == 'cashe' ? true : false;
-            $paidAmount = $transaction_type == 'cashe' ? $total_price : 0;
-            $paidAmountCard = $transaction_type == 'cashe' ? 0 : $total_price;
+            $useExtPOS = $transaction_type == 'cash' ? true : false;
+            $paidAmount = $transaction_type == 'cash' ? $total_price : 0;
+            $paidAmountCard = $transaction_type == 'cash' ? 0 : $total_price;
 
             $parrams = [
                 'paidAmount' => $paidAmount,

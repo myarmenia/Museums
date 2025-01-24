@@ -52,13 +52,13 @@ trait ReturnHdmTrait
             });
 
             $hdm_coupon_item = reset($hdm_coupon_item);
-    
+
             $quantity = $type == 'educational' ? $hdm_coupon_item['qty'] : 1;
             $rpid = $hdm_coupon_item['rpid'];
             $total_price = $type == 'educational' ?  $hdm_coupon_item['tt'] :  $hdm_coupon_item['p'];
 
-            $cashAmountForReturn = $transaction_type == 'cashe' ? $total_price : 0;
-            $cardAmountForReturn = $transaction_type == 'cashe' ? 0 : $total_price;
+            $cashAmountForReturn = $transaction_type == 'cash' ? $total_price : 0;
+            $cardAmountForReturn = $transaction_type == 'cash' ? 0 : $total_price;
 
 
             $return_item = [
