@@ -175,12 +175,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/update/{id}', [MuseumBranchController::class, 'update'])->name('branches-update');
 
   });
-  Route::group(['prefix' => 'product'], function () {
-    Route::get('/list', [ProductListController::class, 'index'])->name('product_list');
-    Route::get('/create/{museum_id}', [ProductCreateController::class, 'create'])->name('product_create');
-    Route::post('/store', [ProductStoreController::class, 'store'])->name('product_store');
-    Route::get('/edit/{id}', [ProductEditController::class, 'edit'])->name('product_edit');
-    Route::put('/update/{id}', [ProductUpdateController::class, 'update'])->name('product_update');
+  Route::group(['prefix' =>'product'], function () {
+    Route::get('/list',[ProductListController::class, 'index'])->name('product_list');
+    Route::get('/create/{museum_id}',[ProductCreateController::class, 'create'])->name('product_create');
+    Route::post('/store',[ProductStoreController::class, 'store'])->name('product_store');
+    Route::get('/edit/{id}',[ProductEditController::class, 'edit'])->name('product_edit');
+    Route::put('/update/{id}',[ProductUpdateController::class, 'update'])->name('product_update');
 
   });
 
