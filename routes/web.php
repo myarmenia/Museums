@@ -74,8 +74,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
-use App\Http\Controllers\cashier\BuyTicketControllerTest;
-use App\Http\Controllers\cashier\EventTicketTest;
 use App\Http\Controllers\cashier\OtherServices;
 use App\Http\Controllers\cashier\OtherServicesController;
 use App\Http\Controllers\cashier\PartnerController;
@@ -157,7 +155,8 @@ Route::group(['middleware' => ['auth']], function () {
     });
   });
 
-  // News
+
+  //News
   Route::group(['prefix' => 'news'], function () {
     Route::get('/news', [NewsController::class, 'index'])->name('news');
     Route::get('/news-create', [NewsController::class, 'createNewsPage'])->name('news-create-page');
@@ -167,7 +166,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/news-update/{id}', [NewsController::class, 'updateNews'])->name('news-update');
 
   });
-  // Museum branches
+  //Museum branches
   Route::group(['prefix' => 'musuem_branches'], function () {
     Route::get('/list', [MuseumBranchController::class, 'index'])->name('branches-list');
     Route::get('/create/{museum_id}', [MuseumBranchController::class, 'create'])->name('branches-create');
@@ -185,6 +184,10 @@ Route::group(['middleware' => ['auth']], function () {
 
   });
 
+
+
+
+
   Route::group(['prefix' => 'chats', 'middleware' => ['role:museum_admin|super_admin|general_manager|manager', 'check_auth_have_museum']], function () {
     Route::get('/', [ChatController::class, 'index'])->name('chats');
     Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
@@ -200,10 +203,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/products', [CashierController::class, 'getMuseumProduct'])->name('cashier.product');
     Route::get('/show-ticket', [CashierController::class, 'showLastTicket'])->name('cashier.show-ticket');
     Route::post('/create-ticket', BuyTicketController::class)->name('cashier.add.ticket');
-    Route::post('/create-ticket-test', BuyTicketControllerTest::class)->name('cashier.add.ticket.test');
     Route::post('/create-educational', EducationalTicket::class)->name('cashier.add.educational');
     Route::post('/create-event', EventTicket::class)->name('cashier.add.event');
-    Route::post('/create-event-test', EventTicketTest::class)->name('cashier.add.event.test');
     Route::post('/create-subscription', SubscriptionTicket::class)->name('cashier.add.subscription');
     Route::post('/create-corporative', CorporativeTicket::class)->name('cashier.add.corporative');
     Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
@@ -239,20 +240,21 @@ Route::group(['middleware' => ['auth']], function () {
 
     });
   });
-
   Route::group(['prefix' => 'banner'], function () {
-    Route::get('/list', [BannerListController::class, 'index'])->name('banner_list');
-    Route::get('/create', [BannerCreateController::class, 'create'])->name('banner_create');
-    Route::post('/store', [BannerStoreController::class, 'store'])->name('banner_store');
-    Route::get('edit/{id}', [BannerEditController::class, 'edit'])->name('banner_edit');
-    Route::put('/update/{id}', [BannerUpdateController::class, 'update'])->name('banner_update');
+    Route::get('/list',[BannerListController::class, 'index'])->name('banner_list');
+    Route::get('/create',[BannerCreateController::class, 'create'])->name('banner_create');
+    Route::post('/store',[BannerStoreController::class, 'store'])->name('banner_store');
+    Route::get('edit/{id}',[BannerEditController::class, 'edit'])->name('banner_edit');
+    Route::put('/update/{id}',[BannerUpdateController::class, 'update'])->name('banner_update');
   });
+
+
   Route::group(['prefix' => 'events'], function ($router) {
-    Route::get('list', EventListController::class)->name('event_list');
-    Route::get('create', EventCreateController::class)->name('event_create');
-    Route::post('store', EventStoreController::class)->name('event_store');
-    Route::get('edit/{id}', EventEditController::class)->name('event_edit');
-    Route::put('update/{id}', EventUpdateController::class)->name('event_update');
+    Route::get('list',EventListController::class)->name('event_list');
+    Route::get('create',EventCreateController::class)->name('event_create');
+    Route::post('store',EventStoreController::class)->name('event_store');
+    Route::get('edit/{id}',EventEditController::class)->name('event_edit');
+    Route::put('update/{id}',EventUpdateController::class)->name('event_update');
 
     Route::get('config/component/{id}/{value}', [IncrementController::class, 'increment']);
     Route::post('event-config', [EventConfigController::class, 'store'])->name('event_config_store');

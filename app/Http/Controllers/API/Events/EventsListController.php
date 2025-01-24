@@ -26,7 +26,9 @@ class EventsListController extends BaseController
     $data = $this->model
                 ->filter($request->all())
       ->where(['status' => 1, 'online_sales' => 1])->whereDate('end_date', '>=', Carbon::today())
-      ->orderBy('id', 'DESC')->paginate(12)->withQueryString();
+      ->orderBy('id', 'DESC')
+      ->paginate(12)->withQueryString();
+  
       $museums = Museum::all();
       $museum_list = MuseumListResource::collection($museums);
       return $this->sendResponse(EventListResource::collection($data),'success',['page_count' => $data->lastPage(),'museum_list'=>$museum_list]);
