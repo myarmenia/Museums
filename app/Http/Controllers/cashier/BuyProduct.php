@@ -5,6 +5,7 @@ namespace App\Http\Controllers\cashier;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\TicketSubscriptionSetting;
+use App\Traits\Hdm\PrintReceiptTrait;
 use App\Traits\NodeApi\QrTokenTrait;
 use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 class BuyProduct extends Controller
 {
     use PurchaseTrait;
+    use PrintReceiptTrait;
 
     public function __invoke(Request $request)
     {
@@ -20,6 +22,7 @@ class BuyProduct extends Controller
             DB::beginTransaction();
 
             $requestData = $request->input('product');
+            // dd($request->all());
 
             $allMuseumProduct = Product::where(['museum_id' => getAuthMuseumId(), 'status' => 1])->get();
 
@@ -27,6 +30,7 @@ class BuyProduct extends Controller
                 $data['purchase_type'] = 'offline';
                 $data['status'] = 1;
                 $data['items'] = [];
+                $data['hdm_transaction_type']=$request->cashe;
 
                 $haveValue = false;
 
@@ -53,14 +57,30 @@ class BuyProduct extends Controller
 
                 if(!$haveValue){
                     session(['errorMessage' => 'Լրացրեք քանակ դաշտը']);
-                       
+
                     DB::rollBack();
                     return redirect()->back();
                 }
 
                 $addTicketPurchase = $this->purchase($data);
 
+
                 if ($addTicketPurchase) {
+
+                  if (museumHasHdm()) {
+
+                    $print = $this->PrintHdm($addTicketPurchase->id);
+
+                    if (!$print['success']) {
+
+                        $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
+
+                        session(['errorMessage' => $message]);
+                        return redirect()->back();
+                    }
+
+                  }
+
                     session(['success' => 'Ապրանքը վաճառված է']);
 
                     DB::commit();
