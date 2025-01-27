@@ -5,7 +5,7 @@
 @section('page-script')
     <script src="{{ asset('assets/js/admin\cashier\productCashier.js') }}"></script>
 
-    <script src="{{ asset('assets/js/ui-modals.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/ui-modals.js') }}"></script> --}}
 @endsection
 
 @section('content')
@@ -90,12 +90,12 @@
                 </div>
                 <div class="mt-3 row justify-content-end">
                     <div class="col-sm-10 d-flex justify-content-end">
-                        <div class="card mb-4">
+                        <div class="card mb-4" style="border: none;!important">
                             <div>
-                                <div class="row gy-3">
+                                <div class="row gy-3" >
                                     <div>
-                                        <div>
-                                          <div class="mt-3 row  justify-content-end">
+                                        <div >
+                                          <div class="mt-3 row  justify-content-end" >
                                             <div class="col-sm-4 d-flex justify-content-end align-items-center">
                                               @if(museumHasHdm())
                                                 <div class="radioButtons d-flex">
@@ -123,7 +123,7 @@
                                                 </div>
                                                 @endif
 
-                                                <button type="submit" {{ museumHasHdm()?"disabled" : null }}
+                                                <button type="button" {{ museumHasHdm()?"disabled" : null }}
                                                     class="btn btn-primary form-cashier-button mx-2" data-bs-toggle="modal"  data-bs-target="#basicModal"> Վաճառել</button>
                                             </div>
                                         </div>

@@ -59,5 +59,5 @@ $('.productCashierRadio').on('click',function(){
   $(this).attr('checked', true);
 
 
-  $(this).parent().parent().parent().find('button[type="submit"]').removeAttr('disabled');
+  $(this).parent().parent().parent().find('button[type="button"]').removeAttr('disabled');
 })
