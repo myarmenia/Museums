@@ -9,7 +9,7 @@ $(function () {
     let forms = $(".tab-content form");
 
     mistakeQuantity = [];
-    $('#educational-button').prop('disabled', false);
+    // $('#educational-button').prop('disabled', false);
     $('#educational-error').attr('style', 'display: none !important');
     $('.session-message').remove();
     forms.each(function (form, index) {
@@ -113,19 +113,23 @@ $(function () {
     console.log(mistakeQuantity, 999)
     let ticketCount = parseInt($(this).val()) || 0;
     let productId = $(this).attr('name').match(/\[(\d+)\]/)[1];
+    console.log(productId,"productId")
     let minQuantity = parseInt($(this).attr('min_quantity'));
     let maxQuantity = parseInt($(this).attr('max_quantity'));
     if (ticketCount > 0) {
+      console.log(ticketCount,"ticketCount")
+
       if (ticketCount < minQuantity || ticketCount > maxQuantity) {
         mistakeQuantity.push(productId);
-        $('#educational-button').prop('disabled', true);
+
+        // $('#educational-button').prop('disabled', true);
       } else {
         mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
-        $('#educational-button').prop('disabled', false);
+        // $('#educational-button').prop('disabled', false);
       }
     } else if (ticketCount == 0 || ticketCount == '' || ticketCount == null || ticketCount < 0) {
       mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
-      $('#educational-button').prop('disabled', false);
+      // $('#educational-button').prop('disabled', false);
     }
 
     if (ticketCount > 0) {
@@ -154,7 +158,13 @@ $(function () {
 
     if (mistakeQuantity.length > 0) {
       $('#educational-error').attr('style', 'display: block !important; color:red;');
+      $('.educationalRadio').prop("checked",false)
+      $('.educationalRadio').attr("disabled",true)
+
+
     } else {
+      $('.educationalRadio').attr("disabled",false)
+
       $('#educational-error').attr('style', 'display: none !important');
     }
   });
@@ -384,6 +394,8 @@ var  selectedVal=''
             })
             $('#eventPartner').on('change', function () {
               $('.casheRadio').prop('checked', false);
+              $('.eventRadio').attr('disabled', true);
+
               $('#eventBTN').removeAttr('disabled');
             })
 
@@ -636,6 +648,7 @@ var partnerVal=''
 
                           })
                           callPartnerEducationalProgramFunction()
+                         
 
 
               }
@@ -651,12 +664,16 @@ var partnerVal=''
   $(document).on('click', '.nav-link', function() {
 
 
+
     if($(this).attr('aria-controls')=="navs-top-event"){
 
 
       $('#event-select').val(selectedVal)
 
         $('#event-select').trigger('change')
+        $('.eventRadio').attr('disabled',false)
+        $('.eventRadio').prop('checked',false)
+
 
 
     }
@@ -751,12 +768,13 @@ $('#partner_education_program').on('change',function(){
     $('#partner_education_program_quantity').attr('price', selectedOption.attr('price'));
 })
 }
-
+// cashe radiobuttons functuanality
 
 $('.casheRadio').on('click',function(){
 
   $('.casheRadio').attr('checked', false);
   $(this).attr('checked', true);
+
 
   $(this).parent().parent().parent().find('button[type="submit"]').removeAttr('disabled');
 })

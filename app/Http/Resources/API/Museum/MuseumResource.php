@@ -15,10 +15,11 @@ class MuseumResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         $translations = $this->translations[0];
         $mainPhotoPath = $this->images->where('main', 1)->first()->path;
         $request['type'] = 'standart';
-        
+
         return [
             'id' => $this->id,
             'region' => $this->region->name,
@@ -27,6 +28,7 @@ class MuseumResource extends JsonResource
             'tickets' => new TicketResource($this->standart_tickets),
             'name' => $translations->name,
             'photo'=> $mainPhotoPath ? route('get-file', ['path' => $mainPhotoPath]) : '',
+            'working_days'=>$translations->working_days
         ];
     }
 }

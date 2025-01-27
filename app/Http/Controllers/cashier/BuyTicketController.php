@@ -25,7 +25,7 @@ class BuyTicketController extends CashierController
             session(['open_tab' =>'navs-top-home']);
 
             $requestData = $request->all();
-            // unset($requestData['cashe']);
+            unset($requestData['cashe']);
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
             $data['items'] = [];
@@ -117,6 +117,19 @@ class BuyTicketController extends CashierController
                     $addQr = $this->getTokenQr($addTicketPurchase->id);
 
                     if ($addQr) {
+                      if (museumHasHdm()) {
+
+                        $print = $this->PrintHdm($addTicketPurchase->id);
+
+                        if (!$print['success']) {
+
+                            $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
+
+                            session(['errorMessage' => $message]);
+                            return redirect()->back();
+                        }
+
+                      }
 
 
                         $pdfPath = $this->showReadyPdf($addTicketPurchase->id);

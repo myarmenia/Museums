@@ -5,6 +5,7 @@ namespace App\Http\Controllers\cashier;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventConfig;
+use App\Traits\Hdm\PrintReceiptTrait;
 use App\Traits\NodeApi\QrTokenTrait;
 use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ class EventTicket extends CashierController
 {
   use PurchaseTrait;
   use QrTokenTrait;
+  use PrintReceiptTrait;
 
   public function __invoke(Request $request)
   {
@@ -25,6 +27,7 @@ class EventTicket extends CashierController
       session(['open_tab' =>'navs-top-event']);
 
       $requestData = $request->input('event');
+
       $museumId = getAuthMuseumId();
       $eventKeys = array_keys($requestData);
 
@@ -60,6 +63,7 @@ class EventTicket extends CashierController
           $data['purchase_type'] = 'offline';
           $data['status'] = 1;
           $data['items'] = [];
+          $data['hdm_transaction_type']=$request->cashe;
           if(isset($request->partner_id)){
             $data['partner_id'] = $request->partner_id;
           }
@@ -138,6 +142,19 @@ class EventTicket extends CashierController
             $addQr = $this->getTokenQr($addTicketPurchase->id);
 
             if ($addQr) {
+              if(museumHasHdm() && $data['hdm_transaction_type']!=null){
+
+                $print = $this->PrintHdm($addTicketPurchase->id);
+
+                if (!$print['success']) {
+
+                    $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
+
+                    session(['errorMessage' => $message]);
+                    return redirect()->back();
+                }
+              }
+
               $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
               session(['success' => 'Տոմսերը ավելացված է']);
 
@@ -160,6 +177,7 @@ class EventTicket extends CashierController
           $requestDataValue = array_values($requestData)[0];
           $data['purchase_type'] = 'offline';
           $data['status'] = 1;
+          $data['hdm_transaction_type']=$request->cashe;
           if(isset($request->partner_id)){
             $data['partner_id'] = $request->partner_id;
           }
@@ -202,6 +220,18 @@ class EventTicket extends CashierController
             $addQr = $this->getTokenQr($addTicketPurchase->id);
 
             if ($addQr) {
+              if(museumHasHdm() && $data['hdm_transaction_type']!=null){
+
+                $print = $this->PrintHdm($addTicketPurchase->id);
+
+                if (!$print['success']) {
+
+                    $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
+
+                    session(['errorMessage' => $message]);
+                    return redirect()->back();
+                }
+              }
               // dd($addQr);
               $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
               session(['success' => 'Տոմսերը ավելացված է']);

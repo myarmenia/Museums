@@ -4,6 +4,7 @@ namespace App\Http\Controllers\cashier;
 
 use App\Http\Controllers\Controller;
 use App\Models\TicketSubscriptionSetting;
+use App\Traits\Hdm\PrintReceiptTrait;
 use App\Traits\NodeApi\QrTokenTrait;
 use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ class SubscriptionTicket extends CashierController
 {
     use PurchaseTrait;
     use QrTokenTrait;
+    use PrintReceiptTrait;
 
     public function __invoke(Request $request)
     {
@@ -38,7 +40,7 @@ class SubscriptionTicket extends CashierController
                 $data['purchase_type'] = 'offline';
                 $data['status'] = 1;
                 $data['items'] = [];
-
+                $data['hdm_transaction_type']=$request->cashe;
                 if ($requestData > 10) {
                     session(['errorMessage' => 'Ամենաշատը կարող եք գնել 10 տոմս']);
                     DB::rollBack();
@@ -57,6 +59,20 @@ class SubscriptionTicket extends CashierController
                     $addQr = $this->getTokenQr($addTicketPurchase->id);
 
                     if ($addQr) {
+                      
+                         if (museumHasHdm()) {
+
+                            $print = $this->PrintHdm($addTicketPurchase->id);
+
+                            if (!$print['success']) {
+
+                                $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
+
+                                session(['errorMessage' => $message]);
+                                return redirect()->back();
+                            }
+                          }
+
                         $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
                         session(['success' => 'Տոմսերը ավելացված է']);
 

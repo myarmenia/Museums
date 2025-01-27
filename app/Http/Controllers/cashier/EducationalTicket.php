@@ -4,6 +4,7 @@ namespace App\Http\Controllers\cashier;
 
 use App\Http\Controllers\Controller;
 use App\Models\EducationalProgram;
+use App\Traits\Hdm\PrintReceiptTrait;
 use App\Traits\NodeApi\QrTokenTrait;
 use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
@@ -14,18 +15,21 @@ class EducationalTicket extends CashierController
 {
     use PurchaseTrait;
     use QrTokenTrait;
+    use PrintReceiptTrait;
 
     public function __invoke(Request $request)
     {
         try {
 
             DB::beginTransaction();
+            session(['open_tab' =>'navs-top-educational']);
 
             $requestData = $request->input('educational');
 
             $data['purchase_type'] = 'offline';
             $data['status'] = 1;
             $data['items'] = [];
+            $data['hdm_transaction_type']=$request->cashe;
 
             $museumId = getAuthMuseumId();
 
@@ -53,12 +57,29 @@ class EducationalTicket extends CashierController
             }
 
             $addTicketPurchase = $this->purchase($data);
-// dd($addTicketPurchase);
+
             if ($addTicketPurchase) {
 
                 $addQr = $this->getTokenQr($addTicketPurchase->id);
-// dd($addQr);
+
                 if ($addQr) {
+
+
+                  if (museumHasHdm()) {
+
+                    $print = $this->PrintHdm($addTicketPurchase->id);
+
+                    if (!$print['success']) {
+
+                        $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
+
+                        session(['errorMessage' => $message]);
+                        return redirect()->back();
+                    }
+
+                  }
+
+
                     $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
                     session(['success' => 'Տոմսերը ավելացված է']);
 
