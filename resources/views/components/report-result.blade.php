@@ -165,7 +165,7 @@
   </table>
 </div>
 
-@if ($total_info != null)
+@if ($total_info != null && request()->input('type') != 'offline')
   <div class="d-flex justify-content-end w-100 mt-4">
       <div>Ընդամենը` {{$total_info}}</div>
   </div>

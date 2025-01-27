@@ -56,9 +56,22 @@ trait CheckReportType
       $result = $this->generateReport($data, $model);
     }
 
+dd($result);
+    $result = $this->educationalTotalCount($result, $data, $model);
+
 
     return $result;
 
+  }
+
+
+  public function educationalTotalCount($result, $data, $model){
+    $data['type'] = 'educational';
+
+
+    $data = $this->generateReport($data, $model);
+
+    dd($data);
   }
 
 }

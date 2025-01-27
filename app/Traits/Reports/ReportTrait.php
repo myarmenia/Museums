@@ -48,7 +48,7 @@ trait ReportTrait
 
     $purchase = $model->reportFilter($data);
     $purchased_item_id = $purchase->where('type', 'united')->pluck('id');
-    // dd($purchased_item_id);
+
 
     $report = $model->reportFilter($data)->where('type', '!=', 'united');
 
@@ -289,6 +289,52 @@ trait ReportTrait
       }
 
       return $general_report;
+  }
+
+  // ====================== educational row total count in PurchasedItem ==============================
+
+  public function totalEducational($data, $model){
+    $data = array_filter($data, function ($value) {
+      return $value !== null && $value !== 'null';
+    });
+
+
+    if (!isset($data['report_type'])) {
+      $data['report_type'] = 'fin_quant';
+    }
+
+    if (!isset($data['time']) && empty($data['from_created_at']) && empty($data['to_created_at'])) {
+      $data['time'][] = 'per_year';
+    }
+
+
+    if (isset($data['time']) && count($data['time']) == 1) {
+      $get_report_times = getReportTimes();
+
+      // dd($get_report_times[$data['time'][0]]['start_date']);
+
+      $data['start_date'] = $get_report_times[$data['time'][0]]['start_date'];
+      $data['end_date'] = $get_report_times[$data['time'][0]]['end_date'];
+    }
+
+    if (isset($data['age'])) {
+      $get_age_ranges = getAgeRanges();
+
+      $data['start_age'] = $get_age_ranges[$data['age']]['start_age'];
+      $data['end_age'] = $get_age_ranges[$data['age']]['end_age'];
+
+    }
+    // dd($data);
+    $report = $model->reportFilter($data)->where('type', 'educational');
+
+
+
+
+    if (isset($data['museum_id']) && !empty($data['museum_id'])) {
+      $report = $report->whereIn('museum_id', $data['museum_id']);
+    }
+    dd($report);
+
   }
 
 }
