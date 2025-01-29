@@ -53,6 +53,7 @@ trait QrTokenTrait
 
 //==== in $allPurchasesForQr array we gethering all purchase items except guide, for guide there is no need generate qr token
                 $allPurchasesForQr=[];
+                // dd($allPurchases);
                 foreach($allPurchases as $item){
 
                   if(!in_array($item->type,$unusedTypes)){
@@ -86,7 +87,7 @@ trait QrTokenTrait
 // ============creating $purchasesKeys array for getting qr tocken for every ticket type
             $purchasesKeys = [];
 
-
+// dd($allPurchasesForQr);
             foreach ($allPurchasesForQr as $key => $item) {
 
                 $purchasesKeys[$item->type] = array_key_exists($item->type, $purchasesKeys)
@@ -108,13 +109,18 @@ trait QrTokenTrait
             $data = $this->getReqQrToken($url, $purchasesKeys);
 // dd($data);
             $addedItemsToken = [];
-
+// dd($allPurchases);
             foreach ($allPurchases as $key => $item) {
                 $quantity = $item->quantity;
 
                 $priceOneTicket = (int) $item->total_price / (int) $item->quantity;
 
-                  if($item->type == "school"|| $item->type == "educational" ||  $item->type == "other_service" ||($item->type == "partner" && $item->sub_type == "educational" )){
+                  if( $item->type == "school" ||
+                      $item->type == "educational" ||
+                      $item->type == "other_service" ||
+                      ($item->type == "partner" && $item->sub_type == "educational" )
+                      || $item->type == "product"
+                    ){
 
                       $quantity=1;
                       $priceOneTicket=$item->total_price;
@@ -152,6 +158,7 @@ trait QrTokenTrait
                 }
             }
 // dd($allData);
+// dd($addedItemsToken);
             $insert = TicketQr::insert($allData);
 
             if (!$insert) {

@@ -11,10 +11,11 @@ use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class BuyProduct extends Controller
+class BuyProduct extends CashierController
 {
     use PurchaseTrait;
     use PrintReceiptTrait;
+    use QrTokenTrait;
 
     public function __invoke(Request $request)
     {
@@ -66,7 +67,8 @@ class BuyProduct extends Controller
 
 
                 if ($addTicketPurchase) {
-
+                  $addQr = $this->getTokenQr($addTicketPurchase->id);
+// dd($addQr );
                   if (museumHasHdm()) {
 
                     $print = $this->PrintHdm($addTicketPurchase->id);
@@ -80,6 +82,7 @@ class BuyProduct extends Controller
                     }
 
                   }
+                  $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
 
                     session(['success' => 'Ապրանքը վաճառված է']);
 

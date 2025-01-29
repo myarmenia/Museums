@@ -101,7 +101,7 @@ class CashierController extends Controller
 
         }
 
-
+// dd($qrs);
         foreach ($qrs as $key=>$qr) {
           // dd($qr);
 
