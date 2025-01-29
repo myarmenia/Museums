@@ -69,34 +69,33 @@ class BuyProduct extends CashierController
                 if ($addTicketPurchase) {
                   $addQr = $this->getTokenQr($addTicketPurchase->id);
 
-                    // if($addQr){
-                    //   if (museumHasHdm()) {
+                    if($addQr){
+                      if (museumHasHdm()) {
 
-                    //     $print = $this->PrintHdm($addTicketPurchase->id);
+                        $print = $this->PrintHdm($addTicketPurchase->id);
 
-                    //     if (!$print['success']) {
+                        if (!$print['success']) {
 
-                    //         $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
+                            $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
 
-                    //         session(['errorMessage' => $message]);
-                    //         return redirect()->back();
-                    //     }
+                            session(['errorMessage' => $message]);
+                            return redirect()->back();
+                        }
 
-                    //   }
+                      }
 
-                    // }
+                    }
 
                   $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
-                  // dd(  $pdfPath);
+
 
                     session(['success' => 'Ապրանքը վաճառված է']);
 
                     DB::commit();
-                    // dd($pdfPath);
-                    // return redirect()->back();
+
                     return redirect()->back()->with('pdfFile', $pdfPath);
 
-                    // return redirect()->route('cashier.product')->with('pdfFile', $pdfPath);
+
                 }
             }
 
