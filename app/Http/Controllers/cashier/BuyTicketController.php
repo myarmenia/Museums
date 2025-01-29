@@ -115,7 +115,7 @@ class BuyTicketController extends CashierController
 
 
                     $addQr = $this->getTokenQr($addTicketPurchase->id);
-// dd( $addQr);
+
                     if ($addQr) {
                       if (museumHasHdm()) {
 

@@ -64,8 +64,10 @@
 
 
 
-            @if ($item['type']=="guide"||($item['type']=="event" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))||
+            @if ($item['type']=="guide"||
+            ($item['type']=="event" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other'))||
             ($item['type']=="event-config" && ($item['sub_type']=='guide_price_am'|| $item['sub_type']=='guide_price_other')) || ($item['partner_relation_sub_type']=='guide_price_am'|| $item['partner_relation_sub_type']=='guide_price_other')
+            || $item['type']=="product"
           )
               <div class="img" style="margin-bottom:20px;width:70%">
                   <img src="{{('assets/img/logos/museum-logo.png')}}" alt="museum-log" id="logo">
@@ -194,6 +196,12 @@
                         <span>Գին/Price - </span>
                         <span>{{ $item['price'] }}դր․/AMD</span>
                     </div>
+                @endif
+                @if ($item['type'] == 'product')
+                  <div class="text-flex text-margin">
+                      <span>Գին/Price - </span>
+                      <span>{{ $item['price'] }}դր․/AMD</span>
+                  </div>
                 @endif
 
                 @if ($item['guid'])
