@@ -210,7 +210,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/create-subscription', SubscriptionTicket::class)->name('cashier.add.subscription');
     Route::post('/create-corporative', CorporativeTicket::class)->name('cashier.add.corporative');
     Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
-    Route::post('/sale-product', BuyProduct::class)->name('cashier.add.product');
     Route::get('get-other-service/{id}', [CashierController::class,'getOtherServiceDetails'])->name('cashier.otherService.details');
     Route::post('/create-other-service', OtherServicesController::class)->name('cashier.add.otherServices');
     Route::get('get-partner/{id}', [CashierController::class,'getPartnerDetails'])->name('cashier.partner.details');
