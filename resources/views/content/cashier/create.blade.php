@@ -268,7 +268,11 @@
                                     </div>
                                   </div>
                                   @endif
-                                <button type="submit"  class="btn btn-primary form-cashier-button" id='educational-button' disabled>Տպել</button>
+                                <button type="submit"
+                                        class="btn btn-primary form-cashier-button"
+                                        id='educational-button'
+                                        {{ museumHasHdm() ? "disabled" : null  }}
+                                        >Տպել</button>
 
 
 
