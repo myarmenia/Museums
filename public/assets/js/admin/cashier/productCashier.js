@@ -1,6 +1,7 @@
 $(function () {
   let mistakeQuantity = [];
   $('input[name^="product"]').on('input', function () {
+    console.log(mistakeQuantity)
     let ticketCount = parseInt($(this).val()) || 0;
     let productId = $(this).attr('name').match(/\[(\d+)\]/)[1];
     let minQuantity = parseInt($(this).attr('min_quantity'));
@@ -19,7 +20,7 @@ $(function () {
     }
     console.log(mistakeQuantity)
 
-    if (ticketCount > 0) {    
+    if (ticketCount > 0) {
       let priceTicket = $(this).attr('price');
       let readyPrice = priceTicket * ticketCount;
       $('#product-ticket-price_' + productId).text(readyPrice);
@@ -50,3 +51,13 @@ $(function () {
     }
   });
 });
+
+
+$('.productCashierRadio').on('click',function(){
+
+  $('.productCashierRadio').attr('checked', false);
+  $(this).attr('checked', true);
+
+
+  $(this).parent().parent().parent().find('button[type="button"]').removeAttr('disabled');
+})
