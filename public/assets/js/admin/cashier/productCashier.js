@@ -61,3 +61,8 @@ $('.productCashierRadio').on('click',function(){
 
   $(this).parent().parent().parent().find('button[type="button"]').removeAttr('disabled');
 })
+
+if ($('#pdf-path').val()) {
+  let path = $('#pdf-path').val();
+  window.open(path, '_blank')
+}

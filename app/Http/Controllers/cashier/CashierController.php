@@ -222,7 +222,7 @@ class CashierController extends Controller
         }
 
 
-
+// dd($data);
         $pdf = Pdf::loadView('components.ticket-print', ['tickets' => $data])->setPaper([0, 0, 300, 600], 'portrait');
 
 
