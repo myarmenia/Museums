@@ -79,7 +79,7 @@
                                 <option value="null" >Բոլորը</option>
                                 <option value="cash" {{ request()->input('hdm_transaction_type') == 'cash' ? 'selected' : '' }}>Կանխիկ</option>
                                 <option value="card" {{ request()->input('hdm_transaction_type') == 'card' ? 'selected' : '' }}>Անկանխիկ</option>
-                                <option value="otherPos" {{ request()->input('hdm_transaction_type') == 'otherPos' ? 'selected' : '' }}>Անկանխիկ (այլ)</option>
+                                <option value="otherPos" {{ request()->input('hdm_transaction_type') == 'otherPos' ? 'selected' : '' }}> Այլ ( Անկանխիկ)</option>
                             </select>
                         </div>
 

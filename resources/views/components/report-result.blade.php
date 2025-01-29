@@ -50,7 +50,12 @@
                       @endif
 
                       @foreach ($all_report_types as $type)
-                          <td>{{ !empty($report[$type]) ? $report[$type]['total_price'] .' / '. $report[$type]['quantity'] : ' - ' }}</td>
+
+                        @if ($type == 'educational' && isset($report[$type]['total_count']))
+                            <td>{{ !empty($report[$type]) ? $report[$type]['total_price'] .' / '. $report[$type]['quantity'] .' / '. $report[$type]['total_count'] : ' - ' }}</td>
+                        @else
+                            <td>{{ !empty($report[$type]) ? $report[$type]['total_price'] .' / '. $report[$type]['quantity'] : ' - ' }}</td>
+                        @endif
                       @endforeach
                       {{-- <td>{{ !empty($report['discount']) ? $report['discount']['total_price'] .' / '. $report['discount']['quantity'] : ' - '  }}</td>
                       <td>{{ !empty($report['free']) ? $report['free']['total_price'] .' / '. $report['free']['quantity'] : ' - '  }}</td>
@@ -86,7 +91,11 @@
                           <td>{{ isset($report['museum_id']) ? getMuseum($report['museum_id'])->translationsForAdmin->name : ' - '}}</td>
                       @endif
                       @foreach ($all_report_types as $type)
-                          <td>{{ !empty($report[$type]) ? $report[$type]['quantity'] : ' - ' }}</td>
+                          @if ($type == 'educational' && isset($report[$type]['total_count']))
+                              <td>{{ !empty($report[$type]) ? $report[$type]['quantity'] .' / '. $report[$type]['total_count'] : ' - ' }}</td>
+                          @else
+                              <td>{{ !empty($report[$type]) ? $report[$type]['quantity'] : ' - ' }}</td>
+                          @endif
 
                       @endforeach
 

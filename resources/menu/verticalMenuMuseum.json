@@ -60,11 +60,7 @@
       "name": "Դրամարկղ",
       "icon": "menu-icon tf-icons bx bx-wallet",
       "slug": ["cashier.tickets", "cashier.product", "cashier.show-ticket"],
-      "roles": [
-        "museum_admin",
-        "cashier",
-        "manager"
-      ],
+      "roles": [ "cashier"],
       "submenu": [
         {
           "url": "/cashier/tickets",

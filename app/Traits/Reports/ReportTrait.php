@@ -2,11 +2,12 @@
 namespace App\Traits\Reports;
 
 use App\Models\Purchase;
-use App\Models\PurchasedItem;
-use App\Models\PurchaseUnitedTickets;
 use App\Models\TicketQr;
 use Illuminate\Http\Request;
+use App\Models\PurchasedItem;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use App\Models\PurchaseUnitedTickets;
 
 
 trait ReportTrait
@@ -311,7 +312,6 @@ trait ReportTrait
     if (isset($data['time']) && count($data['time']) == 1) {
       $get_report_times = getReportTimes();
 
-      // dd($get_report_times[$data['time'][0]]['start_date']);
 
       $data['start_date'] = $get_report_times[$data['time'][0]]['start_date'];
       $data['end_date'] = $get_report_times[$data['time'][0]]['end_date'];
@@ -324,16 +324,16 @@ trait ReportTrait
       $data['end_age'] = $get_age_ranges[$data['age']]['end_age'];
 
     }
-    // dd($data);
-    $report = $model->reportFilter($data)->where('type', 'educational');
 
-
+    $report = $model->reportFilter($data)->where('type', 'educational')->whereColumn('returned_quantity', '!=', 'quantity');
 
 
     if (isset($data['museum_id']) && !empty($data['museum_id'])) {
       $report = $report->whereIn('museum_id', $data['museum_id']);
     }
-    dd($report);
+
+    return count($report->get());
+
 
   }
 

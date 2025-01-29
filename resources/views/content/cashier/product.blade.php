@@ -4,7 +4,8 @@
 
 @section('page-script')
     <script src="{{ asset('assets/js/admin\cashier\productCashier.js') }}"></script>
-    <script src="{{ asset('assets/js/ui-modals.js') }}"></script>
+
+    {{-- <script src="{{ asset('assets/js/ui-modals.js') }}"></script> --}}
 @endsection
 
 @section('content')
@@ -89,15 +90,47 @@
                 </div>
                 <div class="mt-3 row justify-content-end">
                     <div class="col-sm-10 d-flex justify-content-end">
-                        <div class="card mb-4">
+                        <div class="card mb-4" style="border: none;!important">
                             <div>
-                                <div class="row gy-3">
+                                <div class="row gy-3" >
                                     <div>
-                                        <div>
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        <div >
+                                          <div class="mt-3 row  justify-content-end" >
+                                            <div class="col-sm-4 d-flex justify-content-end align-items-center">
+                                              @if(museumHasHdm())
+                                                <div class="radioButtons d-flex">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input productCashierRadio" type="radio" name="cashe"
+                                                            value="cash" >
+                                                        <label class="form-check-label" for="flexRadioDefault1">
+                                                            Կանխիկ
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mx-2">
+                                                        <input class="form-check-input productCashierRadio" type="radio" name="cashe"
+                                                            value="card" >
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            Անկանխիկ
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mx-2">
+                                                      <input class="form-check-input productCashierRadio" type="radio" name="cashe"
+                                                          value="otherPos" >
+                                                      <label class="form-check-label" for="flexRadioDefault2">
+                                                          Այլ
+                                                      </label>
+                                                  </div>
+                                                </div>
+                                                @endif
+
+                                                <button type="button" {{ museumHasHdm()?"disabled" : null }}
+                                                    class="btn btn-primary form-cashier-button mx-2" data-bs-toggle="modal"  data-bs-target="#basicModal"> Վաճառել</button>
+                                            </div>
+                                        </div>
+                                            {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                 data-bs-target="#basicModal">
                                                 Վաճառել
-                                            </button>
+                                            </button> --}}
                                             <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">

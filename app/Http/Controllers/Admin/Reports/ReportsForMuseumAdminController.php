@@ -29,9 +29,10 @@ class ReportsForMuseumAdminController extends Controller
     $museum_id = museumAccessId();
     $request['status'] = 1;
     $request['museum_id'] = [$museum_id];
+// dd($request->all());
 
     $data = $this->report($request->all(), $this->model, $request_report_type);
-
+// dd($data);
     // $totalQuantity = 0;
     // $totalPrice = 0;
 
@@ -65,7 +66,6 @@ class ReportsForMuseumAdminController extends Controller
 
     $report_with_cashier = $this->reportWithCashier($request->all(), $request_report_type);
 
-dd($data);
     return view("content.reports.museum-admin", compact('data', 'report_with_cashier'));
 
   }
@@ -109,7 +109,7 @@ dd($data);
       $totalQuantity = 0;
       $totalPrice = 0;
 
-      if ($data->type != 'online') {
+      if (!isset($data['type']) || (isset($data['type']) && $data['type'] != 'online')) {
           $report_with_cashier = $data;
           $report_with_cashier['type'] = 'offline';
 
@@ -134,5 +134,7 @@ dd($data);
       } else {
         $report_with_cashier = ['totalQuantity' => 0, 'totalPrice' => 0];
       }
+
+      return  $report_with_cashier;
   }
 }
