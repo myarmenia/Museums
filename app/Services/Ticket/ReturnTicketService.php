@@ -3,6 +3,7 @@
 namespace App\Services\Ticket;
 
 use App\Models\EventConfig;
+use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchasedItem;
 use App\Models\TicketQr;
@@ -156,12 +157,13 @@ class ReturnTicketService
 
           }
           else if ( $purchaseItem->type == "product" ) {
+            $product = Product::where('id',$purchaseItem->item_relation_id)->first();
             $returnedQuantity = $purchaseItem->quantity;
             $totalPrice = $purchaseItem->total_price;
-            $purchaseNewAmount =$purchaseItem->purchase->returned_amount + $totalPrice;
-         
-
-
+            $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $totalPrice;
+            $after_returned_total_product_count = $product->quantity + $returnedQuantity;
+            $product->update(['quantity' => $after_returned_total_product_count]);
+            
         }
           else{
               $returnedQuantity = $purchaseItem->returned_quantity + 1;
