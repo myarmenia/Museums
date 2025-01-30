@@ -111,7 +111,7 @@ class ReturnTicketService
           $purchaseReturnedAmount = 0;
           $ticket->update(['status' => TicketQr::STATUS_RETURNED]);
           $purchasedItemId = $ticket->purchased_item_id;
-          
+
           $purchaseItem = PurchasedItem::where('id', $purchasedItemId)->first();
 // dd( $purchaseItem);
           $purchaseQunatity = $purchaseItem->quantity;
@@ -155,6 +155,14 @@ class ReturnTicketService
 
 
           }
+          else if ( $purchaseItem->type == "product" ) {
+            $returnedQuantity = $purchaseItem->quantity;
+            $totalPrice = $purchaseItem->total_price;
+            $purchaseNewAmount =$purchaseItem->purchase->returned_amount + $totalPrice;
+         
+
+
+        }
           else{
               $returnedQuantity = $purchaseItem->returned_quantity + 1;
               $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $oneTicketPrice;
