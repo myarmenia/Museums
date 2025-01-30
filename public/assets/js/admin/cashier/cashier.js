@@ -122,10 +122,10 @@ $(function () {
       if (ticketCount < minQuantity || ticketCount > maxQuantity) {
         mistakeQuantity.push(productId);
 
-        // $('#educational-button').prop('disabled', true);
+        $('#educational-button').prop('disabled', true);
       } else {
         mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
-        // $('#educational-button').prop('disabled', false);
+        $('#educational-button').prop('disabled', false);
       }
     } else if (ticketCount == 0 || ticketCount == '' || ticketCount == null || ticketCount < 0) {
       mistakeQuantity = mistakeQuantity.filter(item => item !== productId);
@@ -648,7 +648,7 @@ var partnerVal=''
 
                           })
                           callPartnerEducationalProgramFunction()
-                         
+
 
 
               }

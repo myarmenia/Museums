@@ -11,10 +11,11 @@ use App\Traits\Purchase\PurchaseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class BuyProduct extends Controller
+class BuyProduct extends CashierController
 {
     use PurchaseTrait;
     use PrintReceiptTrait;
+    use QrTokenTrait;
 
     public function __invoke(Request $request)
     {
@@ -66,25 +67,35 @@ class BuyProduct extends Controller
 
 
                 if ($addTicketPurchase) {
+                  $addQr = $this->getTokenQr($addTicketPurchase->id);
 
-                  if (museumHasHdm()) {
+                    if($addQr){
+                      if (museumHasHdm()) {
 
-                    $print = $this->PrintHdm($addTicketPurchase->id);
+                        $print = $this->PrintHdm($addTicketPurchase->id);
 
-                    if (!$print['success']) {
+                        if (!$print['success']) {
 
-                        $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
+                            $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
 
-                        session(['errorMessage' => $message]);
-                        return redirect()->back();
+                            session(['errorMessage' => $message]);
+                            return redirect()->back();
+                        }
+
+                      }
+
                     }
 
-                  }
+                  $pdfPath = $this->showReadyPdf($addTicketPurchase->id);
+
 
                     session(['success' => 'Ապրանքը վաճառված է']);
 
                     DB::commit();
-                    return redirect()->back();
+
+                    return redirect()->back()->with('pdfFile', $pdfPath);
+
+
                 }
             }
 

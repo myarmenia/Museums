@@ -101,7 +101,7 @@ class CashierController extends Controller
 
         }
 
-
+// dd($qrs);
         foreach ($qrs as $key=>$qr) {
           // dd($qr);
 
@@ -209,7 +209,12 @@ class CashierController extends Controller
               $data['data'][$key]['service_name_en'] = $qr->purchased_item->other_service->translation('en')->name;
             }
 
-            if($qr['type'] =="school" || $qr['type'] == "educational" ||( $qr['type'] == "partner" && $qr->purchased_item->sub_type == "educational") ){
+            if($qr['type'] =="school" ||
+               $qr['type'] == "educational" ||
+               ($qr['type'] == "partner" && $qr->purchased_item->sub_type == "educational") ||
+                $qr['type'] == "product"
+
+               ){
 
               $data['data'][$key]['quantity']= $qr->purchased_item->quantity;
 

@@ -13,6 +13,7 @@
     <h4 class="py-3 mb-4">
         <span class="text-muted fw-light">Դրամարկղ /</span> Ապրանք
     </h4>
+    <input type="hidden" id="pdf-path" value="{{ session('pdfFile') }}">
 
     <div class="card">
         <div class="d-flex justify-content-between align-items-center">
