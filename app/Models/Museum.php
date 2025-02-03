@@ -136,7 +136,7 @@ class Museum extends Model
     {
       return $this->hasMany(Partner::class);
     }
-
+    
 
 
 

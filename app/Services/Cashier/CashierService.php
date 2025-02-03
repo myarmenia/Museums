@@ -35,7 +35,10 @@ class CashierService
         $museumId = museumAccessId();
         $museum = Museum::with(['guide',
         'events' => function ($query){
-            $query->orderBy('id', 'DESC')->where('status', 1)->get();
+            $query->orderBy('id', 'DESC')
+                  ->where('status', 1)
+                  ->where('end_date','>',now()->format('Y-m-d'))
+                  ->get();
         },
         'aboniment' => function ($query){
             $query->where('status', 1)->first();
@@ -79,6 +82,7 @@ class CashierService
 
         if($museum->events->count()){
             $data['events'] = $museum->events;
+
         }
         if($museum->other_services->count()){
           $data['other_services'] = $museum->other_services;
@@ -141,6 +145,7 @@ class CashierService
     public function getEventDetails($eventId)
     {
         if($museumId = museumAccessId()) {
+
             $event = Event::with('event_configs')->where("museum_id", $museumId)->find($eventId);
 
             return $event;
