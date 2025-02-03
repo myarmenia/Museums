@@ -11,14 +11,17 @@ use App\Models\Museum;
 use App\Models\OtherService;
 use App\Models\Partner;
 use App\Models\Product;
+use App\Models\Purchase;
 use App\Models\Ticket;
 use App\Models\TicketPdf;
+use App\Traits\Hdm\PrintLastReceiptTrait;
+use App\Traits\Hdm\ReturnHdmTrait;
 use App\Traits\Purchase\PurchaseTrait;
 use Carbon\Carbon;
 
 class CashierService
 {
-    use PurchaseTrait;
+    use PurchaseTrait, PrintLastReceiptTrait;
     // protected $chatRepository;
     // public function __construct(ChatRepository $chatRepository)
     // {
@@ -199,6 +202,39 @@ class CashierService
 
         return false;
     }
+
+
+
+  public function getLastPurchaseHdm()
+  {
+    $museumId = museumAccessId();
+
+    $data = Purchase::where('museum_id', $museumId)->where('type', 'offline')->whereNotNull('hdm_transaction_type')->orderBy('id', 'DESC')->first();
+
+    return $data;
+  }
+
+
+  public function lastReceiptHdm()
+  {
+    $message = 'ՀԴՄ սարքը չի գտնվել։';
+
+    if (museumHasHdm()) {
+
+      $print = $this->printLastReceiptHdm();
+      $message = 'Կտրոնը տվում է';
+
+      if (!$print['success']) {
+
+        $message = isset($print['result']['message']) ? $print['result']['message'] : 'ՀԴՄ սարքի խնդիր';
+
+      }
+
+    }
+
+    session(['hdmMessage' => $message]);
+    return $print;
+  }
 
 
 }

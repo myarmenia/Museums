@@ -11,7 +11,7 @@ class Purchase extends Model
 {
     use HasFactory, ReportFilterTrait;
     protected $guarded = [];
-    protected $defaultFields = ['type'];   //museum_id  can be null
+    protected $defaultFields = ['type', 'hdm_transaction_type'];   //museum_id  can be null
     protected $boolFilterFields = ['status'];
     protected $filterDateRangeFields = ['start_date', 'end_date'];
     protected $filterAgeRangeFields = ['start_age', 'end_age'];

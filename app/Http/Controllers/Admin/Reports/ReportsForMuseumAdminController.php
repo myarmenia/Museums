@@ -29,40 +29,42 @@ class ReportsForMuseumAdminController extends Controller
     $museum_id = museumAccessId();
     $request['status'] = 1;
     $request['museum_id'] = [$museum_id];
+// dd($request->all());
 
     $data = $this->report($request->all(), $this->model, $request_report_type);
+// dd($data);
+    // $totalQuantity = 0;
+    // $totalPrice = 0;
 
-    $totalQuantity = 0;
-    $totalPrice = 0;
+    // if($request->type != 'online'){
+    //     $report_with_cashier = $request->all();
+    //     $report_with_cashier['type'] = 'offline';
 
-    if($request->type != 'online'){
-        $report_with_cashier = $request->all();
-        $report_with_cashier['type'] = 'offline';
+    //     $report_with_cashier = $this->report($report_with_cashier, $this->model, $request_report_type);
+    //     // dd($request->all());
+    //     if (count($report_with_cashier) > 0) {
 
-        $report_with_cashier = $this->report($report_with_cashier, $this->model, $request_report_type);
+    //       $report_with_cashier = array_values($report_with_cashier)[0];
+    //       unset($report_with_cashier['school'], $report_with_cashier['partner'], $report_with_cashier['corporative'], $report_with_cashier['canceled']);
 
-        if (count($report_with_cashier) > 0) {
+    //       $report_with_cashier = array_reduce($report_with_cashier, function ($carry, $item) {
+    //         if (isset($item['quantity']) || isset($item['total_price'])) {
 
-          $report_with_cashier = array_values($report_with_cashier)[0];
-          unset($report_with_cashier['school'], $report_with_cashier['partner'], $report_with_cashier['corporative'], $report_with_cashier['canceled']);
+    //           $carry['totalQuantity'] += (int) ($item['quantity'] ?? 0);
+    //           $carry['totalPrice'] += (int) ($item['total_price'] ?? 0);
+    //         }
+    //         return $carry;
+    //       }, ['totalQuantity' => 0, 'totalPrice' => 0]);
+    //     }
+    //     else{
+    //         $report_with_cashier = ['totalQuantity' => 0, 'totalPrice' => 0];
+    //     }
+    // }
+    // else{
+    //     $report_with_cashier = ['totalQuantity' => 0, 'totalPrice' => 0];
+    // }
 
-          $report_with_cashier = array_reduce($report_with_cashier, function ($carry, $item) {
-            if (isset($item['quantity']) || isset($item['total_price'])) {
-
-              $carry['totalQuantity'] += (int) ($item['quantity'] ?? 0);
-              $carry['totalPrice'] += (int) ($item['total_price'] ?? 0);
-            }
-            return $carry;
-          }, ['totalQuantity' => 0, 'totalPrice' => 0]);
-        }
-        else{
-            $report_with_cashier = ['totalQuantity' => 0, 'totalPrice' => 0];
-        }
-    }
-    else{
-        $report_with_cashier = ['totalQuantity' => 0, 'totalPrice' => 0];
-    }
-
+    $report_with_cashier = $this->reportWithCashier($request->all(), $request_report_type);
 
     return view("content.reports.museum-admin", compact('data', 'report_with_cashier'));
 
@@ -89,7 +91,7 @@ class ReportsForMuseumAdminController extends Controller
       $museum_id = museumAccessId();
 
       $data = $this->partners_report($request->all(), $this->model);
-     
+
       $totalInfo = $this->totalInfo($data);
 
       $collection = collect($data);
@@ -99,5 +101,40 @@ class ReportsForMuseumAdminController extends Controller
 
       return view("content.reports.museum-partners", compact('data', 'totalInfo'));
 
+  }
+
+
+  public function reportWithCashier($data, $request_report_type){
+
+      $totalQuantity = 0;
+      $totalPrice = 0;
+
+      if (!isset($data['type']) || (isset($data['type']) && $data['type'] != 'online')) {
+          $report_with_cashier = $data;
+          $report_with_cashier['type'] = 'offline';
+
+          $report_with_cashier = $this->report($report_with_cashier, $this->model, $request_report_type);
+          // dd($request->all());
+          if (count($report_with_cashier) > 0) {
+
+            $report_with_cashier = array_values($report_with_cashier)[0];
+            unset($report_with_cashier['school'], $report_with_cashier['partner'], $report_with_cashier['corporative'], $report_with_cashier['canceled']);
+
+            $report_with_cashier = array_reduce($report_with_cashier, function ($carry, $item) {
+              if (isset($item['quantity']) || isset($item['total_price'])) {
+
+                $carry['totalQuantity'] += (int) ($item['quantity'] ?? 0);
+                $carry['totalPrice'] += (int) ($item['total_price'] ?? 0);
+              }
+              return $carry;
+            }, ['totalQuantity' => 0, 'totalPrice' => 0]);
+          } else {
+            $report_with_cashier = ['totalQuantity' => 0, 'totalPrice' => 0];
+          }
+      } else {
+        $report_with_cashier = ['totalQuantity' => 0, 'totalPrice' => 0];
+      }
+
+      return  $report_with_cashier;
   }
 }

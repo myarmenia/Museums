@@ -17,7 +17,7 @@ class PurchasedItem extends Model
     protected $defaultFields = ['item_relation_id', 'museum_id', 'partner_id', 'partner_relation_id'];
 
   protected $relationFilter = [
-      'purchase' => ['status','type', 'gender', 'country_id', 'start_date', 'end_date', 'start_age', 'end_age'],
+      'purchase' => ['status','type', 'hdm_transaction_type', 'gender', 'country_id', 'start_date', 'end_date', 'start_age', 'end_age'],
     ];
 
     public function museum()
