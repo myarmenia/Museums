@@ -82,6 +82,7 @@ trait ReportFilterTrait
                     $builder->whereIn($field, $value);
                 }
                 else{
+
                     $builder->where($field, $value);
                 }
 
