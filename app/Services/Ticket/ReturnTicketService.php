@@ -163,7 +163,7 @@ class ReturnTicketService
             $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $totalPrice;
             $after_returned_total_product_count = $product->quantity + $returnedQuantity;
             $product->update(['quantity' => $after_returned_total_product_count]);
-            
+
         }
           else{
               $returnedQuantity = $purchaseItem->returned_quantity + 1;
@@ -175,7 +175,8 @@ class ReturnTicketService
 
           // =============================
           $incalculableTypes = ['partner', 'school', 'free'];
-          if (museumHasHdm() && !in_array($purchaseItem->type, $incalculableTypes) ) {
+          $hdm_crn = $purchaseItem->purchase->hdm_crn;
+          if (museumHasHdm() && !in_array($purchaseItem->type, $incalculableTypes) && $hdm_crn) {
 
             $print = $this->returnHdm($purchasedItemId);
 
