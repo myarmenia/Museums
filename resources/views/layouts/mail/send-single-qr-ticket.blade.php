@@ -154,7 +154,7 @@
             {{-- @foreach ($result as $result) --}}
                 @php
                     $type = $result->purchased_item->type;
-                    $sub_type = $data->purchased_item->type;
+                    $sub_type = $data->purchased_item->sub_type;
                     $code = $data->ticket_token;
                     $color = $type == 'event' || $type == 'event-config' ? 'event-' . $sub_type : $type;
 
