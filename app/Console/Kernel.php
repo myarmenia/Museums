@@ -12,7 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // $schedule->command('pdf:cleanup')->weeklyOn(0, '3:00'); // Starts on Mondays at 3 am.
+        $schedule->command('pdf:cleanup')->weeklyOn(5, '12:30'); // Starts on Mondays at 3 am.
+
+
     }
 
     /**
