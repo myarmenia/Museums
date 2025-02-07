@@ -6,6 +6,7 @@ use App\Models\TicketPdf;
 use Carbon\Carbon;
 use File;
 use Illuminate\Console\Command;
+use Log;
 
 class DeleteOldPdfs extends Command
 {
@@ -36,7 +37,7 @@ class DeleteOldPdfs extends Command
         do {
             // Getting 500 old files
             $oldPdfs = TicketPdf::where('created_at', '<', $now->copy()->subMonths(3))->limit($batchSize)->get();
-
+            Log::info('count' . count($oldPdfs));
             if ($oldPdfs->isEmpty()) {
               break;
             }
@@ -58,5 +59,6 @@ class DeleteOldPdfs extends Command
         } while (count($oldPdfs) === $batchSize); // Let's keep going as long as there are records
 
         $this->info("Cleanup complete!");
+        Log::info('Loggggg - Cleanup complete!');
     }
 }
