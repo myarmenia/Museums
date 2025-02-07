@@ -19,9 +19,10 @@ class LogController extends Controller
     public function index(Request $request){
 
 
-    $data = LogService::logFilter($request->all(), $this->model)
+        $data = LogService::logFilter($request->all(), $this->model)
             ->orderBy('id', 'DESC')
             ->paginate(10)->withQueryString();
+
         return view("content.logs.index", compact('data'))
           ->with('i', ($request->input('page', 1) - 1) * 10);
 

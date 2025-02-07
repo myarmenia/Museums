@@ -68,11 +68,15 @@
                     </div>
                 </form>
             </div>
+ 
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
+                            @if (Auth::user()->hasRole('super_admin'))
+                              <th>Թանգարան</th>
+                            @endif
                             <th>Օգտագործող</th>
                             <th>Դեր</th>
                             <th>Գործ․ տեսակ</th>
@@ -86,6 +90,9 @@
 
                             <tr>
                                 <td>{{ ++$i }}</td>
+                                @if (Auth::user()->hasRole('super_admin'))
+                                  <th>{{getMuseumByUser($log->user_id)}}</th>
+                                @endif
                                 <td>{{ $log->user->name }} {{ $log->user->surname }}</td>
                                 <td>{{ __("roles.".$log->user->roles[0]->name) }}</td>
                                 <td>{{ __("logs.$log->type") }}</td>
