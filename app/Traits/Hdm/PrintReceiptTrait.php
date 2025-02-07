@@ -25,6 +25,8 @@ trait PrintReceiptTrait
         }
 
         $incalculableTypes = ['school', 'free']; // no ticket should be printed for these types
+        $types_for_names = ['event', 'event-config', 'educational', 'product', 'other_service']; // for productName
+
 
         $purchase = Purchase::find($purchase_id);
         $purchase_items = $purchase->purchased_items->whereNotIn('type', $incalculableTypes);
@@ -43,12 +45,24 @@ trait PrintReceiptTrait
 
         foreach ($purchase_items as $key => $value) {
           if ($value->total_price > 0) {
+            $tp = $value->type;
+          
             $type = getTranslateTicketTitl($value->type);
-            $sub_type = in_array($value->type, ['event', 'event-config']) ? '/ ' . getTranslateTicketSubTitle($value->sub_type) : null;
+            $sub_type = in_array($value->type, ['event', 'event-config']) ? ' / ' . getTranslateTicketSubTitle($value->sub_type) : null;
+
+            $name = '';
+
+            if(in_array($tp, $types_for_names)){
+
+              $relation = $tp == 'event-config' ? 'event' : $tp;
+              $name = $value->{$relation}->translation('am')->name;
+            }
+
+            $name = $name != '' ? ' / ' . $name: null;
 
             $item_params['qty'] = $value->quantity;
             $item_params['price'] = $value->total_price / $value->quantity;   // mek apranqi giny
-            $item_params['productName'] = $type . $sub_type;
+            $item_params['productName'] = $type . $name . $sub_type;
 
             array_push($items, $item_params);
           }
