@@ -32,11 +32,23 @@ trait ReturnHdmTrait
             $crn = $purchase->hdm_crn;
             $rseq = $purchase->hdm_rseq;
 
-            $type_name = getTranslateTicketTitl($type);
-            $sub_type_name = in_array($type, ['event', 'event-config']) ? '/ ' . getTranslateTicketSubTitle($sub_type) : null;
 
-            $search_name = $type_name . $sub_type_name;
-            $total_price = $purchase_item->total_price;
+            $type_name = getTranslateTicketTitl($type);
+            $sub_type_name = in_array($type, ['event', 'event-config']) ? ' / ' . getTranslateTicketSubTitle($sub_type) : null;
+
+            $types_for_names = ['event', 'event-config', 'educational', 'product', 'other_service']; // for productName
+            $name = '';
+
+            if (in_array($type, $types_for_names)) {
+
+              $relation = $type == 'event-config' ? 'event' : $type;
+              $name = $purchase_item->{$relation}->translation('am')->name;
+            }
+
+            $name = $name != '' ? ' / ' . $name : null;
+
+            $search_name = $type_name . $name . $sub_type_name;
+            $price = $purchase_item->total_price / $purchase_item->quantity;
 
             $hdm = new HDM($hasHdm);  // hdm cashier login for hdm
             $hdm_coupon = $this->getReturnHdm($crn, $rseq);
@@ -47,8 +59,8 @@ trait ReturnHdmTrait
             }
 
 
-            $hdm_coupon_item = array_filter($hdm_coupon['result']['totals'], function ($item) use ($search_name, $total_price) {
-                  return $item['gn'] === $search_name && $item['tt'] == $total_price;
+            $hdm_coupon_item = array_filter($hdm_coupon['result']['totals'], function ($item) use ($search_name, $price) {
+                  return $item['gn'] === $search_name && $item['p'] == $price;
             });
 
             $hdm_coupon_item = reset($hdm_coupon_item);
