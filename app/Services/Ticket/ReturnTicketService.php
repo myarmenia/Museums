@@ -10,6 +10,7 @@ use App\Models\TicketQr;
 use App\Traits\Hdm\ReturnHdmTrait;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Google\Service\AndroidPublisher\Resource\Purchases;
 
 class ReturnTicketService
 {
@@ -114,7 +115,7 @@ class ReturnTicketService
           $purchasedItemId = $ticket->purchased_item_id;
 
           $purchaseItem = PurchasedItem::where('id', $purchasedItemId)->first();
-// dd( $purchaseItem);
+
           $purchaseQunatity = $purchaseItem->quantity;
           $purchasePrice = $purchaseItem->total_price;
           if ($purchaseItem->type == "free") {
@@ -135,18 +136,23 @@ class ReturnTicketService
             $eventConfig->update(['visitors_quantity' => $countVisitors]);
           }
 
-          if ($purchaseItem->type == "educational") {
+          if ($purchaseItem->type == "educational" || $purchaseItem->type == "other_service") {
 
                 $returnedQuantity = $purchaseItem->quantity;
                 $totalPrice = $purchaseItem->total_price;
                 $purchaseNewAmount = $totalPrice;
+                // dd($purchaseNewAmount);
+                $purchase = Purchase::where('id',$purchaseItem->purchase_id)->first();
+                // dd($purchase);
+                $after_returned = $purchase->returned_amount+$purchaseNewAmount;
+                $purchaseNewAmount = $after_returned;
 
           }
           else if ($purchaseItem->type == "school") {
 
             $returnedQuantity = $purchaseItem->quantity;
             $totalPrice = $purchaseItem->total_price;
-            $purchaseNewAmount =$purchaseItem->purchase->returned_amount + $totalPrice;
+            $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $totalPrice;
 
           }
           else if ($purchaseItem->type == "partner" &&  $purchaseItem->sub_type=="educational") {
@@ -163,8 +169,9 @@ class ReturnTicketService
             $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $totalPrice;
             $after_returned_total_product_count = $product->quantity + $returnedQuantity;
             $product->update(['quantity' => $after_returned_total_product_count]);
-            
+
         }
+
           else{
               $returnedQuantity = $purchaseItem->returned_quantity + 1;
               $purchaseNewAmount = $purchaseItem->purchase->returned_amount + $oneTicketPrice;
