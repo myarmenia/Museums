@@ -46,7 +46,7 @@ trait PrintReceiptTrait
         foreach ($purchase_items as $key => $value) {
           if ($value->total_price > 0) {
             $tp = $value->type;
-          
+
             $type = getTranslateTicketTitl($value->type);
             $sub_type = in_array($value->type, ['event', 'event-config']) ? ' / ' . getTranslateTicketSubTitle($value->sub_type) : null;
 
@@ -54,8 +54,10 @@ trait PrintReceiptTrait
 
             if(in_array($tp, $types_for_names)){
 
-              $relation = $tp == 'event-config' ? 'event' : $tp;
-              $name = $value->{$relation}->translation('am')->name;
+              // $relation = $tp == 'event-config' ? 'event' : $tp;
+              $relation = $tp;
+              $name = $tp == 'event-config' ? $value->event_config->event->translation('am')->name : $value->{$relation}->translation('am')->name;
+
             }
 
             $name = $name != '' ? ' / ' . $name: null;
