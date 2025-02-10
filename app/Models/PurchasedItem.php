@@ -56,6 +56,11 @@ class PurchasedItem extends Model
 
     }
 
+    public function educational()
+    {
+        return $this->belongsTo(EducationalProgram::class, "item_relation_id");
+    }
+
     public function united_museums()
     {
 

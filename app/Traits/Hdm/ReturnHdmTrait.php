@@ -32,11 +32,28 @@ trait ReturnHdmTrait
             $crn = $purchase->hdm_crn;
             $rseq = $purchase->hdm_rseq;
 
-            $type_name = getTranslateTicketTitl($type);
-            $sub_type_name = in_array($type, ['event', 'event-config']) ? '/ ' . getTranslateTicketSubTitle($sub_type) : null;
 
-            $search_name = $type_name . $sub_type_name;
-            $total_price = $purchase_item->total_price;
+            $type_name = getTranslateTicketTitl($type);
+            $sub_type_name = in_array($type, ['event', 'event-config']) ? ' / ' . getTranslateTicketSubTitle($sub_type) : null;
+
+            $types_for_names = ['event', 'event-config', 'educational', 'product', 'other_service']; // for productName
+            $types_for_packet = ['educational', 'product', 'other_service']; // for packet return
+
+            $name = '';
+
+            if (in_array($type, $types_for_names)) {
+
+              // $relation = $type == 'event-config' ? 'event' : $type;
+              // $name = $purchase_item->{$relation}->translation('am')->name;
+              $relation = $type;
+              $name = $type == 'event-config' ? $purchase_item->event_config->event->translation('am')->name : $purchase_item->{$relation}->translation('am')->name;
+
+            }
+
+            $name = $name != '' ? ' / ' . $name : null;
+
+            $search_name = $type_name . $name . $sub_type_name;
+            $price = $purchase_item->total_price / $purchase_item->quantity;
 
             $hdm = new HDM($hasHdm);  // hdm cashier login for hdm
             $hdm_coupon = $this->getReturnHdm($crn, $rseq);
@@ -47,15 +64,15 @@ trait ReturnHdmTrait
             }
 
 
-            $hdm_coupon_item = array_filter($hdm_coupon['result']['totals'], function ($item) use ($search_name, $total_price) {
-                  return $item['gn'] === $search_name && $item['tt'] == $total_price;
+            $hdm_coupon_item = array_filter($hdm_coupon['result']['totals'], function ($item) use ($search_name, $price) {
+                  return $item['gn'] === $search_name && $item['p'] == $price;
             });
 
             $hdm_coupon_item = reset($hdm_coupon_item);
 
-            $quantity = $type == 'educational' || $type == 'product' ? $hdm_coupon_item['qty'] : 1;
+            $quantity = in_array($type, $types_for_packet) ? $hdm_coupon_item['qty'] : 1;
             $rpid = $hdm_coupon_item['rpid'];
-            $total_price = $type == 'educational' || $type == 'product' ?  $hdm_coupon_item['tt'] :  $hdm_coupon_item['p'];
+            $total_price = in_array($type, $types_for_packet) ?  $hdm_coupon_item['tt'] :  $hdm_coupon_item['p'];
 
             $cashAmountForReturn = $transaction_type == 'cash' ? $total_price : 0;
             $cardAmountForReturn = $transaction_type == 'cash' ? 0 : $total_price;
