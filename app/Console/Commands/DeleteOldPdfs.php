@@ -36,8 +36,8 @@ class DeleteOldPdfs extends Command
 
         do {
             // Getting 500 old files
-            $oldPdfs = TicketPdf::where('created_at', '<', $now->copy()->subMonths(4))->limit($batchSize)->get();
-            Log::info('count' . count($oldPdfs));
+            $oldPdfs = TicketPdf::where('created_at', '<', $now->copy()->subMonths(3))->limit($batchSize)->get();
+           
             if ($oldPdfs->isEmpty()) {
               break;
             }
