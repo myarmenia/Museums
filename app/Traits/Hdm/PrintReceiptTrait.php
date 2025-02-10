@@ -25,6 +25,8 @@ trait PrintReceiptTrait
         }
 
         $incalculableTypes = ['school', 'free']; // no ticket should be printed for these types
+        $types_for_names = ['event', 'event-config', 'educational', 'product', 'other_service']; // for productName
+
 
         $purchase = Purchase::find($purchase_id);
         $purchase_items = $purchase->purchased_items->whereNotIn('type', $incalculableTypes);
@@ -43,12 +45,24 @@ trait PrintReceiptTrait
 
         foreach ($purchase_items as $key => $value) {
           if ($value->total_price > 0) {
+            $tp = $value->type;
+          
             $type = getTranslateTicketTitl($value->type);
-            $sub_type = in_array($value->type, ['event', 'event-config']) ? '/ ' . getTranslateTicketSubTitle($value->sub_type) : null;
+            $sub_type = in_array($value->type, ['event', 'event-config']) ? ' / ' . getTranslateTicketSubTitle($value->sub_type) : null;
+
+            $name = '';
+
+            if(in_array($tp, $types_for_names)){
+
+              $relation = $tp == 'event-config' ? 'event' : $tp;
+              $name = $value->{$relation}->translation('am')->name;
+            }
+
+            $name = $name != '' ? ' / ' . $name: null;
 
             $item_params['qty'] = $value->quantity;
             $item_params['price'] = $value->total_price / $value->quantity;   // mek apranqi giny
-            $item_params['productName'] = $type . $sub_type;
+            $item_params['productName'] = $type . $name . $sub_type;
 
             array_push($items, $item_params);
           }
@@ -65,9 +79,9 @@ trait PrintReceiptTrait
             // $hdm = new HDM($ip, $port, $hdmPassword);
 
             $transaction_type = $purchase->hdm_transaction_type;
-            $useExtPOS = $transaction_type == 'cashe' ? true : false;
-            $paidAmount = $transaction_type == 'cashe' ? $total_price : 0;
-            $paidAmountCard = $transaction_type == 'cashe' ? 0 : $total_price;
+            $useExtPOS = $transaction_type == 'cash' ? true : false;
+            $paidAmount = $transaction_type == 'cash' ? $total_price : 0;
+            $paidAmountCard = $transaction_type == 'cash' ? 0 : $total_price;
 
             $parrams = [
                 'paidAmount' => $paidAmount,
@@ -78,7 +92,7 @@ trait PrintReceiptTrait
                 'items' => $items
             ];
 
-            $this->hdmFooter('remove');
+            // $this->hdmFooter('remove');
 
             if($transaction_type == 'card'){
                 $parrams['useExtPOS'] = false;
@@ -89,7 +103,7 @@ trait PrintReceiptTrait
             if($transaction_type == 'otherPos'){
                 $parrams['useExtPOS'] = true;
 
-                $this->hdmFooter('add');
+                // $this->hdmFooter('add');
             }
 
 
@@ -146,10 +160,15 @@ trait PrintReceiptTrait
       $text = $type == 'add' ? 'Այլ տերմինալով վճարում ' : '';
 
       $jsonBody = json_encode([
+        'headers'=> [
+                        [
+                          'text' => ''
+                          ]
+                        ],
 
         'footers' => [
                         [
-                          'text' => $text
+                          'text' => ''
                           ]
                     ]
       ]);

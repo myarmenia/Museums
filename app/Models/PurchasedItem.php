@@ -17,7 +17,7 @@ class PurchasedItem extends Model
     protected $defaultFields = ['item_relation_id', 'museum_id', 'partner_id', 'partner_relation_id'];
 
   protected $relationFilter = [
-      'purchase' => ['status','type', 'gender', 'country_id', 'start_date', 'end_date', 'start_age', 'end_age'],
+      'purchase' => ['status','type', 'hdm_transaction_type', 'gender', 'country_id', 'start_date', 'end_date', 'start_age', 'end_age'],
     ];
 
     public function museum()
@@ -54,6 +54,11 @@ class PurchasedItem extends Model
 
       return $this->belongsTo(Ticket::class, 'item_relation_id');
 
+    }
+
+    public function educational()
+    {
+        return $this->belongsTo(EducationalProgram::class, "item_relation_id");
     }
 
     public function united_museums()

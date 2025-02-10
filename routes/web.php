@@ -193,10 +193,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/room/{id}', [ChatController::class, 'getRoomMessage'])->name('room-message');
     Route::post('/send-message', [ChatController::class, 'addMessage'])->name('send-message');
   });
-  Route::group(['prefix'=>'cashier', 'middleware' => ['role:cashier']],function(){
+  
+  Route::group(['prefix'=>'cashier', 'middleware' => ['role:cashier', 'check_auth_have_museum']],function(){
     Route::get('/tickets',[CashierController::class, 'index'])->name('cashier.tickets');
     Route::get('/products',[CashierController::class, 'getMuseumProduct'])->name('cashier.product');
     Route::get('/show-ticket',[CashierController::class, 'showLastTicket'])->name('cashier.show-ticket');
+    Route::get('/print-last-receipt-hdm', [CashierController::class, 'printLastTeceiptHdm'])->name('cashier.print_last_receipt_hdm');
 
   });
 

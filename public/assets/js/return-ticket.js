@@ -41,6 +41,7 @@ $(function () {
 
   $(document).on("click", '#archive-ticket', function () {
     let dataId = $(this).attr('data-id');
+    $(this).attr('disabled', true);
 
     let ticketApprove = true;
     let guideApprove = false;

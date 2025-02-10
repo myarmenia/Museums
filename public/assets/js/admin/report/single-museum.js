@@ -64,3 +64,18 @@ $('.selectdate').on('change', function () {
 $('.compare').on('click', function () {
   $('#form').attr('action', '/museum/reports/compare')
 })
+
+
+
+$('#multiple-select-type').on('change', function () {
+
+  if ($(this).val() == 'offline'){
+    $('#multiple-select-hdm_transaction_type').attr('disabled', false)
+  }
+  else{
+    $('#multiple-select-hdm_transaction_type').attr('disabled', true)
+
+  }
+
+  console.log($(this).val())
+})

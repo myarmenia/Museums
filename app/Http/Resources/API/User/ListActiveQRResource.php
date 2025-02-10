@@ -15,6 +15,7 @@ class ListActiveQRResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+  
         $base64String = null;
         if (Storage::exists($this->path)) {
             $qr_image = Storage::get($this->path);
@@ -32,7 +33,8 @@ class ListActiveQRResource extends JsonResource
           'path_base64' => $base64String,
           'type' => $this->type,
           'price' => $this->price,
-          'color' => ticketColors()[$color]
+          'color' => ticketColors()[$color],
+          'ticket_token' => $this->ticket_token
         ];
 
 

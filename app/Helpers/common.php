@@ -308,6 +308,22 @@ if (!function_exists('getMuseum')) {
 
 }
 
+if (!function_exists('getMuseumByUser')) {
+  function getMuseumByUser($id)
+  {
+      $staff = MuseumStaff::where('user_id', $id)->first();
+
+      if(!$staff){
+        return ' - ';
+      }
+
+    return $staff->museum->translationsForAdmin->name;
+
+  }
+
+}
+
+
 if (!function_exists('getPartner')) {
   function getPartner($id)
   {
